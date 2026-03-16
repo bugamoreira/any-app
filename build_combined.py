@@ -12,7 +12,6 @@ Architecture:
 import os
 import re
 import base64
-import zipfile
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 
@@ -71,16 +70,16 @@ def make_logo_clickable_to_hub(html):
 # ══════════════════════════════════════════════════════════
 # 1. Read all HTML files
 # ══════════════════════════════════════════════════════════
-hub_html = read_file('HTML segmentados/HUB ANY/index.html')
-vm_html = read_file('HTML segmentados/VM GUIDE/index.html')
-airway_html = read_file('HTML segmentados/AIRWAY GUIDE/index.html')
-infusion_html = read_file('HTML segmentados/Infusion Guide/index.html')
-tep_html = read_file('HTML segmentados/TEP GUIDE/index.html')
-seda_html = read_file('HTML segmentados/Seda Path/index.html')
-tox_html = read_file('HTML segmentados/Tox Path/index.html')
-ped_html = read_file('HTML segmentados/Ped Guide/index.html')
-palia_html = read_file('HTML segmentados/Palia Path/index.html')
-block_html = read_file('HTML segmentados/Block Path/index.html')
+hub_html = read_file('hub/index.html')
+vm_html = read_file('tools/vm-guide/index.html')
+airway_html = read_file('tools/airway-guide/index.html')
+infusion_html = read_file('tools/infusion-guide/index.html')
+tep_html = read_file('tools/tep-guide/index.html')
+seda_html = read_file('tools/seda-path/index.html')
+tox_html = read_file('tools/tox-path/index.html')
+ped_html = read_file('tools/ped-guide/index.html')
+palia_html = read_file('tools/palia-path/index.html')
+block_html = read_file('tools/block-path/index.html')
 
 print("Read 10 HTML files: Hub, VM, Airway, Infusion, TEP, SedaPath, ToxPath, PedGuide, PaliaPath, BlockPath")
 
@@ -362,33 +361,16 @@ combined = '''<!DOCTYPE html>
 </html>'''
 
 # ══════════════════════════════════════════════════════════
-# 9. Write output + deploy folder
+# 9. Write deploy/index.html (Netlify publishes this folder)
 # ══════════════════════════════════════════════════════════
-output_path = os.path.join(BASE, 'index.html')
-with open(output_path, 'w', encoding='utf-8') as f:
-    f.write(combined)
-
-# Also copy to deploy folder for Netlify drag
 deploy_dir = os.path.join(BASE, 'deploy')
 os.makedirs(deploy_dir, exist_ok=True)
 deploy_path = os.path.join(deploy_dir, 'index.html')
 with open(deploy_path, 'w', encoding='utf-8') as f:
     f.write(combined)
 
-file_size = os.path.getsize(output_path)
-print("✅ Combined HTML created: " + output_path)
-print("   File size: %.1f KB" % (file_size / 1024))
-print("   Deploy folder: " + deploy_dir)
-
-# ══════════════════════════════════════════════════════════
-# 10. Create ZIP (deflate) — backup option
-# ══════════════════════════════════════════════════════════
-zip_path = os.path.join(BASE, 'anyapp-deploy.zip')
-with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
-    zf.write(output_path, 'index.html')
-
-zip_size = os.path.getsize(zip_path)
-print("📦 ZIP created (deflate): %.1f KB" % (zip_size / 1024))
+file_size = os.path.getsize(deploy_path)
+print("✅ deploy/index.html created: %.1f KB" % (file_size / 1024))
 
 # Verify
 logo_count = combined.count('data:image/png;base64,')
