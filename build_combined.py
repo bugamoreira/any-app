@@ -86,7 +86,7 @@ print("Read 10 HTML files: Hub, VM, Airway, Infusion, TEP, SedaPath, ToxPath, Pe
 # ══════════════════════════════════════════════════════════
 # 2. Load splash logo (JPEG square) — stored once in parent
 # ══════════════════════════════════════════════════════════
-splash_logo_bytes = read_binary('Ícones/WhatsApp Image 2026-03-14 at 17.21.43.jpeg')
+splash_logo_bytes = read_binary('assets/splash-logo.jpeg')
 splash_logo_b64 = 'data:image/jpeg;base64,' + base64.b64encode(splash_logo_bytes).decode()
 print("Splash logo (square JPEG): %d chars" % len(splash_logo_b64))
 
