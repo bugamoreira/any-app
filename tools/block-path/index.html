@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockPath — Bloqueios Regionais no DE</title>
+    <style>
+        :root{--verde-hugo:#00A651;--azul-hugo:#FF5252;--verde-status:#10B981;--amarelo-status:#F59E0B;--vermelho-status:#EF4444;--cinza-claro:#1A1A1A;--cinza-medio:#999;--cinza-escuro:#F5F5F5;--branco:#111}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#F5F5F5;line-height:1.6}
+        .container{max-width:600px;margin:0 auto;padding:0 16px 32px}
+        .disclaimer{background:#1A1A1A;padding:12px 16px;text-align:center;font-size:13px;color:#F59E0B;font-weight:500;border-bottom:2px solid #F59E0B}
+        .logo-container{text-align:center;padding:24px 16px 16px}
+        .header{text-align:center;padding:16px;margin-bottom:24px}
+        .header h1{color:var(--azul-hugo);font-size:28px;font-weight:700;margin-bottom:4px}
+        .header .subtitle{color:var(--verde-hugo);font-size:16px;font-weight:500}
+        .nav-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+        .nav-btn{display:flex;align-items:center;gap:16px;padding:18px 20px;background:var(--branco);border:2px solid #333;border-radius:12px;cursor:pointer;transition:all .2s ease;text-decoration:none;color:inherit}
+        .nav-btn:hover{border-color:var(--verde-hugo);background:rgba(16,185,129,0.1)}
+        .nav-btn.emergency{border-color:var(--vermelho-status);background:rgba(244,67,54,0.1)}
+        .nav-btn.emergency:hover{background:rgba(244,67,54,0.15)}
+        .nav-btn-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+        .nav-btn-icon.green{background:rgba(16,185,129,0.15)}.nav-btn-icon.blue{background:rgba(96,165,250,0.15)}.nav-btn-icon.purple{background:rgba(139,92,246,0.15)}.nav-btn-icon.red{background:rgba(244,67,54,0.15)}.nav-btn-icon.orange{background:rgba(245,158,11,0.15)}
+        .nav-btn-content{flex:1}
+        .nav-btn-title{font-size:16px;font-weight:600;color:var(--azul-hugo);margin-bottom:2px}
+        .nav-btn-desc{font-size:13px;color:var(--cinza-medio)}
+        .nav-btn-arrow{color:var(--cinza-medio);font-size:20px}
+        .section{display:none;animation:slideLeft .3s ease}
+        .section.active{display:block}
+        @keyframes slideLeft{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+        .back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:#1A1A1A;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#F5F5F5;margin-bottom:20px;transition:background .2s}
+        .back-btn:hover{background:#333}
+        .section-header{background:#111;border-left:4px solid #FF5252;color:#F5F5F5;padding:20px;border-radius:12px 12px 0 0}
+        .section-header h2{font-size:20px;font-weight:600;margin-bottom:4px}
+        .section-header p{font-size:14px;opacity:.9}
+        .topo-category{margin-bottom:16px}
+        .topo-category-title{background:#1A1A1A;color:#FF5252;padding:12px 16px;border-radius:8px;font-weight:600;font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+        .topo-item{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#1A1A1A;border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+        .topo-item:hover{background:#333}
+        .topo-item-lesion{font-size:14px;color:var(--cinza-escuro)}
+        .topo-item-block{font-size:13px;color:var(--verde-hugo);font-weight:600}
+        .block-list-category{margin-bottom:20px}
+        .block-list-title{font-size:13px;font-weight:600;color:var(--cinza-medio);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-left:4px}
+        .block-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#111;border:1px solid #333;border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+        .block-item:hover{border-color:var(--verde-hugo);background:rgba(16,185,129,0.1)}
+        .block-item-name{font-size:15px;font-weight:500;color:var(--azul-hugo)}
+        .block-item-volume{font-size:12px;color:var(--cinza-medio)}
+        .block-detail-header{background:#111;border-left:4px solid #FF5252;color:#F5F5F5;padding:24px 20px;border-radius:12px;margin-bottom:16px}
+        .block-detail-header h2{font-size:22px;font-weight:700;margin-bottom:8px}
+        .block-detail-header .block-info{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;opacity:.95}
+        .collapsible{background:#111;border:1px solid #333;border-radius:10px;margin-bottom:10px;overflow:hidden}
+        .collapsible-header{padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+        .collapsible-header:hover{background:#1A1A1A}
+        .collapsible-header h4{font-size:15px;font-weight:600;color:var(--azul-hugo);display:flex;align-items:center;gap:8px}
+        .collapsible-header .chevron{transition:transform .3s;color:var(--cinza-medio);font-size:14px}
+        .collapsible-header.open .chevron{transform:rotate(180deg)}
+        .collapsible-content{display:none;padding:0 16px 16px}
+        .collapsible-content.open{display:block}
+        .content-list{list-style:none}
+        .content-list li{padding:8px 0;padding-left:24px;position:relative;font-size:14px;border-bottom:1px solid #333}
+        .content-list li:last-child{border-bottom:none}
+        .content-list li::before{content:"•";position:absolute;left:8px;color:var(--verde-hugo);font-weight:bold}
+        .content-list.warning li::before{content:"⚠";color:var(--vermelho-status);font-size:12px}
+        .checklist{list-style:none}
+        .checklist li{padding:10px 0;border-bottom:1px solid #333;display:flex;align-items:center;gap:12px;font-size:14px}
+        .checklist li:last-child{border-bottom:none}
+        .checklist input[type="checkbox"]{width:20px;height:20px;accent-color:var(--verde-hugo);cursor:pointer;flex-shrink:0}
+        .steps{counter-reset:step}
+        .step{padding:12px 0 12px 40px;position:relative;font-size:14px;border-left:2px solid var(--verde-hugo);margin-left:12px}
+        .step:last-child{border-left-color:transparent}
+        .step::before{counter-increment:step;content:counter(step);position:absolute;left:-13px;top:10px;width:24px;height:24px;background:var(--verde-hugo);color:var(--branco);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+        .al-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+        .al-table th{background:#1A1A1A;color:#FF5252;padding:10px 12px;text-align:left;font-weight:600}
+        .al-table th:first-child{border-radius:6px 0 0 0}.al-table th:last-child{border-radius:0 6px 0 0}
+        .al-table td{padding:10px 12px;border-bottom:1px solid #333}
+        .al-table tr:nth-child(even){background:var(--cinza-claro)}
+        .tip-box{background:rgba(33,150,243,0.1);border-left:4px solid #60A5FA;padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+        .tip-box-title{font-weight:600;color:#60A5FA;font-size:13px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+        .tip-box p{font-size:13px;color:var(--cinza-escuro)}
+        .warning-box{background:rgba(244,67,54,0.1);border-left:4px solid var(--vermelho-status);padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+        .warning-box-title{font-weight:600;color:var(--vermelho-status);font-size:13px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+        .warning-box p{font-size:13px;color:var(--cinza-escuro)}
+        .calc-container{background:#111;border:1px solid #333;border-radius:12px;padding:20px;margin-bottom:16px}
+        .input-group{margin-bottom:20px}
+        .input-group label{display:block;font-size:14px;font-weight:500;color:var(--cinza-escuro);margin-bottom:8px}
+        .input-row{display:flex;align-items:center;gap:12px}
+        .input-row input[type="range"]{flex:1;height:8px;-webkit-appearance:none;background:linear-gradient(to right,var(--verde-status),var(--amarelo-status),var(--vermelho-status));border-radius:4px;outline:none}
+        .input-row input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;background:#111;border:3px solid #FF5252;border-radius:50%;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.3)}
+        .input-row input[type="number"]{width:80px;padding:10px 12px;border:2px solid #333;border-radius:8px;font-size:16px;font-weight:600;text-align:center;color:#FF5252;background:#1A1A1A}
+        .input-row input[type="number"]:focus{outline:none;border-color:var(--verde-hugo)}
+        .input-unit{font-size:14px;color:var(--cinza-medio);font-weight:500}
+        .result-card{background:#1A1A1A;border-radius:10px;padding:16px;margin-bottom:12px}
+        .result-card-title{font-size:14px;font-weight:600;color:var(--azul-hugo);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+        .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+        .result-item{background:#111;padding:10px 12px;border-radius:6px}
+        .result-label{font-size:11px;color:var(--cinza-medio);margin-bottom:2px}
+        .result-value{font-size:16px;font-weight:700;color:var(--azul-hugo)}
+        .last-alert{background:linear-gradient(135deg,#991B1B,#DC2626);color:var(--branco);padding:20px;border-radius:12px;margin-bottom:16px;text-align:center}
+        .last-alert h2{font-size:20px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:10px}
+        .last-alert p{font-size:14px;opacity:.9}
+        .last-step{background:#111;border:2px solid #333;border-radius:12px;padding:16px;margin-bottom:12px}
+        .last-step-number{width:32px;height:32px;background:var(--vermelho-status);color:var(--branco);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:12px}
+        .last-step h4{font-size:15px;color:var(--azul-hugo);margin-bottom:8px}
+        .last-step p{font-size:14px;color:var(--cinza-escuro)}
+        .lipid-calc{background:rgba(244,67,54,0.1);border:2px solid var(--vermelho-status);border-radius:12px;padding:20px;margin-top:16px}
+        .lipid-calc-title{font-size:16px;font-weight:700;color:var(--vermelho-status);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+        .lipid-result{background:#111;padding:16px;border-radius:8px;margin-top:16px}
+        .lipid-result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #333}
+        .lipid-result-row:last-child{border-bottom:none}
+        .lipid-result-label{font-size:14px;color:var(--cinza-escuro)}
+        .lipid-result-value{font-size:16px;font-weight:700;color:var(--vermelho-status)}
+        .evolution-container{background:#111;border:1px solid #333;border-radius:12px;overflow:hidden}
+        .evolution-header{background:#1A1A1A;border-left:4px solid #FF5252;color:#F5F5F5;padding:16px 20px}
+        .evolution-header h3{font-size:16px;font-weight:600}
+        .evolution-content{padding:20px}
+        .evolution-textarea{width:100%;min-height:300px;padding:16px;border:1px solid #333;border-radius:8px;font-family:'Courier New',monospace;font-size:13px;line-height:1.6;resize:vertical;color:#F5F5F5;background:#1A1A1A}
+        .evolution-textarea:focus{outline:none;border-color:var(--verde-hugo)}
+        .copy-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--verde-hugo);color:var(--branco);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:16px;transition:background .2s}
+        .copy-btn:hover{background:#059669}
+        .copy-btn.copied{background:var(--verde-status)}
+        .evo-form{padding:0}
+        .evo-group{margin-bottom:16px}
+        .evo-group label{display:block;font-size:14px;font-weight:500;color:var(--azul-hugo);margin-bottom:6px}
+        .evo-group input[type="text"],.evo-group input[type="number"],.evo-group select{width:100%;padding:12px;border:2px solid #333;border-radius:8px;font-size:15px;color:#F5F5F5;background:#1A1A1A;transition:border-color .2s}
+        .evo-group input:focus,.evo-group select:focus{outline:none;border-color:var(--verde-hugo)}
+        .evo-row{display:flex;gap:12px}
+        .evo-group.half{flex:1}
+        .evo-radio-group,.evo-check-group{display:flex;flex-wrap:wrap;gap:12px}
+        .evo-radio,.evo-check{display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer}
+        .evo-radio input,.evo-check input{width:18px;height:18px;accent-color:var(--verde-hugo)}
+        .generate-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;background:#FF5252;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;margin-top:24px;transition:background .2s}
+        .generate-btn:hover{background:#FF6E6E}
+        .evo-result-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+        .evo-result-header h4{color:var(--verde-hugo);font-size:16px}
+        .evo-edit-btn{padding:8px 16px;background:#1A1A1A;border:none;border-radius:6px;font-size:13px;cursor:pointer;color:#F5F5F5}
+        .evo-edit-btn:hover{background:#333}
+        .card{background:#111;border:1px solid #333;border-radius:12px;margin-bottom:16px;overflow:hidden}
+        .card-header{padding:16px;background:#1A1A1A;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+        .card-header:hover{background:#333}
+        .card-header h3{font-size:15px;font-weight:600;color:var(--azul-hugo)}
+        .card-header .toggle-icon{transition:transform .3s;color:var(--cinza-medio)}
+        .card-header.open .toggle-icon{transform:rotate(180deg)}
+        .card-content{display:none;padding:16px;border-top:1px solid #333}
+        .card-content.open{display:block}
+        .footer{margin-top:40px;padding:24px 16px;background:#1A1A1A;border-radius:12px;text-align:center}
+        .footer-logos{display:flex;justify-content:center;align-items:center;gap:24px;margin-bottom:16px;flex-wrap:wrap}
+        .footer-text{font-size:12px;color:var(--cinza-medio);line-height:1.8}
+        .footer-text strong{color:var(--azul-hugo)}
+        .mt-16{margin-top:16px}
+        @media(max-width:380px){.header h1{font-size:24px}.result-grid{grid-template-columns:1fr}}
+
+        .nav-btn{border-left:4px solid #333}
+        .nav-btn:has(.nav-btn-icon.green){border-left:4px solid #10B981}
+        .nav-btn:has(.nav-btn-icon.blue){border-left:4px solid #60A5FA}
+        .nav-btn:has(.nav-btn-icon.purple){border-left:4px solid #8B5CF6}
+        .nav-btn:has(.nav-btn-icon.red){border-left:4px solid #EF4444}
+        .nav-btn:has(.nav-btn-icon.orange){border-left:4px solid #F59E0B}
+        .nav-btn.emergency{border-left:4px solid #EF4444}
+    </style>
+</head>
+<body>
+    <div class="disclaimer">Versão em teste — use com dupla validação clínica</div>
+    <div class="container">
+        <div style="text-align:center;padding:24px 16px 16px;">
+            <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;">
+                <img src="__LOGO__" alt="ANY App" style="max-width:200px;margin:0 auto;display:block;">
+            </a>
+            <h1 style="font-size:24px;font-weight:700;color:#F5F5F5;margin:16px 0 4px;">BlockPath</h1>
+            <p style="color:#999;font-size:14px;">Bloqueios regionais no DE</p>
+        </div>
+
+        <!-- HOME -->
+        <section id="home" class="section active">
+            <nav class="nav-grid">
+                <a href="#" class="nav-btn" onclick="showSection('topography');return false;"><div class="nav-btn-icon green"></div><div class="nav-btn-content"><div class="nav-btn-title">Escolher por topografia</div><div class="nav-btn-desc">Árvore de decisão por local da lesão</div></div><span class="nav-btn-arrow">›</span></a>
+                <a href="#" class="nav-btn" onclick="showSection('blocklist');return false;"><div class="nav-btn-icon blue"></div><div class="nav-btn-content"><div class="nav-btn-title">Lista de bloqueios</div><div class="nav-btn-desc">Acesso direto aos 14 bloqueios</div></div><span class="nav-btn-arrow">›</span></a>
+                <a href="#" class="nav-btn" onclick="showSection('calculator');return false;"><div class="nav-btn-icon purple"></div><div class="nav-btn-content"><div class="nav-btn-title">Calculadora de dose</div><div class="nav-btn-desc">Dose máxima de anestésico local</div></div><span class="nav-btn-arrow">›</span></a>
+                <a href="#" class="nav-btn emergency" onclick="showSection('last');return false;"><div class="nav-btn-icon red"></div><div class="nav-btn-content"><div class="nav-btn-title">LAST — Toxicidade</div><div class="nav-btn-desc">Protocolo de emergência</div></div><span class="nav-btn-arrow">›</span></a>
+                <a href="#" class="nav-btn" onclick="showSection('evolution');return false;"><div class="nav-btn-icon orange"></div><div class="nav-btn-content"><div class="nav-btn-title">Modelo de evolução</div><div class="nav-btn-desc">Template copiável para prontuário</div></div><span class="nav-btn-arrow">›</span></a>
+            </nav>
+        </section>
+
+        <!-- TOPOGRAPHY -->
+        <section id="topography" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="section-header"><h2> Onde está a lesão?</h2><p>Selecione a topografia para ver as opções de bloqueio</p></div>
+            <div style="background:#111;border:1px solid #333;border-radius:0 0 12px 12px;padding:16px;">
+                <div class="topo-category">
+                    <div class="topo-category-title"> Pescoço / Clavícula</div>
+                    <div class="topo-item" onclick="showBlock('plexo-cervical')"><span class="topo-item-lesion">Fratura de clavícula</span><span class="topo-item-block">Plexo cervical →</span></div>
+                </div>
+                <div class="topo-category">
+                    <div class="topo-category-title"> Membro superior</div>
+                    <div class="topo-item" onclick="showBlock('interescalenico')"><span class="topo-item-lesion">Ombro, úmero proximal</span><span class="topo-item-block">Interescalênico →</span></div>
+                    <div class="topo-item" onclick="showBlock('supraclavicular')"><span class="topo-item-lesion">Cotovelo, antebraço</span><span class="topo-item-block">Supraclavicular →</span></div>
+                    <div class="topo-item" onclick="showBlock('axilar')"><span class="topo-item-lesion">Antebraço distal, mão</span><span class="topo-item-block">Axilar →</span></div>
+                    <div class="topo-item" onclick="showBlock('punho')"><span class="topo-item-lesion">Mão, dedos</span><span class="topo-item-block">Punho →</span></div>
+                </div>
+                <div class="topo-category">
+                    <div class="topo-category-title"> Membro inferior</div>
+                    <div class="topo-item" onclick="showBlock('peng')"><span class="topo-item-lesion">Quadril, fêmur proximal</span><span class="topo-item-block">PENG →</span></div>
+                    <div class="topo-item" onclick="showBlock('fascia-iliaca')"><span class="topo-item-lesion">Quadril (alternativa)</span><span class="topo-item-block">Fáscia ilíaca →</span></div>
+                    <div class="topo-item" onclick="showBlock('femoral')"><span class="topo-item-lesion">Coxa anterior, joelho</span><span class="topo-item-block">Femoral →</span></div>
+                    <div class="topo-item" onclick="showBlock('ciatico-popliteo')"><span class="topo-item-lesion">Perna distal, tornozelo, pé</span><span class="topo-item-block">Ciático poplíteo →</span></div>
+                    <div class="topo-item" onclick="showBlock('safeno')"><span class="topo-item-lesion">Complemento (face medial)</span><span class="topo-item-block">Safeno →</span></div>
+                    <div class="topo-item" onclick="showBlock('tornozelo')"><span class="topo-item-lesion">Pé, dedos</span><span class="topo-item-block">Tornozelo →</span></div>
+                </div>
+                <div class="topo-category">
+                    <div class="topo-category-title"> Tórax / Costelas</div>
+                    <div class="topo-item" onclick="showBlock('esp')"><span class="topo-item-lesion">Fraturas costelas (posterior)</span><span class="topo-item-block">ESP →</span></div>
+                    <div class="topo-item" onclick="showBlock('serratil')"><span class="topo-item-lesion">Fraturas costelas (lateral)</span><span class="topo-item-block">Serrátil anterior →</span></div>
+                    <div class="topo-item" onclick="showBlock('intercostal')"><span class="topo-item-lesion">Fratura costela isolada</span><span class="topo-item-block">Intercostal →</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOCK LIST -->
+        <section id="blocklist" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="section-header"><h2> Lista de bloqueios</h2><p>14 bloqueios disponíveis</p></div>
+            <div style="background:#111;border:1px solid #333;border-radius:0 0 12px 12px;padding:16px;">
+                <div class="block-list-category"><div class="block-list-title">Pescoço</div><div class="block-item" onclick="showBlock('plexo-cervical')"><div><div class="block-item-name">Plexo cervical superficial</div><div class="block-item-volume">5-10 mL</div></div><span class="nav-btn-arrow">›</span></div></div>
+                <div class="block-list-category"><div class="block-list-title">Membro superior</div>
+                    <div class="block-item" onclick="showBlock('interescalenico')"><div><div class="block-item-name">Interescalênico</div><div class="block-item-volume">7-15 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('supraclavicular')"><div><div class="block-item-name">Supraclavicular</div><div class="block-item-volume">20-25 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('axilar')"><div><div class="block-item-name">Axilar</div><div class="block-item-volume">20 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('punho')"><div><div class="block-item-name">Punho</div><div class="block-item-volume">9-15 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                </div>
+                <div class="block-list-category"><div class="block-list-title">Membro inferior</div>
+                    <div class="block-item" onclick="showBlock('peng')"><div><div class="block-item-name">PENG</div><div class="block-item-volume">15-20 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('fascia-iliaca')"><div><div class="block-item-name">Fáscia ilíaca</div><div class="block-item-volume">30-40 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('femoral')"><div><div class="block-item-name">Femoral</div><div class="block-item-volume">15-20 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('safeno')"><div><div class="block-item-name">Safeno</div><div class="block-item-volume">8-10 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('ciatico-popliteo')"><div><div class="block-item-name">Ciático poplíteo</div><div class="block-item-volume">15-20 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('tornozelo')"><div><div class="block-item-name">Tornozelo</div><div class="block-item-volume">15-25 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                </div>
+                <div class="block-list-category"><div class="block-list-title">Tórax</div>
+                    <div class="block-item" onclick="showBlock('esp')"><div><div class="block-item-name">ESP (Eretor da espinha)</div><div class="block-item-volume">20-30 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('serratil')"><div><div class="block-item-name">Serrátil anterior</div><div class="block-item-volume">20-30 mL</div></div><span class="nav-btn-arrow">›</span></div>
+                    <div class="block-item" onclick="showBlock('intercostal')"><div><div class="block-item-name">Intercostal</div><div class="block-item-volume">3-5 mL/nível</div></div><span class="nav-btn-arrow">›</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALCULATOR -->
+        <section id="calculator" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="section-header"><h2> Calculadora de dose máxima</h2><p>Dose máxima de anestésico local por peso</p></div>
+            <div class="calc-container">
+                <div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="calc-weight" min="40" max="150" value="70" oninput="updateCalc()"><input type="number" id="calc-weight-input" min="40" max="200" value="70" oninput="syncWeight(this.value)"><span class="input-unit">kg</span></div></div>
+                <div class="result-card"><div class="result-card-title"> Lidocaína</div><div class="result-grid"><div class="result-item"><div class="result-label">Sem epi (4,5 mg/kg)</div><div class="result-value" id="lido-sem">315 mg</div></div><div class="result-item"><div class="result-label">Com epi (7 mg/kg)</div><div class="result-value" id="lido-com">490 mg</div></div></div><table class="al-table mt-16"><thead><tr><th>Conc.</th><th>Sem epi</th><th>Com epi</th></tr></thead><tbody><tr><td>1%</td><td id="lido-1-sem">31,5 mL</td><td id="lido-1-com">49 mL</td></tr><tr><td>2%</td><td id="lido-2-sem">15,7 mL</td><td id="lido-2-com">24,5 mL</td></tr></tbody></table></div>
+                <div class="result-card"><div class="result-card-title"> Bupivacaína</div><div class="result-grid"><div class="result-item"><div class="result-label">Sem epi (2,5 mg/kg)</div><div class="result-value" id="bupi-sem">175 mg</div></div><div class="result-item"><div class="result-label">Com epi (3 mg/kg)</div><div class="result-value" id="bupi-com">210 mg</div></div></div><table class="al-table mt-16"><thead><tr><th>Conc.</th><th>Sem epi</th><th>Com epi</th></tr></thead><tbody><tr><td>0,25%</td><td id="bupi-025-sem">70 mL</td><td id="bupi-025-com">84 mL</td></tr><tr><td>0,5%</td><td id="bupi-05-sem">35 mL</td><td id="bupi-05-com">42 mL</td></tr></tbody></table></div>
+                <div class="result-card"><div class="result-card-title"> Ropivacaína</div><div class="result-grid"><div class="result-item"><div class="result-label">Sem epi (3 mg/kg)</div><div class="result-value" id="ropi-sem">210 mg</div></div><div class="result-item"><div class="result-label">Com epi (3,5 mg/kg)</div><div class="result-value" id="ropi-com">245 mg</div></div></div><table class="al-table mt-16"><thead><tr><th>Conc.</th><th>Sem epi</th><th>Com epi</th></tr></thead><tbody><tr><td>0,2%</td><td id="ropi-02-sem">105 mL</td><td id="ropi-02-com">122 mL</td></tr><tr><td>0,5%</td><td id="ropi-05-sem">42 mL</td><td id="ropi-05-com">49 mL</td></tr></tbody></table></div>
+                <div class="warning-box"><div class="warning-box-title">Atenção</div><p>Reduzir 20-30% em idosos, hepatopatas, cardiopatas. Em bloqueios múltiplos, considere dose total.</p></div>
+            </div>
+        </section>
+
+        <!-- LAST PROTOCOL -->
+        <section id="last" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="last-alert"><h2> LAST — Intoxicação por AL</h2><p>Toxicidade sistêmica por anestésico local</p></div>
+            <div class="card"><div class="card-header" onclick="toggleCard(this)"><h3> Sinais de alerta</h3><span class="toggle-icon">▼</span></div><div class="card-content"><div class="tip-box"><div class="tip-box-title">Neurologicos (precoces)</div><p>Zumbido, gosto metálico, parestesias periorais, agitação, confusão, convulsões</p></div><div class="warning-box"><div class="warning-box-title">Cardiovasculares (tardios)</div><p>Hipotensão, bradicardia, arritmias ventriculares, alargamento QRS, PCR</p></div></div></div>
+            <div class="last-step"><div class="last-step-number">1</div><h4>Parar a infusão de AL</h4><p>Interromper qualquer administração de anestésico local</p></div>
+            <div class="last-step"><div class="last-step-number">2</div><h4>Pedir ajuda</h4><p>Acionar equipe de suporte</p></div>
+            <div class="last-step"><div class="last-step-number">3</div><h4>Via aérea e O2 100%</h4><p>Considere IOT precoce. Evitar hipóxia e acidose</p></div>
+            <div class="last-step"><div class="last-step-number">4</div><h4>Tratar convulsões</h4><p>Benzodiazepínicos (midazolam 1-2 mg IV)</p></div>
+            <div class="last-step"><div class="last-step-number">5</div><h4>ACLS modificado se PCR</h4><p>Evitar vasopressina, reduzir epinefrina (≤1 mcg/kg)</p></div>
+            <div class="lipid-calc"><div class="lipid-calc-title"> Emulsão lipídica 20%</div><div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="lipid-weight" min="40" max="150" value="70" oninput="updateLipid()"><input type="number" id="lipid-weight-input" min="40" max="200" value="70" oninput="syncLipidWeight(this.value)"><span class="input-unit">kg</span></div></div><div class="lipid-result"><div class="lipid-result-row"><span class="lipid-result-label">BOLUS (1,5 mL/kg)</span><span class="lipid-result-value" id="lipid-bolus">105 mL</span></div><div class="lipid-result-row"><span class="lipid-result-label">INFUSÃO (0,25 mL/kg/min)</span><span class="lipid-result-value" id="lipid-infusion">17,5 mL/min</span></div><div class="lipid-result-row"><span class="lipid-result-label">DOSE MÁX (12 mL/kg)</span><span class="lipid-result-value" id="lipid-max">840 mL</span></div></div></div>
+        </section>
+
+        <!-- EVOLUTION -->
+        <section id="evolution" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="section-header"><h2> Gerar evolução</h2><p>Preencha os campos para gerar o texto</p></div>
+            <div class="evolution-container">
+                <div class="evolution-content">
+                    <div class="evo-form">
+                        <div class="evo-group">
+                            <label>Indicação do bloqueio</label>
+                            <input type="text" id="evo-indicacao" placeholder="Ex: Fratura de colo femoral D">
+                        </div>
+                        <div class="evo-group">
+                            <label>Tipo de bloqueio</label>
+                            <select id="evo-tipo">
+                                <option value="">Selecione...</option>
+                                <option value="Plexo cervical superficial">Plexo cervical superficial</option>
+                                <option value="Interescalênico">Interescalênico</option>
+                                <option value="Supraclavicular">Supraclavicular</option>
+                                <option value="Axilar">Axilar</option>
+                                <option value="Punho">Punho</option>
+                                <option value="PENG">PENG</option>
+                                <option value="Fáscia ilíaca">Fáscia ilíaca</option>
+                                <option value="Femoral">Femoral</option>
+                                <option value="Safeno">Safeno</option>
+                                <option value="Ciático poplíteo">Ciático poplíteo</option>
+                                <option value="Tornozelo">Tornozelo</option>
+                                <option value="ESP (Eretor da espinha)">ESP (Eretor da espinha)</option>
+                                <option value="Serrátil anterior">Serrátil anterior</option>
+                                <option value="Intercostal">Intercostal</option>
+                            </select>
+                        </div>
+                        <div class="evo-group">
+                            <label>Lateralidade</label>
+                            <div class="evo-radio-group">
+                                <label class="evo-radio"><input type="radio" name="lado" value="D"> Direito</label>
+                                <label class="evo-radio"><input type="radio" name="lado" value="E"> Esquerdo</label>
+                                <label class="evo-radio"><input type="radio" name="lado" value="Bilateral"> Bilateral</label>
+                            </div>
+                        </div>
+                        <div class="evo-group">
+                            <label>Transdutor utilizado</label>
+                            <select id="evo-transdutor">
+                                <option value="">Selecione...</option>
+                                <option value="Linear 6-13 MHz">Linear 6-13 MHz</option>
+                                <option value="Curvo 2-5 MHz">Curvo 2-5 MHz</option>
+                                <option value="Não utilizado (técnica às cegas)">Não utilizado</option>
+                            </select>
+                        </div>
+                        <div class="evo-group">
+                            <label>Agulha utilizada</label>
+                            <select id="evo-agulha">
+                                <option value="">Selecione...</option>
+                                <option value="Ecogênica 50mm">Ecogênica 50mm</option>
+                                <option value="Ecogênica 80mm">Ecogênica 80mm</option>
+                                <option value="Ecogênica 100mm">Ecogênica 100mm</option>
+                                <option value="22G x 40mm">22G x 40mm</option>
+                                <option value="25G x 25mm">25G x 25mm</option>
+                            </select>
+                        </div>
+                        <div class="evo-group">
+                            <label>Técnica de inserção</label>
+                            <div class="evo-radio-group">
+                                <label class="evo-radio"><input type="radio" name="tecnica" value="Em plano"> Em plano</label>
+                                <label class="evo-radio"><input type="radio" name="tecnica" value="Fora de plano"> Fora de plano</label>
+                            </div>
+                        </div>
+                        <div class="evo-group">
+                            <label>Anestésico local</label>
+                            <select id="evo-droga">
+                                <option value="">Selecione...</option>
+                                <option value="Lidocaína 1%">Lidocaína 1%</option>
+                                <option value="Lidocaína 2%">Lidocaína 2%</option>
+                                <option value="Bupivacaína 0,25%">Bupivacaína 0,25%</option>
+                                <option value="Bupivacaína 0,5%">Bupivacaína 0,5%</option>
+                                <option value="Ropivacaína 0,2%">Ropivacaína 0,2%</option>
+                                <option value="Ropivacaína 0,5%">Ropivacaína 0,5%</option>
+                            </select>
+                        </div>
+                        <div class="evo-row">
+                            <div class="evo-group half">
+                                <label>Volume (mL)</label>
+                                <input type="number" id="evo-volume" placeholder="20" min="1" max="50">
+                            </div>
+                            <div class="evo-group half">
+                                <label>Dose total (mg)</label>
+                                <input type="number" id="evo-dose" placeholder="100" min="1" max="500">
+                            </div>
+                        </div>
+                        <div class="evo-group">
+                            <label>Epinefrina</label>
+                            <div class="evo-radio-group">
+                                <label class="evo-radio"><input type="radio" name="epi" value="Sim"> Sim</label>
+                                <label class="evo-radio"><input type="radio" name="epi" value="Não"> Não</label>
+                            </div>
+                        </div>
+                        <div class="evo-group">
+                            <label>Intercorrências</label>
+                            <div class="evo-radio-group">
+                                <label class="evo-radio"><input type="radio" name="interc" value="Nenhuma" checked> Nenhuma</label>
+                                <label class="evo-radio"><input type="radio" name="interc" value="Sim"> Sim</label>
+                            </div>
+                            <input type="text" id="evo-interc-desc" placeholder="Descreva a intercorrência" style="display:none;margin-top:8px">
+                        </div>
+                        <div class="evo-group">
+                            <label>Avaliação pós-bloqueio</label>
+                            <div class="evo-check-group">
+                                <label class="evo-check"><input type="checkbox" id="evo-sensitivo" checked> Bloqueio sensitivo presente</label>
+                                <label class="evo-check"><input type="checkbox" id="evo-motor"> Bloqueio motor presente</label>
+                                <label class="evo-check"><input type="checkbox" id="evo-last" checked> Ausência de sinais de LAST</label>
+                            </div>
+                        </div>
+                        <div class="evo-row">
+                            <div class="evo-group half">
+                                <label>Responsável</label>
+                                <input type="text" id="evo-resp" placeholder="Dr. Nome">
+                            </div>
+                            <div class="evo-group half">
+                                <label>CRM</label>
+                                <input type="text" id="evo-crm" placeholder="00000-GO">
+                            </div>
+                        </div>
+                        <button class="generate-btn" onclick="generateEvolution()"> Gerar texto da evolução</button>
+                    </div>
+                    <div id="evo-result" style="display:none">
+                        <div class="evo-result-header">
+                            <h4> Evolução gerada</h4>
+                            <button class="evo-edit-btn" onclick="editEvolution()">Editar</button>
+                        </div>
+                        <textarea class="evolution-textarea" id="evolution-text" readonly></textarea>
+                        <button class="copy-btn" onclick="copyEvolution()"><span></span> Copiar texto</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== BLOQUEIOS ===================== -->
+
+        <!-- 1. PLEXO CERVICAL SUPERFICIAL -->
+        <section id="block-plexo-cervical" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Plexo cervical superficial</h2><div class="block-info"><span> Pescoço</span><span> 5-10 mL</span><span> Sensitivo</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Fratura de clavícula</li><li>Procedimentos cervicais superficiais</li><li>Endarterectomia de carótida (complemento)</li><li>Linfonodectomia cervical</li><li>Acesso venoso central (jugular)</li></ul><div class="tip-box"><div class="tip-box-title"> Vantagem</div><p>Técnica simples e segura — ideal para emergencista iniciante.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Coagulopatia grave (relativa)</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 10 mL</li><li><input type="checkbox"> Agulha 22-25G x 40mm</li><li><input type="checkbox"> Anestésico local (5-10 mL)</li><li><input type="checkbox"> USG linear (opcional)</li><li><input type="checkbox"> Gel estéril</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente supino, cabeça virada para lado contralateral</div><div class="step">Identificar ponto médio da borda posterior do ECM</div><div class="step">Transdutor transversal neste nível (opcional)</div><div class="step">Inserir agulha superficialmente, posterior ao ECM</div><div class="step">Depositar 5-10 mL em leque subcutâneo</div></div><div class="tip-box"><div class="tip-box-title"> Ponto de Erb</div><p>Borda posterior do ECM, junção dos terços superior e médio.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Lidocaína</td><td>1-2%</td><td>5-10 mL</td></tr><tr><td>Bupivacaína</td><td>0,25-0,5%</td><td>5-10 mL</td></tr><tr><td>Ropivacaína</td><td>0,2-0,5%</td><td>5-10 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 2. INTERESCALÊNICO -->
+        <section id="block-interescalenico" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio interescalênico</h2><div class="block-info"><span> Ombro</span><span> 7-15 mL</span><span> Misto</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Cirurgias e procedimentos do ombro</li><li>Fratura de clavícula (porção lateral)</li><li>Fratura de úmero proximal</li><li>Luxação glenoumeral (redução)</li><li>Artroscopia de ombro</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Doença pulmonar grave (DPOC severa, pulmão único)</li><li>Paralisia de nervo frênico contralateral</li><li>Paralisia de nervo laríngeo recorrente contralateral</li><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Coagulopatia grave</li></ul><div class="warning-box"><div class="warning-box-title">Atenção</div><p>100% de paralisia hemidiafragmática ipsilateral.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 20 mL</li><li><input type="checkbox"> Agulha ecogênica 50-80mm</li><li><input type="checkbox"> Anestésico local (7-15 mL)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente semi-sentado, cabeça virada para lado contralateral</div><div class="step">Transdutor linear transversal no nível de C6</div><div class="step">Identificar artéria carótida e veia jugular (medial)</div><div class="step">Localizar escalenos anterior e médio</div><div class="step">Visualizar raízes C5-C7 no sulco interescalênico</div><div class="step">Agulha em plano, de lateral para medial</div><div class="step">Depositar 7-15 mL ao redor das raízes</div></div><div class="tip-box"><div class="tip-box-title"> Sinal do semáforo</div><p>Raízes C5, C6 e C7 empilhadas como estruturas hipoecoicas redondas.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,5%</td><td>7-15 mL</td></tr><tr><td>Ropivacaína</td><td>0,5%</td><td>7-15 mL</td></tr><tr><td>Lidocaína</td><td>1,5-2%</td><td>10-15 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 3. SUPRACLAVICULAR -->
+        <section id="block-supraclavicular" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio supraclavicular</h2><div class="block-info"><span> Cotovelo/Antebraço</span><span> 20-25 mL</span><span> Misto</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Cirurgias de cotovelo, antebraço e mão</li><li>Fraturas de úmero distal</li><li>Fraturas de rádio e ulna</li><li>Procedimentos em mão e punho</li></ul><div class="tip-box"><div class="tip-box-title"> "Raquianestesia do MS"</div><p>Bloqueio mais completo do plexo braquial.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Doença pulmonar grave (risco de pneumotórax)</li><li>Insuficiência respiratória</li><li>Paralisia de nervo frênico contralateral</li><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Coagulopatia grave</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 20 mL</li><li><input type="checkbox"> Agulha ecogênica 50mm</li><li><input type="checkbox"> Anestésico local (20-25 mL)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente supino, cabeça virada para lado contralateral</div><div class="step">Transdutor oblíquo-sagital na fossa supraclavicular</div><div class="step">Identificar artéria subclávia e 1ª costela</div><div class="step">Localizar plexo posterolateral à artéria ("cacho de uvas")</div><div class="step">Usar Doppler para mapear vasos</div><div class="step">Agulha em plano, de lateral para medial</div><div class="step">Avançar até o "corner pocket"</div><div class="step">Depositar 20-25 mL de AL</div></div><div class="warning-box"><div class="warning-box-title">Risco de pneumotórax</div><p>Sempre manter a pleura visível.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,5%</td><td>20-25 mL</td></tr><tr><td>Ropivacaína</td><td>0,5%</td><td>20-25 mL</td></tr><tr><td>Lidocaína</td><td>1,5-2%</td><td>20-25 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 4. AXILAR -->
+        <section id="block-axilar" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio axilar</h2><div class="block-info"><span> Antebraço/Mão</span><span> 20 mL</span><span> Misto</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Cirurgias de antebraço distal e mão</li><li>Fraturas de punho (Colles, Smith)</li><li>Procedimentos em mão e dedos</li><li>FAV para hemodiálise</li><li>Síndrome do túnel do carpo</li></ul><div class="tip-box"><div class="tip-box-title"> Vantagem</div><p>Sem risco de pneumotórax ou paralisia frênica.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção na axila</li><li>Linfadenopatia axilar extensa</li><li>Coagulopatia grave</li><li>Impossibilidade de posicionar o braço</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 20 mL</li><li><input type="checkbox"> Agulha ecogênica 50mm</li><li><input type="checkbox"> Anestésico local (20 mL)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente supino, braço abduzido 90°, cotovelo fletido</div><div class="step">Transdutor transversal na axila, sobre pulso axilar</div><div class="step">Identificar artéria axilar e veias adjacentes</div><div class="step">Localizar nervos mediano, ulnar e radial</div><div class="step">Identificar musculocutâneo no coracobraquial</div><div class="step">Depositar ~5 mL ao redor de cada nervo</div></div><div class="tip-box"><div class="tip-box-title"> Mnemônico MAR</div><p>Mediano (anterior), Artéria (centro), Radial (posterior).</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25-0,5%</td><td>20 mL total</td></tr><tr><td>Ropivacaína</td><td>0,5%</td><td>20 mL total</td></tr><tr><td>Lidocaína</td><td>1,5-2%</td><td>20-25 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 5. PUNHO -->
+        <section id="block-punho" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio do punho</h2><div class="block-info"><span> Mão/Dedos</span><span> 9-15 mL</span><span> Misto</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Lacerações de mão</li><li>Procedimentos em dedos</li><li>Drenagem de abscessos</li><li>Remoção de corpo estranho</li><li>Redução de fraturas de metacarpos/falanges</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li></ul><div class="warning-box"><div class="warning-box-title">Sem epinefrina</div><p>Evitar vasoconstritores em extremidades distais.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Seringa 10 mL</li><li><input type="checkbox"> Agulha 25G x 25mm</li><li><input type="checkbox"> Anestésico local SEM epinefrina (9-15 mL)</li><li><input type="checkbox"> USG linear (opcional)</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><p style="font-weight:600;margin-bottom:12px">1. Nervo mediano</p><ul class="content-list"><li>Entre palmar longo e flexor radial do carpo</li><li>2-3 cm proximal à prega do punho</li><li>Volume: 3-5 mL</li></ul><p style="font-weight:600;margin:16px 0 12px">2. Nervo ulnar</p><ul class="content-list"><li>Lateral ao tendão do flexor ulnar do carpo</li><li>Volume: 3-5 mL</li></ul><p style="font-weight:600;margin:16px 0 12px">3. Nervo radial</p><ul class="content-list"><li>Subcutâneo, face lateral do punho</li><li>Volume: 3-5 mL em leque</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume/nervo</th></tr></thead><tbody><tr><td>Lidocaína</td><td>1-2%</td><td>3-5 mL</td></tr><tr><td>Bupivacaína</td><td>0,25-0,5%</td><td>3-5 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 6. PENG -->
+        <section id="block-peng" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio PENG</h2><div class="block-info"><span> Quadril</span><span> 15-20 mL</span><span> Sensitivo</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Fratura de quadril (colo femoral, transtrocantérica)</li><li>Artroplastia total de quadril</li><li>Dor na articulação coxofemoral</li><li>Complemento ao bloqueio de fáscia ilíaca</li></ul><div class="tip-box"><div class="tip-box-title"> Vantagem</div><p>Preserva função motora do quadríceps.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Coagulopatia grave (relativa)</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 20 mL</li><li><input type="checkbox"> Agulha ecogênica 80-100mm</li><li><input type="checkbox"> Anestésico local (15-20 mL)</li><li><input type="checkbox"> USG curvo 2-5 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente supino, membro inferior estendido</div><div class="step">Transdutor curvo transversal na prega inguinal</div><div class="step">Identificar EIAI deslizando lateralmente</div><div class="step">Deslizar medialmente até visualizar eminência iliopúbica</div><div class="step">Identificar tendão do iliopsoas</div><div class="step">Usar Doppler para mapear vasos femorais</div><div class="step">Agulha em plano, de lateral para medial</div><div class="step">Depositar 15-20 mL entre iliopsoas e osso</div></div><div class="tip-box"><div class="tip-box-title"> Alvo</div><p>Espaço entre iliopsoas e ramo púbico superior.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25-0,5%</td><td>15-20 mL</td></tr><tr><td>Ropivacaína</td><td>0,2-0,5%</td><td>15-20 mL</td></tr><tr><td>Lidocaína</td><td>1-2%</td><td>15-20 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 7. FÁSCIA ILÍACA -->
+        <section id="block-fascia-iliaca" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio de fáscia ilíaca</h2><div class="block-info"><span> Quadril/Fêmur</span><span> 30-40 mL</span><span> Sensitivo</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Fratura de quadril</li><li>Fratura de diáfise femoral</li><li>Artroplastia de quadril</li><li>Queimaduras de coxa anterior</li></ul><div class="tip-box"><div class="tip-box-title"> vs PENG</div><p>Maior cobertura, porém maior bloqueio motor.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Coagulopatia grave</li></ul><div class="warning-box"><div class="warning-box-title">Volume alto</div><p>Calcular dose máxima antes do bloqueio.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 20 mL (x2)</li><li><input type="checkbox"> Agulha ecogênica 80mm</li><li><input type="checkbox"> Anestésico local (30-40 mL)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente supino</div><div class="step">Transdutor linear na prega inguinal</div><div class="step">Identificar artéria femoral e músculo iliopsoas</div><div class="step">Localizar fáscia ilíaca sobre o iliopsoas</div><div class="step">Agulha em plano, de lateral para medial</div><div class="step">Avançar até "pop" ao atravessar a fáscia</div><div class="step">Depositar 30-40 mL observando dissecção subfascial</div></div><div class="tip-box"><div class="tip-box-title"> Supra-inguinal</div><p>Maior dispersão proximal para obturador.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25%</td><td>30-40 mL</td></tr><tr><td>Ropivacaína</td><td>0,2-0,375%</td><td>30-40 mL</td></tr><tr><td>Lidocaína</td><td>1%</td><td>30-40 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 8. FEMORAL -->
+        <section id="block-femoral" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio femoral</h2><div class="block-info"><span> Coxa/Joelho</span><span> 15-20 mL</span><span> Misto</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Fratura de fêmur (diáfise)</li><li>Fratura de patela</li><li>Cirurgia de joelho (LCA, ATJ)</li><li>Biópsia de coxa anterior</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Coagulopatia grave</li><li>Cirurgia vascular femoral prévia (relativa)</li></ul><div class="warning-box"><div class="warning-box-title">Atenção</div><p>Fraqueza significativa do quadríceps — risco de queda!</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 20 mL</li><li><input type="checkbox"> Agulha ecogênica 50mm</li><li><input type="checkbox"> Anestésico local (15-20 mL)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente supino</div><div class="step">Transdutor linear transversal na prega inguinal</div><div class="step">Identificar artéria e veia femorais</div><div class="step">Localizar nervo femoral lateral à artéria</div><div class="step">Agulha em plano, de lateral para medial</div><div class="step">Depositar 15-20 mL ao redor do nervo</div></div><div class="tip-box"><div class="tip-box-title"> Mnemônico NAVEL</div><p>Nervo, Artéria, Veia, Espaço, Linfáticos.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25-0,5%</td><td>15-20 mL</td></tr><tr><td>Ropivacaína</td><td>0,2-0,5%</td><td>15-20 mL</td></tr><tr><td>Lidocaína</td><td>1-2%</td><td>15-20 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 9. SAFENO -->
+        <section id="block-safeno" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio do safeno</h2><div class="block-info"><span> Perna medial</span><span> 8-10 mL</span><span> Sensitivo</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Complemento ao bloqueio ciático</li><li>Safenectomia</li><li>Cirurgia de varizes</li><li>Procedimentos em face medial da perna</li><li>Cirurgia de joelho (complemento)</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Coagulopatia grave (relativa)</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 10 mL</li><li><input type="checkbox"> Agulha ecogênica 50mm</li><li><input type="checkbox"> Anestésico local (8-10 mL)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente supino, coxa em leve abdução e rotação externa</div><div class="step">Transdutor transversal no terço médio da coxa</div><div class="step">Identificar artéria femoral no canal adutor</div><div class="step">Localizar nervo safeno anterolateral à artéria</div><div class="step">Agulha em plano</div><div class="step">Depositar 8-10 mL ao redor do nervo</div></div><div class="tip-box"><div class="tip-box-title"> Canal adutor</div><p>Canal de Hunter — vasto medial, adutor longo e magno.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25-0,5%</td><td>8-10 mL</td></tr><tr><td>Ropivacaína</td><td>0,2-0,5%</td><td>8-10 mL</td></tr><tr><td>Lidocaína</td><td>1%</td><td>10 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 10. CIÁTICO POPLÍTEO -->
+        <section id="block-ciatico-popliteo" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio ciático poplíteo</h2><div class="block-info"><span> Perna/Pé</span><span> 15-20 mL</span><span> Misto</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Cirurgias de pé e tornozelo</li><li>Fraturas de tornozelo (maléolo lateral/posterior)</li><li>Reparo de tendão de Aquiles</li><li>Amputação abaixo do joelho</li><li>Dor crônica de pé</li></ul><div class="tip-box"><div class="tip-box-title"> Complemento</div><p>Associar bloqueio do safeno para cobertura completa.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Coagulopatia grave</li><li>Neuropatia prévia do ciático (relativa)</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 20 mL</li><li><input type="checkbox"> Agulha ecogênica 80mm</li><li><input type="checkbox"> Anestésico local (15-20 mL)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente em decúbito ventral ou lateral</div><div class="step">Transdutor linear transversal na fossa poplítea</div><div class="step">Identificar artéria poplítea (profunda)</div><div class="step">Localizar nervos tibial e fibular comum</div><div class="step">Escanear proximalmente até a junção</div><div class="step">Posicionar 5-10 cm acima da prega poplítea</div><div class="step">Agulha em plano, de lateral para medial</div><div class="step">Depositar 15-20 mL na bainha paraneurial</div></div><div class="tip-box"><div class="tip-box-title"> Bainha de Vloka</div><p>Injetar entre tibial e fibular para distribuição uniforme.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,5%</td><td>15-20 mL</td></tr><tr><td>Ropivacaína</td><td>0,5%</td><td>15-20 mL</td></tr><tr><td>Lidocaína</td><td>1,5-2%</td><td>15-20 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 11. TORNOZELO -->
+        <section id="block-tornozelo" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio do tornozelo</h2><div class="block-info"><span> Pé/Dedos</span><span> 15-25 mL</span><span> Misto</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Procedimentos no pé</li><li>Remoção de corpo estranho</li><li>Drenagem de abscessos</li><li>Redução de fraturas de metatarsos/dedos</li><li>Cirurgia de unha encravada</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Doença vascular periférica grave</li></ul><div class="warning-box"><div class="warning-box-title">Sem epinefrina</div><p>Evitar vasoconstritores em extremidades distais.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Seringa 20 mL</li><li><input type="checkbox"> Agulha 25G x 25mm</li><li><input type="checkbox"> Anestésico local SEM epinefrina (15-25 mL)</li><li><input type="checkbox"> USG linear (opcional)</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><p style="font-weight:600;margin-bottom:12px">5 nervos a bloquear:</p><p style="font-weight:600;margin:12px 0 8px">1. Tibial posterior (planta)</p><ul class="content-list"><li>Posterior ao maléolo medial • 5 mL</li></ul><p style="font-weight:600;margin:12px 0 8px">2. Fibular profundo (1º espaço)</p><ul class="content-list"><li>Entre extensor do hálux e tibial anterior • 3-5 mL</li></ul><p style="font-weight:600;margin:12px 0 8px">3. Fibular superficial (dorso lateral)</p><ul class="content-list"><li>Subcutâneo anterolateral • 3-5 mL em leque</li></ul><p style="font-weight:600;margin:12px 0 8px">4. Safeno (face medial)</p><ul class="content-list"><li>Anterior ao maléolo medial • 3-5 mL</li></ul><p style="font-weight:600;margin:12px 0 8px">5. Sural (face lateral)</p><ul class="content-list"><li>Entre maléolo lateral e Aquiles • 3-5 mL</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume total</th></tr></thead><tbody><tr><td>Lidocaína</td><td>1%</td><td>15-25 mL</td></tr><tr><td>Bupivacaína</td><td>0,25%</td><td>15-25 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 12. ESP -->
+        <section id="block-esp" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio ESP</h2><div class="block-info"><span> Tórax</span><span> 20-30 mL</span><span> Sensitivo</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Fraturas de costelas (múltiplas)</li><li>Dor torácica pós-trauma</li><li>Analgesia pós-toracotomia</li><li>Herpes zoster torácico</li><li>Cirurgias de mama (complemento)</li></ul><div class="tip-box"><div class="tip-box-title"> Vantagem</div><p>Bloqueio interfascial com excelente perfil de segurança.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Coagulopatia grave</li><li>Deformidade vertebral grave (relativa)</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 20 mL (x2)</li><li><input type="checkbox"> Agulha ecogênica 80mm</li><li><input type="checkbox"> Anestésico local (20-30 mL)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente sentado ou decúbito lateral</div><div class="step">Transdutor sagital, ~3 cm lateral à linha média</div><div class="step">Identificar processos transversos</div><div class="step">Localizar músculos trapézio, romboide, eretor da espinha</div><div class="step">Agulha em plano, direção crânio-caudal</div><div class="step">Avançar até contactar o processo transverso</div><div class="step">Aspirar e injetar 2-3 mL teste</div><div class="step">Observar elevação do eretor (hidrodissecção)</div><div class="step">Completar com 20-30 mL de AL</div></div><div class="tip-box"><div class="tip-box-title"> Nível</div><p>T5-T7 cobre maioria das fraturas torácicas.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25%</td><td>20-30 mL</td></tr><tr><td>Ropivacaína</td><td>0,375%</td><td>20-30 mL</td></tr><tr><td>Lidocaína</td><td>1%</td><td>20-30 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 13. SERRÁTIL ANTERIOR -->
+        <section id="block-serratil" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio do serrátil anterior</h2><div class="block-info"><span> Tórax lateral</span><span> 20-30 mL</span><span> Sensitivo</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Fraturas de costelas anterolaterais</li><li>Drenagem torácica</li><li>Cirurgia de mama (complemento)</li><li>Herpes zoster torácico lateral</li><li>Toracostomia</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Coagulopatia grave</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 20 mL (x2)</li><li><input type="checkbox"> Agulha ecogênica 50-80mm</li><li><input type="checkbox"> Anestésico local (20-30 mL)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Paciente supino ou decúbito lateral, braço abduzido</div><div class="step">Transdutor na linha axilar média, 4ª-5ª costela</div><div class="step">Identificar músculo grande dorsal (superficial)</div><div class="step">Localizar músculo serrátil anterior (sobre costelas)</div><div class="step">Agulha em plano</div><div class="step">Depositar AL no plano profundo ao serrátil (20-30 mL)</div></div><div class="tip-box"><div class="tip-box-title"> Superficial vs Profundo</div><p>Plano profundo oferece maior dispersão e cobertura.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25%</td><td>20-30 mL</td></tr><tr><td>Ropivacaína</td><td>0,2-0,375%</td><td>20-30 mL</td></tr></tbody></table></div></div>
+        </section>
+
+        <!-- 14. INTERCOSTAL -->
+        <section id="block-intercostal" class="section">
+            <button class="back-btn" onclick="showSection('home')">← Início</button>
+            <div class="block-detail-header"><h2>Bloqueio intercostal</h2><div class="block-info"><span> Costela</span><span> 3-5 mL/nível</span><span> Sensitivo</span></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Indicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list"><li>Fratura de costela isolada</li><li>Drenagem torácica (anestesia local)</li><li>Toracostomia</li><li>Biópsia pleural</li></ul><div class="warning-box"><div class="warning-box-title">Limitação</div><p>Múltiplas injeções para fraturas múltiplas. Considere ESP ou serrátil.</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Contraindicações</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="content-list warning"><li>Recusa do paciente</li><li>Infecção no local de punção</li><li>Alergia a anestésicos locais</li><li>Coagulopatia grave</li></ul><div class="warning-box"><div class="warning-box-title">Risco de pneumotórax</div><p>Manter visualização constante da pleura!</p></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Material</h4><span class="chevron">▼</span></div><div class="collapsible-content"><ul class="checklist"><li><input type="checkbox"> Luvas estéreis</li><li><input type="checkbox"> Clorexidina alcoólica 0,5%</li><li><input type="checkbox"> Campo estéril</li><li><input type="checkbox"> Seringa 10 mL</li><li><input type="checkbox"> Agulha 22-25G x 40mm</li><li><input type="checkbox"> Anestésico local (3-5 mL por nível)</li><li><input type="checkbox"> USG linear 6-13 MHz</li><li><input type="checkbox"> Gel estéril + capa transdutor</li></ul></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Técnica</h4><span class="chevron">▼</span></div><div class="collapsible-content"><div class="steps"><div class="step">Identificar o nível da costela a ser bloqueada</div><div class="step">Transdutor linear sobre a costela</div><div class="step">Visualizar costela e músculo intercostal</div><div class="step">Agulha até o sulco costal (borda inferior)</div><div class="step">Aspirar (descartar punção vascular/pleural)</div><div class="step">Depositar 3-5 mL de AL</div><div class="step">Repetir nos níveis adjacentes se necessário</div></div></div></div>
+            <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume/nível</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25-0,5%</td><td>3-5 mL</td></tr><tr><td>Ropivacaína</td><td>0,5%</td><td>3-5 mL</td></tr><tr><td>Lidocaína</td><td>1-2%</td><td>3-5 mL</td></tr></tbody></table><div class="warning-box"><div class="warning-box-title">Dose total</div><p>Maior absorção sistêmica! Calcule a dose se bloquear múltiplos níveis.</p></div></div></div>
+        </section>
+
+        <footer style="text-align:center;padding:32px 16px 80px;color:#666;font-size:12px;">
+            <p>Gustavo Moreira &bull; Gabriela Feltrin &bull; Jo&atilde;o Pedro Moreira</p>
+            <p>v1.0.0 &mdash; Mar&ccedil;o 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+        function showBlock(blockId){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));const el=document.getElementById('block-'+blockId);if(el)el.classList.add('active');window.scrollTo(0,0)}
+        function toggleCard(header){header.classList.toggle('open');header.nextElementSibling.classList.toggle('open')}
+        function toggleCollapsible(header){header.classList.toggle('open');header.nextElementSibling.classList.toggle('open')}
+        function updateCalc(){const w=parseFloat(document.getElementById('calc-weight').value);document.getElementById('calc-weight-input').value=w;calcDoses(w)}
+        function syncWeight(v){const w=Math.max(40,Math.min(200,parseFloat(v)||70));document.getElementById('calc-weight').value=Math.min(150,w);document.getElementById('calc-weight-input').value=w;calcDoses(w)}
+        function calcDoses(w){document.getElementById('lido-sem').textContent=(w*4.5).toFixed(0)+' mg';document.getElementById('lido-com').textContent=(w*7).toFixed(0)+' mg';document.getElementById('lido-1-sem').textContent=(w*4.5/10).toFixed(1)+' mL';document.getElementById('lido-1-com').textContent=(w*7/10).toFixed(1)+' mL';document.getElementById('lido-2-sem').textContent=(w*4.5/20).toFixed(1)+' mL';document.getElementById('lido-2-com').textContent=(w*7/20).toFixed(1)+' mL';document.getElementById('bupi-sem').textContent=(w*2.5).toFixed(0)+' mg';document.getElementById('bupi-com').textContent=(w*3).toFixed(0)+' mg';document.getElementById('bupi-025-sem').textContent=(w*2.5/2.5).toFixed(0)+' mL';document.getElementById('bupi-025-com').textContent=(w*3/2.5).toFixed(0)+' mL';document.getElementById('bupi-05-sem').textContent=(w*2.5/5).toFixed(0)+' mL';document.getElementById('bupi-05-com').textContent=(w*3/5).toFixed(0)+' mL';document.getElementById('ropi-sem').textContent=(w*3).toFixed(0)+' mg';document.getElementById('ropi-com').textContent=(w*3.5).toFixed(0)+' mg';document.getElementById('ropi-02-sem').textContent=(w*3/2).toFixed(0)+' mL';document.getElementById('ropi-02-com').textContent=(w*3.5/2).toFixed(0)+' mL';document.getElementById('ropi-05-sem').textContent=(w*3/5).toFixed(0)+' mL';document.getElementById('ropi-05-com').textContent=(w*3.5/5).toFixed(0)+' mL'}
+        function updateLipid(){const w=parseFloat(document.getElementById('lipid-weight').value);document.getElementById('lipid-weight-input').value=w;calcLipid(w)}
+        function syncLipidWeight(v){const w=Math.max(40,Math.min(200,parseFloat(v)||70));document.getElementById('lipid-weight').value=Math.min(150,w);document.getElementById('lipid-weight-input').value=w;calcLipid(w)}
+        function calcLipid(w){document.getElementById('lipid-bolus').textContent=(w*1.5).toFixed(0)+' mL';document.getElementById('lipid-infusion').textContent=(w*0.25).toFixed(1)+' mL/min';document.getElementById('lipid-max').textContent=(w*12).toFixed(0)+' mL'}
+        function copyEvolution(){const t=document.getElementById('evolution-text');t.select();navigator.clipboard.writeText(t.value).then(()=>{const btn=document.querySelector('.copy-btn');btn.innerHTML='<span>OK</span> Copiado!';btn.classList.add('copied');setTimeout(()=>{btn.innerHTML='<span></span> Copiar texto';btn.classList.remove('copied')},2000)})}
+        function generateEvolution(){
+            const indicacao=document.getElementById('evo-indicacao').value||'Não informada';
+            const tipo=document.getElementById('evo-tipo').value||'Não informado';
+            const lado=document.querySelector('input[name="lado"]:checked')?.value||'Não informado';
+            const transdutor=document.getElementById('evo-transdutor').value||'Não informado';
+            const agulha=document.getElementById('evo-agulha').value||'Não informada';
+            const tecnica=document.querySelector('input[name="tecnica"]:checked')?.value||'Não informada';
+            const droga=document.getElementById('evo-droga').value||'Não informada';
+            const volume=document.getElementById('evo-volume').value||'--';
+            const dose=document.getElementById('evo-dose').value||'--';
+            const epi=document.querySelector('input[name="epi"]:checked')?.value||'Não';
+            const interc=document.querySelector('input[name="interc"]:checked')?.value||'Nenhuma';
+            const intercDesc=document.getElementById('evo-interc-desc').value;
+            const sensitivo=document.getElementById('evo-sensitivo').checked;
+            const motor=document.getElementById('evo-motor').checked;
+            const last=document.getElementById('evo-last').checked;
+            const resp=document.getElementById('evo-resp').value||'________________________';
+            const crm=document.getElementById('evo-crm').value||'_______________________________';
+            let texto=`BLOQUEIO REGIONAL GUIADO POR ULTRASSOM
+
+Indicação: ${indicacao}
+Tipo de bloqueio: ${tipo}
+Lateralidade: ${lado}
+
+TÉCNICA:
+• Paciente monitorizado
+• Assepsia com clorexidina alcoólica 0,5%
+• USG em tempo real
+• Transdutor: ${transdutor}
+• Agulha: ${agulha}
+• Técnica de inserção: ${tecnica}
+
+ANESTÉSICO LOCAL:
+• Droga: ${droga}
+• Volume: ${volume} mL
+• Dose total: ${dose} mg
+• Epinefrina: ${epi}
+
+INTERCORRÊNCIAS: ${interc==='Sim'&&intercDesc?intercDesc:'Nenhuma'}
+
+AVALIAÇÃO PÓS-BLOQUEIO:
+• Bloqueio sensitivo: ${sensitivo?'Presente':'Ausente'}
+• Bloqueio motor: ${motor?'Presente':'Ausente'}
+• Sinais de LAST: ${last?'Ausentes':'Presentes - ATENÇÃO'}
+
+${interc==='Nenhuma'?'Procedimento sem intercorrências.':'Procedimento com intercorrências - ver descrição acima.'}
+
+Responsável: ${resp}
+CRM: ${crm}`;
+            document.getElementById('evolution-text').value=texto;
+            document.querySelector('.evo-form').style.display='none';
+            document.getElementById('evo-result').style.display='block';
+        }
+        function editEvolution(){document.querySelector('.evo-form').style.display='block';document.getElementById('evo-result').style.display='none'}
+        document.addEventListener('DOMContentLoaded',function(){
+            calcDoses(70);calcLipid(70);
+            document.querySelectorAll('input[name="interc"]').forEach(r=>r.addEventListener('change',function(){
+                document.getElementById('evo-interc-desc').style.display=this.value==='Sim'?'block':'none';
+            }));
+        })
+
+        function toggleFab() {
+            var options = document.getElementById('fabOptions');
+            var btn = document.getElementById('fabBtn');
+            var icon = document.getElementById('fabIcon');
+            if (!options || !btn) return;
+            var isOpen = options.style.display === 'block' || options.classList.contains('open');
+            if (isOpen) {
+                options.style.display = 'none';
+                options.classList.remove('open');
+                btn.classList.remove('open');
+                icon.innerHTML = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>';
+            } else {
+                options.style.display = 'block';
+                options.classList.add('open');
+                btn.classList.add('open');
+                icon.innerHTML = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>';
+            }
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.fab-menu')) {
+                document.querySelectorAll('.fab-options').forEach(function(opt) { opt.style.display = 'none'; opt.classList.remove('open'); });
+                document.querySelectorAll('.fab-btn').forEach(function(btn) { btn.classList.remove('open'); var icon = btn.querySelector('svg'); if (icon) icon.innerHTML = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>'; });
+            }
+        });
+    </script>
+
+    <!-- FAB Menu -->
+    <div class="fab-menu" style="position:fixed;bottom:20px;right:20px;z-index:1000;">
+        <div class="fab-options" id="fabOptions" style="position:absolute;bottom:70px;right:0;background:#111;border:1px solid #333;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);padding:8px;display:none;min-width:200px;">
+            <a href="#" onclick="event.preventDefault();toggleFab();showSection('home')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Início</a>
+            <a href="#" onclick="event.preventDefault();toggleFab();showSection('topography')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Por Topografia</a>
+            <a href="#" onclick="event.preventDefault();toggleFab();showSection('blocklist')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Lista de Bloqueios</a>
+            <a href="#" onclick="event.preventDefault();toggleFab();showSection('calculator')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Anestésicos Locais</a>
+        </div>
+        <button class="fab-btn" id="fabBtn" onclick="toggleFab()" style="width:56px;height:56px;border-radius:50%;background:#FF5252;border:none;color:white;cursor:pointer;box-shadow:0 4px 12px rgba(255,82,82,0.4);display:flex;align-items:center;justify-content:center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="fabIcon"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        </button>
+    </div>
+</body>
+</html>

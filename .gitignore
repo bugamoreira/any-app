@@ -1,0 +1,6 @@
+deploy/
+*.zip
+Fontes/
+Ícones/
+HTML segmentados/
+.DS_Store

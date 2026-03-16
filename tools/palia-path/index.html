@@ -1,0 +1,3439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PaliaPath — ANY App</title>
+    <style>
+        :root {
+            --accent: #FF5252;
+            --accent-dark: #D32F2F;
+            --verde-hugo: #10B981;
+            --verde-escuro: #059669;
+            --azul-hugo: #3B82F6;
+            --azul-claro: #60A5FA;
+            --branco: #F5F5F5;
+            --cinza-claro: #111;
+            --cinza-medio: #333;
+            --cinza-texto: #F5F5F5;
+            --cinza-secundario: #999;
+            --vermelho: #EF4444;
+            --amarelo: #F59E0B;
+            --laranja: #F97316;
+            --roxo: #A78BFA;
+            --sombra: 0 2px 8px rgba(0,0,0,0.4);
+            --sombra-hover: 0 4px 16px rgba(0,0,0,0.6);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #000;
+            color: var(--cinza-texto);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: #000;
+            padding: 20px 16px;
+            text-align: center;
+        }
+
+        .header img {
+            max-width: 200px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--branco);
+            margin-top: 12px;
+        }
+
+        .header p.subtitle {
+            font-size: 14px;
+            color: var(--cinza-secundario);
+            margin-top: 4px;
+        }
+
+        .header-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: var(--branco);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            background: #1A1A1A;
+            color: #F59E0B;
+            padding: 10px 20px;
+            font-size: 0.8rem;
+            text-align: center;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Tela Inicial */
+        .home-screen {
+            display: block;
+        }
+
+        .intro-text {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #111;
+            border-radius: var(--border-radius);
+        }
+
+        .intro-text h2 {
+            color: var(--verde-hugo);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .intro-text p {
+            color: var(--cinza-secundario);
+            font-size: 0.9rem;
+        }
+
+        /* Grid de Módulos */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .module-card {
+            background: #111;
+            border-radius: var(--border-radius);
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid var(--cinza-medio);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--sombra-hover);
+            border-color: var(--accent);
+        }
+
+        .module-card.identificar { border-left: 4px solid var(--verde-hugo); }
+        .module-card.decidir { border-left: 4px solid var(--azul-hugo); }
+        .module-card.comunicar { border-left: 4px solid var(--roxo); }
+        .module-card.manejar { border-left: 4px solid var(--laranja); }
+
+        .module-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.5rem;
+        }
+
+        .module-card.identificar .module-icon { background: rgba(16, 185, 129, 0.15); color: var(--verde-hugo); }
+        .module-card.decidir .module-icon { background: rgba(59, 130, 246, 0.15); color: var(--azul-hugo); }
+        .module-card.comunicar .module-icon { background: rgba(167, 139, 250, 0.15); color: var(--roxo); }
+        .module-card.manejar .module-icon { background: rgba(249, 115, 22, 0.15); color: var(--laranja); }
+
+        .module-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--cinza-texto);
+        }
+
+        .module-card p {
+            font-size: 0.75rem;
+            color: var(--cinza-secundario);
+        }
+
+        /* Botões Extras */
+        .extra-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .extra-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #111;
+            border: 2px solid var(--cinza-medio);
+            border-radius: var(--border-radius);
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .extra-btn:hover {
+            border-color: var(--accent);
+            background: #1A1A1A;
+        }
+
+        .extra-btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .extra-btn.ferramentas .extra-btn-icon { background: rgba(16, 185, 129, 0.15); color: var(--verde-hugo); }
+        .extra-btn.mitos .extra-btn-icon { background: rgba(239, 68, 68, 0.15); color: var(--vermelho); }
+        .extra-btn.referencias .extra-btn-icon { background: rgba(59, 130, 246, 0.15); color: var(--azul-hugo); }
+
+        .extra-btn-text h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--cinza-texto);
+        }
+
+        .extra-btn-text p {
+            font-size: 0.75rem;
+            color: var(--cinza-secundario);
+        }
+
+        /* Telas de Módulo */
+        .module-screen {
+            display: none;
+        }
+
+        .module-screen.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 0;
+            margin-bottom: 16px;
+        }
+
+        .back-btn:hover {
+            color: #FF7070;
+        }
+
+        /* Module Header */
+        .module-header {
+            margin-bottom: 20px;
+        }
+
+        .module-header h2 {
+            font-size: 1.4rem;
+            color: var(--cinza-texto);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-header p {
+            color: var(--cinza-secundario);
+            font-size: 0.9rem;
+        }
+
+        /* Collapsible Sections */
+        .collapsible {
+            background: #111;
+            border: 2px solid var(--cinza-medio);
+            border-radius: var(--border-radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .collapsible-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .collapsible-header:hover {
+            background: #1A1A1A;
+        }
+
+        .collapsible-header h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .collapsible-header .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .collapsible-arrow {
+            transition: transform 0.3s ease;
+            color: var(--cinza-secundario);
+        }
+
+        .collapsible.open .collapsible-arrow {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .collapsible.open .collapsible-content {
+            max-height: 3000px;
+        }
+
+        .collapsible-inner {
+            padding: 0 16px 16px;
+            border-top: 1px solid #333;
+        }
+
+        /* Content Lists */
+        .content-list {
+            list-style: none;
+            padding: 12px 0 0;
+        }
+
+        .content-list li {
+            position: relative;
+            padding: 8px 0 8px 24px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+
+        .content-list li:last-child {
+            border-bottom: none;
+        }
+
+        .content-list li::before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--verde-hugo);
+            font-weight: bold;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--verde-hugo);
+            padding: 12px 14px;
+            border-radius: 0 8px 8px 0;
+            margin: 12px 0;
+        }
+
+        .info-box.blue {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: var(--azul-hugo);
+        }
+
+        .info-box.orange {
+            background: rgba(249, 115, 22, 0.1);
+            border-left-color: var(--laranja);
+        }
+
+        .info-box.red {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--vermelho);
+        }
+
+        .info-box p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .info-box strong {
+            color: var(--verde-hugo);
+        }
+
+        .info-box.blue strong {
+            color: var(--azul-hugo);
+        }
+
+        /* Highlight Text */
+        .highlight {
+            background: linear-gradient(120deg, rgba(0, 166, 81, 0.2) 0%, rgba(16, 185, 129, 0.15) 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* SAVED Cards */
+        .saved-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .saved-card {
+            background: #111;
+            border: 2px solid var(--cinza-medio);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .saved-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--sombra);
+        }
+
+        .saved-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .saved-letter {
+            width: 36px;
+            height: 36px;
+            background: var(--azul-hugo);
+            color: var(--branco);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .saved-card h4 {
+            font-size: 1rem;
+            color: var(--cinza-texto);
+        }
+
+        .saved-card p {
+            font-size: 0.85rem;
+            color: var(--cinza-secundario);
+            margin-left: 48px;
+        }
+
+        .saved-detail {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--cinza-medio);
+        }
+
+        .saved-card.expanded .saved-detail {
+            display: block;
+        }
+
+        /* Medication Table */
+        .med-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.85rem;
+        }
+
+        .med-table th,
+        .med-table td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--cinza-medio);
+        }
+
+        .med-table th {
+            background: #1A1A1A;
+            font-weight: 600;
+            color: var(--cinza-texto);
+            position: sticky;
+            top: 0;
+        }
+
+        .med-table tr:hover {
+            background: #1A1A1A;
+        }
+
+        /* Calculator */
+        .calculator {
+            background: #1A1A1A;
+            border-radius: var(--border-radius);
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .calculator h4 {
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            color: var(--cinza-texto);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .calc-row {
+            margin-bottom: 16px;
+        }
+
+        .calc-row label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--cinza-texto);
+        }
+
+        .calc-row select,
+        .calc-row input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--cinza-medio);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #1A1A1A; color: #F5F5F5;
+            transition: var(--transition);
+        }
+
+        .calc-row select:focus,
+        .calc-row input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .calc-result {
+            background: #1A1A1A;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .calc-result-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .calc-result-label {
+            font-size: 0.85rem;
+            color: var(--cinza-secundario);
+        }
+
+        /* Slider */
+        .slider-container {
+            margin: 16px 0;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--cinza-secundario);
+            margin-bottom: 4px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, var(--verde-hugo) 0%, var(--amarelo) 50%, var(--vermelho) 100%);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--branco);
+            border: 3px solid var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--sombra);
+        }
+
+        /* Scale Cards */
+        .scale-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .scale-item {
+            text-align: center;
+            padding: 12px 4px;
+            background: #1A1A1A;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .scale-item:hover {
+            border-color: var(--accent);
+        }
+
+        .scale-item.active {
+            background: var(--accent);
+            color: var(--branco);
+        }
+
+        .scale-item .number {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .scale-item .label {
+            font-size: 0.65rem;
+            margin-top: 4px;
+        }
+
+        /* Myths Grid */
+        .myths-section {
+            margin-bottom: 24px;
+        }
+
+        .myths-section h3 {
+            font-size: 1rem;
+            color: var(--cinza-texto);
+            margin-bottom: 12px;
+            padding-left: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .myths-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .myth-card {
+            background: #111;
+            border: 2px solid var(--cinza-medio);
+            border-radius: 10px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .myth-card:hover {
+            border-color: var(--vermelho);
+            transform: translateY(-2px);
+            box-shadow: var(--sombra);
+        }
+
+        .myth-number {
+            width: 28px;
+            height: 28px;
+            background: var(--vermelho);
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .myth-title {
+            font-size: 0.7rem;
+            color: var(--cinza-texto);
+            line-height: 1.3;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal {
+            background: #111;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: #111;
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            color: var(--cinza-texto);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #222;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--cinza-secundario);
+        }
+
+        .modal-close:hover {
+            background: #333;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .myth-modal-content {
+            text-align: center;
+        }
+
+        .myth-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+
+        .myth-badge.mito {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--vermelho);
+        }
+
+        .myth-badge.verdade {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--verde-hugo);
+        }
+
+        .myth-statement {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--cinza-texto);
+            margin-bottom: 16px;
+            padding: 16px;
+            background: #1A1A1A;
+            border-radius: 8px;
+        }
+
+        .myth-explanation {
+            font-size: 0.9rem;
+            color: var(--cinza-secundario);
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        /* Footer */
+        .footer {
+            background: #000;
+            padding: 24px 16px;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid #222;
+        }
+
+        .footer-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .footer-text strong {
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 380px) {
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .myths-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .scale-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* PPI Calculator Styles */
+        .ppi-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: #111;
+            border: 2px solid var(--cinza-medio);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .ppi-option:hover {
+            border-color: var(--accent);
+        }
+
+        .ppi-option.selected {
+            border-color: var(--accent);
+            background: rgba(255, 82, 82, 0.1);
+        }
+
+        .ppi-option input {
+            margin-right: 12px;
+        }
+
+        .ppi-option-text {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .ppi-option-score {
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.85rem;
+        }
+
+        .ppi-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #1A1A1A;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .ppi-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .ppi-interpretation {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .ppi-interpretation.green {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34D399;
+        }
+
+        .ppi-interpretation.yellow {
+            background: rgba(245, 158, 11, 0.15);
+            color: #FBBF24;
+        }
+
+        .ppi-interpretation.orange {
+            background: rgba(249, 115, 22, 0.15);
+            color: #FB923C;
+        }
+
+        .ppi-interpretation.red {
+            background: rgba(239, 68, 68, 0.15);
+            color: #F87171;
+        }
+
+        /* Technique Steps */
+        .technique-steps {
+            counter-reset: step;
+        }
+
+        .technique-step {
+            position: relative;
+            padding: 16px 16px 16px 50px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .technique-step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .technique-step h5 {
+            font-size: 0.9rem;
+            color: var(--cinza-texto);
+            margin-bottom: 4px;
+        }
+
+        .technique-step p {
+            font-size: 0.85rem;
+            color: var(--cinza-secundario);
+        }
+
+        /* Quick Reference Box */
+        .quick-ref {
+            background: linear-gradient(135deg, #1A1A1A 0%, #111 100%); border: 1px solid #333;
+            color: var(--branco);
+            padding: 16px;
+            border-radius: var(--border-radius);
+            margin: 16px 0;
+        }
+
+        .quick-ref h4 {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-ref p {
+            font-size: 0.85rem;
+            opacity: 0.95;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--cinza-medio);
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 12px 16px;
+            background: none;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--cinza-secundario);
+            cursor: pointer;
+            white-space: nowrap;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            color: var(--accent);
+        }
+
+        .tab.active {
+            color: var(--accent);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Hipodermóclise sub-sections */
+        .hipo-section {
+            margin-bottom: 20px;
+        }
+
+        .hipo-section h4 {
+            margin: 16px 0 12px;
+            font-size: 0.95rem;
+            color: var(--cinza-texto);
+        }
+
+        .hipo-subtabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .hipo-subtab {
+            padding: 8px 14px;
+            background: #1A1A1A;
+            border: 1px solid #333;
+            border-radius: 20px;
+            color: var(--cinza-secundario);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .hipo-subtab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .hipo-subtab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .hipo-panel {
+            display: none;
+        }
+
+        .hipo-panel.active {
+            display: block;
+        }
+
+        .volume-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .volume-card {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .volume-card .region {
+            font-size: 0.85rem;
+            color: var(--cinza-texto);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .volume-card .vol {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .compat-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .compat-table th,
+        .compat-table td {
+            padding: 6px 4px;
+            text-align: center;
+            border: 1px solid #333;
+            min-width: 32px;
+        }
+
+        .compat-table th {
+            background: #1A1A1A;
+            font-weight: 600;
+            color: var(--cinza-texto);
+            font-size: 0.65rem;
+            position: sticky;
+            top: 0;
+        }
+
+        .compat-table th:first-child,
+        .compat-table td:first-child {
+            text-align: left;
+            min-width: 80px;
+            font-weight: 600;
+            color: var(--cinza-texto);
+            position: sticky;
+            left: 0;
+            background: #000;
+            z-index: 1;
+        }
+
+        .compat-table .c {
+            color: #10B981;
+            font-weight: 700;
+        }
+
+        .compat-table .i {
+            color: #EF4444;
+            font-weight: 700;
+        }
+
+        .compat-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 12px 0;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+
+        .med-detail-card {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .med-detail-card h5 {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .med-detail-card .med-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #222;
+        }
+
+        .med-detail-card .med-row:last-child {
+            border-bottom: none;
+        }
+
+        .med-detail-card .med-label {
+            color: var(--cinza-secundario);
+            flex-shrink: 0;
+            margin-right: 8px;
+        }
+
+        .med-detail-card .med-value {
+            color: var(--cinza-texto);
+            text-align: right;
+        }
+
+        .med-detail-card .med-obs {
+            font-size: 0.78rem;
+            color: var(--cinza-secundario);
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid #222;
+        }
+
+        /* Death Rattle Signs Table */
+        .signs-table {
+            width: 100%;
+            margin: 12px 0;
+        }
+
+        .signs-table tr {
+            border-bottom: 1px solid var(--cinza-medio);
+        }
+
+        .signs-table td {
+            padding: 10px 8px;
+            font-size: 0.85rem;
+        }
+
+        .signs-table td:first-child {
+            font-weight: 500;
+        }
+
+        .signs-table td:last-child {
+            text-align: right;
+            color: var(--cinza-secundario);
+        }
+
+        /* Capacity Assessment */
+        .capacity-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .capacity-card {
+            background: #111;
+            border: 2px solid var(--cinza-medio);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .capacity-letter {
+            width: 40px;
+            height: 40px;
+            background: var(--azul-hugo);
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 0 auto 8px;
+        }
+
+        .capacity-card h5 {
+            font-size: 0.85rem;
+            color: var(--cinza-texto);
+            margin-bottom: 4px;
+        }
+
+        .capacity-card p {
+            font-size: 0.75rem;
+            color: var(--cinza-secundario);
+        }
+            .fab-menu { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: #FF5252; border: none; color: white; cursor: pointer; box-shadow: 0 4px 12px rgba(255,82,82,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
+        .fab-btn:active { transform: scale(0.95); }
+        .fab-btn.open { background: #D32F2F; }
+        .fab-options { position: absolute; bottom: 70px; right: 0; background: #111; border: 1px solid #333; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
+        .fab-options.open { display: block; }
+        .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
+        .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <img src="__LOGO__" alt="ANY App" onclick="showScreen('home')">
+        <h1>PaliaPath</h1>
+        <p class="subtitle">Cuidados Paliativos no DE</p>
+    </header>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        Versão em teste — use com dupla validação clínica
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- TELA INICIAL -->
+        <div id="home-screen" class="home-screen">
+            <div class="intro-text">
+                <h2>Cuidados Paliativos no DE</h2>
+                <p>Ferramentas de apoio à decisão para identificação, comunicação e manejo de pacientes com necessidades paliativas.</p>
+            </div>
+
+            <!-- Grid de Módulos Principais -->
+            <div class="modules-grid">
+                <div class="module-card identificar" onclick="showScreen('identificar')">
+                    <div class="module-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+                    <h3>Identificar</h3>
+                    <p>SPICT-BR</p>
+                </div>
+                <div class="module-card decidir" onclick="showScreen('decidir')">
+                    <div class="module-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M5 8l7-5 7 5"/><path d="M3 13l2-5h0l2 5"/><circle cx="5" cy="13" r="2"/><path d="M17 13l2-5h0l2 5"/><circle cx="19" cy="13" r="2"/></svg></div>
+                    <h3>Decidir</h3>
+                    <p>SAVED</p>
+                </div>
+                <div class="module-card comunicar" onclick="showScreen('comunicar')">
+                    <div class="module-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                    <h3>Comunicar</h3>
+                    <p>REDMAP / NURSE</p>
+                </div>
+                <div class="module-card manejar" onclick="showScreen('manejar')">
+                    <div class="module-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-6 18h9"/></svg></div>
+                    <h3>Manejar</h3>
+                    <p>Sintomas</p>
+                </div>
+            </div>
+
+            <!-- Botões Extras -->
+            <div class="extra-buttons">
+                <button class="extra-btn ferramentas" onclick="showScreen('ferramentas')">
+                    <div class="extra-btn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+                    <div class="extra-btn-text">
+                        <h4>Ferramentas e Escalas</h4>
+                        <p>ECOG, PPS, PPI, Conversão Opioides, Hipodermóclise</p>
+                    </div>
+                </button>
+                <button class="extra-btn mitos" onclick="showScreen('mitos')">
+                    <div class="extra-btn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg></div>
+                    <div class="extra-btn-text">
+                        <h4>Mitos e Verdades</h4>
+                        <p>24 conceitos importantes desmistificados</p>
+                    </div>
+                </button>
+                <button class="extra-btn referencias" onclick="showScreen('referencias')">
+                    <div class="extra-btn-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+                    <div class="extra-btn-text">
+                        <h4>Referências</h4>
+                        <p>Fontes e literatura consultada</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- MÓDULO IDENTIFICAR -->
+        <div id="identificar-screen" class="module-screen">
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Voltar
+            </button>
+
+            <div class="module-header">
+                <h2>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    Identificar
+                </h2>
+                <p>SPICT-BR — Ferramenta de Triagem para Cuidados Paliativos</p>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Quando usar:</strong> Pacientes com doenças crônicas avançadas ou deterioração clínica progressiva. Se ≥2 indicadores positivos → considerar abordagem paliativa.</p>
+            </div>
+
+            <!-- Indicadores Gerais -->
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(16,185,129,0.15); color: var(--verde-hugo);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg></span>
+                        Indicadores Gerais de Deterioração
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list">
+                            <li>Internações não planejadas</li>
+                            <li>Performance status ruim ou em declínio (restrito ao leito >50% do dia)</li>
+                            <li>Dependência crescente para AVDs</li>
+                            <li>Perda de peso significativa nos últimos 3-6 meses</li>
+                            <li>Sintomas persistentes apesar de tratamento otimizado</li>
+                            <li>Paciente ou família perguntam sobre cuidados paliativos ou prognóstico</li>
+                            <li>Paciente escolhe reduzir ou suspender tratamento</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indicadores Clínicos -->
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(239,68,68,0.15); color: var(--vermelho);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></span>
+                        Doença Cardíaca / Vascular
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list">
+                            <li>ICC NYHA III/IV com sintomas persistentes</li>
+                            <li>Doença coronariana extensa não passível de intervenção</li>
+                            <li>Doença vascular periférica inoperável</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(59,130,246,0.15); color: var(--azul-hugo);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v8"/><path d="M6 12c-2 0-4 2-4 5s2 4 4 4c3 0 5-2 6-4"/><path d="M18 12c2 0 4 2 4 5s-2 4-4 4c-3 0-5-2-6-4"/></svg></span>
+                        Doença Respiratória
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list">
+                            <li>Doença intersticial grave ou fibrose com declínio de função</li>
+                            <li>DPOC com dispneia em repouso ou aos mínimos esforços</li>
+                            <li>Oxigenoterapia domiciliar de longa duração</li>
+                            <li>Ventilação assistida</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(249,115,22,0.15); color: var(--laranja);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>
+                        Doença Neurológica
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list">
+                            <li>Deterioração progressiva da função física/cognitiva</li>
+                            <li>Disfagia com aspiração recorrente</li>
+                            <li>Dificuldade de fala progressiva</li>
+                            <li>Pneumonias de repetição</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(167,139,250,0.15); color: var(--roxo);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m10-10h-4M6 12H2"/></svg></span>
+                        Doença Renal
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list">
+                            <li>DRC estágio 4-5 (TFG <30) com deterioração</li>
+                            <li>Falha ou suspensão de diálise</li>
+                            <li>Opção por tratamento conservador</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(245,158,11,0.15); color: #FBBF24;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6 6 6 0 006-6V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3"/><path d="M8 15v1a6 6 0 006 6 6 6 0 006-6v-4"/><circle cx="20" cy="10" r="2"/></svg></span>
+                        Doença Hepática
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list">
+                            <li>Cirrose avançada com complicações (ascite, encefalopatia, SHR)</li>
+                            <li>Transplante contraindicado</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(239,68,68,0.15); color: var(--vermelho);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+                        Câncer
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list">
+                            <li>Doença metastática ou localmente avançada</li>
+                            <li>Progressão durante tratamento oncológico</li>
+                            <li>Tratamento oncológico específico descontinuado</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(156,163,175,0.15); color: #9CA3AF;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21c0-4.1 2.9-7.5 6.5-7.5s6.5 3.4 6.5 7.5"/></svg></span>
+                        Demência / Fragilidade
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list">
+                            <li>Incapaz de vestir-se, tomar banho, alimentar-se sem ajuda</li>
+                            <li>Ingestão oral reduzida</li>
+                            <li>Incontinência urinária e fecal</li>
+                            <li>Incapaz de comunicação significativa</li>
+                            <li>Múltiplas comorbidades com declínio funcional</li>
+                            <li>Fragilidade com complicações ou declínio</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-ref">
+                <h4>Pergunta Surpresa</h4>
+                <p>"Você ficaria surpreso se este paciente morresse nos próximos 12 meses?"<br><br>
+                Se <strong>NÃO</strong> ficaria surpreso → considerar cuidados paliativos.</p>
+            </div>
+        </div>
+
+        <!-- MÓDULO DECIDIR -->
+        <div id="decidir-screen" class="module-screen">
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Voltar
+            </button>
+
+            <div class="module-header">
+                <h2>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M12 3v18"/><path d="M5 8l7-5 7 5"/></svg>
+                    Decidir
+                </h2>
+                <p>SAVED — Framework para Decisão sobre Suporte de Vida</p>
+            </div>
+
+            <div class="info-box blue">
+                <p><strong>Quando usar:</strong> Paciente crítico/instável com doença avançada para auxiliar na tomada de decisão sobre medidas de suporte vital.</p>
+            </div>
+
+            <div class="saved-grid">
+                <div class="saved-card" onclick="toggleSavedCard(this)">
+                    <div class="saved-card-header">
+                        <div class="saved-letter">S</div>
+                        <h4>Surpresa</h4>
+                    </div>
+                    <p>Pergunta surpresa: expectativa de vida</p>
+                    <div class="saved-detail">
+                        <div class="info-box">
+                            <p><strong>Pergunta:</strong> "Você ficaria surpreso se este paciente morresse nos próximos 12 meses (ou nesta internação)?"</p>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--cinza-secundario); margin-top: 12px;">
+                            Se <strong>NÃO</strong> ficaria surpreso, o paciente pode se beneficiar de abordagem paliativa precoce.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="saved-card" onclick="toggleSavedCard(this)">
+                    <div class="saved-card-header">
+                        <div class="saved-letter">A</div>
+                        <h4>Auxílio ao Paciente</h4>
+                    </div>
+                    <p>O que o paciente realmente quer?</p>
+                    <div class="saved-detail">
+                        <div class="info-box">
+                            <p><strong>Perguntas-chave:</strong></p>
+                        </div>
+                        <ul class="content-list">
+                            <li>"O que é mais importante para você agora?"</li>
+                            <li>"Se você não pudesse falar por si mesmo, quem falaria?"</li>
+                            <li>"Já conversou com sua família sobre suas preferências?"</li>
+                            <li>Há diretivas antecipadas documentadas?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="saved-card" onclick="toggleSavedCard(this)">
+                    <div class="saved-card-header">
+                        <div class="saved-letter">V</div>
+                        <h4>Valores e Vida</h4>
+                    </div>
+                    <p>Qualidade vs quantidade de vida</p>
+                    <div class="saved-detail">
+                        <div class="info-box">
+                            <p><strong>Explorar:</strong></p>
+                        </div>
+                        <ul class="content-list">
+                            <li>O que dá sentido à vida do paciente?</li>
+                            <li>O que seria inaceitável como qualidade de vida?</li>
+                            <li>Até onde ir com tratamentos intensivos?</li>
+                            <li>Preferências sobre local de cuidado e morte</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="saved-card" onclick="toggleSavedCard(this)">
+                    <div class="saved-card-header">
+                        <div class="saved-letter">E</div>
+                        <h4>Educar</h4>
+                    </div>
+                    <p>Informar sobre prognóstico e opções</p>
+                    <div class="saved-detail">
+                        <div class="info-box">
+                            <p><strong>Comunicar:</strong></p>
+                        </div>
+                        <ul class="content-list">
+                            <li>Prognóstico realista (sem falsa esperança)</li>
+                            <li>Opções de tratamento disponíveis</li>
+                            <li>Consequências de cada opção</li>
+                            <li>O que os cuidados paliativos podem oferecer</li>
+                        </ul>
+                        <p style="font-size: 0.85rem; color: var(--cinza-secundario); margin-top: 12px;">
+                            Use linguagem clara: "A doença está avançando" em vez de "Não há mais o que fazer".
+                        </p>
+                    </div>
+                </div>
+
+                <div class="saved-card" onclick="toggleSavedCard(this)">
+                    <div class="saved-card-header">
+                        <div class="saved-letter">D</div>
+                        <h4>Decisão (Capacidade)</h4>
+                    </div>
+                    <p>Avaliar capacidade decisória</p>
+                    <div class="saved-detail">
+                        <div class="info-box">
+                            <p><strong>4 Critérios da Capacidade (CCEC):</strong></p>
+                        </div>
+                        <div class="capacity-grid">
+                            <div class="capacity-card">
+                                <div class="capacity-letter">C</div>
+                                <h5>Compreender</h5>
+                                <p>Repete informações com suas palavras</p>
+                            </div>
+                            <div class="capacity-card">
+                                <div class="capacity-letter">C</div>
+                                <h5>Contextualizar</h5>
+                                <p>Aplica à sua realidade</p>
+                            </div>
+                            <div class="capacity-card">
+                                <div class="capacity-letter">E</div>
+                                <h5>Embasar</h5>
+                                <p>Justifica logicamente</p>
+                            </div>
+                            <div class="capacity-card">
+                                <div class="capacity-letter">C</div>
+                                <h5>Comunicar</h5>
+                                <p>Expressa a escolha</p>
+                            </div>
+                        </div>
+                        <div class="info-box orange" style="margin-top: 12px;">
+                            <p><strong>Importante:</strong> Decisão contrária à orientação médica NÃO significa incapacidade. Demência ou doença psiquiátrica NÃO = automaticamente incapaz.</p>
+                        </div>
+                        <div style="margin-top: 12px;">
+                            <p style="font-size: 0.85rem; color: var(--cinza-secundario);"><strong>Se incapaz:</strong> Identificar representante legal (cônjuge → filhos → pais → irmãos). O representante decide baseado nos VALORES DO PACIENTE, não nos próprios.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÓDULO COMUNICAR -->
+        <div id="comunicar-screen" class="module-screen">
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Voltar
+            </button>
+
+            <div class="module-header">
+                <h2>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    Comunicar
+                </h2>
+                <p>Técnicas para conversas difíceis e comunicação de más notícias</p>
+            </div>
+
+            <div class="quick-ref" style="background: #1A1A1A; border: 1px solid #333;">
+                <h4>Frase de Abertura</h4>
+                <p>"O que você gostaria de saber sobre sua condição?"</p>
+            </div>
+
+            <!-- REDMAP -->
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(167,139,250,0.15); color: var(--roxo);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16"/><path d="M16 6v16"/></svg></span>
+                        REDMAP — Roteiro de Conversa
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="technique-steps">
+                            <div class="technique-step">
+                                <h5>R — Reframe (Reenquadrar)</h5>
+                                <p>"Parece que a situação mudou. Podemos conversar sobre isso?"</p>
+                            </div>
+                            <div class="technique-step">
+                                <h5>E — Expect (Expectativas)</h5>
+                                <p>"O que você espera que aconteça daqui para frente?"</p>
+                            </div>
+                            <div class="technique-step">
+                                <h5>D — Demonstrate (Demonstrar empatia)</h5>
+                                <p>"Eu gostaria que as coisas fossem diferentes também."</p>
+                            </div>
+                            <div class="technique-step">
+                                <h5>M — Map (Mapear valores)</h5>
+                                <p>"O que é mais importante para você agora?"</p>
+                            </div>
+                            <div class="technique-step">
+                                <h5>A — Align (Alinhar)</h5>
+                                <p>"Dado o que você me disse, eu recomendo..."</p>
+                            </div>
+                            <div class="technique-step">
+                                <h5>P — Plan (Planejar)</h5>
+                                <p>"Vamos fazer um plano juntos para garantir que você receba o melhor cuidado."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NURSE -->
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(16,185,129,0.15); color: var(--verde-hugo);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></span>
+                        NURSE — Resposta Empática
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="technique-steps">
+                            <div class="technique-step">
+                                <h5>N — Name (Nomear)</h5>
+                                <p>"Parece que você está com medo/triste/preocupado."</p>
+                            </div>
+                            <div class="technique-step">
+                                <h5>U — Understand (Compreender)</h5>
+                                <p>"Eu consigo entender por que você se sente assim."</p>
+                            </div>
+                            <div class="technique-step">
+                                <h5>R — Respect (Respeitar)</h5>
+                                <p>"Você tem sido muito forte lidando com tudo isso."</p>
+                            </div>
+                            <div class="technique-step">
+                                <h5>S — Support (Apoiar)</h5>
+                                <p>"Estarei aqui com você durante todo esse processo."</p>
+                            </div>
+                            <div class="technique-step">
+                                <h5>E — Explore (Explorar)</h5>
+                                <p>"Conte-me mais sobre o que está pensando."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Frases Úteis -->
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(59,130,246,0.15); color: var(--azul-hugo);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+                        Frases Úteis
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <div class="info-box">
+                            <p><strong>Use:</strong></p>
+                        </div>
+                        <ul class="content-list">
+                            <li>"A doença está avançando apesar dos tratamentos."</li>
+                            <li>"O corpo dele/dela está mostrando sinais de que está se aproximando do fim."</li>
+                            <li>"Vamos focar no conforto e na qualidade de vida."</li>
+                            <li>"Não vamos abandoná-lo. Estaremos cuidando dele até o final."</li>
+                        </ul>
+                        <div class="info-box red" style="margin-top: 16px;">
+                            <p><strong>Evite:</strong></p>
+                        </div>
+                        <ul class="content-list">
+                            <li>"Não há mais nada a fazer."</li>
+                            <li>"Vamos suspender os cuidados."</li>
+                            <li>"É só esperar."</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning Signs -->
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(249,115,22,0.15); color: var(--laranja);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+                        Situações de Alerta
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list">
+                            <li>Família solicita "fazer tudo" — explore o significado</li>
+                            <li>Conflito familiar sobre decisões — reunião multiprofissional</li>
+                            <li>Paciente e família com expectativas irreais — reeducar gentilmente</li>
+                            <li>Recusa de informação — respeitar, mas documentar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÓDULO MANEJAR -->
+        <div id="manejar-screen" class="module-screen">
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Voltar
+            </button>
+
+            <div class="module-header">
+                <h2>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-6 18h9"/></svg>
+                    Manejar Sintomas
+                </h2>
+                <p>Controle de sintomas em cuidados paliativos no DE</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab(this, 'manejar-tabs', 'tab-dor')">Dor</button>
+                <button class="tab" onclick="switchTab(this, 'manejar-tabs', 'tab-dispneia')">Dispneia</button>
+                <button class="tab" onclick="switchTab(this, 'manejar-tabs', 'tab-nausea')">Náusea</button>
+                <button class="tab" onclick="switchTab(this, 'manejar-tabs', 'tab-delirium')">Delirium</button>
+                <button class="tab" onclick="switchTab(this, 'manejar-tabs', 'tab-sedacao')">Sedação</button>
+                <button class="tab" onclick="switchTab(this, 'manejar-tabs', 'tab-final')">Fase Final</button>
+            </div>
+
+            <div id="manejar-tabs">
+                <!-- Tab Dor -->
+                <div id="tab-dor" class="tab-content active">
+                    <div class="info-box orange">
+                        <p><strong>Princípio:</strong> Opioides são a base do tratamento da dor moderada a grave em cuidados paliativos. Não há dose máxima — titular até alívio ou efeitos adversos intoleráveis.</p>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Escada Analgésica (OMS modificada)</h4>
+                    
+                    <div class="collapsible">
+                        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                            <h3>
+                                <span class="icon" style="background: rgba(16,185,129,0.15); color: var(--verde-hugo);">1</span>
+                                Dor Leve (1-3)
+                            </h3>
+                            <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-inner">
+                                <table class="med-table">
+                                    <tr><th>Medicação</th><th>Dose</th></tr>
+                                    <tr><td>Dipirona</td><td>1g EV 6/6h</td></tr>
+                                    <tr><td>Paracetamol</td><td>750mg VO 6/6h</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="collapsible">
+                        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                            <h3>
+                                <span class="icon" style="background: rgba(245,158,11,0.15); color: #FBBF24;">2</span>
+                                Dor Moderada (4-6)
+                            </h3>
+                            <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-inner">
+                                <table class="med-table">
+                                    <tr><th>Medicação</th><th>Dose</th></tr>
+                                    <tr><td>Tramadol</td><td>50-100mg EV/VO 6/6h</td></tr>
+                                    <tr><td>Codeína</td><td>30-60mg VO 4/4h</td></tr>
+                                </table>
+                                <p style="font-size: 0.8rem; color: var(--cinza-secundario); margin-top: 8px;">+ Analgésico simples</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="collapsible">
+                        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                            <h3>
+                                <span class="icon" style="background: rgba(239,68,68,0.15); color: var(--vermelho);">3</span>
+                                Dor Intensa (7-10)
+                            </h3>
+                            <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="collapsible-inner">
+                                <table class="med-table">
+                                    <tr><th>Medicação</th><th>Dose Inicial</th></tr>
+                                    <tr><td>Morfina</td><td>2-5mg EV/SC (virgem)<br>10-15% dose/24h (usuário)</td></tr>
+                                    <tr><td>Fentanil</td><td>25-50mcg EV lento</td></tr>
+                                    <tr><td>Metadona</td><td>2,5-5mg VO 8/8h</td></tr>
+                                </table>
+                                <div class="info-box" style="margin-top: 12px;">
+                                    <p><strong>Dose de resgate:</strong> 10-15% da dose total diária, a cada 1-2h se necessário.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Dispneia -->
+                <div id="tab-dispneia" class="tab-content">
+                    <div class="info-box blue">
+                        <p><strong>Lembrar:</strong> Dispneia é subjetiva. Tratar mesmo com SpO2 normal se paciente refere desconforto. Morfina é primeira linha.</p>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Tratamento Farmacológico</h4>
+                    <table class="med-table">
+                        <tr><th>Medicação</th><th>Dose</th><th>Obs</th></tr>
+                        <tr><td>Morfina</td><td>2-5mg SC/EV</td><td>1ª linha</td></tr>
+                        <tr><td>Midazolam</td><td>2,5-5mg SC/EV</td><td>Se ansiedade</td></tr>
+                        <tr><td>Dexametasona</td><td>4-8mg EV</td><td>Se obstrução/edema</td></tr>
+                    </table>
+
+                    <div class="info-box orange" style="margin-top: 16px;">
+                        <p><strong>Efeito teto:</strong> Morfina >20mg/24h geralmente não traz alívio adicional para dispneia. Considerar midazolam associado.</p>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Medidas Não Farmacológicas</h4>
+                    <ul class="content-list">
+                        <li>Ventilador/fluxo de ar no rosto</li>
+                        <li>Posicionamento (cabeceira elevada)</li>
+                        <li>Ambiente calmo e ventilado</li>
+                        <li>Presença de familiar</li>
+                    </ul>
+                </div>
+
+                <!-- Tab Náusea -->
+                <div id="tab-nausea" class="tab-content">
+                    <div class="info-box">
+                        <p><strong>Avaliar causa:</strong> Constipação? Obstrução? Medicamentos? Hipertensão intracraniana? Metabólica?</p>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Tratamento por Mecanismo</h4>
+                    <table class="med-table">
+                        <tr><th>Causa</th><th>Medicação</th><th>Dose</th></tr>
+                        <tr><td>Geral / QT</td><td>Ondansetrona</td><td>4-8mg EV 8/8h</td></tr>
+                        <tr><td>Gastroparesia</td><td>Metoclopramida</td><td>10mg EV 8/8h</td></tr>
+                        <tr><td>Obstrução</td><td>Haloperidol</td><td>0,5-2mg EV/SC 8/8h</td></tr>
+                        <tr><td>HIC</td><td>Dexametasona</td><td>4-8mg EV 12/12h</td></tr>
+                        <tr><td>Vestibular</td><td>Dimenidrinato</td><td>50mg EV 6/6h</td></tr>
+                    </table>
+
+                    <div class="info-box orange" style="margin-top: 16px;">
+                        <p><strong>Obstrução intestinal:</strong> Considerar octreotide 100-300mcg SC 8/8h para reduzir secreções.</p>
+                    </div>
+                </div>
+
+                <!-- Tab Delirium -->
+                <div id="tab-delirium" class="tab-content">
+                    <div class="info-box red">
+                        <p><strong>Investigar causas reversíveis:</strong> Dor, retenção urinária, constipação, infecção, medicamentos (opioides, BZD), distúrbios metabólicos, hipóxia.</p>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Tratamento Farmacológico</h4>
+                    <table class="med-table">
+                        <tr><th>Medicação</th><th>Dose</th><th>Via</th></tr>
+                        <tr><td>Haloperidol</td><td>0,5-2mg</td><td>EV/SC/VO</td></tr>
+                        <tr><td>Quetiapina</td><td>12,5-50mg</td><td>VO</td></tr>
+                        <tr><td>Risperidona</td><td>0,5-1mg</td><td>VO</td></tr>
+                    </table>
+
+                    <div class="info-box" style="margin-top: 16px;">
+                        <p><strong>Haloperidol:</strong> Iniciar 1mg SC/EV a cada 2h até controle, depois manter 6/6h ou 8/8h.</p>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Medidas Não Farmacológicas</h4>
+                    <ul class="content-list">
+                        <li>Reorientação frequente</li>
+                        <li>Ambiente calmo, iluminado</li>
+                        <li>Presença de familiar</li>
+                        <li>Evitar contenção física</li>
+                        <li>Ciclo sono-vigília preservado</li>
+                    </ul>
+                </div>
+
+                <!-- Tab Sedação -->
+                <div id="tab-sedacao" class="tab-content">
+                    <div class="info-box red">
+                        <p><strong>Indicação:</strong> Sintoma refratário (não responde a tratamento convencional) em paciente com doença terminal, causando sofrimento intolerável.</p>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Pré-requisitos (CFM)</h4>
+                    <ul class="content-list">
+                        <li>Doença terminal documentada</li>
+                        <li>Sintoma(s) refratário(s) a tratamentos convencionais</li>
+                        <li>Consentimento do paciente ou representante</li>
+                        <li>Discussão em equipe multiprofissional</li>
+                        <li>Documentação completa em prontuário</li>
+                    </ul>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Protocolo (Midazolam)</h4>
+                    <table class="med-table">
+                        <tr><th>Etapa</th><th>Dose</th></tr>
+                        <tr><td>Bolus inicial</td><td>2,5-5mg EV/SC</td></tr>
+                        <tr><td>Manutenção</td><td>0,5-1mg/h BIC</td></tr>
+                        <tr><td>Titulação</td><td>Aumentar 0,5mg/h a cada 30min</td></tr>
+                    </table>
+
+                    <div class="info-box orange" style="margin-top: 16px;">
+                        <p><strong>Alvo RASS:</strong> -3 a -4 (sedação moderada a profunda). Reavaliar a cada 4h. Manter via SC se EV indisponível.</p>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Alternativas</h4>
+                    <table class="med-table">
+                        <tr><th>Medicação</th><th>Dose</th></tr>
+                        <tr><td>Propofol</td><td>0,5-1mg/kg/h (UTI)</td></tr>
+                        <tr><td>Fenobarbital</td><td>100-200mg SC 12/12h</td></tr>
+                    </table>
+                </div>
+
+                <!-- Tab Fase Final -->
+                <div id="tab-final" class="tab-content">
+                    <div class="info-box">
+                        <p><strong>Definição:</strong> Paciente cuja morte é inevitável em curto período (dias a semanas), a despeito de todo cuidado médico.</p>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Sinais de Morte Iminente</h4>
+                    <table class="signs-table">
+                        <tr><td>Secreção respiratória (sororoca)</td><td>~23h</td></tr>
+                        <tr><td>Respiração mandibular</td><td>~2,5h</td></tr>
+                        <tr><td>Cianose de extremidades</td><td>~1h</td></tr>
+                        <tr><td>Ausência de pulso radial</td><td>~1h</td></tr>
+                    </table>
+                    <p style="font-size: 0.75rem; color: var(--cinza-secundario); margin-top: 4px;">Tempo médio até óbito (mediana)</p>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Cuidados Não Farmacológicos</h4>
+                    <ul class="content-list">
+                        <li>Reduzir frequência de aferição de sinais vitais</li>
+                        <li>Mudança de decúbito suave (usar coxins)</li>
+                        <li>Suspender dieta quando RNC (comunicar família antes)</li>
+                        <li>Secreção oral: posicionar cabeça, <strong>NÃO aspirar</strong></li>
+                        <li>Hidratação labial com gaze umidificada</li>
+                        <li>Permitir presença de familiar</li>
+                    </ul>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Desprescrição</h4>
+                    <div class="info-box">
+                        <p><strong>SUSPENDER:</strong> Estatinas, AAS, hipoglicemiantes, insulina, anti-hipertensivos (avaliar), medicações preventivas.</p>
+                    </div>
+                    <div class="info-box red" style="margin-top: 8px;">
+                        <p><strong>MANTER:</strong> Analgésicos, antieméticos, antissecretivos, anticonvulsivantes. <strong>Cuidado:</strong> Betabloqueadores e clonidina — reduzir gradualmente (risco de rebote).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FERRAMENTAS -->
+        <div id="ferramentas-screen" class="module-screen">
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Voltar
+            </button>
+
+            <div class="module-header">
+                <h2>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                    Ferramentas e Escalas
+                </h2>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab(this, 'ferramentas-tabs', 'tab-ecog')">ECOG</button>
+                <button class="tab" onclick="switchTab(this, 'ferramentas-tabs', 'tab-pps')">PPS</button>
+                <button class="tab" onclick="switchTab(this, 'ferramentas-tabs', 'tab-ppi')">PPI</button>
+                <button class="tab" onclick="switchTab(this, 'ferramentas-tabs', 'tab-opioides')">Opioides</button>
+                <button class="tab" onclick="switchTab(this, 'ferramentas-tabs', 'tab-hipo')">Hipodermóclise</button>
+            </div>
+
+            <div id="ferramentas-tabs">
+                <!-- ECOG -->
+                <div id="tab-ecog" class="tab-content active">
+                    <div class="info-box">
+                        <p><strong>ECOG Performance Status:</strong> Avalia capacidade funcional do paciente oncológico.</p>
+                    </div>
+
+                    <div class="scale-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 16px;">
+                        <div class="scale-item" onclick="selectScale(this, 'ecog')">
+                            <div class="number">0</div>
+                            <div class="label">Assintomático</div>
+                        </div>
+                        <div class="scale-item" onclick="selectScale(this, 'ecog')">
+                            <div class="number">1</div>
+                            <div class="label">Sintomático ambulatorial</div>
+                        </div>
+                        <div class="scale-item" onclick="selectScale(this, 'ecog')">
+                            <div class="number">2</div>
+                            <div class="label">&lt;50% acamado</div>
+                        </div>
+                        <div class="scale-item" onclick="selectScale(this, 'ecog')">
+                            <div class="number">3</div>
+                            <div class="label">&gt;50% acamado</div>
+                        </div>
+                        <div class="scale-item" onclick="selectScale(this, 'ecog')">
+                            <div class="number">4</div>
+                            <div class="label">Acamado total</div>
+                        </div>
+                        <div class="scale-item" onclick="selectScale(this, 'ecog')">
+                            <div class="number">5</div>
+                            <div class="label">Óbito</div>
+                        </div>
+                    </div>
+
+                    <table class="med-table" style="margin-top: 16px;">
+                        <tr><th>ECOG</th><th>Descrição</th></tr>
+                        <tr><td>0</td><td>Totalmente ativo, sem restrições</td></tr>
+                        <tr><td>1</td><td>Restrição a atividades físicas extenuantes, capaz de trabalho leve</td></tr>
+                        <tr><td>2</td><td>Ambulatorial, capaz de autocuidado, incapaz de trabalho; <50% do tempo acordado no leito</td></tr>
+                        <tr><td>3</td><td>Capacidade limitada de autocuidado; >50% do tempo acordado no leito ou cadeira</td></tr>
+                        <tr><td>4</td><td>Completamente incapacitado; totalmente restrito ao leito ou cadeira</td></tr>
+                    </table>
+                </div>
+
+                <!-- PPS -->
+                <div id="tab-pps" class="tab-content">
+                    <div class="info-box">
+                        <p><strong>Palliative Performance Scale:</strong> Avalia funcionalidade em pacientes paliativos. Escala de 0-100%.</p>
+                    </div>
+
+                    <table class="med-table" style="margin-top: 16px; font-size: 0.8rem;">
+                        <tr><th>PPS</th><th>Deambulação</th><th>Atividade</th><th>Autocuidado</th><th>Ingesta</th><th>Consciência</th></tr>
+                        <tr><td><strong>100%</strong></td><td>Completa</td><td>Normal</td><td>Completo</td><td>Normal</td><td>Completa</td></tr>
+                        <tr><td><strong>90%</strong></td><td>Completa</td><td>Normal</td><td>Completo</td><td>Normal</td><td>Completa</td></tr>
+                        <tr><td><strong>80%</strong></td><td>Completa</td><td>Com esforço</td><td>Completo</td><td>Normal ou ↓</td><td>Completa</td></tr>
+                        <tr><td><strong>70%</strong></td><td>Reduzida</td><td>Incapaz trabalho</td><td>Completo</td><td>Normal ou ↓</td><td>Completa</td></tr>
+                        <tr><td><strong>60%</strong></td><td>Reduzida</td><td>Incapaz hobbies</td><td>Assistência ocasional</td><td>Normal ou ↓</td><td>Confusão ocasional</td></tr>
+                        <tr><td><strong>50%</strong></td><td>Sentado/deitado</td><td>Incapaz qualquer</td><td>Assistência considerável</td><td>Normal ou ↓</td><td>Confusão ocasional</td></tr>
+                        <tr><td><strong>40%</strong></td><td>Acamado</td><td>Incapaz</td><td>Assistência principal</td><td>Normal ou ↓</td><td>Confusão ou sonolência</td></tr>
+                        <tr><td><strong>30%</strong></td><td>Acamado</td><td>Incapaz</td><td>Dependente total</td><td>Reduzida</td><td>Confusão ou sonolência</td></tr>
+                        <tr><td><strong>20%</strong></td><td>Acamado</td><td>Incapaz</td><td>Dependente total</td><td>Goles</td><td>Confusão ou sonolência</td></tr>
+                        <tr><td><strong>10%</strong></td><td>Acamado</td><td>Incapaz</td><td>Dependente total</td><td>Cuidados boca</td><td>Sonolento ou coma</td></tr>
+                        <tr><td><strong>0%</strong></td><td colspan="5">Óbito</td></tr>
+                    </table>
+                </div>
+
+                <!-- PPI Calculator -->
+                <div id="tab-ppi" class="tab-content">
+                    <div class="info-box blue">
+                        <p><strong>Palliative Prognostic Index:</strong> Prediz sobrevida em pacientes oncológicos usando apenas critérios clínicos.</p>
+                    </div>
+
+                    <div class="calculator" style="background: #1A1A1A; border: 2px solid #333;">
+                        <h4>Calculadora PPI</h4>
+                        
+                        <div class="calc-row">
+                            <label>PPS (Palliative Performance Scale)</label>
+                            <div class="ppi-options" data-ppi="pps">
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-pps" value="0" checked> 
+                                    <span class="ppi-option-text">≥60%</span>
+                                    <span class="ppi-option-score">+0</span>
+                                </label>
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-pps" value="2.5"> 
+                                    <span class="ppi-option-text">30-50%</span>
+                                    <span class="ppi-option-score">+2,5</span>
+                                </label>
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-pps" value="4"> 
+                                    <span class="ppi-option-text">10-20%</span>
+                                    <span class="ppi-option-score">+4</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="calc-row">
+                            <label>Ingesta Oral</label>
+                            <div class="ppi-options" data-ppi="oral">
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-oral" value="0" checked> 
+                                    <span class="ppi-option-text">Normal</span>
+                                    <span class="ppi-option-score">+0</span>
+                                </label>
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-oral" value="1"> 
+                                    <span class="ppi-option-text">Moderadamente reduzida</span>
+                                    <span class="ppi-option-score">+1</span>
+                                </label>
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-oral" value="2.5"> 
+                                    <span class="ppi-option-text">Muito reduzida (apenas goles)</span>
+                                    <span class="ppi-option-score">+2,5</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="calc-row">
+                            <label>Edema</label>
+                            <div class="ppi-options" data-ppi="edema">
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-edema" value="0" checked> 
+                                    <span class="ppi-option-text">Ausente</span>
+                                    <span class="ppi-option-score">+0</span>
+                                </label>
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-edema" value="1"> 
+                                    <span class="ppi-option-text">Presente</span>
+                                    <span class="ppi-option-score">+1</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="calc-row">
+                            <label>Dispneia em Repouso</label>
+                            <div class="ppi-options" data-ppi="dispneia">
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-dispneia" value="0" checked> 
+                                    <span class="ppi-option-text">Ausente</span>
+                                    <span class="ppi-option-score">+0</span>
+                                </label>
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-dispneia" value="3.5"> 
+                                    <span class="ppi-option-text">Presente</span>
+                                    <span class="ppi-option-score">+3,5</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="calc-row">
+                            <label>Delirium</label>
+                            <div class="ppi-options" data-ppi="delirium">
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-delirium" value="0" checked> 
+                                    <span class="ppi-option-text">Ausente</span>
+                                    <span class="ppi-option-score">+0</span>
+                                </label>
+                                <label class="ppi-option">
+                                    <input type="radio" name="ppi-delirium" value="4"> 
+                                    <span class="ppi-option-text">Presente</span>
+                                    <span class="ppi-option-score">+4</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="ppi-result">
+                            <div style="font-size: 0.85rem; color: var(--cinza-secundario);">Score PPI</div>
+                            <div class="ppi-score" id="ppi-score">0</div>
+                            <div class="ppi-interpretation green" id="ppi-interpretation">
+                                <strong>Sobrevida mediana: ~155 dias</strong><br>
+                                Prognóstico melhor
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box" style="margin-top: 16px;">
+                        <p><strong>Interpretação:</strong><br>
+                        • PPI ≤2: ~155 dias<br>
+                        • PPI >2 a ≤4: ~89 dias<br>
+                        • PPI >4 a ≤6: ~18-21 dias<br>
+                        • PPI >6: ~5 dias</p>
+                    </div>
+                </div>
+
+                <!-- Conversão Opioides -->
+                <div id="tab-opioides" class="tab-content">
+                    <div class="info-box">
+                        <p><strong>Equianalgesia:</strong> Use esta tabela para converter entre opioides. Sempre iniciar com 75% da dose calculada ao trocar.</p>
+                    </div>
+
+                    <div class="calculator">
+                        <h4>Calculadora de Conversão</h4>
+                        
+                        <div class="calc-row">
+                            <label>Opioide Atual</label>
+                            <select id="opioid-from" onchange="calculateOpioid()">
+                                <option value="morfina-vo">Morfina VO</option>
+                                <option value="morfina-ev">Morfina EV/SC</option>
+                                <option value="tramadol">Tramadol VO</option>
+                                <option value="codeina">Codeína VO</option>
+                                <option value="fentanil-ev">Fentanil EV (mcg/h)</option>
+                                <option value="metadona">Metadona VO</option>
+                            </select>
+                        </div>
+
+                        <div class="calc-row">
+                            <label>Dose em 24h</label>
+                            <input type="number" id="opioid-dose" placeholder="Ex: 30" onchange="calculateOpioid()">
+                        </div>
+
+                        <div class="calc-row">
+                            <label>Converter para</label>
+                            <select id="opioid-to" onchange="calculateOpioid()">
+                                <option value="morfina-vo">Morfina VO</option>
+                                <option value="morfina-ev">Morfina EV/SC</option>
+                                <option value="tramadol">Tramadol VO</option>
+                                <option value="codeina">Codeína VO</option>
+                                <option value="fentanil-ev">Fentanil EV (mcg/h)</option>
+                                <option value="metadona">Metadona VO</option>
+                            </select>
+                        </div>
+
+                        <div class="calc-result">
+                            <div class="calc-result-value" id="opioid-result">-</div>
+                            <div class="calc-result-label">Dose equivalente em 24h</div>
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 16px 0 12px; font-size: 0.95rem;">Tabela de Equivalência (24h)</h4>
+                    <table class="med-table">
+                        <tr><th>Opioide</th><th>Dose Equianalgésica</th><th>Fator</th></tr>
+                        <tr><td>Morfina VO</td><td>30mg</td><td>1</td></tr>
+                        <tr><td>Morfina EV/SC</td><td>10mg</td><td>3</td></tr>
+                        <tr><td>Tramadol VO</td><td>300mg</td><td>0,1</td></tr>
+                        <tr><td>Codeína VO</td><td>200mg</td><td>0,15</td></tr>
+                        <tr><td>Fentanil EV</td><td>100mcg/h</td><td>~300</td></tr>
+                        <tr><td>Metadona VO</td><td>Variável*</td><td>-</td></tr>
+                    </table>
+                    <p style="font-size: 0.75rem; color: var(--cinza-secundario);">*Metadona: conversão não linear. Solicitar avaliação especializada para doses altas.</p>
+                </div>
+
+                <!-- Hipodermóclise -->
+                <div id="tab-hipo" class="tab-content">
+                    <div class="info-box">
+                        <p><strong>Hipodermóclise:</strong> Infusão de fluidos no tecido subcutâneo. Alternativa simples, segura, de baixo custo, com reações adversas raras e geralmente reversíveis. Pode ser realizada em domicílio, ILPI, enfermaria e pronto atendimento.</p>
+                    </div>
+
+                    <div class="hipo-subtabs">
+                        <button class="hipo-subtab active" onclick="switchHipoTab(this, 'hipo-indicacoes')">Indicações</button>
+                        <button class="hipo-subtab" onclick="switchHipoTab(this, 'hipo-tecnica')">Técnica</button>
+                        <button class="hipo-subtab" onclick="switchHipoTab(this, 'hipo-medicacoes')">Medicações</button>
+                        <button class="hipo-subtab" onclick="switchHipoTab(this, 'hipo-solucoes')">Soluções</button>
+                        <button class="hipo-subtab" onclick="switchHipoTab(this, 'hipo-compat')">Compatibilidade</button>
+                        <button class="hipo-subtab" onclick="switchHipoTab(this, 'hipo-complic')">Complicações</button>
+                    </div>
+
+                    <!-- Indicações / Contraindicações -->
+                    <div id="hipo-indicacoes" class="hipo-panel active">
+                        <div class="hipo-section">
+                            <h4>Indicações</h4>
+                            <ul class="content-list">
+                                <li>Demência avançada com disfagia</li>
+                                <li>Náuseas e/ou vômitos por períodos prolongados</li>
+                                <li>Intolerância gástrica</li>
+                                <li>Obstrução intestinal</li>
+                                <li>Diarreia</li>
+                                <li>Confusão mental</li>
+                                <li>Dispneia intensa</li>
+                                <li>Fase final de vida</li>
+                                <li>Desidratação que não exija reposição rápida de volume</li>
+                                <li>Antibioticoterapia em idosos (desde que o fármaco seja tolerado por via SC)</li>
+                                <li>Perfil de absorção mais lento desejado (opioides para analgesia contínua, furosemida para ICC)</li>
+                            </ul>
+                        </div>
+                        <div class="hipo-section">
+                            <h4>Contraindicações</h4>
+                            <ul class="content-list">
+                                <li>Emergências que necessitam de reposição rápida de volume</li>
+                                <li>Desidratação severa</li>
+                                <li>Distúrbio de coagulação</li>
+                                <li>Anasarca</li>
+                                <li>Soluções hipertônicas (concentrações máx: SG 5%, NaCl 20% até 20mL e KCl 19,1% até 15mL por litro)</li>
+                            </ul>
+                            <div class="info-box orange" style="margin-top: 12px;">
+                                <p>Evitar regiões irradiadas (radioterapia) e membros com esvaziamento ganglionar ou mastectomia.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Técnica -->
+                    <div id="hipo-tecnica" class="hipo-panel">
+                        <div class="hipo-section">
+                            <h4>Volume por Local de Punção (24h)</h4>
+                            <div class="volume-grid">
+                                <div class="volume-card">
+                                    <div class="region">Subclavicular</div>
+                                    <div class="vol">até 250 mL</div>
+                                </div>
+                                <div class="volume-card">
+                                    <div class="region">Deltóidea</div>
+                                    <div class="vol">até 250 mL</div>
+                                </div>
+                                <div class="volume-card">
+                                    <div class="region">Abdominal</div>
+                                    <div class="vol">até 1.000 mL</div>
+                                </div>
+                                <div class="volume-card">
+                                    <div class="region">Interescapular</div>
+                                    <div class="vol">até 1.000 mL</div>
+                                </div>
+                                <div class="volume-card" style="grid-column: 1 / -1;">
+                                    <div class="region">Anterolateral da Coxa</div>
+                                    <div class="vol">até 1.500 mL (preferencial para volumes maiores)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hipo-section">
+                            <h4>Dispositivos</h4>
+                            <table class="med-table">
+                                <tr><th>Dispositivo</th><th>Calibre</th><th>Permanência</th></tr>
+                                <tr><td>Escalpe (butterfly)</td><td>21G a 25G</td><td>3-5 dias</td></tr>
+                                <tr><td>Cateter não agulhado (Vialon)</td><td>20G a 24G</td><td>7-11 dias</td></tr>
+                                <tr><td>Cateter não agulhado (poliuretano)</td><td>20G a 24G</td><td>7-11 dias</td></tr>
+                            </table>
+                            <p style="font-size: 0.75rem; color: var(--cinza-secundario); margin-top: 8px;">Cateter não agulhado: menor risco de acidente perfurocortante e reações alérgicas vs. escalpe (níquel).</p>
+                        </div>
+
+                        <div class="hipo-section">
+                            <h4>Procedimento</h4>
+                            <div class="technique-steps">
+                                <div class="technique-step">
+                                    <h5>Checar prescrição</h5>
+                                    <p>Nome do paciente, medicamento/soro, dosagem, via SC, horário</p>
+                                </div>
+                                <div class="technique-step">
+                                    <h5>Verificar compatibilidade</h5>
+                                    <p>Conferir se a medicação está na lista de HDC e aprazamento compatível</p>
+                                </div>
+                                <div class="technique-step">
+                                    <h5>Escolher local</h5>
+                                    <p>Coxa, abdome, região escapular ou infraclavicular — conforme volume necessário</p>
+                                </div>
+                                <div class="technique-step">
+                                    <h5>Posicionar e antissepsia</h5>
+                                    <p>Expor apenas a área de aplicação. Swab de álcool até o local estar limpo</p>
+                                </div>
+                                <div class="technique-step">
+                                    <h5>Puncionar</h5>
+                                    <p>Fazer prega cutânea, inserir cateter 22-24G em ângulo de 30-45° abaixo da pele levantada</p>
+                                </div>
+                                <div class="technique-step">
+                                    <h5>Confirmar posicionamento</h5>
+                                    <p>Aspirar com seringa — sem retorno de sangue. Se houver retorno venoso, retirar e reiniciar</p>
+                                </div>
+                                <div class="technique-step">
+                                    <h5>Fixar</h5>
+                                    <p>Película transparente, identificar com data e nome de quem puncionou</p>
+                                </div>
+                                <div class="technique-step">
+                                    <h5>Flush</h5>
+                                    <p>SF 0,9% 2 a 5 mL</p>
+                                </div>
+                                <div class="technique-step">
+                                    <h5>Conectar medicação</h5>
+                                    <p>Se infusão contínua: BIC até 62,5 mL/h (noturno em coxa: 70-100 mL/h)</p>
+                                </div>
+                                <div class="technique-step">
+                                    <h5>Orientar paciente</h5>
+                                    <p>Comunicar se sentir dor, queimação ou ardência durante a infusão</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medicações -->
+                    <div id="hipo-medicacoes" class="hipo-panel">
+                        <div class="hipo-section">
+                            <h4>Medicações por Via Subcutânea</h4>
+
+                            <div class="med-detail-card">
+                                <h5>Ampicilina</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">1 g/dia</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 50 mL</span></div>
+                                <div class="med-obs">Tempo de infusão: 20 minutos</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Cefepime</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">1 g 12/12h ou 8/8h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">Reconstituir 1g em 10 mL AD + SF 0,9% 100 mL</span></div>
+                                <div class="med-obs">Tempo de infusão: 40 min. Sem estudos para doses maiores</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Ceftriaxona</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">1 g 12/12h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">Reconstituir 1g em 10 mL AD + SF 0,9% 100 mL</span></div>
+                                <div class="med-obs">Tempo de infusão: 40 minutos</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Dexametasona</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">2-16 mg a cada 24h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">1 amp (1 mL) em SF 0,9% 1 mL ou 1 amp (2,5 mL) em SF 0,9% 2,5 mL</span></div>
+                                <div class="med-obs">Aplicação lenta, 1-2x/dia pela manhã. Sítio exclusivo — incompatível com outros medicamentos, risco de irritação local</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Dimenidrinato</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">50-100 mg em 24h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 1 mL</span></div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Dipirona</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">1-2 g até 6/6h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 2 mL</span></div>
+                                <div class="med-obs">Aplicação lenta em bolus</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Ertapenem</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">1 g 24/24h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">Reconstituir em 10 mL AD + 50 mL SF 0,9%</span></div>
+                                <div class="med-obs">Tempo de infusão: 30 min. Alternativa: bolus com 1g em 3,2 mL lidocaína 1% (sem epinefrina)</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Escopolamina</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">20 mg 8/8h até 60 mg 6/6h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 1 mL (bolus)</span></div>
+                                <div class="med-obs">Infusão em bolus ou contínua. Não confundir com a apresentação combinada com dipirona</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Fentanil</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">A critério médico</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">4 amp (50 mcg/mL) em SF 0,9% 210 mL</span></div>
+                                <div class="med-obs">Infusão contínua a critério médico</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Furosemida</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">20-140 mg/24h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 2 mL (bolus) ou volumes maiores (infusão contínua)</span></div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Haloperidol</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">0,5-30 mg/24h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 5 mL</span></div>
+                                <div class="med-obs">Idosos frágeis: menor dose possível. Se concentração >= 1 mg/mL, usar AD como diluente (risco de precipitação com SF)</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Metadona</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">50% da dose oral habitual</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 10 mL</span></div>
+                                <div class="med-obs">Velocidade: 60 mL/h. Mudar local de punção a cada 24h (alto potencial de irritação cutânea)</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Metoclopramida</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">30-120 mg/dia</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 2 mL (bolus)</span></div>
+                                <div class="med-obs">Pode causar irritação local</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Midazolam</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">1-5 mg (bolus) / 10-120 mg/dia (BIC)</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 5 mL (bolus); SF 0,9% 100 mL (BIC)</span></div>
+                                <div class="med-obs">Pode causar irritação local</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Morfina</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">2-3 mg 4/4h (bolus) ou 10-20 mg/24h (BIC)</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">Não requer diluição (bolus); SF 0,9% 100 mL (BIC)</span></div>
+                                <div class="med-obs">Sem dose máxima. Menor dose possível em idosos frágeis, DRC ou hepatopatas. Intervalo pode ser aumentado em insuficiência renal/hepática</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Octreotide</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">300-900 mcg/24h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 5 mL (bolus); SF 0,9% 100 mL (BIC)</span></div>
+                                <div class="med-obs">Armazenar refrigerado — atingir temperatura ambiente antes da administração. Sítio exclusivo</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Omeprazol</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">40 mg 24/24h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 100 mL</span></div>
+                                <div class="med-obs">Tempo de infusão: 4 horas. Dose única diária. Não mesclar com outros medicamentos</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Ondansetrona</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">8-32 mg/24h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 30 mL</span></div>
+                                <div class="med-obs">Tempo de infusão: 30 min (risco de prolongamento do intervalo QT)</div>
+                            </div>
+
+                            <div class="med-detail-card">
+                                <h5>Tramadol</h5>
+                                <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">100-600 mg/24h</span></div>
+                                <div class="med-row"><span class="med-label">Diluição:</span><span class="med-value">SF 0,9% 20 mL (bolus); SF 0,9% 100 mL (BIC)</span></div>
+                            </div>
+
+                            <p style="font-size: 0.7rem; color: var(--cinza-secundario); margin-top: 12px;">Fonte: Azevedo et al. / Manual de Cuidados Paliativos na Emergência, USP 2021</p>
+                        </div>
+                    </div>
+
+                    <!-- Soluções -->
+                    <div id="hipo-solucoes" class="hipo-panel">
+                        <div class="hipo-section">
+                            <h4>Soluções por Via Subcutânea</h4>
+                            <table class="med-table">
+                                <tr><th>Solução</th><th>Dose Máxima</th><th>Orientações</th></tr>
+                                <tr><td>SF 0,9%</td><td>1.500 mL/24h por sítio</td><td>SF 0,45% segue as mesmas recomendações. Máx 62,5 mL/h. Coxa preferencial para volumes maiores</td></tr>
+                                <tr><td>Soro glicofisiológico (2/3 SG 5% + 1/3 SF 0,9%)</td><td>1.500 mL/24h por sítio</td><td>Máx 62,5 mL/h. Coxa preferencial para volumes maiores</td></tr>
+                                <tr><td>SG 5%</td><td>1.000 mL/24h por sítio</td><td>Máx 62,5 mL/h. Coxa preferencial para volumes maiores</td></tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Compatibilidade -->
+                    <div id="hipo-compat" class="hipo-panel">
+                        <div class="hipo-section">
+                            <h4>Compatibilidade de Medicamentos em Mesma Infusão</h4>
+                            <p style="font-size: 0.78rem; color: var(--cinza-secundario); margin-bottom: 8px;">Deslize horizontalmente para ver a tabela completa</p>
+                            <div class="compat-scroll">
+                                <table class="compat-table" style="display: table; min-width: 700px;">
+                                    <tr>
+                                        <th></th>
+                                        <th>CEF</th>
+                                        <th>CRO</th>
+                                        <th>DIP</th>
+                                        <th>ESC</th>
+                                        <th>FUR</th>
+                                        <th>HAL</th>
+                                        <th>LEV</th>
+                                        <th>MTC</th>
+                                        <th>MDZ</th>
+                                        <th>MOR</th>
+                                        <th>OCT</th>
+                                        <th>OND</th>
+                                        <th>RAN</th>
+                                        <th>TRA</th>
+                                        <th>DEX</th>
+                                    </tr>
+                                    <tr><td>Cefepime</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Ceftriaxona</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Dipirona</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Escopolamina</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Furosemida</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Haloperidol</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Levomeprom.</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Metoclopramida</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Midazolam</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Morfina</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Octreotide</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="i">I</td><td class="i">I</td></tr>
+                                    <tr><td>Ondansetrona</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Ranitidina</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="i">I</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td>Tramadol</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="i">I</td><td class="i">I</td><td class="c">C</td><td class="c">C</td><td class="i">I</td></tr>
+                                    <tr><td style="color: var(--vermelho);">Dexametasona</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td><td class="i">I</td></tr>
+                                </table>
+                            </div>
+                            <div class="info-box red" style="margin-top: 12px;">
+                                <p><strong>Dexametasona:</strong> incompatível com TODOS os medicamentos — sempre usar sítio exclusivo.</p>
+                            </div>
+                            <p style="font-size: 0.7rem; color: var(--cinza-secundario); margin-top: 8px;">C = compatível | I = incompatível. Fonte: Azevedo e Barbosa.</p>
+                        </div>
+                    </div>
+
+                    <!-- Complicações -->
+                    <div id="hipo-complic" class="hipo-panel">
+                        <div class="hipo-section">
+                            <h4>Complicações</h4>
+                            <div class="med-detail-card">
+                                <h5>Relacionadas à técnica e materiais</h5>
+                                <p class="med-obs" style="margin-top: 0; border-top: none;">Punções > 72h favorecem reações locais (rubor, calor). Escalpe causa mais reações que cateter não agulhado.</p>
+                            </div>
+                            <div class="med-detail-card">
+                                <h5>Relacionadas às medicações</h5>
+                                <p class="med-obs" style="margin-top: 0; border-top: none;">Extremos de pH (ácido &lt; 2, alcalino &gt; 11) aumentam risco de reações, podendo causar necrose tecidual.</p>
+                            </div>
+                            <div class="med-detail-card">
+                                <h5>Relacionadas às soluções</h5>
+                                <p class="med-obs" style="margin-top: 0; border-top: none;">Soluções hipo/hipertônicas podem causar dor e rubor pela diferença com tonicidade fisiológica. Preferir soluções isotônicas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MITOS E VERDADES -->
+        <div id="mitos-screen" class="module-screen">
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Voltar
+            </button>
+
+            <div class="module-header">
+                <h2>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Mitos e Verdades
+                </h2>
+                <p>Clique em um card para ver a explicação</p>
+            </div>
+
+            <!-- Conceito -->
+            <div class="myths-section">
+                <h3>Sobre o Conceito</h3>
+                <div class="myths-grid">
+                    <div class="myth-card" onclick="showMyth(1)">
+                        <div class="myth-number">1</div>
+                        <div class="myth-title">"Não há o que fazer"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(2)">
+                        <div class="myth-number">2</div>
+                        <div class="myth-title">"Tudo ou nada"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(3)">
+                        <div class="myth-number">3</div>
+                        <div class="myth-title">"Só para câncer"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(4)">
+                        <div class="myth-number">4</div>
+                        <div class="myth-title">"Só no fim"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(5)">
+                        <div class="myth-number">5</div>
+                        <div class="myth-title">"Não no DE"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(6)">
+                        <div class="myth-number">6</div>
+                        <div class="myth-title">"É desistir"</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medicações -->
+            <div class="myths-section">
+                <h3>Sobre Medicações</h3>
+                <div class="myths-grid">
+                    <div class="myth-card" onclick="showMyth(7)">
+                        <div class="myth-number">7</div>
+                        <div class="myth-title">"Morfina vicia"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(8)">
+                        <div class="myth-number">8</div>
+                        <div class="myth-title">"Morfina mata"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(9)">
+                        <div class="myth-number">9</div>
+                        <div class="myth-title">"Sedação é eutanásia"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(10)">
+                        <div class="myth-number">10</div>
+                        <div class="myth-title">"Dose máxima"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(11)">
+                        <div class="myth-number">11</div>
+                        <div class="myth-title">"Guardar para depois"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(12)">
+                        <div class="myth-number">12</div>
+                        <div class="myth-title">"Só se pedir"</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comunicação -->
+            <div class="myths-section">
+                <h3>Sobre Comunicação</h3>
+                <div class="myths-grid">
+                    <div class="myth-card" onclick="showMyth(13)">
+                        <div class="myth-number">13</div>
+                        <div class="myth-title">"Tira esperança"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(14)">
+                        <div class="myth-number">14</div>
+                        <div class="myth-title">"Família decide"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(15)">
+                        <div class="myth-number">15</div>
+                        <div class="myth-title">"Não falar em morte"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(16)">
+                        <div class="myth-number">16</div>
+                        <div class="myth-title">"Paciente não quer saber"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(17)">
+                        <div class="myth-number">17</div>
+                        <div class="myth-title">"Conversa leva tempo"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(18)">
+                        <div class="myth-number">18</div>
+                        <div class="myth-title">"Depois da UTI"</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prognóstico -->
+            <div class="myths-section">
+                <h3>Sobre Prognóstico</h3>
+                <div class="myths-grid">
+                    <div class="myth-card" onclick="showMyth(19)">
+                        <div class="myth-number">19</div>
+                        <div class="myth-title">"Paciente jovem"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(20)">
+                        <div class="myth-number">20</div>
+                        <div class="myth-title">"Ainda tem opção"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(21)">
+                        <div class="myth-number">21</div>
+                        <div class="myth-title">"Prognóstico exato"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(22)">
+                        <div class="myth-number">22</div>
+                        <div class="myth-title">"Milagre acontece"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(23)">
+                        <div class="myth-number">23</div>
+                        <div class="myth-title">"Só oncologia decide"</div>
+                    </div>
+                    <div class="myth-card" onclick="showMyth(24)">
+                        <div class="myth-number">24</div>
+                        <div class="myth-title">"Se entrar no DE, intubo"</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REFERÊNCIAS -->
+        <div id="referencias-screen" class="module-screen">
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Voltar
+            </button>
+
+            <div class="module-header">
+                <h2>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                    Referências
+                </h2>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(16,185,129,0.15); color: var(--verde-hugo);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></span>
+                        Ferramentas e Escalas
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list" style="font-size: 0.8rem;">
+                            <li>SPICT-BR. NHS Lothian / University of Edinburgh, 2019.</li>
+                            <li>Morita T, et al. The Palliative Prognostic Index. Support Care Cancer. 1999;7:128-133.</li>
+                            <li>Anderson F, et al. Palliative Performance Scale (PPS). J Palliat Care. 1996.</li>
+                            <li>Oken MM, et al. ECOG Performance Status. Am J Clin Oncol. 1982.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(59,130,246,0.15); color: var(--azul-hugo);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+                        Manejo de Sintomas
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list" style="font-size: 0.8rem;">
+                            <li>UpToDate: Palliative care in the emergency department, 2024.</li>
+                            <li>UpToDate: Overview of managing common symptoms in palliative care, 2024.</li>
+                            <li>Protocolo de Sedação Paliativa — ANCP, 2023.</li>
+                            <li>Cuidados Paliativos na Emergência — USP, 2021.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(167,139,250,0.15); color: var(--roxo);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+                        Comunicação
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list" style="font-size: 0.8rem;">
+                            <li>VitalTalk. Communication Skills Training for Clinicians.</li>
+                            <li>Ribeiro VZ, et al. SAVED Framework. J Bras Med Emerg. 2024.</li>
+                            <li>Back AL, et al. Approaching difficult communication tasks in oncology. CA Cancer J Clin. 2005.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <h3>
+                        <span class="icon" style="background: rgba(249,115,22,0.15); color: var(--laranja);">⚖️</span>
+                        Ética e Legislação
+                    </h3>
+                    <svg class="collapsible-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <ul class="content-list" style="font-size: 0.8rem;">
+                            <li>Resolução CFM nº 1.805/2006 — Ortotanásia.</li>
+                            <li>Resolução CFM nº 1.995/2012 — Diretivas Antecipadas de Vontade.</li>
+                            <li>Resolução CFM nº 2.217/2018 — Código de Ética Médica.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer style="position:relative;padding:20px 16px;text-align:center;border-top:1px solid #222;">
+        <div style="font-size:11px;color:#999;">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
+        <div style="font-size:10px;color:#555;margin-top:4px;">v1.0.0 — Março 2026</div>
+    </footer>
+
+    <!-- Modal Mitos -->
+    <div class="modal-overlay" id="myth-modal" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="myth-modal-title">Mito ou Verdade?</h3>
+                <button class="modal-close" onclick="closeMyth()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="myth-modal-content">
+                    <div class="myth-badge mito" id="myth-badge">
+                        <span></span> MITO
+                    </div>
+                    <div class="myth-statement" id="myth-statement">
+                        "Cuidados paliativos significa que não há mais nada a fazer."
+                    </div>
+                    <div class="myth-explanation" id="myth-explanation">
+                        Cuidados paliativos são uma abordagem ativa que visa melhorar a qualidade de vida. Há MUITO a fazer: controle de sintomas, suporte emocional, planejamento de cuidados, apoio à família.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos Mitos
+        const mythsData = {
+            1: {
+                title: '"Não há o que fazer"',
+                isMito: true,
+                statement: '"Cuidados paliativos significa que não há mais nada a fazer."',
+                explanation: 'Cuidados paliativos são uma abordagem ATIVA que visa melhorar a qualidade de vida. Há MUITO a fazer: controle impecável de sintomas, suporte emocional, planejamento de cuidados, apoio à família, dignidade no processo de morrer.'
+            },
+            2: {
+                title: '"Tudo ou nada"',
+                isMito: true,
+                statement: '"Ou fazemos tudo para curar, ou não fazemos nada."',
+                explanation: 'Existe um amplo espectro entre "investir em tudo" e "não fazer nada". Cuidados paliativos podem ser integrados com tratamentos curativos desde o diagnóstico. O objetivo é proporcionalidade e adequação ao momento do paciente.'
+            },
+            3: {
+                title: '"Só para câncer"',
+                isMito: true,
+                statement: '"Cuidados paliativos são apenas para pacientes oncológicos."',
+                explanation: 'Cuidados paliativos beneficiam qualquer doença grave e ameaçadora à vida: ICC, DPOC, DRC, demência, doenças neurológicas, fragilidade do idoso. Todas essas condições cursam com sintomas que precisam de manejo adequado.'
+            },
+            4: {
+                title: '"Só no fim"',
+                isMito: true,
+                statement: '"Cuidados paliativos devem ser iniciados apenas nos últimos dias de vida."',
+                explanation: 'Quanto mais precoce a integração dos cuidados paliativos, melhores os desfechos. Estudos mostram que pacientes com câncer de pulmão que receberam CP precoces viveram MAIS e com melhor qualidade de vida.'
+            },
+            5: {
+                title: '"Não no DE"',
+                isMito: true,
+                statement: '"Cuidados paliativos não são papel do emergencista."',
+                explanation: 'O DE é frequentemente o primeiro ponto de contato com pacientes em crise de doença avançada. Emergencistas estão em posição privilegiada para identificar, iniciar conversas e aliviar sofrimento agudo.'
+            },
+            6: {
+                title: '"É desistir"',
+                isMito: true,
+                statement: '"Oferecer cuidados paliativos é o mesmo que desistir do paciente."',
+                explanation: 'Cuidados paliativos são uma mudança de FOCO, não de intensidade. O objetivo passa a ser qualidade de vida e conforto. É uma das formas mais intensas de cuidado que podemos oferecer.'
+            },
+            7: {
+                title: '"Morfina vicia"',
+                isMito: true,
+                statement: '"Morfina causa dependência em pacientes com dor."',
+                explanation: 'Dependência física (tolerância) é diferente de adicção (transtorno de uso). Pacientes com dor que recebem opioides raramente desenvolvem adicção. O subtratamento da dor é muito mais comum e prejudicial.'
+            },
+            8: {
+                title: '"Morfina mata"',
+                isMito: true,
+                statement: '"Morfina acelera a morte do paciente."',
+                explanation: 'Quando titulada adequadamente para controle de sintomas, morfina NÃO encurta a vida. Estudos mostram que pacientes com bom controle de dor e dispneia frequentemente vivem mais. O duplo efeito é eticamente aceito.'
+            },
+            9: {
+                title: '"Sedação é eutanásia"',
+                isMito: true,
+                statement: '"Sedação paliativa é uma forma disfarçada de eutanásia."',
+                explanation: 'Sedação paliativa visa controlar sintomas refratários, não antecipar a morte. A intenção (alívio de sofrimento) e o método (titulação para conforto) são completamente diferentes da eutanásia.'
+            },
+            10: {
+                title: '"Dose máxima"',
+                isMito: true,
+                statement: '"Opioides têm dose máxima que não pode ser ultrapassada."',
+                explanation: 'Opioides NÃO têm dose teto para analgesia. A dose correta é aquela que alivia a dor com efeitos adversos toleráveis. Pacientes em uso crônico desenvolvem tolerância e podem precisar de doses muito altas.'
+            },
+            11: {
+                title: '"Guardar para depois"',
+                isMito: true,
+                statement: '"Melhor guardar os opioides fortes para quando a dor piorar."',
+                explanation: 'Dor não controlada causa sofrimento desnecessário e pode levar a sensibilização central, tornando o controle futuro mais difícil. Usar a medicação adequada ao nível de dor AGORA é o correto.'
+            },
+            12: {
+                title: '"Só se pedir"',
+                isMito: true,
+                statement: '"Só devo dar analgésico se o paciente pedir."',
+                explanation: 'Muitos pacientes, especialmente idosos e com déficit cognitivo, não pedem analgesia mesmo com dor intensa. A avaliação proativa e sistemática da dor é responsabilidade da equipe.'
+            },
+            13: {
+                title: '"Tira esperança"',
+                isMito: true,
+                statement: '"Falar sobre cuidados paliativos tira a esperança do paciente."',
+                explanation: 'Honestidade compassiva não elimina esperança — redireciona. Pacientes podem manter esperança de conforto, tempo de qualidade, resolução de pendências. Falsas esperanças causam mais dano.'
+            },
+            14: {
+                title: '"Família decide"',
+                isMito: true,
+                statement: '"A família é quem deve decidir sobre os cuidados do paciente."',
+                explanation: 'O paciente capaz é o protagonista de suas decisões. A família representa os desejos do paciente quando ele não pode se expressar, mas deve basear-se nos valores DELE, não nos próprios.'
+            },
+            15: {
+                title: '"Não falar em morte"',
+                isMito: true,
+                statement: '"Não devemos mencionar a possibilidade de morte para o paciente."',
+                explanation: 'Maioria dos pacientes quer informação honesta sobre seu prognóstico. Evitar o tema impede planejamento, despedidas e fechamento de ciclos. A comunicação deve ser gradual, respeitosa e individualizada.'
+            },
+            16: {
+                title: '"Paciente não quer saber"',
+                isMito: true,
+                statement: '"A maioria dos pacientes não quer saber sobre seu prognóstico."',
+                explanation: 'Estudos mostram que 70-90% dos pacientes desejam informação sobre seu prognóstico. A percepção de que "não querem saber" frequentemente é projeção da nossa própria dificuldade em comunicar.'
+            },
+            17: {
+                title: '"Conversa leva tempo"',
+                isMito: true,
+                statement: '"Não tenho tempo no DE para ter conversas sobre fim de vida."',
+                explanation: 'Conversas efetivas sobre metas de cuidado podem ser breves (5-10 minutos). Perguntas-chave bem colocadas economizam tempo e evitam procedimentos desnecessários. É questão de técnica, não de tempo.'
+            },
+            18: {
+                title: '"Depois da UTI"',
+                isMito: true,
+                statement: '"Cuidados paliativos devem começar após alta da UTI."',
+                explanation: 'A UTI é um dos locais onde mais se precisa de cuidados paliativos. Pacientes gravemente enfermos beneficiam-se de controle de sintomas, comunicação estruturada e planejamento de cuidados durante a internação.'
+            },
+            19: {
+                title: '"Paciente jovem"',
+                isMito: true,
+                statement: '"Paciente jovem sempre deve receber medidas invasivas."',
+                explanation: 'Idade não é critério para proporcionalidade de tratamento. Pacientes jovens com doenças terminais também têm direito a cuidados paliativos e a recusar medidas invasivas que não mudam prognóstico.'
+            },
+            20: {
+                title: '"Ainda tem opção"',
+                isMito: true,
+                statement: '"Se ainda existe alguma opção de tratamento, não é hora de paliativos."',
+                explanation: 'Cuidados paliativos e tratamento curativo não são mutuamente exclusivos. A integração precoce melhora qualidade de vida e, em alguns estudos, até sobrevida. Não precisa esperar "não ter mais nada".'
+            },
+            21: {
+                title: '"Prognóstico exato"',
+                isMito: true,
+                statement: '"Médicos conseguem prever com precisão quanto tempo o paciente tem."',
+                explanation: 'Prognóstico é probabilístico, não determinístico. Médicos tendem a superestimar sobrevida. Ferramentas como PPI ajudam, mas devem ser comunicadas como estimativas, não certezas.'
+            },
+            22: {
+                title: '"Milagre acontece"',
+                isMito: false,
+                statement: '"Casos excepcionais de recuperação inesperada existem."',
+                explanation: 'Verdade! Casos excepcionais ocorrem, mas são estatisticamente raros. Basear decisões em exceções extremas pode prolongar sofrimento desnecessariamente para a grande maioria. Equilíbrio é fundamental.'
+            },
+            23: {
+                title: '"Só oncologia decide"',
+                isMito: true,
+                statement: '"Apenas o oncologista pode indicar cuidados paliativos."',
+                explanation: 'Qualquer médico pode identificar necessidade de cuidados paliativos e iniciar abordagem. O emergencista frequentemente é o primeiro a reconhecer e pode coordenar com equipe especializada posteriormente.'
+            },
+            24: {
+                title: '"Se entrar no DE, intubo"',
+                isMito: true,
+                statement: '"Se o paciente veio ao DE, é porque quer ser intubado e reanimado."',
+                explanation: 'Pacientes vêm ao DE por diversos motivos: dor, dispneia, medo, orientação inadequada. Vir ao DE não significa automaticamente querer medidas invasivas. Sempre verificar desejos e contexto.'
+            }
+        };
+
+        // Navegação entre telas
+        function showScreen(screenId) {
+            // Esconder todas as telas
+            document.querySelectorAll('.module-screen, .home-screen').forEach(el => {
+                el.classList.remove('active');
+                el.style.display = 'none';
+            });
+            
+            // Mostrar tela selecionada
+            const screen = document.getElementById(screenId + '-screen');
+            if (screen) {
+                screen.style.display = 'block';
+                screen.classList.add('active');
+            }
+            
+            // Scroll para o topo
+            window.scrollTo(0, 0);
+        }
+
+        // Toggle Collapsible
+        function toggleCollapsible(header) {
+            const collapsible = header.parentElement;
+            collapsible.classList.toggle('open');
+        }
+
+        // Toggle SAVED Card
+        function toggleSavedCard(card) {
+            card.classList.toggle('expanded');
+        }
+
+        // Switch Tab
+        function switchTab(button, containerId, tabId) {
+            // Remove active de todas as tabs
+            button.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Esconder todos os conteúdos
+            document.getElementById(containerId).querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            // Mostrar conteúdo selecionado
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Switch Hipodermóclise sub-tabs
+        function switchHipoTab(button, panelId) {
+            button.parentElement.querySelectorAll('.hipo-subtab').forEach(t => t.classList.remove('active'));
+            button.classList.add('active');
+            button.closest('.tab-content').querySelectorAll('.hipo-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(panelId).classList.add('active');
+        }
+
+        // Scale Selection
+        function selectScale(item, scaleType) {
+            item.parentElement.querySelectorAll('.scale-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+        }
+
+        // Show Myth Modal
+        function showMyth(id) {
+            const myth = mythsData[id];
+            if (!myth) return;
+            
+            document.getElementById('myth-modal-title').textContent = myth.title;
+            document.getElementById('myth-statement').textContent = myth.statement;
+            document.getElementById('myth-explanation').textContent = myth.explanation;
+            
+            const badge = document.getElementById('myth-badge');
+            if (myth.isMito) {
+                badge.className = 'myth-badge mito';
+                badge.innerHTML = '<span></span> MITO';
+            } else {
+                badge.className = 'myth-badge verdade';
+                badge.innerHTML = '<span></span> VERDADE';
+            }
+            
+            document.getElementById('myth-modal').classList.add('active');
+        }
+
+        // Close Myth Modal
+        function closeMyth() {
+            document.getElementById('myth-modal').classList.remove('active');
+        }
+
+        function closeModal(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                closeMyth();
+            }
+        }
+
+        // Opioid Calculator
+        const opioidFactors = {
+            'morfina-vo': 1,
+            'morfina-ev': 3,
+            'tramadol': 0.1,
+            'codeina': 0.15,
+            'fentanil-ev': 300,
+            'metadona': 4 // aproximado para doses baixas
+        };
+
+        function calculateOpioid() {
+            const from = document.getElementById('opioid-from').value;
+            const to = document.getElementById('opioid-to').value;
+            const dose = parseFloat(document.getElementById('opioid-dose').value);
+            
+            if (!dose || dose <= 0) {
+                document.getElementById('opioid-result').textContent = '-';
+                return;
+            }
+            
+            // Converter para morfina VO equivalente
+            const morfinaVOEquiv = dose * opioidFactors[from];
+            
+            // Converter para droga destino
+            const result = morfinaVOEquiv / opioidFactors[to];
+            
+            // Aplicar redução de 25% para segurança
+            const safeResult = result * 0.75;
+            
+            document.getElementById('opioid-result').textContent = 
+                safeResult.toFixed(1) + ' (75% da dose calculada)';
+        }
+
+        // PPI Calculator
+        function calculatePPI() {
+            let score = 0;
+            
+            document.querySelectorAll('.ppi-options input[type="radio"]:checked').forEach(input => {
+                score += parseFloat(input.value);
+            });
+            
+            document.getElementById('ppi-score').textContent = score.toFixed(1);
+            
+            const interpretation = document.getElementById('ppi-interpretation');
+            
+            if (score <= 2) {
+                interpretation.className = 'ppi-interpretation green';
+                interpretation.innerHTML = '<strong>Sobrevida mediana: ~155 dias</strong><br>Prognóstico melhor';
+            } else if (score <= 4) {
+                interpretation.className = 'ppi-interpretation yellow';
+                interpretation.innerHTML = '<strong>Sobrevida mediana: ~89 dias</strong><br>Prognóstico intermediário';
+            } else if (score <= 6) {
+                interpretation.className = 'ppi-interpretation orange';
+                interpretation.innerHTML = '<strong>Sobrevida mediana: ~18-21 dias</strong><br>Prognóstico reservado (sobrevida <6 semanas: sens 80%, esp 77%)';
+            } else {
+                interpretation.className = 'ppi-interpretation red';
+                interpretation.innerHTML = '<strong>Sobrevida mediana: ~5 dias</strong><br>Prognóstico muito reservado (sobrevida <3 semanas: sens 80%, esp 85%)';
+            }
+        }
+
+        // Inicializar PPI listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.ppi-options input[type="radio"]').forEach(input => {
+                input.addEventListener('change', calculatePPI);
+            });
+            
+            // Highlight selected option
+            document.querySelectorAll('.ppi-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const input = this.querySelector('input[type="radio"]');
+                    input.checked = true;
+                    
+                    // Remove selected de irmãos
+                    this.parentElement.querySelectorAll('.ppi-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    
+                    calculatePPI();
+                });
+            });
+        });
+
+        // Deep link handler
+        function handleDeepLink(target) {
+            showScreen(target);
+        }
+
+        // Inicialização
+        showScreen('home');
+    
+        function toggleFab() {
+            var options = document.getElementById('fabOptions');
+            var btn = document.getElementById('fabBtn');
+            var icon = document.getElementById('fabIcon');
+            if (!options || !btn) return;
+            var isOpen = options.style.display === 'block' || options.classList.contains('open');
+            if (isOpen) {
+                options.style.display = 'none';
+                options.classList.remove('open');
+                btn.classList.remove('open');
+                icon.innerHTML = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>';
+            } else {
+                options.style.display = 'block';
+                options.classList.add('open');
+                btn.classList.add('open');
+                icon.innerHTML = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>';
+            }
+        }
+
+        // Fechar FAB ao clicar fora
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.fab-menu')) {
+                document.querySelectorAll('.fab-options').forEach(function(opt) {
+                    opt.style.display = 'none';
+                    opt.classList.remove('open');
+                });
+                document.querySelectorAll('.fab-btn').forEach(function(btn) {
+                    btn.classList.remove('open');
+                    var icon = btn.querySelector('svg');
+                    if (icon) icon.innerHTML = '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>';
+                });
+            }
+        });
+    </script>
+<div class="fab-menu">
+    <div class="fab-options" id="fabOptions">
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showScreen('home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Início</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showScreen('identificar')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Identificar</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showScreen('decidir')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Decidir</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showScreen('comunicar')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Comunicar</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showScreen('manejar')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Manejar</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showScreen('ferramentas')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Ferramentas</a>
+    </div>
+    <button class="fab-btn" id="fabBtn" onclick="toggleFab()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="fabIcon">
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+        </svg>
+    </button>
+</div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "any-app",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["/tmp/anyapp_preview/server.rb"],
+      "port": 8080
+    },
+    {
+      "name": "sedapath",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["/tmp/sedapath_preview/server.rb"],
+      "port": 8081
+    },
+    {
+      "name": "toxpath",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["/tmp/toxpath_preview/server.rb"],
+      "port": 8082
+    }
+  ],
+  "autoVerify": false
+}
