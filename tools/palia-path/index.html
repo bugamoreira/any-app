@@ -1248,6 +1248,39 @@
             border-top: 1px solid #222;
         }
 
+        .med-search-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .med-search-container input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            color: #F5F5F5;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+        }
+        .med-search-container input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(255, 82, 82, 0.2);
+        }
+        .med-search-container input::placeholder {
+            color: #666;
+        }
+        .med-search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .med-detail-card.hidden-by-search {
+            display: none;
+        }
+
         /* Death Rattle Signs Table */
         .signs-table {
             width: 100%;
@@ -2557,6 +2590,14 @@
                         <div class="hipo-section">
                             <h4>Medicações por Via Subcutânea</h4>
 
+                            <div class="med-search-container">
+                                <svg class="med-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="#888">
+                                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                </svg>
+                                <input type="text" id="hipoMedSearch" placeholder="Buscar medicamento..." autocomplete="off">
+                            </div>
+                            <p id="hipoMedNoResults" style="display:none; text-align:center; color:#888; padding:20px; font-size:14px;">Nenhum medicamento encontrado</p>
+
                             <div class="med-detail-card">
                                 <h5>Ampicilina</h5>
                                 <div class="med-row"><span class="med-label">Dose:</span><span class="med-value">1 g/dia</span></div>
@@ -3250,6 +3291,31 @@
             button.closest('.tab-content').querySelectorAll('.hipo-panel').forEach(p => p.classList.remove('active'));
             document.getElementById(panelId).classList.add('active');
         }
+
+        // Busca de medicações na hipodermóclise
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.getElementById('hipoMedSearch');
+            if (!searchInput) return;
+            searchInput.addEventListener('input', function() {
+                var query = this.value.toLowerCase().trim();
+                var panel = document.getElementById('hipo-medicacoes');
+                var cards = panel.querySelectorAll('.med-detail-card');
+                var noResults = document.getElementById('hipoMedNoResults');
+                var visibleCount = 0;
+                cards.forEach(function(card) {
+                    var name = card.querySelector('h5');
+                    if (!name) return;
+                    var match = name.textContent.toLowerCase().indexOf(query) !== -1;
+                    if (match || query === '') {
+                        card.classList.remove('hidden-by-search');
+                        visibleCount++;
+                    } else {
+                        card.classList.add('hidden-by-search');
+                    }
+                });
+                noResults.style.display = (visibleCount === 0 && query !== '') ? 'block' : 'none';
+            });
+        });
 
         // Scale Selection
         function selectScale(item, scaleType) {
