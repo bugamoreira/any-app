@@ -950,6 +950,37 @@
         .fab-options.open { display: block; }
         .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
         .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
+        /* IOT Section Styles */
+        .iot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; margin-bottom: 16px; }
+        .iot-grid-item { background: #1A1A1A; border: 1px solid #333; border-radius: 12px; padding: 20px 16px; cursor: pointer; text-align: center; transition: border-color 0.3s; }
+        .iot-grid-item:hover, .iot-grid-item:active { border-color: rgba(255,82,82,0.4); }
+        .iot-grid-item-main { grid-column: 1 / -1; min-height: 100px; border-color: rgba(255,82,82,0.3); }
+        .iot-grid-item h3 { font-size: 16px; font-weight: 700; color: #F5F5F5; margin-bottom: 4px; }
+        .iot-grid-item p { font-size: 12px; color: #888; margin: 0; }
+        .iot-grid-item .grid-icon { margin-bottom: 10px; }
+        .iot-section { display: none; padding: 16px; }
+        .iot-section.active { display: block; }
+        .iot-section .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 14px; text-decoration: none; margin-bottom: 16px; cursor: pointer; }
+        .iot-checklist-group { background: #111; border: 1px solid #333; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+        .iot-checklist-group h4 { color: var(--accent); font-size: 14px; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .iot-check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1A1A1A; font-size: 14px; color: #F5F5F5; }
+        .iot-check-item:last-child { border-bottom: none; }
+        .iot-check-item input[type="checkbox"] { accent-color: #FF5252; min-width: 18px; min-height: 18px; margin-top: 2px; cursor: pointer; }
+        .iot-check-item.checked label { text-decoration: line-through; opacity: 0.5; }
+        .iot-dose-card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+        .iot-dose-card h4 { color: var(--accent); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+        .iot-dose-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1A1A1A; font-size: 14px; }
+        .iot-dose-row:last-child { border-bottom: none; }
+        .iot-dose-row .dose-name { color: #F5F5F5; }
+        .iot-dose-row .dose-value { color: var(--accent); font-weight: 600; }
+        .iot-dose-note { font-size: 12px; color: #888; margin-top: 6px; font-style: italic; }
+        .iot-params-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+        .iot-param-card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 16px; }
+        .iot-param-card h4 { font-size: 13px; color: var(--accent); font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+        .iot-param-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+        .iot-param-row label { font-size: 13px; color: #888; }
+        .iot-param-row input { width: 80px; background: #1A1A1A; border: 1px solid #333; border-radius: 6px; padding: 6px 8px; color: #F5F5F5; font-size: 14px; text-align: center; }
+        .iot-warning { background: rgba(255,82,82,0.1); border: 1px solid rgba(255,82,82,0.3); border-radius: 8px; padding: 10px 12px; margin-top: 8px; font-size: 12px; color: #FF5252; }
     </style>
 </head>
 <body>
@@ -960,7 +991,173 @@
         <h1>VM Guide</h1>
         <p>Parâmetros de ventilação mecânica</p>
     </header>
-    
+
+    <!-- IOT Grid -->
+    <div class="iot-grid" id="iot-grid">
+        <div class="iot-grid-item iot-grid-item-main" onclick="parent.loadApp('airway')">
+            <div class="grid-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="#FF5252"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+            <h3>Airway Guide — Iniciar IOT</h3>
+            <p>Abrir o guia completo de intubação orotraqueal</p>
+        </div>
+        <div class="iot-grid-item" onclick="showIOTSection('checklist')">
+            <div class="grid-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="#FF5252"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+            <h3>Checklist de IOT</h3>
+            <p>Materiais, equipe e planos</p>
+        </div>
+        <div class="iot-grid-item" onclick="showIOTSection('doses')">
+            <div class="grid-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="#FF5252"><path d="M6 3h12v2H6V3zm0 4h12v2H6V7zm0 4h12v2H6v-2zm0 4h12v2H6v-2zm0 4h12v2H6v-2z"/></svg>
+            </div>
+            <h3>Doses de IOT</h3>
+            <p>Hipnóticos, BNM e otimização</p>
+        </div>
+    </div>
+
+    <!-- IOT Checklist Section -->
+    <div class="iot-section" id="iot-checklist">
+        <a class="back-link" onclick="hideIOTSection()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Voltar
+        </a>
+        <h2 style="font-size:20px; margin-bottom:16px; color:#F5F5F5;">Checklist de IOT</h2>
+
+        <div class="iot-checklist-group">
+            <h4>Preparação do Paciente</h4>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Acesso venoso funcionante</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Posição otimizada</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Coxins preparados</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Leito posicionado e travado</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Espaço para equipe</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Acesso a via aérea</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Pesquisa por próteses e empecilhos</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Identificação da membrana cricotireóidea</label></div>
+        </div>
+
+        <div class="iot-checklist-group">
+            <h4>Oxigenação</h4>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Cabeceira elevada</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Pré-oxigenação com BMV por 3 min, FiO2 100%</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Pré-oxigenação com VNI</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Oxigenação apneica</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Oximetria de pulso</label></div>
+        </div>
+
+        <div class="iot-checklist-group">
+            <h4>Otimização pré-intubação</h4>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Vasopressores / inotrópicos</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Cristaloides</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Alergias verificadas</label></div>
+            <div class="iot-warning">
+                <strong>Contraindicações à succinilcolina:</strong> Hipertermia maligna, grandes queimados (>3 dias), sepse abdominal (>3 dias), doença neuromuscular, dano muscular importante (>3 dias)
+            </div>
+        </div>
+
+        <div class="iot-checklist-group">
+            <h4>Preparação do Equipamento</h4>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Cardioscopia</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>PANI / PAI</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Oximetria</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Capnografia</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Fio guia</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Bougie</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Tubo com cuff checado (dois tamanhos)</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Laringoscópio checado</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Videolaringoscópio checado</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Cânula de Guedel</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Lâmina de bisturi n.11</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>BMV + circuito + ventilador</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Dispositivo de aspiração</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Dispositivo extraglótico</label></div>
+        </div>
+
+        <div class="iot-checklist-group">
+            <h4>Preparação do Time</h4>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Divisão de tarefas</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Líder / intubador definido</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Time de enfermagem</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Time de fisioterapia</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Médico backup</label></div>
+        </div>
+
+        <div class="iot-checklist-group">
+            <h4>Preparação para Dificuldades</h4>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Plano A definido</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Plano B definido</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Plano C definido</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Planos verbalizados para a equipe</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Critérios de VAD avaliados</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Time de VAD acionado (se necessário)</label></div>
+        </div>
+
+        <div class="iot-checklist-group">
+            <h4>Cuidados pós-IOT</h4>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Fixação adequada do tubo</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Gasometria arterial</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Radiografia de tórax</label></div>
+            <div class="iot-check-item"><input type="checkbox" onchange="toggleIOTCheck(this)"><label>Sedação contínua iniciada</label></div>
+        </div>
+
+        <div class="iot-params-grid">
+            <div class="iot-param-card">
+                <h4>Parâmetros pré-IOT</h4>
+                <div class="iot-param-row"><label>FC</label><input type="text" placeholder="--"></div>
+                <div class="iot-param-row"><label>PAS</label><input type="text" placeholder="--"></div>
+                <div class="iot-param-row"><label>PAD</label><input type="text" placeholder="--"></div>
+                <div class="iot-param-row"><label>FR</label><input type="text" placeholder="--"></div>
+                <div class="iot-param-row"><label>SpO2</label><input type="text" placeholder="--"></div>
+            </div>
+            <div class="iot-param-card">
+                <h4>Parâmetros pós-IOT</h4>
+                <p style="font-size:11px;color:#666;margin-bottom:8px;">10 min após indução</p>
+                <div class="iot-param-row"><label>FC</label><input type="text" placeholder="--"></div>
+                <div class="iot-param-row"><label>PAS</label><input type="text" placeholder="--"></div>
+                <div class="iot-param-row"><label>PAD</label><input type="text" placeholder="--"></div>
+                <div class="iot-param-row"><label>FR</label><input type="text" placeholder="--"></div>
+                <div class="iot-param-row"><label>SpO2</label><input type="text" placeholder="--"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IOT Doses Section -->
+    <div class="iot-section" id="iot-doses">
+        <a class="back-link" onclick="hideIOTSection()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Voltar
+        </a>
+        <h2 style="font-size:20px; margin-bottom:16px; color:#F5F5F5;">Doses de IOT</h2>
+
+        <div class="iot-dose-card">
+            <h4>Otimização pré-intubação</h4>
+            <div class="iot-dose-row"><span class="dose-name">Fentanil</span><span class="dose-value">1-3 mcg/kg</span></div>
+            <p class="iot-dose-note">Administrar 3 minutos antes da indução. Atenuar resposta simpática à laringoscopia</p>
+        </div>
+
+        <div class="iot-dose-card">
+            <h4>Hipnóticos (considerar peso ideal)</h4>
+            <div class="iot-dose-row"><span class="dose-name">Cetamina</span><span class="dose-value">1,5 mg/kg</span></div>
+            <div class="iot-dose-row"><span class="dose-name">Etomidato</span><span class="dose-value">0,3 mg/kg</span></div>
+            <div class="iot-dose-row"><span class="dose-name">Propofol</span><span class="dose-value">1,5 mg/kg</span></div>
+            <div class="iot-dose-row"><span class="dose-name">Midazolam</span><span class="dose-value">0,1-0,3 mg/kg</span></div>
+            <p class="iot-dose-note">*Considerar metade da dose se suspeita de choque</p>
+        </div>
+
+        <div class="iot-dose-card">
+            <h4>BNM (considerar peso real)</h4>
+            <div class="iot-dose-row"><span class="dose-name">Succinilcolina</span><span class="dose-value">1,5 mg/kg</span></div>
+            <div class="iot-dose-row"><span class="dose-name">Rocurônio</span><span class="dose-value">1,5 mg/kg</span></div>
+        </div>
+
+        <div class="iot-warning">
+            <strong>Contraindicações à succinilcolina:</strong> Hipertermia maligna, grandes queimados (>3 dias), sepse de foco abdominal (>3 dias), doença neuromuscular, dano muscular importante (>3 dias)
+        </div>
+
+        <p style="font-size:11px; color:#666; margin-top:16px;">Fonte: Checklist IOT 3.0</p>
+    </div>
+
     <!-- Campo de busca -->
     <div class="search-container">
         <div class="search-box">
@@ -2322,6 +2519,29 @@
                 });
             }
         });
+
+    function showIOTSection(section) {
+        document.getElementById('iot-grid').style.display = 'none';
+        document.querySelectorAll('.section').forEach(function(s) { s.style.display = 'none'; });
+        document.getElementById('iot-' + section).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function hideIOTSection() {
+        document.querySelectorAll('.iot-section').forEach(function(s) { s.classList.remove('active'); });
+        document.getElementById('iot-grid').style.display = '';
+        document.querySelectorAll('.section').forEach(function(s) { s.style.display = ''; });
+        window.scrollTo(0, 0);
+    }
+
+    function toggleIOTCheck(checkbox) {
+        var item = checkbox.closest('.iot-check-item');
+        if (checkbox.checked) {
+            item.classList.add('checked');
+        } else {
+            item.classList.remove('checked');
+        }
+    }
     <\/script>
 <div class="fab-menu">
     <div class="fab-options" id="fabOptions">
