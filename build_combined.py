@@ -80,8 +80,9 @@ tox_html = read_file('tools/tox-path/index.html')
 ped_html = read_file('tools/ped-guide/index.html')
 palia_html = read_file('tools/palia-path/index.html')
 block_html = read_file('tools/block-path/index.html')
+acls_html = read_file('tools/acls/index.html')
 
-print("Read 10 HTML files: Hub, VM, Airway, Infusion, TEP, SedaPath, ToxPath, PedGuide, PaliaPath, BlockPath")
+print("Read 11 HTML files: Hub, VM, Airway, Infusion, TEP, SedaPath, ToxPath, PedGuide, PaliaPath, BlockPath, ACLS")
 
 # ══════════════════════════════════════════════════════════
 # 2. Load splash logo (JPEG square) — stored once in parent
@@ -106,8 +107,10 @@ if header_logo:
     ped_html = ped_html.replace(header_logo, '__LOGO__')
     palia_html = palia_html.replace(header_logo, '__LOGO__')
     block_html = block_html.replace(header_logo, '__LOGO__')
+    acls_html = acls_html.replace(header_logo, '__LOGO__')
     # TEP may have a different PNG logo — also replace any remaining PNG base64
     tep_html = re.sub(r'data:image/png;base64,[A-Za-z0-9+/=]+', '__LOGO__', tep_html)
+    acls_html = re.sub(r'data:image/png;base64,[A-Za-z0-9+/=]+', '__LOGO__', acls_html)
 else:
     print("WARNING: No header logo found in hub!")
     header_logo = ''
@@ -182,6 +185,7 @@ tox_html = make_logo_clickable_to_hub(tox_html)
 ped_html = make_logo_clickable_to_hub(ped_html)
 palia_html = make_logo_clickable_to_hub(palia_html)
 block_html = make_logo_clickable_to_hub(block_html)
+acls_html = make_logo_clickable_to_hub(acls_html)
 print("Logo click → hub applied to all sub-apps (no separate back button)")
 
 # ══════════════════════════════════════════════════════════
@@ -212,6 +216,7 @@ tox_escaped = escape_for_template(tox_html)
 ped_escaped = escape_for_template(ped_html)
 palia_escaped = escape_for_template(palia_html)
 block_escaped = escape_for_template(block_html)
+acls_escaped = escape_for_template(acls_html)
 header_logo_escaped = escape_for_template(header_logo)
 
 # ══════════════════════════════════════════════════════════
@@ -323,7 +328,8 @@ combined = '''<!DOCTYPE html>
             tox: `''' + tox_escaped + '''`,
             ped: `''' + ped_escaped + '''`,
             palia: `''' + palia_escaped + '''`,
-            block: `''' + block_escaped + '''`
+            block: `''' + block_escaped + '''`,
+            acls: `''' + acls_escaped + '''`
         };
 
         function loadApp(name, target) {
@@ -377,4 +383,4 @@ logo_count = combined.count('data:image/png;base64,')
 splash_count = combined.count('data:image/jpeg;base64,')
 print("   PNG logos: %d (should be 1)" % logo_count)
 print("   JPEG splash: %d (should be 1)" % splash_count)
-print("   Apps included: hub, vm, airway, infusion, tep, seda, tox, ped, palia, block")
+print("   Apps included: hub, vm, airway, infusion, tep, seda, tox, ped, palia, block, acls")

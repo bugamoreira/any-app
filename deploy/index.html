@@ -389,6 +389,14 @@
                 </div>
                 <div class="name">Block Path</div>
             </a>
+            <a href="#" onclick="event.preventDefault(); parent.loadApp('acls')" class="main-card">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+                <div class="name">ACLS Guide</div>
+            </a>
         </div>
         
         <div class="dev-section">
@@ -22759,6 +22767,860 @@ CRM: \${crm}\`;
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="fabIcon"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
         </button>
     </div>
+</body>
+</html>
+`,
+            acls: `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ACLS Guide</title>
+    <style>
+        :root {
+            --bg: #000;
+            --surface: #111;
+            --surface2: #1A1A1A;
+            --accent: #FF5252;
+            --accent-dark: #D32F2F;
+            --text: #F5F5F5;
+            --text-secondary: #888;
+            --border: #333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .disclaimer {
+            background: #E6A700;
+            color: #000;
+            text-align: center;
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 16px 12px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+        .header img {
+            height: 60px;
+            margin-bottom: 8px;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+        .header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ── Grid Principal ── */
+        .acls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 16px;
+        }
+        .acls-grid-item {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        .acls-grid-item:hover, .acls-grid-item:active {
+            border-color: rgba(255,82,82,0.4);
+        }
+        .acls-grid-item-main {
+            grid-column: 1 / -1;
+            min-height: 100px;
+            border-color: rgba(255,82,82,0.3);
+            background: linear-gradient(135deg, #1A1A1A 0%, #1F1010 100%);
+        }
+        .acls-grid-item h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .acls-grid-item p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        .acls-grid-item .grid-icon {
+            margin-bottom: 10px;
+        }
+        .acls-grid-item-disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .acls-grid-item-disabled::after {
+            content: "Em breve";
+            display: block;
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* ── Seções internas ── */
+        .acls-section {
+            display: none;
+            padding: 16px;
+        }
+        .acls-section.active {
+            display: block;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            font-size: 14px;
+            text-decoration: none;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        /* ── Metrônomo ── */
+        .metro-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 40px;
+        }
+        .metro-display {
+            text-align: center;
+            width: 100%;
+        }
+        .metro-timer {
+            font-size: 48px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            color: var(--text);
+            letter-spacing: 2px;
+        }
+        .metro-cycle-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Visual pulse */
+        .metro-pulse {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 4px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.08s ease, background 0.08s ease, border-color 0.08s ease;
+            position: relative;
+        }
+        .metro-pulse.beat {
+            transform: scale(1.08);
+            background: rgba(255, 82, 82, 0.15);
+            border-color: var(--accent);
+        }
+        .metro-pulse.ventilate {
+            transform: scale(1.12);
+            background: rgba(66, 165, 245, 0.2);
+            border-color: #42A5F5;
+        }
+        .metro-pulse-label {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+        .metro-pulse.beat .metro-pulse-label {
+            color: var(--accent);
+        }
+        .metro-pulse.ventilate .metro-pulse-label {
+            color: #42A5F5;
+        }
+
+        /* Cycle counter ring */
+        .metro-cycle-ring {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .metro-cycle-ring.warning {
+            background: #FF9800;
+            animation: cycleWarning 0.5s ease infinite alternate;
+        }
+        @keyframes cycleWarning {
+            from { transform: scale(1); }
+            to { transform: scale(1.15); }
+        }
+
+        /* Swap alert */
+        .metro-swap-alert {
+            display: none;
+            background: rgba(255, 152, 0, 0.15);
+            border: 2px solid #FF9800;
+            border-radius: 12px;
+            padding: 12px 16px;
+            text-align: center;
+            width: 100%;
+            animation: swapPulse 0.6s ease infinite alternate;
+        }
+        .metro-swap-alert.visible {
+            display: block;
+        }
+        .metro-swap-alert h4 {
+            color: #FF9800;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .metro-swap-alert p {
+            color: #FFB74D;
+            font-size: 13px;
+        }
+        @keyframes swapPulse {
+            from { opacity: 0.8; }
+            to { opacity: 1; }
+        }
+
+        /* Start/stop button */
+        .metro-btn {
+            width: 100%;
+            max-width: 320px;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .metro-btn:active {
+            transform: scale(0.97);
+        }
+        .metro-btn-start {
+            background: var(--accent);
+            color: #fff;
+        }
+        .metro-btn-stop {
+            background: var(--surface);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        /* Mode selector */
+        .metro-modes {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            max-width: 320px;
+        }
+        .metro-mode-btn {
+            flex: 1;
+            padding: 10px 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .metro-mode-btn.active {
+            background: rgba(255,82,82,0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Stats */
+        .metro-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+            max-width: 320px;
+        }
+        .metro-stat {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        .metro-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .metro-stat-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* BPM info */
+        .metro-bpm-info {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .metro-bpm-info strong {
+            color: var(--accent);
+        }
+
+        /* ── FAB Menu ── */
+        .fab-menu { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: #FF5252; border: none; color: white; cursor: pointer; box-shadow: 0 4px 12px rgba(255,82,82,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
+        .fab-btn:active { transform: scale(0.95); }
+        .fab-btn.open { background: #D32F2F; }
+        .fab-options { position: absolute; bottom: 70px; right: 0; background: #111; border: 1px solid #333; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
+        .fab-options.open { display: block; }
+        .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
+        .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center;
+            padding: 24px 16px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
+        footer .version {
+            font-size: 11px;
+            color: #555;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="disclaimer"><strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.</div>
+
+    <header class="header">
+        <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
+        <h1>ACLS Guide</h1>
+        <p>Suporte avançado de vida cardiovascular</p>
+    </header>
+
+    <!-- Grid Principal -->
+    <div class="acls-grid" id="acls-grid">
+        <div class="acls-grid-item acls-grid-item-main" onclick="showACLSSection('metronome')">
+            <div class="grid-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2" stroke-linecap="round">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+            <h3>Metrônomo de RCP</h3>
+            <p>110/min + ventilação a cada 10s + timer de troca</p>
+        </div>
+        <div class="acls-grid-item acls-grid-item-disabled">
+            <div class="grid-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2" stroke-linecap="round">
+                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                </svg>
+            </div>
+            <h3>Algoritmos</h3>
+            <p>FV/TV, AESP, Bradicardia, Taquicardia</p>
+        </div>
+        <div class="acls-grid-item acls-grid-item-disabled">
+            <div class="grid-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2" stroke-linecap="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M3 9h18M9 3v18"/>
+                </svg>
+            </div>
+            <h3>Registro de PCR</h3>
+            <p>Linha do tempo + copiar para prontuário</p>
+        </div>
+    </div>
+
+    <!-- Seção: Metrônomo -->
+    <div class="acls-section" id="acls-metronome">
+        <a class="back-link" onclick="hideACLSSection()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Voltar
+        </a>
+        <h2 style="font-size:20px; margin-bottom:16px; color:var(--text);">Metrônomo de RCP</h2>
+
+        <div class="metro-container">
+            <!-- Timer -->
+            <div class="metro-display">
+                <div class="metro-timer" id="metroTimer">00:00</div>
+                <div class="metro-cycle-info" id="metroCycleInfo">Pronto para iniciar</div>
+            </div>
+
+            <!-- Mode selector -->
+            <div class="metro-modes">
+                <button class="metro-mode-btn active" id="modeVAA" onclick="setMetroMode('vaa')">Via aérea avançada</button>
+                <button class="metro-mode-btn" id="mode302" onclick="setMetroMode('302')">30:2</button>
+            </div>
+
+            <!-- BPM info -->
+            <div class="metro-bpm-info" id="metroBpmInfo">
+                <strong>110 BPM</strong> — compressões contínuas + ventilação a cada 10s
+            </div>
+
+            <!-- Visual pulse -->
+            <div class="metro-pulse" id="metroPulse">
+                <span class="metro-pulse-label" id="metroPulseLabel">INICIAR</span>
+                <div class="metro-cycle-ring" id="metroCycleRing" style="display:none;">1</div>
+            </div>
+
+            <!-- Swap alert -->
+            <div class="metro-swap-alert" id="metroSwapAlert">
+                <h4>TROCAR SOCORRISTA</h4>
+                <p>2 minutos completados — toque para confirmar</p>
+            </div>
+
+            <!-- Start/Stop -->
+            <button class="metro-btn metro-btn-start" id="metroBtn" onclick="toggleMetronome()">INICIAR RCP</button>
+
+            <!-- Stats -->
+            <div class="metro-stats">
+                <div class="metro-stat">
+                    <div class="metro-stat-value" id="statCycles">0</div>
+                    <div class="metro-stat-label">Ciclos</div>
+                </div>
+                <div class="metro-stat">
+                    <div class="metro-stat-value" id="statCompressions">0</div>
+                    <div class="metro-stat-label">Compressões</div>
+                </div>
+                <div class="metro-stat">
+                    <div class="metro-stat-value" id="statVentilations">0</div>
+                    <div class="metro-stat-label">Ventilações</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAB Menu -->
+    <div class="fab-menu">
+        <div class="fab-options" id="fabOptions">
+            <a href="#" onclick="event.preventDefault(); toggleFab(); showACLSSection('metronome');">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                Metrônomo de RCP
+            </a>
+        </div>
+        <button class="fab-btn" id="fabBtn" onclick="toggleFab()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </button>
+    </div>
+
+    <footer>
+        Gustavo Moreira &bull; Gabriela Feltrin &bull; João Pedro Moreira
+        <div class="version">v1.0.0 — Março 2026</div>
+    </footer>
+
+    <script>
+    // ══════════════════════════════════════════════
+    // Navigation
+    // ══════════════════════════════════════════════
+    function showACLSSection(section) {
+        document.getElementById('acls-grid').style.display = 'none';
+        document.querySelectorAll('.acls-section').forEach(function(s) { s.classList.remove('active'); });
+        var el = document.getElementById('acls-' + section);
+        if (el) el.classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function hideACLSSection() {
+        // Stop metronome if running
+        if (metroState.running) toggleMetronome();
+        document.querySelectorAll('.acls-section').forEach(function(s) { s.classList.remove('active'); });
+        document.getElementById('acls-grid').style.display = '';
+        window.scrollTo(0, 0);
+    }
+
+    function toggleFab() {
+        var btn = document.getElementById('fabBtn');
+        var opts = document.getElementById('fabOptions');
+        btn.classList.toggle('open');
+        opts.classList.toggle('open');
+    }
+
+    // ══════════════════════════════════════════════
+    // Metrônomo de RCP
+    // ══════════════════════════════════════════════
+    var metroState = {
+        running: false,
+        mode: 'vaa', // 'vaa' = via aérea avançada, '302' = 30:2
+        startTime: 0,
+        elapsed: 0,
+        timerInterval: null,
+        beatInterval: null,
+        ventInterval: null,
+        compressions: 0,
+        ventilations: 0,
+        cycles: 0, // 2-min cycles
+        cycleStart: 0,
+        // 30:2 mode state
+        count302: 0,
+        phase302: 'compress', // 'compress' or 'ventilate'
+        ventCount302: 0,
+        // Audio
+        audioCtx: null
+    };
+
+    var BPM = 110;
+    var BEAT_MS = Math.round(60000 / BPM); // ~545ms
+    var VENT_INTERVAL_MS = 10000; // 10 seconds
+    var SWAP_INTERVAL_MS = 120000; // 2 minutes
+
+    function initAudio() {
+        if (!metroState.audioCtx) {
+            metroState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (metroState.audioCtx.state === 'suspended') {
+            metroState.audioCtx.resume();
+        }
+    }
+
+    function playBeep(freq, duration, vol) {
+        if (!metroState.audioCtx) return;
+        var ctx = metroState.audioCtx;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        gain.gain.value = vol || 0.3;
+        gain.gain.setValueAtTime(vol || 0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (duration / 1000));
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + (duration / 1000));
+    }
+
+    function playCompressionBeep() {
+        playBeep(800, 60, 0.25);
+    }
+
+    function playVentilationBeep() {
+        // Two-tone beep for ventilation
+        playBeep(1200, 150, 0.4);
+        setTimeout(function() {
+            playBeep(1500, 150, 0.4);
+        }, 160);
+    }
+
+    function playSwapAlert() {
+        // Triple high beep
+        for (var i = 0; i < 3; i++) {
+            setTimeout(function() {
+                playBeep(1800, 200, 0.5);
+            }, i * 250);
+        }
+    }
+
+    function setMetroMode(mode) {
+        if (metroState.running) return; // Can't change while running
+        metroState.mode = mode;
+        document.getElementById('modeVAA').classList.toggle('active', mode === 'vaa');
+        document.getElementById('mode302').classList.toggle('active', mode === '302');
+        if (mode === 'vaa') {
+            document.getElementById('metroBpmInfo').innerHTML = '<strong>110 BPM</strong> — compressões contínuas + ventilação a cada 10s';
+        } else {
+            document.getElementById('metroBpmInfo').innerHTML = '<strong>110 BPM</strong> — ciclo 30 compressões : 2 ventilações';
+        }
+    }
+
+    function toggleMetronome() {
+        if (metroState.running) {
+            stopMetronome();
+        } else {
+            startMetronome();
+        }
+    }
+
+    function startMetronome() {
+        initAudio();
+        metroState.running = true;
+        metroState.startTime = Date.now();
+        metroState.compressions = 0;
+        metroState.ventilations = 0;
+        metroState.cycles = 0;
+        metroState.cycleStart = Date.now();
+        metroState.count302 = 0;
+        metroState.phase302 = 'compress';
+        metroState.ventCount302 = 0;
+
+        // UI
+        var btn = document.getElementById('metroBtn');
+        btn.textContent = 'PARAR RCP';
+        btn.classList.remove('metro-btn-start');
+        btn.classList.add('metro-btn-stop');
+        document.getElementById('metroCycleRing').style.display = 'flex';
+        document.getElementById('metroCycleRing').textContent = '1';
+        document.getElementById('metroCycleRing').classList.remove('warning');
+
+        // Timer
+        metroState.timerInterval = setInterval(updateTimer, 100);
+
+        // Start beats
+        if (metroState.mode === 'vaa') {
+            startVAAMode();
+        } else {
+            start302Mode();
+        }
+
+        // First beat immediately
+        doCompression();
+    }
+
+    function stopMetronome() {
+        metroState.running = false;
+
+        clearInterval(metroState.timerInterval);
+        clearInterval(metroState.beatInterval);
+        clearInterval(metroState.ventInterval);
+        clearTimeout(metroState.ventTimeout302);
+
+        var btn = document.getElementById('metroBtn');
+        btn.textContent = 'INICIAR RCP';
+        btn.classList.remove('metro-btn-stop');
+        btn.classList.add('metro-btn-start');
+
+        document.getElementById('metroPulseLabel').textContent = 'INICIAR';
+        document.getElementById('metroPulse').classList.remove('beat', 'ventilate');
+        document.getElementById('metroCycleRing').style.display = 'none';
+        document.getElementById('metroSwapAlert').classList.remove('visible');
+        document.getElementById('metroCycleInfo').textContent = 'Finalizado — ' + formatTime(Date.now() - metroState.startTime);
+    }
+
+    // ── Via Aérea Avançada Mode ──
+    function startVAAMode() {
+        // Compression beats at 110 BPM
+        metroState.beatInterval = setInterval(function() {
+            if (!metroState.running) return;
+            doCompression();
+        }, BEAT_MS);
+
+        // Ventilation every 10s
+        metroState.ventInterval = setInterval(function() {
+            if (!metroState.running) return;
+            doVentilation();
+        }, VENT_INTERVAL_MS);
+    }
+
+    // ── 30:2 Mode ──
+    function start302Mode() {
+        metroState.count302 = 0;
+        metroState.phase302 = 'compress';
+        metroState.ventCount302 = 0;
+
+        metroState.beatInterval = setInterval(function() {
+            if (!metroState.running) return;
+
+            if (metroState.phase302 === 'compress') {
+                doCompression();
+                metroState.count302++;
+                if (metroState.count302 >= 30) {
+                    metroState.phase302 = 'ventilate';
+                    metroState.ventCount302 = 0;
+                    clearInterval(metroState.beatInterval);
+                    // Pause for ventilations
+                    doVentilation();
+                    metroState.ventCount302 = 1;
+                    metroState.ventTimeout302 = setTimeout(function() {
+                        doVentilation();
+                        metroState.ventCount302 = 2;
+                        // Resume compressions
+                        metroState.ventTimeout302 = setTimeout(function() {
+                            metroState.phase302 = 'compress';
+                            metroState.count302 = 0;
+                            if (metroState.running) {
+                                doCompression();
+                                metroState.beatInterval = setInterval(function() {
+                                    if (!metroState.running) return;
+                                    if (metroState.phase302 === 'compress') {
+                                        doCompression();
+                                        metroState.count302++;
+                                        if (metroState.count302 >= 30) {
+                                            metroState.phase302 = 'ventilate';
+                                            metroState.ventCount302 = 0;
+                                            clearInterval(metroState.beatInterval);
+                                            doVentilation();
+                                            metroState.ventCount302 = 1;
+                                            metroState.ventTimeout302 = setTimeout(function() {
+                                                doVentilation();
+                                                metroState.ventCount302 = 2;
+                                                metroState.ventTimeout302 = setTimeout(function() {
+                                                    if (metroState.running) {
+                                                        metroState.phase302 = 'compress';
+                                                        metroState.count302 = 0;
+                                                        start302Mode();
+                                                        doCompression();
+                                                    }
+                                                }, 1500);
+                                            }, 1500);
+                                        }
+                                    }
+                                }, BEAT_MS);
+                            }
+                        }, 1500);
+                    }, 1500);
+                }
+            }
+        }, BEAT_MS);
+    }
+
+    function doCompression() {
+        metroState.compressions++;
+        playCompressionBeep();
+
+        var pulse = document.getElementById('metroPulse');
+        var label = document.getElementById('metroPulseLabel');
+        pulse.classList.remove('ventilate');
+        pulse.classList.add('beat');
+        label.textContent = 'COMPRIME';
+
+        setTimeout(function() {
+            if (metroState.running) {
+                pulse.classList.remove('beat');
+                label.textContent = metroState.compressions.toString();
+            }
+        }, 120);
+
+        updateStats();
+        checkSwap();
+    }
+
+    function doVentilation() {
+        metroState.ventilations++;
+        playVentilationBeep();
+
+        var pulse = document.getElementById('metroPulse');
+        var label = document.getElementById('metroPulseLabel');
+        pulse.classList.remove('beat');
+        pulse.classList.add('ventilate');
+        label.textContent = 'VENTILA';
+
+        setTimeout(function() {
+            if (metroState.running) {
+                pulse.classList.remove('ventilate');
+                label.textContent = metroState.compressions.toString();
+            }
+        }, 800);
+
+        updateStats();
+    }
+
+    function checkSwap() {
+        var elapsed = Date.now() - metroState.cycleStart;
+        var cycleSeconds = Math.floor(elapsed / 1000);
+        var ring = document.getElementById('metroCycleRing');
+        var alert = document.getElementById('metroSwapAlert');
+
+        // Warning at 1:45
+        if (cycleSeconds >= 105 && cycleSeconds < 120) {
+            ring.classList.add('warning');
+        }
+
+        // Swap at 2:00
+        if (elapsed >= SWAP_INTERVAL_MS) {
+            metroState.cycles++;
+            metroState.cycleStart = Date.now();
+            ring.textContent = (metroState.cycles + 1).toString();
+            ring.classList.remove('warning');
+            playSwapAlert();
+            alert.classList.add('visible');
+
+            // Auto-dismiss after 3 seconds
+            setTimeout(function() {
+                alert.classList.remove('visible');
+            }, 3000);
+        }
+
+        // Update cycle info
+        var remaining = Math.max(0, SWAP_INTERVAL_MS - elapsed);
+        var remSec = Math.ceil(remaining / 1000);
+        var min = Math.floor(remSec / 60);
+        var sec = remSec % 60;
+        document.getElementById('metroCycleInfo').textContent = 'Próxima troca: ' + min + ':' + (sec < 10 ? '0' : '') + sec;
+    }
+
+    function updateTimer() {
+        var elapsed = Date.now() - metroState.startTime;
+        document.getElementById('metroTimer').textContent = formatTime(elapsed);
+    }
+
+    function updateStats() {
+        document.getElementById('statCycles').textContent = metroState.cycles.toString();
+        document.getElementById('statCompressions').textContent = metroState.compressions.toString();
+        document.getElementById('statVentilations').textContent = metroState.ventilations.toString();
+    }
+
+    function formatTime(ms) {
+        var totalSec = Math.floor(ms / 1000);
+        var min = Math.floor(totalSec / 60);
+        var sec = totalSec % 60;
+        return (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
+    }
+
+    // Keep screen awake during metronome
+    var wakeLock = null;
+    async function requestWakeLock() {
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLock = await navigator.wakeLock.request('screen');
+            }
+        } catch (e) {
+            // Wake lock not supported or failed
+        }
+    }
+
+    function releaseWakeLock() {
+        if (wakeLock) {
+            wakeLock.release();
+            wakeLock = null;
+        }
+    }
+
+    // Override start/stop to manage wake lock
+    var _origStart = startMetronome;
+    startMetronome = function() {
+        _origStart();
+        requestWakeLock();
+    };
+    var _origStop = stopMetronome;
+    stopMetronome = function() {
+        _origStop();
+        releaseWakeLock();
+    };
+    <\/script>
 </body>
 </html>
 `
