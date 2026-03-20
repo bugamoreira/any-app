@@ -22773,857 +22773,1136 @@ CRM: \${crm}\`;
             acls: `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ACLS Guide</title>
-    <style>
-        :root {
-            --bg: #000;
-            --surface: #111;
-            --surface2: #1A1A1A;
-            --accent: #FF5252;
-            --accent-dark: #D32F2F;
-            --text: #F5F5F5;
-            --text-secondary: #888;
-            --border: #333;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-        .disclaimer {
-            background: #E6A700;
-            color: #000;
-            text-align: center;
-            padding: 6px 16px;
-            font-size: 12px;
-            font-weight: 500;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header {
-            text-align: center;
-            padding: 20px 16px 12px;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-        }
-        .header img {
-            height: 60px;
-            margin-bottom: 8px;
-        }
-        .header h1 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 2px;
-        }
-        .header p {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ACLS Guide — ANY App</title>
+<meta name="description" content="Guia algoritmico de PCR para medicina de emergência">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#000;--card:#1A1A1A;--card-hover:#252525;--border:#333;
+--text:#FFF;--text2:#888;--text3:#555;
+--accent:#FF5252;--accent-h:#FF6B6B;
+--success:#4CAF50;--warning:#FFC107;--danger:#F44336;--info:#2196F3;
+--radius:12px;--radius-sm:8px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;overflow-x:hidden}
 
-        /* ── Grid Principal ── */
-        .acls-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            padding: 16px;
-        }
-        .acls-grid-item {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px 16px;
-            cursor: pointer;
-            text-align: center;
-            transition: border-color 0.3s;
-        }
-        .acls-grid-item:hover, .acls-grid-item:active {
-            border-color: rgba(255,82,82,0.4);
-        }
-        .acls-grid-item-main {
-            grid-column: 1 / -1;
-            min-height: 100px;
-            border-color: rgba(255,82,82,0.3);
-            background: linear-gradient(135deg, #1A1A1A 0%, #1F1010 100%);
-        }
-        .acls-grid-item h3 {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 4px;
-        }
-        .acls-grid-item p {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin: 0;
-        }
-        .acls-grid-item .grid-icon {
-            margin-bottom: 10px;
-        }
-        .acls-grid-item-disabled {
-            opacity: 0.4;
-            pointer-events: none;
-        }
-        .acls-grid-item-disabled::after {
-            content: "Em breve";
-            display: block;
-            font-size: 10px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-            font-style: italic;
-        }
+/* Disclaimer */
+.disclaimer{background:var(--warning);color:#000;text-align:center;padding:8px 16px;font-size:11px;font-weight:600;position:sticky;top:0;z-index:200}
 
-        /* ── Seções internas ── */
-        .acls-section {
-            display: none;
-            padding: 16px;
-        }
-        .acls-section.active {
-            display: block;
-        }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--accent);
-            font-size: 14px;
-            text-decoration: none;
-            margin-bottom: 16px;
-            cursor: pointer;
-        }
+/* Container */
+.container{max-width:500px;margin:0 auto;padding:0 16px 120px}
 
-        /* ── Metrônomo ── */
-        .metro-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            padding-bottom: 40px;
-        }
-        .metro-display {
-            text-align: center;
-            width: 100%;
-        }
-        .metro-timer {
-            font-size: 48px;
-            font-weight: 800;
-            font-variant-numeric: tabular-nums;
-            color: var(--text);
-            letter-spacing: 2px;
-        }
-        .metro-cycle-info {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
+/* Header */
+.header{padding:20px 0;text-align:center;border-bottom:1px solid var(--border);margin-bottom:16px}
+.header img{max-width:240px;height:auto}
+.header h1{font-size:22px;font-weight:700;margin-top:8px;letter-spacing:-0.5px}
+.header .subtitle{font-size:13px;color:var(--text2);margin-top:4px}
 
-        /* Visual pulse */
-        .metro-pulse {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: var(--surface);
-            border: 4px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.08s ease, background 0.08s ease, border-color 0.08s ease;
-            position: relative;
-        }
-        .metro-pulse.beat {
-            transform: scale(1.08);
-            background: rgba(255, 82, 82, 0.15);
-            border-color: var(--accent);
-        }
-        .metro-pulse.ventilate {
-            transform: scale(1.12);
-            background: rgba(66, 165, 245, 0.2);
-            border-color: #42A5F5;
-        }
-        .metro-pulse-label {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-secondary);
-        }
-        .metro-pulse.beat .metro-pulse-label {
-            color: var(--accent);
-        }
-        .metro-pulse.ventilate .metro-pulse-label {
-            color: #42A5F5;
-        }
+/* Screens */
+.screen{display:none}
+.screen.active{display:block}
 
-        /* Cycle counter ring */
-        .metro-cycle-ring {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            color: #fff;
-        }
-        .metro-cycle-ring.warning {
-            background: #FF9800;
-            animation: cycleWarning 0.5s ease infinite alternate;
-        }
-        @keyframes cycleWarning {
-            from { transform: scale(1); }
-            to { transform: scale(1.15); }
-        }
+/* Start Screen */
+.start-btn{width:200px;height:200px;border-radius:50%;background:var(--accent);border:none;color:#fff;font-size:24px;font-weight:700;cursor:pointer;margin:60px auto;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.3;box-shadow:0 0 40px rgba(255,82,82,0.3);transition:transform 0.2s,box-shadow 0.2s}
+.start-btn:active{transform:scale(0.95);box-shadow:0 0 20px rgba(255,82,82,0.5)}
 
-        /* Swap alert */
-        .metro-swap-alert {
-            display: none;
-            background: rgba(255, 152, 0, 0.15);
-            border: 2px solid #FF9800;
-            border-radius: 12px;
-            padding: 12px 16px;
-            text-align: center;
-            width: 100%;
-            animation: swapPulse 0.6s ease infinite alternate;
-        }
-        .metro-swap-alert.visible {
-            display: block;
-        }
-        .metro-swap-alert h4 {
-            color: #FF9800;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-        .metro-swap-alert p {
-            color: #FFB74D;
-            font-size: 13px;
-        }
-        @keyframes swapPulse {
-            from { opacity: 0.8; }
-            to { opacity: 1; }
-        }
+/* Rhythm Selection */
+.rhythm-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:12px;cursor:pointer;transition:border-color 0.2s,background 0.2s;min-height:70px;display:flex;flex-direction:column;justify-content:center}
+.rhythm-card:active,.rhythm-card:hover{border-color:var(--accent);background:var(--card-hover)}
+.rhythm-card .title{font-size:18px;font-weight:600}
+.rhythm-card .desc{font-size:13px;color:var(--text2);margin-top:4px}
 
-        /* Start/stop button */
-        .metro-btn {
-            width: 100%;
-            max-width: 320px;
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.1s ease;
-        }
-        .metro-btn:active {
-            transform: scale(0.97);
-        }
-        .metro-btn-start {
-            background: var(--accent);
-            color: #fff;
-        }
-        .metro-btn-stop {
-            background: var(--surface);
-            border: 2px solid var(--accent);
-            color: var(--accent);
-        }
+/* Timer Area */
+.timer-area{background:var(--card);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.timer-area .cycle-label{font-size:13px;color:var(--text2);margin-bottom:4px}
+.timer-area .cycle-time{font-size:56px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-2px}
+.timer-area .progress-bar{height:6px;background:#333;border-radius:3px;margin-top:12px;overflow:hidden}
+.timer-area .progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width 1s linear}
 
-        /* Mode selector */
-        .metro-modes {
-            display: flex;
-            gap: 8px;
-            width: 100%;
-            max-width: 320px;
-        }
-        .metro-mode-btn {
-            flex: 1;
-            padding: 10px 8px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        .metro-mode-btn.active {
-            background: rgba(255,82,82,0.15);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
+/* Counters */
+.counters{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.counter{background:var(--card);border-radius:var(--radius-sm);padding:16px;text-align:center}
+.counter .label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+.counter .value{font-size:32px;font-weight:700;font-variant-numeric:tabular-nums}
 
-        /* Stats */
-        .metro-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            width: 100%;
-            max-width: 320px;
-        }
-        .metro-stat {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px 8px;
-            text-align: center;
-        }
-        .metro-stat-value {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--accent);
-        }
-        .metro-stat-label {
-            font-size: 10px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+/* Guide Card */
+.guide-card{border-radius:var(--radius);padding:20px;margin-bottom:16px;border-left:4px solid var(--accent)}
+.guide-card.action{background:rgba(255,82,82,0.1);border-left-color:var(--accent)}
+.guide-card.info{background:rgba(33,150,243,0.1);border-left-color:var(--info)}
+.guide-card.alert{background:rgba(255,193,7,0.15);border-left-color:var(--warning)}
+.guide-card.success{background:rgba(76,175,80,0.1);border-left-color:var(--success)}
+.guide-card .guide-title{font-size:14px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+.guide-card .guide-text{font-size:18px;font-weight:600}
+.guide-card .guide-sub{font-size:13px;color:var(--text2);margin-top:6px}
 
-        /* BPM info */
-        .metro-bpm-info {
-            font-size: 12px;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-        .metro-bpm-info strong {
-            color: var(--accent);
-        }
+/* Nudge */
+.nudge{background:rgba(255,193,7,0.12);border:1px solid rgba(255,193,7,0.3);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:12px;font-size:13px;color:var(--warning);display:none;animation:nudgePulse 2s ease-in-out infinite}
+.nudge.visible{display:flex;align-items:center;gap:10px}
+.nudge.urgent{background:rgba(255,82,82,0.15);border-color:rgba(255,82,82,0.4);color:var(--accent);animation:nudgePulse 1s ease-in-out infinite}
+@keyframes nudgePulse{0%,100%{opacity:1}50%{opacity:0.7}}
 
-        /* ── FAB Menu ── */
-        .fab-menu { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
-        .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: #FF5252; border: none; color: white; cursor: pointer; box-shadow: 0 4px 12px rgba(255,82,82,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
-        .fab-btn:active { transform: scale(0.95); }
-        .fab-btn.open { background: #D32F2F; }
-        .fab-options { position: absolute; bottom: 70px; right: 0; background: #111; border: 1px solid #333; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
-        .fab-options.open { display: block; }
-        .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
-        .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
+/* Med Buttons */
+.med-list{margin-bottom:16px}
+.med-btn{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background 0.2s;width:100%;font-size:15px;color:var(--text);text-align:left}
+.med-btn:active{background:var(--card-hover)}
+.med-btn .plus{width:36px;height:36px;border-radius:50%;background:rgba(255,82,82,0.15);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;flex-shrink:0;position:relative}
+.med-count{position:absolute;top:-8px;right:-8px;background:var(--success);color:#fff;font-size:11px;font-weight:700;min-width:20px;height:20px;border-radius:10px;display:none;align-items:center;justify-content:center;padding:0 5px}
+.med-count.visible{display:flex}
+.med-btn.given{opacity:0.5;border-color:var(--success)}
+.med-btn.given .plus{background:rgba(76,175,80,0.2);color:var(--success)}
 
-        /* ── Footer ── */
-        footer {
-            text-align: center;
-            padding: 24px 16px;
-            color: var(--text-secondary);
-            font-size: 12px;
-            border-top: 1px solid var(--border);
-            margin-top: 20px;
-        }
-        footer .version {
-            font-size: 11px;
-            color: #555;
-            margin-top: 4px;
-        }
-    </style>
+/* Toggle */
+.toggle-row{display:flex;justify-content:space-between;align-items:center;background:var(--card);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:8px}
+.toggle-row .label{font-size:14px}
+.toggle-switch{width:48px;height:28px;background:#333;border-radius:14px;position:relative;cursor:pointer;transition:background 0.3s}
+.toggle-switch.on{background:var(--accent)}
+.toggle-switch .knob{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:left 0.3s}
+.toggle-switch.on .knob{left:23px}
+
+/* Collapsible */
+.collapsible{background:var(--card);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden}
+.collapsible-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;font-weight:500}
+.collapsible-header .chevron{transition:transform 0.3s;color:var(--text2)}
+.collapsible-header.open .chevron{transform:rotate(180deg)}
+.collapsible-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.collapsible-body.open{max-height:800px}
+.collapsible-body-inner{padding:0 16px 16px}
+.checklist-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.checklist-item:last-child{border-bottom:none}
+.check-box{width:22px;height:22px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;margin-top:1px}
+.check-box.checked{background:var(--success);border-color:var(--success);color:#fff}
+
+/* Check Rhythm Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:300;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.active{display:flex}
+.modal{background:var(--card);border-radius:var(--radius);padding:24px;max-width:400px;width:100%;animation:modalIn 0.3s ease}
+@keyframes modalIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h2{font-size:20px;text-align:center;margin-bottom:8px}
+.modal .modal-sub{font-size:13px;color:var(--text2);text-align:center;margin-bottom:20px}
+.modal .modal-btn{width:100%;padding:16px;border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px;transition:opacity 0.2s}
+.modal .modal-btn:active{opacity:0.8}
+.modal .btn-shock{background:var(--accent);color:#fff}
+.modal .btn-nonshock{background:var(--info);color:#fff}
+.modal .btn-rosc{background:var(--success);color:#fff}
+.modal .btn-death{background:#555;color:#fff}
+.modal .etco2-field{display:flex;gap:8px;align-items:center;margin-bottom:16px;padding:12px;background:rgba(255,255,255,0.05);border-radius:var(--radius-sm)}
+.modal .etco2-field input{background:#333;border:1px solid var(--border);color:#fff;padding:8px;border-radius:6px;width:80px;font-size:16px;text-align:center}
+.modal .etco2-field label{font-size:13px;color:var(--text2)}
+
+/* ROSC Screen */
+.rosc-header{background:rgba(76,175,80,0.15);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:20px}
+.rosc-header h2{color:var(--success);font-size:22px}
+.rosc-header .time{font-size:14px;color:var(--text2);margin-top:4px}
+.rosc-checklist .item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px}
+
+/* Death Screen */
+.death-header{background:rgba(255,255,255,0.05);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:20px}
+
+/* Report */
+.report-box{background:var(--card);border-radius:var(--radius);padding:20px;font-family:'SF Mono',SFMono-Regular,Menlo,Monaco,monospace;font-size:12px;line-height:1.8;white-space:pre-wrap;color:var(--text2);max-height:400px;overflow-y:auto}
+.copy-btn{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:600;cursor:pointer;margin-top:12px}
+.copy-btn:active{opacity:0.8}
+
+/* Teaser */
+.teaser-card{background:var(--card);border:1px dashed var(--border);border-radius:var(--radius);padding:20px;text-align:center;margin-top:20px;opacity:0.6}
+.teaser-card .title{font-size:14px;font-weight:600;margin-bottom:4px}
+.teaser-card .desc{font-size:12px;color:var(--text3)}
+
+/* Footer */
+.footer{position:fixed;bottom:0;left:0;right:0;z-index:100}
+.footer-bar{background:rgba(26,26,26,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding:10px 16px;max-width:500px;margin:0 auto}
+.footer-item{text-align:center;font-variant-numeric:tabular-nums}
+.footer-item .val{font-size:20px;font-weight:700}
+.footer-item .lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+.metro-toggle{padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:12px;cursor:pointer;transition:all 0.2s}
+.metro-toggle.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+.credits{text-align:center;padding:20px 0 0;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:24px}
+.credits .version{margin-top:4px;font-size:10px}
+
+/* Utility */
+.mt-12{margin-top:12px}
+.mt-16{margin-top:16px}
+.mt-24{margin-top:24px}
+.mb-8{margin-bottom:8px}
+.section-label{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;padding-left:4px}
+
+/* OVACE */
+.ovace-card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:16px;cursor:pointer;text-align:center;transition:border-color 0.2s}
+.ovace-card:active{border-color:var(--accent)}
+.ovace-card .title{font-size:16px;font-weight:600;margin-bottom:4px}
+.ovace-card .desc{font-size:12px;color:var(--text2)}
+.ovace-step{margin-bottom:16px}
+.ovace-btn{width:100%;padding:14px;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;margin-bottom:10px}
+.ovace-btn:active{opacity:0.8}
+.ovace-btn-primary{background:var(--accent);color:#fff}
+.ovace-btn-secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.ovace-btn-success{background:var(--success);color:#fff}
+.ovace-signs{background:var(--card);border-radius:var(--radius-sm);padding:16px;margin:12px 0}
+.ovace-signs li{font-size:14px;padding:4px 0;list-style:none;color:var(--text2)}
+.ovace-signs li::before{content:'\\2022 ';color:var(--accent)}
+.ovace-action-card{background:rgba(255,82,82,0.1);border-left:4px solid var(--accent);border-radius:var(--radius-sm);padding:16px;margin:12px 0}
+.ovace-action-card h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.ovace-action-card p{font-size:14px;color:var(--text2)}
+.ovace-note{font-size:12px;color:var(--text3);margin-top:8px;font-style:italic}
+
+/* Hs e Ts action cards */
+.ht-card{background:var(--card);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden;border:1px solid var(--border)}
+.ht-card-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer}
+.ht-card-header .ht-name{font-size:14px;font-weight:500}
+.ht-card-header .ht-arrow{color:var(--text3);transition:transform 0.3s;font-size:12px}
+.ht-card-header.open .ht-arrow{transform:rotate(180deg)}
+.ht-card-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.ht-card-body.open{max-height:400px}
+.ht-card-action{padding:0 16px 16px;font-size:13px;color:var(--text2);line-height:1.6}
+.ht-card-action strong{color:var(--accent);font-weight:600}
+.ht-card-action a{color:var(--info);text-decoration:underline}
+
+/* FCT pause button */
+.fct-pause-btn{width:100%;padding:12px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;margin-top:8px;transition:all 0.2s}
+.fct-pause-btn.active{background:rgba(255,82,82,0.15);border:2px solid var(--accent);color:var(--accent)}
+.fct-pause-btn.paused{background:rgba(255,193,7,0.15);border:2px solid var(--warning);color:var(--warning);animation:pausePulse 1s ease-in-out infinite}
+@keyframes pausePulse{0%,100%{opacity:1}50%{opacity:0.7}}
+</style>
 </head>
 <body>
-    <div class="disclaimer"><strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.</div>
 
-    <header class="header">
-        <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
-        <h1>ACLS Guide</h1>
-        <p>Suporte avançado de vida cardiovascular</p>
-    </header>
+<div class="disclaimer"><strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.</div>
 
-    <!-- Grid Principal -->
-    <div class="acls-grid" id="acls-grid">
-        <div class="acls-grid-item acls-grid-item-main" onclick="showACLSSection('metronome')">
-            <div class="grid-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2" stroke-linecap="round">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-            </div>
-            <h3>Metrônomo de RCP</h3>
-            <p>110/min + ventilação a cada 10s + timer de troca</p>
-        </div>
-        <div class="acls-grid-item acls-grid-item-disabled">
-            <div class="grid-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2" stroke-linecap="round">
-                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
-                </svg>
-            </div>
-            <h3>Algoritmos</h3>
-            <p>FV/TV, AESP, Bradicardia, Taquicardia</p>
-        </div>
-        <div class="acls-grid-item acls-grid-item-disabled">
-            <div class="grid-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2" stroke-linecap="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <path d="M3 9h18M9 3v18"/>
-                </svg>
-            </div>
-            <h3>Registro de PCR</h3>
-            <p>Linha do tempo + copiar para prontuário</p>
-        </div>
-    </div>
+<!-- ===== SCREEN: START ===== -->
+<div class="screen active" id="screenStart">
+<div class="container">
+<div class="header">
+<a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
+<h1>ACLS Guide</h1>
+<div class="subtitle">Guia de parada cardiorrespiratória</div>
+</div>
 
-    <!-- Seção: Metrônomo -->
-    <div class="acls-section" id="acls-metronome">
-        <a class="back-link" onclick="hideACLSSection()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            Voltar
-        </a>
-        <h2 style="font-size:20px; margin-bottom:16px; color:var(--text);">Metrônomo de RCP</h2>
+<button class="start-btn" onclick="startCode()">Iniciar<br>código</button>
 
-        <div class="metro-container">
-            <!-- Timer -->
-            <div class="metro-display">
-                <div class="metro-timer" id="metroTimer">00:00</div>
-                <div class="metro-cycle-info" id="metroCycleInfo">Pronto para iniciar</div>
-            </div>
+<div class="credits">
+Gustavo Moreira | Gabriela Feltrin | João Pedro Moreira
+<div class="version">v1.0.0 — Março 2026 | AHA 2025</div>
+</div>
 
-            <!-- Mode selector -->
-            <div class="metro-modes">
-                <button class="metro-mode-btn active" id="modeVAA" onclick="setMetroMode('vaa')">Via aérea avançada</button>
-                <button class="metro-mode-btn" id="mode302" onclick="setMetroMode('302')">30:2</button>
-            </div>
+<div class="ovace-card" onclick="showScreen('screenOVACE')">
+<div class="title">OVACE</div>
+<div class="desc">Obstrução de via aérea por corpo estranho</div>
+</div>
+</div>
+</div>
 
-            <!-- BPM info -->
-            <div class="metro-bpm-info" id="metroBpmInfo">
-                <strong>110 BPM</strong> — compressões contínuas + ventilação a cada 10s
-            </div>
+<!-- ===== SCREEN: OVACE =====
+-->
+<div class="screen" id="screenOVACE">
+<div class="container">
+<div class="header">
+<h1>OVACE</h1>
+<div class="subtitle">Obstrução de via aérea por corpo estranho (AHA 2025)</div>
+</div>
 
-            <!-- Visual pulse -->
-            <div class="metro-pulse" id="metroPulse">
-                <span class="metro-pulse-label" id="metroPulseLabel">INICIAR</span>
-                <div class="metro-cycle-ring" id="metroCycleRing" style="display:none;">1</div>
-            </div>
+<div id="ovaceStep1">
+<div class="guide-card alert">
+<div class="guide-title">Avaliação</div>
+<div class="guide-text">O paciente apresenta sinais de OVACE grave?</div>
+</div>
+<div class="ovace-signs">
+<li>Tosse fraca ou ausente</li>
+<li>Incapaz de falar ou chorar</li>
+<li>Cianose</li>
+<li>Alteração do estado mental</li>
+<li>Apneia</li>
+</div>
+<button class="ovace-btn ovace-btn-primary" onclick="ovaceGrave()">Sim — OVACE grave</button>
+<button class="ovace-btn ovace-btn-secondary" onclick="ovaceLeve()">Não — OVACE leve</button>
+</div>
 
-            <!-- Swap alert -->
-            <div class="metro-swap-alert" id="metroSwapAlert">
-                <h4>TROCAR SOCORRISTA</h4>
-                <p>2 minutos completados — toque para confirmar</p>
-            </div>
+<div id="ovaceStepLeve" style="display:none">
+<div class="guide-card success">
+<div class="guide-title">OVACE leve</div>
+<div class="guide-text">Incentive a tosse</div>
+<div class="guide-sub">Continue monitorando sinais de agravamento. Não interfira enquanto a tosse for efetiva.</div>
+</div>
+<button class="ovace-btn ovace-btn-secondary" onclick="ovaceReset()">Voltar</button>
+</div>
 
-            <!-- Start/Stop -->
-            <button class="metro-btn metro-btn-start" id="metroBtn" onclick="toggleMetronome()">INICIAR RCP</button>
+<div id="ovaceStepGrave" style="display:none">
+<div class="guide-card action">
+<div class="guide-title">OVACE grave</div>
+<div class="guide-text">O paciente está consciente?</div>
+</div>
+<button class="ovace-btn ovace-btn-primary" onclick="ovaceConsciente()">Sim — Consciente</button>
+<button class="ovace-btn ovace-btn-primary" onclick="ovaceInconsciente()">Não — Inconsciente</button>
+</div>
 
-            <!-- Stats -->
-            <div class="metro-stats">
-                <div class="metro-stat">
-                    <div class="metro-stat-value" id="statCycles">0</div>
-                    <div class="metro-stat-label">Ciclos</div>
-                </div>
-                <div class="metro-stat">
-                    <div class="metro-stat-value" id="statCompressions">0</div>
-                    <div class="metro-stat-label">Compressões</div>
-                </div>
-                <div class="metro-stat">
-                    <div class="metro-stat-value" id="statVentilations">0</div>
-                    <div class="metro-stat-label">Ventilações</div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="ovaceStepConsciente" style="display:none">
+<div class="ovace-action-card">
+<h3>Ciclos repetidos</h3>
+<p>5 tapas nas costas (golpes) seguidos de 5 compressões abdominais</p>
+</div>
+<div class="guide-card info">
+<div class="guide-text">Repita até que o objeto seja expelido ou o paciente fique inconsciente</div>
+</div>
+<div class="ovace-note">Gestante ou obeso: substituir compressões abdominais por compressões torácicas.</div>
+<div style="margin-top:16px">
+<button class="ovace-btn ovace-btn-success" onclick="ovaceExpelido()">Objeto expelido</button>
+<button class="ovace-btn ovace-btn-primary" onclick="ovaceInconsciente()">Ficou inconsciente</button>
+<button class="ovace-btn ovace-btn-secondary" onclick="ovaceReset()">Voltar ao início</button>
+</div>
+</div>
 
-    <!-- FAB Menu -->
-    <div class="fab-menu">
-        <div class="fab-options" id="fabOptions">
-            <a href="#" onclick="event.preventDefault(); toggleFab(); showACLSSection('metronome');">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                Metrônomo de RCP
-            </a>
-        </div>
-        <button class="fab-btn" id="fabBtn" onclick="toggleFab()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
-        </button>
-    </div>
+<div id="ovaceStepInconsciente" style="display:none">
+<div class="ovace-action-card">
+<h3>Iniciar RCP</h3>
+<p>Inicie compressões torácicas. Antes de cada ventilação, verifique se há objeto visível na boca.</p>
+</div>
+<div class="guide-card alert">
+<div class="guide-text">Acione o serviço médico de emergência</div>
+</div>
+<div style="margin-top:16px">
+<button class="ovace-btn ovace-btn-primary" onclick="ovaceIniciarPCR()">Iniciar Código de PCR</button>
+<button class="ovace-btn ovace-btn-secondary" onclick="ovaceReset()">Voltar ao início</button>
+</div>
+</div>
 
-    <footer>
-        Gustavo Moreira &bull; Gabriela Feltrin &bull; João Pedro Moreira
-        <div class="version">v1.0.0 — Março 2026</div>
-    </footer>
+<div id="ovaceStepExpelido" style="display:none">
+<div class="guide-card success">
+<div class="guide-title">Objeto expelido</div>
+<div class="guide-text">Continue monitorando o paciente</div>
+<div class="guide-sub">Mantenha observação até a chegada do serviço médico de emergência.</div>
+</div>
+<button class="ovace-btn ovace-btn-secondary" onclick="showScreen('screenStart')">Voltar ao início</button>
+</div>
 
-    <script>
-    // ══════════════════════════════════════════════
-    // Navigation
-    // ══════════════════════════════════════════════
-    function showACLSSection(section) {
-        document.getElementById('acls-grid').style.display = 'none';
-        document.querySelectorAll('.acls-section').forEach(function(s) { s.classList.remove('active'); });
-        var el = document.getElementById('acls-' + section);
-        if (el) el.classList.add('active');
-        window.scrollTo(0, 0);
+</div>
+</div>
+
+<!-- ===== SCREEN: RHYTHM ===== -->
+<div class="screen" id="screenRhythm">
+<div class="container">
+<div class="header">
+<a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App" style="max-width:180px"></a>
+<h1>ACLS Guide</h1>
+</div>
+
+<div style="text-align:center;margin:24px 0 8px">
+<div style="font-size:13px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">RCP em andamento</div>
+<div style="font-size:28px;font-weight:700;margin-bottom:4px">Qual o ritmo?</div>
+<div style="font-size:13px;color:var(--warning)">Monitore, carregue o desfibrilador, cheque o ritmo</div>
+</div>
+
+<div class="rhythm-card" onclick="selectRhythm('shockable')" style="padding:28px;border-color:var(--accent);border-width:2px;margin-top:20px">
+<div class="title" style="color:var(--accent);font-size:22px">FV / TV sem pulso</div>
+<div class="desc" style="font-size:14px;margin-top:6px">Ritmo chocável — aplique choque</div>
+</div>
+
+<div class="rhythm-card" onclick="selectRhythm('nonshockable')" style="padding:28px;border-color:var(--info);border-width:2px">
+<div class="title" style="color:var(--info);font-size:22px">AESP / Assistolia</div>
+<div class="desc" style="font-size:14px;margin-top:6px">Ritmo não chocável — epinefrina imediata</div>
+</div>
+
+<div style="text-align:center;margin-top:16px;padding:12px;background:rgba(255,193,7,0.1);border-radius:var(--radius-sm);font-size:13px;color:var(--warning)">
+O timer já está rodando. Mantenha compressões enquanto decide.
+</div>
+</div>
+</div>
+
+<!-- ===== SCREEN: CODE (main) ===== -->
+<div class="screen" id="screenCode">
+<div class="container">
+
+<!-- Timer -->
+<div class="timer-area" id="timerArea">
+<div class="cycle-label" id="cycleLabel">Ciclo 1 de RCP</div>
+<div class="cycle-time" id="cycleTime">2:00</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:100%"></div></div>
+</div>
+
+<!-- Counters -->
+<div class="counters">
+<div class="counter"><div class="label">Ciclos</div><div class="value" id="cycleCount">0</div></div>
+<div class="counter"><div class="label">Choques</div><div class="value" id="shockCount">0</div></div>
+</div>
+
+<!-- Algorithmic Guide -->
+<div id="guideArea">
+<div class="guide-card action" id="guideCard">
+<div class="guide-title" id="guideTitle">Agora</div>
+<div class="guide-text" id="guideText">RCP de alta qualidade</div>
+<div class="guide-sub" id="guideSub"></div>
+</div>
+</div>
+
+<!-- Nudges -->
+<div class="nudge" id="nudgeEpi">Considere epinefrina 1 mg IV/IO</div>
+<div class="nudge" id="nudgeIV">Priorize acesso IV. IO se IV não viável.</div>
+<div class="nudge" id="nudgeAirway">Considere via aérea avançada</div>
+<div class="nudge" id="nudgeHT">Revisou causas reversíveis? (H's e T's)</div>
+
+<!-- Shock button (shockable only) -->
+<button class="med-btn" id="shockBtn" style="display:none;border-color:var(--accent)" onclick="registerShock()">
+<span style="color:var(--accent);font-weight:600">Registrar choque</span>
+<div class="plus" style="background:rgba(255,82,82,0.3)">+</div>
+</button>
+
+<!-- Medications -->
+<div class="section-label mt-16">Medicações</div>
+<div class="med-list" id="medList">
+<button class="med-btn" onclick="registerMed('Epinefrina 1 mg IV/IO', this)">
+<span>Epinefrina 1 mg IV/IO</span><div class="plus"><span class="med-count"></span>+</div>
+</button>
+<button class="med-btn" onclick="registerMed('Amiodarona 300 mg IV', this)">
+<span>Amiodarona 300 mg IV</span><div class="plus"><span class="med-count"></span>+</div>
+</button>
+<button class="med-btn" onclick="registerMed('Amiodarona 150 mg IV', this)">
+<span>Amiodarona 150 mg IV</span><div class="plus"><span class="med-count"></span>+</div>
+</button>
+<button class="med-btn" onclick="registerMed('Lidocaína 100 mg IV', this)">
+<span>Lidocaína 100 mg IV</span><div class="plus"><span class="med-count"></span>+</div>
+</button>
+<button class="med-btn" onclick="registerMed('Sulfato de magnésio 2 g IV', this)">
+<span>Sulfato de magnésio 2 g IV</span><div class="plus"><span class="med-count"></span>+</div>
+</button>
+<button class="med-btn" onclick="registerMed('Gluconato de cálcio 3 g IV', this)">
+<span>Gluconato de cálcio 3 g IV</span><div class="plus"><span class="med-count"></span>+</div>
+</button>
+<button class="med-btn" onclick="registerMed('Bicarbonato de sódio 1 mEq/kg IV', this)">
+<span>Bicarbonato de sódio 1 mEq/kg IV</span><div class="plus"><span class="med-count"></span>+</div>
+</button>
+</div>
+
+<!-- Advanced Airway Toggle -->
+<div class="toggle-row" id="airwayToggle">
+<span class="label">Via aérea avançada</span>
+<div class="toggle-switch" id="airwaySwitch" onclick="toggleAirway()"><div class="knob"></div></div>
+</div>
+
+<!-- H's and T's collapsible -->
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapsible(this)">
+Causas reversíveis (H's e T's)
+<span class="chevron">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<div class="collapsible-body-inner" id="htChecklist">
+<div class="section-label mb-8">Hs</div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Hipovolemia</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action"><strong>SF 0,9% 500 ml bolus</strong> rapido, repetir conforme necessidade. Hemoderivados se trauma ou hemorragia ativa.</div></div></div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Hipoxia</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action"><strong>FiO2 100%</strong>. Considerar IOT — <a href="#" onclick="event.preventDefault(); parent.loadApp('airway')">Airway Guide</a>. Verificar posicao do tubo.</div></div></div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Hidrogenio (acidose)</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action"><strong>Bicarbonato de sodio 1 mEq/kg IV</strong>. Considerar se PCR prolongada, acidose previa ou hipercalemia.</div></div></div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Hipo/Hipercalemia</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action"><strong>Hipercalemia:</strong> Gluconato de calcio 10% 20 ml IV (2-5 min), Insulina regular 10 UI + Glicose 50% 25 g IV, Bicarbonato 50 mEq IV.<br><strong>Hipocalemia:</strong> KCl 20 mEq IV em 1h, Sulfato de magnesio 2 g IV.</div></div></div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Hipotermia</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action"><strong>Reaquecimento ativo:</strong> SF aquecido 42°C IV, manta termica, lavagem peritoneal/pleural se grave (&lt;30°C). Manter RCP — nao declarar obito ate reaquecer.</div></div></div>
+<div class="section-label mt-16 mb-8">Ts</div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Tensao (pneumotorax hipertensivo)</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action"><strong>Descompressao com agulha</strong> no 2° EIC linha hemiclavicular ou 5° EIC linha axilar anterior. Seguida de <strong>drenagem toracica</strong>.</div></div></div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Tamponamento cardiaco</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action"><strong>Pericardiocentese guiada por USG</strong> (subxifoide). Volume rapido IV para manter pre-carga. Considerar toracotomia de emergencia se trauma.</div></div></div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Toxinas</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action">Identificar agente e administrar <strong>antidoto especifico</strong>. Considerar carvao ativado se ingestao recente. <a href="#" onclick="event.preventDefault(); parent.loadApp('tox')">Tox Path</a> para referencia de antidotos.</div></div></div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Trombose pulmonar (TEP)</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action"><strong>Trombolise:</strong> Alteplase 50 mg IV em bolus durante a RCP. Se suspeita forte, considerar trombolise empirica. Manter RCP por pelo menos 60-90 min apos trombolise.</div></div></div>
+<div class="ht-card"><div class="ht-card-header" onclick="toggleHTCard(this)"><span class="ht-name">Trombose coronaria (IAM)</span><span class="ht-arrow">&#9660;</span></div><div class="ht-card-body"><div class="ht-card-action"><strong>Cateterismo de emergencia</strong> (ICP) se disponivel. Se nao: <strong>trombolise</strong> com tenecteplase ou alteplase. ECG 12 derivacoes pos-ROSC.</div></div></div>
+</div>
+</div>
+</div>
+
+<!-- FCT Toggle (optional) -->
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapsible(this)">
+Configurações
+<span class="chevron">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<div class="collapsible-body-inner">
+<div class="toggle-row" style="margin-bottom:8px">
+<span class="label" style="font-size:13px">Registrar pausas (FCT)</span>
+<div class="toggle-switch" id="fctSwitch" onclick="toggleFCT()"><div class="knob"></div></div>
+</div>
+<div class="toggle-row" style="margin-bottom:8px">
+<span class="label" style="font-size:13px">Intervalo epinefrina</span>
+<select id="epiInterval" onchange="updateEpiInterval()" style="background:#333;color:#fff;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px">
+<option value="180">3 min</option>
+<option value="240" selected>4 min (sugerido)</option>
+<option value="300">5 min</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+
+<div id="fctPauseContainer" style="display:none">
+<button class="fct-pause-btn active" id="fctPauseBtn" onclick="toggleFCTPause()">Registrar pausa nas compressoes</button>
+</div>
+
+<!-- Finish buttons -->
+<div class="section-label mt-24">Encerrar código</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+<button onclick="finishROSC()" style="padding:16px;background:rgba(76,175,80,0.15);border:2px solid var(--success);border-radius:var(--radius-sm);color:var(--success);font-size:16px;font-weight:700;cursor:pointer">RCE</button>
+<button onclick="confirmDeath()" style="padding:16px;background:rgba(255,255,255,0.05);border:2px solid #555;border-radius:var(--radius-sm);color:var(--text2);font-size:16px;font-weight:700;cursor:pointer">Óbito</button>
+</div>
+
+<!-- Teaser -->
+<div class="teaser-card">
+<div class="title">Beyond ACLS</div>
+<div class="desc">Pseudo-AESP, análise do QRS, situações especiais. Em breve.</div>
+</div>
+
+<div class="credits">
+Gustavo Moreira | Gabriela Feltrin | João Pedro Moreira
+<div class="version">v1.0.0 — Março 2026 | AHA 2025</div>
+</div>
+</div>
+</div>
+
+<!-- ===== SCREEN: ROSC ===== -->
+<div class="screen" id="screenROSC">
+<div class="container">
+<div class="rosc-header">
+<h2>RCE obtido</h2>
+<div class="time" id="roscTime"></div>
+</div>
+
+<div class="section-label">Checklist pós-ROSC (AHA 2025)</div>
+
+<div id="roscChecklist">
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>Via aérea: avaliar/confirmar posicionamento</span></div>
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>FiO2 100% ate SpO2 confiavel, depois alvo 90-98%</span></div>
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>PaCO2 alvo 35-45 mmHg</span></div>
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>PAM alvo maior ou igual a 65 mmHg</span></div>
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>ECG 12 derivações</span></div>
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>Considere TC e/ou eco a beira-leito</span></div>
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>Segue comandos? Se nao: controle de temperatura (32-37,5 graus C por pelo menos 36h)</span></div>
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>Considere cate se: ST supra persistente, choque cardiogênico, arritmia refratária</span></div>
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>Avalie convulsão, solicite EEG se nao segue comandos</span></div>
+<div class="checklist-item"><div class="check-box" onclick="toggleCheck(this)"></div><span>Evite hipoglicemia (menor que 70) e hiperglicemia (maior que 180)</span></div>
+</div>
+
+<button class="copy-btn mt-24" onclick="showReport()">Gerar relatório</button>
+</div>
+</div>
+
+<!-- ===== SCREEN: DEATH ===== -->
+<div class="screen" id="screenDeath">
+<div class="container">
+<div class="death-header">
+<h2>Fim dos esforços</h2>
+<div id="deathTime" style="font-size:14px;color:var(--text2);margin-top:8px"></div>
+</div>
+<button class="copy-btn" onclick="showReport()">Gerar relatório</button>
+</div>
+</div>
+
+<!-- ===== SCREEN: REPORT ===== -->
+<div class="screen" id="screenReport">
+<div class="container">
+<div class="header">
+<a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App" style="max-width:180px"></a>
+<h1>Relatório do código</h1>
+</div>
+<div class="report-box" id="reportContent"></div>
+<button class="copy-btn" onclick="copyReport()">Copiar relatório</button>
+<div id="copyMsg" style="text-align:center;color:var(--success);font-size:13px;margin-top:8px;display:none">Copiado!</div>
+</div>
+</div>
+
+<!-- ===== CHECK RHYTHM MODAL ===== -->
+<div class="modal-overlay" id="checkRhythmModal">
+<div class="modal">
+<h2>Checar ritmo</h2>
+<div class="modal-sub">Pausa menor que 10 segundos. Considere trocar compressor.</div>
+
+<div class="etco2-field">
+<label>ETCO2 (opcional):</label>
+<input type="number" id="etco2Input" inputmode="decimal" placeholder="mmHg">
+<span style="font-size:12px;color:var(--text3)">mmHg</span>
+</div>
+
+<button class="modal-btn btn-shock" onclick="rhythmCheck('shockable')">Chocavel — Choque</button>
+<button class="modal-btn btn-nonshock" onclick="rhythmCheck('nonshockable')">Nao chocável</button>
+<button class="modal-btn btn-rosc" onclick="rhythmCheck('rosc')">RCE (pulso presente)</button>
+<button class="modal-btn btn-death" onclick="rhythmCheck('death')">Óbito</button>
+</div>
+</div>
+
+<!-- ===== FOOTER BAR ===== -->
+<div class="footer" id="footerBar" style="display:none">
+<div class="footer-bar">
+<div class="footer-item">
+<div class="val" id="totalTime">0:00</div>
+<div class="lbl">Total</div>
+</div>
+<div class="footer-item">
+<div class="val" id="footerCycle">--</div>
+<div class="lbl">Ciclo</div>
+</div>
+<button class="metro-toggle" id="metroBtn" onclick="toggleMetronome()">Metrônomo</button>
+</div>
+</div>
+
+<script>
+// ===== STATE =====
+let state = {
+  running: false,
+  startTime: null,
+  rhythm: null,
+  cycleCount: 0,
+  shockCount: 0,
+  events: [],
+  lastEpiTime: null,
+  epiInterval: 240,
+  amio300Given: false,
+  amio150Given: false,
+  advancedAirway: false,
+  fctTracking: false,
+  pauseStart: null,
+  totalPauseTime: 0,
+  cycleStartTime: null,
+  metronomeOn: false,
+  ventMetronomeOn: false,
+  outcome: null,
+  endTime: null
+};
+
+let cycleTimer = null;
+let cycleRemaining = 120;
+let audioCtx = null;
+let metronomeInterval = null;
+let ventInterval = null;
+let mainTickInterval = null;
+
+// ===== SCREENS =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===== START =====
+function startCode() {
+  state.startTime = Date.now();
+  state.running = true;
+  requestWakeLock();
+  state.events.push({ time: 0, type: 'system', detail: 'Código iniciado' });
+  document.getElementById('footerBar').style.display = 'block';
+  startMainTick();
+  showScreen('screenRhythm');
+}
+
+// ===== RHYTHM =====
+function selectRhythm(r) {
+  state.rhythm = r;
+  state.events.push({ time: elapsed(), type: 'rhythm', detail: r === 'shockable' ? 'FV/TV sem pulso' : 'AESP/Assistolia' });
+  
+  if (r === 'shockable') {
+    document.getElementById('shockBtn').style.display = 'flex';
+    updateGuide('Aplique choque e inicie RCP', 'Compressões 100-120/min, profundidade 5-6 cm', 'action');
+  } else {
+    document.getElementById('shockBtn').style.display = 'none';
+    updateGuide('RCP de alta qualidade', 'Epinefrina 1 mg IV/IO o mais rápido possível', 'action');
+    showNudge('nudgeEpi', true);
+  }
+  
+  showNudge('nudgeIV', false);
+  setTimeout(() => showNudge('nudgeIV', true), 500);
+  
+  startCycleTimer();
+  showScreen('screenCode');
+}
+
+// ===== CYCLE TIMER =====
+function startCycleTimer() {
+  cycleRemaining = 120;
+  state.cycleStartTime = Date.now();
+  updateCycleDisplay();
+  
+  if (cycleTimer) clearInterval(cycleTimer);
+  cycleTimer = setInterval(() => {
+    cycleRemaining--;
+    updateCycleDisplay();
+    
+    if (cycleRemaining <= 0) {
+      clearInterval(cycleTimer);
+      triggerCheckRhythm();
     }
+  }, 1000);
+}
 
-    function hideACLSSection() {
-        // Stop metronome if running
-        if (metroState.running) toggleMetronome();
-        document.querySelectorAll('.acls-section').forEach(function(s) { s.classList.remove('active'); });
-        document.getElementById('acls-grid').style.display = '';
-        window.scrollTo(0, 0);
+function updateCycleDisplay() {
+  let m = Math.floor(cycleRemaining / 60);
+  let s = cycleRemaining % 60;
+  document.getElementById('cycleTime').textContent = m + ':' + String(s).padStart(2, '0');
+  document.getElementById('cycleLabel').textContent = 'Ciclo ' + (state.cycleCount + 1) + ' de RCP';
+  let pct = (cycleRemaining / 120) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  
+  // Color changes
+  if (cycleRemaining <= 10) {
+    document.getElementById('timerArea').style.borderColor = 'var(--accent)';
+    document.getElementById('timerArea').style.borderWidth = '2px';
+    document.getElementById('timerArea').style.borderStyle = 'solid';
+  } else {
+    document.getElementById('timerArea').style.border = 'none';
+  }
+  
+  // Nudge checks
+  checkNudges();
+}
+
+// ===== CHECK RHYTHM =====
+function triggerCheckRhythm() {
+  state.cycleCount++;
+  document.getElementById('cycleCount').textContent = state.cycleCount;
+  document.getElementById('footerCycle').textContent = state.cycleCount;
+  
+  state.events.push({ time: elapsed(), type: 'cycle', detail: 'Ciclo ' + state.cycleCount + ' completo' });
+  
+  // Vibration
+  if (navigator.vibrate) navigator.vibrate(500);
+  
+  // Play alert sound
+  playAlert();
+  
+  document.getElementById('checkRhythmModal').classList.add('active');
+  document.getElementById('etco2Input').value = '';
+}
+
+function rhythmCheck(result) {
+  let etco2 = document.getElementById('etco2Input').value;
+  if (etco2) {
+    state.events.push({ time: elapsed(), type: 'etco2', detail: 'ETCO2: ' + etco2 + ' mmHg' });
+  }
+  
+  document.getElementById('checkRhythmModal').classList.remove('active');
+  
+  if (result === 'rosc') {
+    finishROSC();
+    return;
+  }
+  if (result === 'death') {
+    finishDeath();
+    return;
+  }
+  
+  state.rhythm = result;
+  state.events.push({ time: elapsed(), type: 'rhythm', detail: result === 'shockable' ? 'Ritmo chocável' : 'Ritmo nao chocável' });
+  
+  if (result === 'shockable') {
+    document.getElementById('shockBtn').style.display = 'flex';
+    updateGuideForCycle();
+  } else {
+    document.getElementById('shockBtn').style.display = 'none';
+    updateGuide('RCP de alta qualidade', 'Mantenha epinefrina a cada ' + (state.epiInterval/60) + ' min', 'action');
+  }
+  
+  startCycleTimer();
+}
+
+// ===== GUIDE LOGIC =====
+function updateGuideForCycle() {
+  let c = state.cycleCount;
+  let s = state.shockCount;
+  
+  if (state.rhythm === 'shockable') {
+    if (s >= 2 && !state.amio300Given) {
+      updateGuide('Considere amiodarona 300 mg IV', 'Após 3º choque sem sucesso', 'alert');
+    } else if (s >= 4 && state.amio300Given && !state.amio150Given) {
+      updateGuide('Considere amiodarona 150 mg IV', 'Dose adicional', 'alert');
+    } else {
+      updateGuide('RCP de alta qualidade + prepare choque', 'Mantenha epinefrina a cada ' + (state.epiInterval/60) + ' min', 'action');
     }
+  }
+}
 
-    function toggleFab() {
-        var btn = document.getElementById('fabBtn');
-        var opts = document.getElementById('fabOptions');
-        btn.classList.toggle('open');
-        opts.classList.toggle('open');
+function updateGuide(text, sub, type) {
+  document.getElementById('guideText').textContent = text;
+  document.getElementById('guideSub').textContent = sub || '';
+  let card = document.getElementById('guideCard');
+  card.className = 'guide-card ' + (type || 'action');
+}
+
+// ===== NUDGES =====
+function checkNudges() {
+  let t = elapsed();
+  
+  // Epi nudge
+  if (state.lastEpiTime === null) {
+    if (state.rhythm === 'nonshockable' || (state.rhythm === 'shockable' && state.cycleCount >= 1)) {
+      showNudge('nudgeEpi', true);
     }
-
-    // ══════════════════════════════════════════════
-    // Metrônomo de RCP
-    // ══════════════════════════════════════════════
-    var metroState = {
-        running: false,
-        mode: 'vaa', // 'vaa' = via aérea avançada, '302' = 30:2
-        startTime: 0,
-        elapsed: 0,
-        timerInterval: null,
-        beatInterval: null,
-        ventInterval: null,
-        compressions: 0,
-        ventilations: 0,
-        cycles: 0, // 2-min cycles
-        cycleStart: 0,
-        // 30:2 mode state
-        count302: 0,
-        phase302: 'compress', // 'compress' or 'ventilate'
-        ventCount302: 0,
-        // Audio
-        audioCtx: null
-    };
-
-    var BPM = 110;
-    var BEAT_MS = Math.round(60000 / BPM); // ~545ms
-    var VENT_INTERVAL_MS = 10000; // 10 seconds
-    var SWAP_INTERVAL_MS = 120000; // 2 minutes
-
-    function initAudio() {
-        if (!metroState.audioCtx) {
-            metroState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (metroState.audioCtx.state === 'suspended') {
-            metroState.audioCtx.resume();
-        }
+  } else {
+    let sinceLast = (Date.now() - state.lastEpiTime) / 1000;
+    if (sinceLast >= state.epiInterval) {
+      showNudge('nudgeEpi', true, true);
+    } else {
+      showNudge('nudgeEpi', false);
     }
+  }
+  
+  // IV nudge - only cycle 1
+  if (state.cycleCount === 0 && t < 180) {
+    // Already shown
+  } else {
+    showNudge('nudgeIV', false);
+  }
+  
+  // Airway nudge
+  if (!state.advancedAirway && state.cycleCount >= 2) {
+    showNudge('nudgeAirway', true);
+  }
+  
+  // H&T nudge
+  if (state.cycleCount >= 4) {
+    showNudge('nudgeHT', true);
+  }
+}
 
-    function playBeep(freq, duration, vol) {
-        if (!metroState.audioCtx) return;
-        var ctx = metroState.audioCtx;
-        var osc = ctx.createOscillator();
-        var gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.value = freq;
-        osc.type = 'sine';
-        gain.gain.value = vol || 0.3;
-        gain.gain.setValueAtTime(vol || 0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (duration / 1000));
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + (duration / 1000));
+function showNudge(id, show, urgent) {
+  let el = document.getElementById(id);
+  if (show) {
+    el.classList.add('visible');
+    if (urgent) el.classList.add('urgent');
+    else el.classList.remove('urgent');
+  } else {
+    el.classList.remove('visible');
+    el.classList.remove('urgent');
+  }
+}
+
+// ===== MEDICATIONS =====
+function registerMed(name, btn) {
+  state.events.push({ time: elapsed(), type: 'med', detail: name });
+  
+  // Update count badge
+  let countEl = btn.querySelector('.med-count');
+  let current = parseInt(countEl.dataset.count || '0');
+  current++;
+  countEl.dataset.count = current;
+  countEl.textContent = current;
+  countEl.classList.add('visible');
+  
+  if (name.includes('Epinefrina')) {
+    state.lastEpiTime = Date.now();
+    showNudge('nudgeEpi', false);
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+  }
+  if (name.includes('300')) {
+    state.amio300Given = true;
+    updateGuideForCycle();
+  }
+  if (name.includes('150') && name.includes('Amiodarona')) {
+    state.amio150Given = true;
+    updateGuideForCycle();
+  }
+  
+  // Flash feedback
+  btn.style.background = 'rgba(76,175,80,0.2)';
+  setTimeout(() => { btn.style.background = ''; }, 500);
+}
+
+function registerShock() {
+  state.shockCount++;
+  document.getElementById('shockCount').textContent = state.shockCount;
+  state.events.push({ time: elapsed(), type: 'shock', detail: 'Choque ' + state.shockCount });
+  
+  if (navigator.vibrate) navigator.vibrate(200);
+  
+  // Flash
+  let btn = document.getElementById('shockBtn');
+  btn.style.background = 'rgba(255,82,82,0.3)';
+  setTimeout(() => { btn.style.background = ''; }, 500);
+  
+  updateGuideForCycle();
+}
+
+// ===== AIRWAY TOGGLE =====
+function toggleAirway() {
+  state.advancedAirway = !state.advancedAirway;
+  let sw = document.getElementById('airwaySwitch');
+  sw.classList.toggle('on');
+  
+  if (state.advancedAirway) {
+    state.events.push({ time: elapsed(), type: 'system', detail: 'Via aérea avançada confirmada' });
+    showNudge('nudgeAirway', false);
+  }
+}
+
+// ===== COLLAPSIBLE =====
+function toggleCollapsible(header) {
+  header.classList.toggle('open');
+  let body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  el.innerHTML = el.classList.contains('checked') ? '&#10003;' : '';
+}
+
+// ===== FCT =====
+function toggleFCT() {
+  state.fctTracking = !state.fctTracking;
+  document.getElementById('fctSwitch').classList.toggle('on');
+  document.getElementById('fctPauseContainer').style.display = state.fctTracking ? '' : 'none';
+}
+
+function updateEpiInterval() {
+  state.epiInterval = parseInt(document.getElementById('epiInterval').value);
+}
+
+// ===== METRONOME =====
+function toggleMetronome() {
+  state.metronomeOn = !state.metronomeOn;
+  let btn = document.getElementById('metroBtn');
+  btn.classList.toggle('on');
+  btn.textContent = state.metronomeOn ? 'Metrônomo ON' : 'Metrônomo';
+  
+  if (state.metronomeOn) {
+    startMetronome();
+  } else {
+    stopMetronome();
+  }
+}
+
+function startMetronome() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  // Compressions: 110 bpm = 545ms
+  metronomeInterval = setInterval(() => {
+    playTick(200, 0.05, 'sine');
+  }, 545);
+  
+  // Ventilation: depends on advanced airway
+  startVentMetronome();
+}
+
+function startVentMetronome() {
+  if (ventInterval) clearInterval(ventInterval);
+  if (state.advancedAirway) {
+    // 10/min = 6000ms
+    ventInterval = setInterval(() => {
+      playTick(800, 0.04, 'triangle');
+    }, 6000);
+  } else {
+    // No separate vent metronome in 30:2 mode
+  }
+}
+
+function stopMetronome() {
+  if (metronomeInterval) clearInterval(metronomeInterval);
+  if (ventInterval) clearInterval(ventInterval);
+  metronomeInterval = null;
+  ventInterval = null;
+}
+
+function playTick(freq, dur, type) {
+  if (!audioCtx) return;
+  let osc = audioCtx.createOscillator();
+  let gain = audioCtx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + dur);
+}
+
+function playAlert() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  // Double beep
+  playTick(600, 0.15, 'square');
+  setTimeout(() => playTick(600, 0.15, 'square'), 200);
+}
+
+// ===== MAIN TICK =====
+function startMainTick() {
+  mainTickInterval = setInterval(() => {
+    if (!state.running) return;
+    let t = elapsed();
+    let m = Math.floor(t / 60);
+    let s = t % 60;
+    document.getElementById('totalTime').textContent = m + ':' + String(s).padStart(2, '0');
+  }, 1000);
+}
+
+// ===== FINISH =====
+function finishROSC() {
+  releaseWakeLock();
+  state.outcome = 'rosc';
+  state.endTime = Date.now();
+  state.running = false;
+  state.events.push({ time: elapsed(), type: 'outcome', detail: 'RCE obtido' });
+  
+  stopMetronome();
+  if (cycleTimer) clearInterval(cycleTimer);
+  
+  let t = elapsed();
+  let m = Math.floor(t / 60);
+  let s = t % 60;
+  document.getElementById('roscTime').textContent = 'Tempo total: ' + m + ':' + String(s).padStart(2, '0');
+  
+  showScreen('screenROSC');
+}
+
+function confirmDeath() {
+  if (confirm('Confirma encerramento por óbito?')) {
+    finishDeath();
+  }
+}
+
+function finishDeath() {
+  releaseWakeLock();
+  state.outcome = 'death';
+  state.endTime = Date.now();
+  state.running = false;
+  state.events.push({ time: elapsed(), type: 'outcome', detail: 'Óbito declarado' });
+  
+  stopMetronome();
+  if (cycleTimer) clearInterval(cycleTimer);
+  
+  let now = new Date();
+  let h = String(now.getHours()).padStart(2,'0');
+  let min = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('deathTime').textContent = 'Horario do óbito: ' + h + ':' + min + '\\nTempo total de RCP: ' + formatElapsed(elapsed());
+  
+  showScreen('screenDeath');
+}
+
+// ===== REPORT =====
+function showReport() {
+  let lines = [];
+  let now = new Date(state.startTime);
+  let dateStr = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
+  let timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  
+  lines.push('RELATÓRIO DE PCR — ACLS Guide (ANY App)');
+  lines.push('Data: ' + dateStr + ' | Início: ' + timeStr);
+  lines.push('Ritmo inicial: ' + (state.events.find(e => e.type === 'rhythm')?.detail || '---'));
+  lines.push('Tempo total: ' + formatElapsed(elapsed()));
+  lines.push('Ciclos de RCP: ' + state.cycleCount);
+  lines.push('Choques: ' + state.shockCount);
+  lines.push('Desfecho: ' + (state.outcome === 'rosc' ? 'RCE obtido' : 'Óbito'));
+  if (state.fctTracking && state.totalPauseTime > 0) {
+    let totalSec = elapsed();
+    let pauseSec = Math.round(state.totalPauseTime / 1000);
+    let fct = Math.round(((totalSec - pauseSec) / totalSec) * 100);
+    lines.push('FCT: ' + fct + '% (pausas: ' + pauseSec + 's)');
+  }
+  lines.push('');
+  lines.push('LINHA DO TEMPO:');
+  
+  state.events.forEach(e => {
+    lines.push('  ' + formatElapsed(e.time) + ' — ' + e.detail);
+  });
+  
+  if (state.endTime) {
+    let end = new Date(state.endTime);
+    lines.push('Fim: ' + String(end.getHours()).padStart(2,'0') + ':' + String(end.getMinutes()).padStart(2,'0'));
+  }
+  lines.push('');
+  lines.push('AHA 2025 | ANY App v1.0.0');
+  
+  document.getElementById('reportContent').textContent = lines.join('\\n');
+  showScreen('screenReport');
+}
+
+function copyReport() {
+  let text = document.getElementById('reportContent').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById('copyMsg').style.display = 'block';
+    setTimeout(() => { document.getElementById('copyMsg').style.display = 'none'; }, 2000);
+  });
+}
+
+// ===== UTILS =====
+function elapsed() {
+  if (!state.startTime) return 0;
+  return Math.floor((Date.now() - state.startTime) / 1000);
+}
+
+function formatElapsed(sec) {
+  let m = Math.floor(sec / 60);
+  let s = sec % 60;
+  return m + ':' + String(s).padStart(2, '0');
+}
+
+// ===== WAKE LOCK =====
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
     }
+  } catch (e) {}
+}
+function releaseWakeLock() {
+  if (wakeLock) { wakeLock.release(); wakeLock = null; }
+}
 
-    function playCompressionBeep() {
-        playBeep(800, 60, 0.25);
-    }
+// ===== OVACE =====
+function ovaceReset() {
+  document.getElementById('ovaceStep1').style.display = '';
+  document.getElementById('ovaceStepLeve').style.display = 'none';
+  document.getElementById('ovaceStepGrave').style.display = 'none';
+  document.getElementById('ovaceStepConsciente').style.display = 'none';
+  document.getElementById('ovaceStepInconsciente').style.display = 'none';
+  document.getElementById('ovaceStepExpelido').style.display = 'none';
+}
+function ovaceLeve() {
+  document.getElementById('ovaceStep1').style.display = 'none';
+  document.getElementById('ovaceStepLeve').style.display = '';
+}
+function ovaceGrave() {
+  document.getElementById('ovaceStep1').style.display = 'none';
+  document.getElementById('ovaceStepGrave').style.display = '';
+}
+function ovaceConsciente() {
+  document.getElementById('ovaceStepGrave').style.display = 'none';
+  document.getElementById('ovaceStepConsciente').style.display = '';
+}
+function ovaceInconsciente() {
+  document.getElementById('ovaceStepGrave').style.display = 'none';
+  document.getElementById('ovaceStepConsciente').style.display = 'none';
+  document.getElementById('ovaceStepInconsciente').style.display = '';
+}
+function ovaceExpelido() {
+  document.getElementById('ovaceStepConsciente').style.display = 'none';
+  document.getElementById('ovaceStepExpelido').style.display = '';
+}
+function ovaceIniciarPCR() {
+  ovaceReset();
+  startCode();
+}
 
-    function playVentilationBeep() {
-        // Two-tone beep for ventilation
-        playBeep(1200, 150, 0.4);
-        setTimeout(function() {
-            playBeep(1500, 150, 0.4);
-        }, 160);
-    }
+// ===== H&T CARDS =====
+function toggleHTCard(header) {
+  header.classList.toggle('open');
+  let body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
 
-    function playSwapAlert() {
-        // Triple high beep
-        for (var i = 0; i < 3; i++) {
-            setTimeout(function() {
-                playBeep(1800, 200, 0.5);
-            }, i * 250);
-        }
-    }
-
-    function setMetroMode(mode) {
-        if (metroState.running) return; // Can't change while running
-        metroState.mode = mode;
-        document.getElementById('modeVAA').classList.toggle('active', mode === 'vaa');
-        document.getElementById('mode302').classList.toggle('active', mode === '302');
-        if (mode === 'vaa') {
-            document.getElementById('metroBpmInfo').innerHTML = '<strong>110 BPM</strong> — compressões contínuas + ventilação a cada 10s';
-        } else {
-            document.getElementById('metroBpmInfo').innerHTML = '<strong>110 BPM</strong> — ciclo 30 compressões : 2 ventilações';
-        }
-    }
-
-    function toggleMetronome() {
-        if (metroState.running) {
-            stopMetronome();
-        } else {
-            startMetronome();
-        }
-    }
-
-    function startMetronome() {
-        initAudio();
-        metroState.running = true;
-        metroState.startTime = Date.now();
-        metroState.compressions = 0;
-        metroState.ventilations = 0;
-        metroState.cycles = 0;
-        metroState.cycleStart = Date.now();
-        metroState.count302 = 0;
-        metroState.phase302 = 'compress';
-        metroState.ventCount302 = 0;
-
-        // UI
-        var btn = document.getElementById('metroBtn');
-        btn.textContent = 'PARAR RCP';
-        btn.classList.remove('metro-btn-start');
-        btn.classList.add('metro-btn-stop');
-        document.getElementById('metroCycleRing').style.display = 'flex';
-        document.getElementById('metroCycleRing').textContent = '1';
-        document.getElementById('metroCycleRing').classList.remove('warning');
-
-        // Timer
-        metroState.timerInterval = setInterval(updateTimer, 100);
-
-        // Start beats
-        if (metroState.mode === 'vaa') {
-            startVAAMode();
-        } else {
-            start302Mode();
-        }
-
-        // First beat immediately
-        doCompression();
-    }
-
-    function stopMetronome() {
-        metroState.running = false;
-
-        clearInterval(metroState.timerInterval);
-        clearInterval(metroState.beatInterval);
-        clearInterval(metroState.ventInterval);
-        clearTimeout(metroState.ventTimeout302);
-
-        var btn = document.getElementById('metroBtn');
-        btn.textContent = 'INICIAR RCP';
-        btn.classList.remove('metro-btn-stop');
-        btn.classList.add('metro-btn-start');
-
-        document.getElementById('metroPulseLabel').textContent = 'INICIAR';
-        document.getElementById('metroPulse').classList.remove('beat', 'ventilate');
-        document.getElementById('metroCycleRing').style.display = 'none';
-        document.getElementById('metroSwapAlert').classList.remove('visible');
-        document.getElementById('metroCycleInfo').textContent = 'Finalizado — ' + formatTime(Date.now() - metroState.startTime);
-    }
-
-    // ── Via Aérea Avançada Mode ──
-    function startVAAMode() {
-        // Compression beats at 110 BPM
-        metroState.beatInterval = setInterval(function() {
-            if (!metroState.running) return;
-            doCompression();
-        }, BEAT_MS);
-
-        // Ventilation every 10s
-        metroState.ventInterval = setInterval(function() {
-            if (!metroState.running) return;
-            doVentilation();
-        }, VENT_INTERVAL_MS);
-    }
-
-    // ── 30:2 Mode ──
-    function start302Mode() {
-        metroState.count302 = 0;
-        metroState.phase302 = 'compress';
-        metroState.ventCount302 = 0;
-
-        metroState.beatInterval = setInterval(function() {
-            if (!metroState.running) return;
-
-            if (metroState.phase302 === 'compress') {
-                doCompression();
-                metroState.count302++;
-                if (metroState.count302 >= 30) {
-                    metroState.phase302 = 'ventilate';
-                    metroState.ventCount302 = 0;
-                    clearInterval(metroState.beatInterval);
-                    // Pause for ventilations
-                    doVentilation();
-                    metroState.ventCount302 = 1;
-                    metroState.ventTimeout302 = setTimeout(function() {
-                        doVentilation();
-                        metroState.ventCount302 = 2;
-                        // Resume compressions
-                        metroState.ventTimeout302 = setTimeout(function() {
-                            metroState.phase302 = 'compress';
-                            metroState.count302 = 0;
-                            if (metroState.running) {
-                                doCompression();
-                                metroState.beatInterval = setInterval(function() {
-                                    if (!metroState.running) return;
-                                    if (metroState.phase302 === 'compress') {
-                                        doCompression();
-                                        metroState.count302++;
-                                        if (metroState.count302 >= 30) {
-                                            metroState.phase302 = 'ventilate';
-                                            metroState.ventCount302 = 0;
-                                            clearInterval(metroState.beatInterval);
-                                            doVentilation();
-                                            metroState.ventCount302 = 1;
-                                            metroState.ventTimeout302 = setTimeout(function() {
-                                                doVentilation();
-                                                metroState.ventCount302 = 2;
-                                                metroState.ventTimeout302 = setTimeout(function() {
-                                                    if (metroState.running) {
-                                                        metroState.phase302 = 'compress';
-                                                        metroState.count302 = 0;
-                                                        start302Mode();
-                                                        doCompression();
-                                                    }
-                                                }, 1500);
-                                            }, 1500);
-                                        }
-                                    }
-                                }, BEAT_MS);
-                            }
-                        }, 1500);
-                    }, 1500);
-                }
-            }
-        }, BEAT_MS);
-    }
-
-    function doCompression() {
-        metroState.compressions++;
-        playCompressionBeep();
-
-        var pulse = document.getElementById('metroPulse');
-        var label = document.getElementById('metroPulseLabel');
-        pulse.classList.remove('ventilate');
-        pulse.classList.add('beat');
-        label.textContent = 'COMPRIME';
-
-        setTimeout(function() {
-            if (metroState.running) {
-                pulse.classList.remove('beat');
-                label.textContent = metroState.compressions.toString();
-            }
-        }, 120);
-
-        updateStats();
-        checkSwap();
-    }
-
-    function doVentilation() {
-        metroState.ventilations++;
-        playVentilationBeep();
-
-        var pulse = document.getElementById('metroPulse');
-        var label = document.getElementById('metroPulseLabel');
-        pulse.classList.remove('beat');
-        pulse.classList.add('ventilate');
-        label.textContent = 'VENTILA';
-
-        setTimeout(function() {
-            if (metroState.running) {
-                pulse.classList.remove('ventilate');
-                label.textContent = metroState.compressions.toString();
-            }
-        }, 800);
-
-        updateStats();
-    }
-
-    function checkSwap() {
-        var elapsed = Date.now() - metroState.cycleStart;
-        var cycleSeconds = Math.floor(elapsed / 1000);
-        var ring = document.getElementById('metroCycleRing');
-        var alert = document.getElementById('metroSwapAlert');
-
-        // Warning at 1:45
-        if (cycleSeconds >= 105 && cycleSeconds < 120) {
-            ring.classList.add('warning');
-        }
-
-        // Swap at 2:00
-        if (elapsed >= SWAP_INTERVAL_MS) {
-            metroState.cycles++;
-            metroState.cycleStart = Date.now();
-            ring.textContent = (metroState.cycles + 1).toString();
-            ring.classList.remove('warning');
-            playSwapAlert();
-            alert.classList.add('visible');
-
-            // Auto-dismiss after 3 seconds
-            setTimeout(function() {
-                alert.classList.remove('visible');
-            }, 3000);
-        }
-
-        // Update cycle info
-        var remaining = Math.max(0, SWAP_INTERVAL_MS - elapsed);
-        var remSec = Math.ceil(remaining / 1000);
-        var min = Math.floor(remSec / 60);
-        var sec = remSec % 60;
-        document.getElementById('metroCycleInfo').textContent = 'Próxima troca: ' + min + ':' + (sec < 10 ? '0' : '') + sec;
-    }
-
-    function updateTimer() {
-        var elapsed = Date.now() - metroState.startTime;
-        document.getElementById('metroTimer').textContent = formatTime(elapsed);
-    }
-
-    function updateStats() {
-        document.getElementById('statCycles').textContent = metroState.cycles.toString();
-        document.getElementById('statCompressions').textContent = metroState.compressions.toString();
-        document.getElementById('statVentilations').textContent = metroState.ventilations.toString();
-    }
-
-    function formatTime(ms) {
-        var totalSec = Math.floor(ms / 1000);
-        var min = Math.floor(totalSec / 60);
-        var sec = totalSec % 60;
-        return (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
-    }
-
-    // Keep screen awake during metronome
-    var wakeLock = null;
-    async function requestWakeLock() {
-        try {
-            if ('wakeLock' in navigator) {
-                wakeLock = await navigator.wakeLock.request('screen');
-            }
-        } catch (e) {
-            // Wake lock not supported or failed
-        }
-    }
-
-    function releaseWakeLock() {
-        if (wakeLock) {
-            wakeLock.release();
-            wakeLock = null;
-        }
-    }
-
-    // Override start/stop to manage wake lock
-    var _origStart = startMetronome;
-    startMetronome = function() {
-        _origStart();
-        requestWakeLock();
-    };
-    var _origStop = stopMetronome;
-    stopMetronome = function() {
-        _origStop();
-        releaseWakeLock();
-    };
-    <\/script>
+// ===== FCT PAUSE =====
+function toggleFCTPause() {
+  let btn = document.getElementById('fctPauseBtn');
+  if (!state.pauseStart) {
+    // Start pause
+    state.pauseStart = Date.now();
+    btn.classList.remove('active');
+    btn.classList.add('paused');
+    btn.textContent = 'RETOMAR compressoes';
+    state.events.push({ time: elapsed(), type: 'fct', detail: 'Pausa nas compressoes' });
+  } else {
+    // End pause
+    let pauseDuration = Date.now() - state.pauseStart;
+    state.totalPauseTime += pauseDuration;
+    state.pauseStart = null;
+    btn.classList.remove('paused');
+    btn.classList.add('active');
+    btn.textContent = 'Registrar pausa nas compressoes';
+    let sec = Math.round(pauseDuration / 1000);
+    state.events.push({ time: elapsed(), type: 'fct', detail: 'Compressoes retomadas (pausa: ' + sec + 's)' });
+  }
+}
+<\/script>
 </body>
-</html>
-`
+</html>`
         };
 
         function loadApp(name, target) {
