@@ -22965,6 +22965,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .fct-pause-btn.active{background:rgba(255,82,82,0.15);border:2px solid var(--accent);color:var(--accent)}
 .fct-pause-btn.paused{background:rgba(255,193,7,0.15);border:2px solid var(--warning);color:var(--warning);animation:pausePulse 1s ease-in-out infinite}
 @keyframes pausePulse{0%,100%{opacity:1}50%{opacity:0.7}}
+
+/* Med groups */
+.med-group-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:8px 4px 4px;margin-top:4px}
+.med-info{display:flex;flex-direction:column;gap:2px;text-align:left}
+.med-name{font-size:15px;color:var(--text)}
+.med-dose{font-size:11px;color:var(--text3)}
+.med-btn.registered{border-color:var(--success);background:rgba(76,175,80,0.08)}
+.med-btn.registered .plus{background:rgba(76,175,80,0.25);color:var(--success)}
+.med-count{position:absolute;top:-8px;right:-8px;background:var(--success);color:#fff;font-size:11px;font-weight:700;min-width:22px;height:22px;border-radius:11px;display:none;align-items:center;justify-content:center;padding:0 5px}
+.med-count.visible{display:flex}
+
+/* Epi timer bar */
+.epi-timer-bar{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 12px;margin:-4px 0 8px;font-size:12px;color:var(--text2);position:relative;overflow:hidden}
+.epi-timer-fill{position:absolute;left:0;top:0;bottom:0;background:rgba(255,82,82,0.1);transition:width 1s linear}
+.epi-timer-bar.urgent{border-color:var(--accent);color:var(--accent);animation:nudgePulse 1s ease-in-out infinite}
+
+/* Shock button */
+.shock-btn{width:100%;padding:16px 20px;background:rgba(255,82,82,0.12);border:2px solid var(--accent);border-radius:var(--radius);color:var(--accent);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s;margin-bottom:8px}
+.shock-btn:active{background:rgba(255,82,82,0.3);transform:scale(0.97)}
+.shock-icon{width:24px;height:24px}
+.shock-count{font-size:14px;opacity:0.7}
 </style>
 </head>
 <body>
@@ -23142,34 +23163,39 @@ O timer já está rodando. Mantenha compressões enquanto decide.
 <div class="nudge" id="nudgeHT">Revisou causas reversíveis? (H's e T's)</div>
 
 <!-- Shock button (shockable only) -->
-<button class="med-btn" id="shockBtn" style="display:none;border-color:var(--accent)" onclick="registerShock()">
-<span style="color:var(--accent);font-weight:600">Registrar choque</span>
-<div class="plus" style="background:rgba(255,82,82,0.3)">+</div>
+<button class="shock-btn" id="shockBtn" style="display:none" onclick="registerShock()">
+<svg class="shock-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+<span>CHOQUE</span>
+<span class="shock-count" id="shockBtnCount"></span>
 </button>
 
 <!-- Medications -->
 <div class="section-label mt-16">Medicações</div>
 <div class="med-list" id="medList">
+<div class="med-group-label">Vasopressor</div>
 <button class="med-btn" onclick="registerMed('Epinefrina 1 mg IV/IO', this)">
-<span>Epinefrina 1 mg IV/IO</span><div class="plus"><span class="med-count"></span>+</div>
+<div class="med-info"><span class="med-name">Epinefrina 1 mg IV/IO</span><span class="med-dose">A cada 3-5 min</span></div><div class="plus"><span class="med-count"></span>+</div>
 </button>
+<div id="epiTimerBar" class="epi-timer-bar" style="display:none"><span id="epiTimerText">Proxima epi em --:--</span><div class="epi-timer-fill" id="epiTimerFill"></div></div>
+<div class="med-group-label">Antiarritmicos</div>
 <button class="med-btn" onclick="registerMed('Amiodarona 300 mg IV', this)">
-<span>Amiodarona 300 mg IV</span><div class="plus"><span class="med-count"></span>+</div>
+<div class="med-info"><span class="med-name">Amiodarona 300 mg IV</span><span class="med-dose">1a dose (apos 3o choque)</span></div><div class="plus"><span class="med-count"></span>+</div>
 </button>
 <button class="med-btn" onclick="registerMed('Amiodarona 150 mg IV', this)">
-<span>Amiodarona 150 mg IV</span><div class="plus"><span class="med-count"></span>+</div>
+<div class="med-info"><span class="med-name">Amiodarona 150 mg IV</span><span class="med-dose">2a dose</span></div><div class="plus"><span class="med-count"></span>+</div>
 </button>
-<button class="med-btn" onclick="registerMed('Lidocaína 100 mg IV', this)">
-<span>Lidocaína 100 mg IV</span><div class="plus"><span class="med-count"></span>+</div>
+<button class="med-btn" onclick="registerMed('Lidocaina 100 mg IV', this)">
+<div class="med-info"><span class="med-name">Lidocaina 100 mg IV</span><span class="med-dose">Alternativa: 1-1,5 mg/kg</span></div><div class="plus"><span class="med-count"></span>+</div>
 </button>
-<button class="med-btn" onclick="registerMed('Sulfato de magnésio 2 g IV', this)">
-<span>Sulfato de magnésio 2 g IV</span><div class="plus"><span class="med-count"></span>+</div>
+<div class="med-group-label">Eletrolitos e outros</div>
+<button class="med-btn" onclick="registerMed('Sulfato de magnesio 2 g IV', this)">
+<div class="med-info"><span class="med-name">Sulfato de magnesio 2 g IV</span><span class="med-dose">Torsades de Pointes</span></div><div class="plus"><span class="med-count"></span>+</div>
 </button>
-<button class="med-btn" onclick="registerMed('Gluconato de cálcio 3 g IV', this)">
-<span>Gluconato de cálcio 3 g IV</span><div class="plus"><span class="med-count"></span>+</div>
+<button class="med-btn" onclick="registerMed('Gluconato de calcio 3 g IV', this)">
+<div class="med-info"><span class="med-name">Gluconato de calcio 3 g IV</span><span class="med-dose">Hipercalemia / bloq. calcio</span></div><div class="plus"><span class="med-count"></span>+</div>
 </button>
-<button class="med-btn" onclick="registerMed('Bicarbonato de sódio 1 mEq/kg IV', this)">
-<span>Bicarbonato de sódio 1 mEq/kg IV</span><div class="plus"><span class="med-count"></span>+</div>
+<button class="med-btn" onclick="registerMed('Bicarbonato de sodio 1 mEq/kg IV', this)">
+<div class="med-info"><span class="med-name">Bicarbonato de sodio 1 mEq/kg IV</span><span class="med-dose">Acidose / hipercalemia</span></div><div class="plus"><span class="med-count"></span>+</div>
 </button>
 </div>
 
@@ -23541,6 +23567,7 @@ function checkNudges() {
     showNudge('nudgeIV', false);
   }
   
+  applyNudgePriority();
   // Airway nudge
   if (!state.advancedAirway && state.cycleCount >= 2) {
     showNudge('nudgeAirway', true);
@@ -23590,22 +23617,29 @@ function registerMed(name, btn) {
     updateGuideForCycle();
   }
   
-  // Flash feedback
+  // Visual feedback - permanent registered state
+  btn.classList.add('registered');
   btn.style.background = 'rgba(76,175,80,0.2)';
   setTimeout(() => { btn.style.background = ''; }, 500);
+  // Start epi timer after first epi
+  if (name.includes('Epinefrina')) {
+    startEpiTimer();
+  }
 }
 
 function registerShock() {
   state.shockCount++;
   document.getElementById('shockCount').textContent = state.shockCount;
+  let countDisplay = document.getElementById('shockBtnCount');
+  if (countDisplay) countDisplay.textContent = '#' + state.shockCount;
   state.events.push({ time: elapsed(), type: 'shock', detail: 'Choque ' + state.shockCount });
   
   if (navigator.vibrate) navigator.vibrate(200);
   
   // Flash
-  let btn = document.getElementById('shockBtn');
-  btn.style.background = 'rgba(255,82,82,0.3)';
-  setTimeout(() => { btn.style.background = ''; }, 500);
+  let shockEl = document.getElementById('shockBtn');
+  shockEl.style.background = 'rgba(255,82,82,0.3)';
+  setTimeout(() => { shockEl.style.background = ''; }, 500);
   
   updateGuideForCycle();
 }
@@ -23821,6 +23855,54 @@ function formatElapsed(sec) {
   let m = Math.floor(sec / 60);
   let s = sec % 60;
   return m + ':' + String(s).padStart(2, '0');
+}
+
+
+// ===== EPI TIMER =====
+let epiTimerInterval = null;
+function startEpiTimer() {
+  let bar = document.getElementById('epiTimerBar');
+  if (!bar) return;
+  bar.style.display = '';
+  if (epiTimerInterval) clearInterval(epiTimerInterval);
+  epiTimerInterval = setInterval(updateEpiTimer, 1000);
+}
+function updateEpiTimer() {
+  if (!state.lastEpiTime || !state.running) return;
+  let elapsed = (Date.now() - state.lastEpiTime) / 1000;
+  let remaining = state.epiInterval - elapsed;
+  let bar = document.getElementById('epiTimerBar');
+  let text = document.getElementById('epiTimerText');
+  let fill = document.getElementById('epiTimerFill');
+  if (!bar || !text || !fill) return;
+  let pct = Math.min(100, (elapsed / state.epiInterval) * 100);
+  fill.style.width = pct + '%';
+  if (remaining <= 0) {
+    text.textContent = 'Epinefrina AGORA';
+    bar.classList.add('urgent');
+    fill.style.background = 'rgba(255,82,82,0.2)';
+  } else {
+    let m = Math.floor(remaining / 60);
+    let s = Math.floor(remaining % 60);
+    text.textContent = 'Proxima epi em ' + m + ':' + String(s).padStart(2, '0');
+    bar.classList.remove('urgent');
+    fill.style.background = 'rgba(255,82,82,0.1)';
+  }
+}
+
+// ===== NUDGE PRIORITY =====
+function applyNudgePriority() {
+  let nudges = ['nudgeEpi', 'nudgeIV', 'nudgeAirway', 'nudgeHT'];
+  let visible = [];
+  nudges.forEach(function(id) {
+    let el = document.getElementById(id);
+    if (el && el.classList.contains('visible')) visible.push(el);
+  });
+  // Show max 2, hide rest
+  visible.forEach(function(el, i) {
+    if (i >= 2) el.style.display = 'none';
+    else el.style.display = '';
+  });
 }
 
 // ===== WAKE LOCK =====
