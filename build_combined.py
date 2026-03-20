@@ -311,10 +311,135 @@ combined = '''<!DOCTYPE html>
         <div id="splashCredits">Gustavo Moreira &bull; Gabriela Feltrin &bull; Jo&atilde;o Pedro Moreira</div>
     </div>
 
+    <!-- Persistent Metronome Banner -->
+    <div id="metroBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#1A1A1A;border-bottom:2px solid #FF5252;padding:8px 16px;align-items:center;justify-content:space-between;font-family:-apple-system,sans-serif">
+    <span style="color:#FF5252;font-size:13px;font-weight:600">Metrônomo ativo</span>
+    <button onclick="parentStopMetronome();try{document.getElementById('appFrame').contentWindow.syncMetroBtn&&document.getElementById('appFrame').contentWindow.syncMetroBtn()}catch(e){}" style="background:#FF5252;color:#fff;border:none;border-radius:16px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">Parar</button>
+    </div>
+
     <!-- App Content (no sandbox — content is trusted) -->
     <iframe id="appFrame"></iframe>
 
     <script>
+        // ===== PERSISTENT METRONOME =====
+        var _metroCtx = null;
+        var _metroInterval = null;
+        var _ventInterval = null;
+        var _metroConfig = null;
+        var _silentAudio = null;
+
+        function parentStartMetronome(config) {
+          parentStopMetronome();
+          _metroConfig = config || { bpm: 110, ventEnabled: false, ventIntervalMs: 6000 };
+          if (!_metroCtx) _metroCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (_metroCtx.state === 'suspended') _metroCtx.resume();
+          var intervalMs = Math.round(60000 / _metroConfig.bpm);
+          _metroInterval = setInterval(function() {
+            _playMetroTick(880, 0.08, 'sine', 0.5);
+          }, intervalMs);
+          if (_metroConfig.ventEnabled) {
+            _ventInterval = setInterval(function() {
+              _playMetroVent();
+            }, _metroConfig.ventIntervalMs);
+          }
+          _startSilentAudio();
+          _showMetroBanner(true);
+        }
+
+        function parentStopMetronome() {
+          if (_metroInterval) { clearInterval(_metroInterval); _metroInterval = null; }
+          if (_ventInterval) { clearInterval(_ventInterval); _ventInterval = null; }
+          _metroConfig = null;
+          _stopSilentAudio();
+          _showMetroBanner(false);
+        }
+
+        function parentUpdateVent(enabled) {
+          if (_ventInterval) { clearInterval(_ventInterval); _ventInterval = null; }
+          if (_metroConfig) _metroConfig.ventEnabled = enabled;
+          if (enabled && _metroConfig && _metroCtx) {
+            _ventInterval = setInterval(function() {
+              _playMetroVent();
+            }, _metroConfig.ventIntervalMs);
+          }
+        }
+
+        function parentIsMetronomeOn() {
+          return _metroInterval !== null;
+        }
+
+        function _playMetroTick(freq, dur, type, vol) {
+          if (!_metroCtx) return;
+          if (_metroCtx.state === 'suspended') _metroCtx.resume();
+          var osc = _metroCtx.createOscillator();
+          var gain = _metroCtx.createGain();
+          osc.type = type || 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(vol || 0.5, _metroCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, _metroCtx.currentTime + dur);
+          osc.connect(gain);
+          gain.connect(_metroCtx.destination);
+          osc.start();
+          osc.stop(_metroCtx.currentTime + dur);
+        }
+
+        function _playMetroVent() {
+          if (!_metroCtx) return;
+          if (_metroCtx.state === 'suspended') _metroCtx.resume();
+          var osc1 = _metroCtx.createOscillator();
+          var gain1 = _metroCtx.createGain();
+          osc1.type = 'sine';
+          osc1.frequency.value = 1200;
+          gain1.gain.setValueAtTime(0.6, _metroCtx.currentTime);
+          gain1.gain.exponentialRampToValueAtTime(0.001, _metroCtx.currentTime + 0.15);
+          osc1.connect(gain1); gain1.connect(_metroCtx.destination);
+          osc1.start(); osc1.stop(_metroCtx.currentTime + 0.15);
+          setTimeout(function() {
+            var osc2 = _metroCtx.createOscillator();
+            var gain2 = _metroCtx.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.value = 1500;
+            gain2.gain.setValueAtTime(0.6, _metroCtx.currentTime);
+            gain2.gain.exponentialRampToValueAtTime(0.001, _metroCtx.currentTime + 0.15);
+            osc2.connect(gain2); gain2.connect(_metroCtx.destination);
+            osc2.start(); osc2.stop(_metroCtx.currentTime + 0.15);
+          }, 180);
+        }
+
+        function _startSilentAudio() {
+          if (_silentAudio) return;
+          try {
+            _silentAudio = document.createElement('audio');
+            _silentAudio.setAttribute('loop', '');
+            _silentAudio.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+            _silentAudio.volume = 0.01;
+            _silentAudio.play().catch(function(){});
+          } catch(e) {}
+        }
+
+        function _stopSilentAudio() {
+          if (_silentAudio) {
+            _silentAudio.pause();
+            _silentAudio.src = '';
+            _silentAudio = null;
+          }
+        }
+
+        document.addEventListener('visibilitychange', function() {
+          if (!document.hidden && _metroCtx && _metroCtx.state === 'suspended') {
+            _metroCtx.resume();
+          }
+          if (!document.hidden && _silentAudio) {
+            _silentAudio.play().catch(function(){});
+          }
+        });
+
+        function _showMetroBanner(show) {
+          var banner = document.getElementById('metroBanner');
+          if (!banner) return;
+          banner.style.display = show ? 'flex' : 'none';
+        }
+
         // Header logo stored ONCE (deduplicated from all apps)
         var LOGO_BASE64 = `''' + header_logo_escaped + '''`;
 
