@@ -2651,7 +2651,7 @@
             <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img id="logoImg" src="__LOGO__" alt="ANY App"></a>
             <h1>AirwayGuide</h1>
             <p class="subtitle">Guia de Manejo de VA</p>
-            <button class="restart-btn" onclick="restartGuide()">Reiniciar</button>
+            <button class="restart-btn" id="restartBtn" onclick="restartGuide()" style="display:none">Reiniciar</button>
         </div>
         <div class="airway-home" id="airwayHome">
             <div class="home-card home-card-main" onclick="startPathway()">
@@ -3449,11 +3449,13 @@
         function startPathway() {
             document.getElementById('airwayHome').classList.add('hidden');
             document.getElementById('pathwayContainer').style.display = '';
+            document.getElementById('restartBtn').style.display = '';
             goToStep(1);
         }
 
         function showStandalone(type) {
             document.getElementById('airwayHome').classList.add('hidden');
+            document.getElementById('restartBtn').style.display = 'none';
             if (type === 'checklist') {
                 document.getElementById('standaloneChecklist').style.display = '';
                 document.getElementById('standaloneDoses').style.display = 'none';
@@ -3472,6 +3474,7 @@
             document.getElementById('pathwayContainer').style.display = 'none';
             document.getElementById('standaloneChecklist').style.display = 'none';
             document.getElementById('standaloneDoses').style.display = 'none';
+            document.getElementById('restartBtn').style.display = 'none';
             document.getElementById('airwayHome').classList.remove('hidden');
             window.scrollTo(0, 0);
         }
