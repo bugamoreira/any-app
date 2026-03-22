@@ -147,6 +147,15 @@
         .hidden { display: none !important; }
         .mt-8 { margin-top: 8px; }
         .mt-16 { margin-top: 16px; }
+        .airway-home { }
+        .airway-home.hidden { display: none; }
+        .home-card { background: #1A1A1A; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 12px; cursor: pointer; transition: border-color 0.2s; }
+        .home-card:active { border-color: #FF5252; }
+        .home-card-main { border-left: 4px solid #FF5252; }
+        .home-card-half { border-left: 4px solid #2196F3; }
+        .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .home-card-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+        .home-card-desc { font-size: 13px; color: #888; }
             .fab-menu { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
         .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: #FF5252; border: none; color: white; cursor: pointer; box-shadow: 0 4px 12px rgba(255,82,82,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
         .fab-btn:active { transform: scale(0.95); }
@@ -166,9 +175,27 @@
             <p class="subtitle">Guia de Manejo de VA</p>
             <button class="restart-btn" onclick="restartGuide()">Reiniciar</button>
         </div>
+        <div class="airway-home" id="airwayHome">
+            <div class="home-card home-card-main" onclick="startPathway()">
+                <div class="home-card-title">Pathway de intubação</div>
+                <div class="home-card-desc">Guia passo a passo para via aérea</div>
+            </div>
+            <div class="home-grid">
+                <div class="home-card home-card-half" onclick="showStandalone('checklist')">
+                    <div class="home-card-title">Checklist de IOT</div>
+                    <div class="home-card-desc">Materiais, equipe e planos</div>
+                </div>
+                <div class="home-card home-card-half" onclick="showStandalone('doses')">
+                    <div class="home-card-title">Doses de medicações</div>
+                    <div class="home-card-desc">Indutores e BNM</div>
+                </div>
+            </div>
+        </div>
+        <div id="pathwayContainer" style="display:none">
+        <button class="btn btn-secondary" onclick="backToHome()" style="margin-bottom:12px;font-size:13px;padding:10px 16px;width:auto">← Menu</button>
         <div class="progress-container" id="progressDots"></div>
         <!-- STEP 1 -->
-        <div class="step active" id="step-1">
+        <div class="step" id="step-1">
             <div class="step-header"><div class="step-number">Passo 1 de 11</div><div class="step-title">Indicação de IOT</div></div>
             <div class="card">
                 <div class="card-title">Selecione a(s) indicação(ões)</div>
@@ -212,7 +239,7 @@
             <div class="card">
                 <div class="card-title">Deseja avaliar preditores de VAD?</div>
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Avaliação de LEMON e ROMAN</p>
-                <div class="toggle-group"><button class="toggle-btn" id="vadYes" onclick="selectVADOption('yes')">Sim, avaliar</button><button class="toggle-btn" id="vadNo" onclick="selectVADOption('no')">Não, pular</button></div>
+                <div class="toggle-group"><button class="toggle-btn" id="vadYes" onclick="selectVADOption('yes')">Sim, avaliar</button><button class="toggle-btn" id="vadNo" onclick="selectVADOption('no')">Continuar sem avaliar →</button></div>
             </div>
             <div class="card hidden" id="lemonCard">
                 <div class="crash-header"><div class="mnemonic-display" id="lemonLetters"><div class="mnemonic-letter">L</div><div class="mnemonic-letter">E</div><div class="mnemonic-letter">M</div><div class="mnemonic-letter">O</div><div class="mnemonic-letter">N</div></div><div class="crash-counter"><span id="lemonCount">0</span>/5</div></div>
@@ -261,6 +288,15 @@
         <div class="step" id="step-5">
             <div class="step-header"><div class="step-number">Passo 5 de 11</div><div class="step-title">Triple Setup</div></div>
             <div class="alert alert-danger hidden" id="tripleAlert"><div class="alert-icon"></div><div><div class="alert-title">Risco elevado identificado</div><div class="alert-text">Confirme preparo completo para falha.</div></div></div>
+            <div class="alert alert-danger hidden" id="vadAlertStep5">
+                <div class="alert-text">
+                    <div class="alert-title">Via aérea difícil identificada</div>
+                    Considere pedir ajuda precoce<br>
+                    Limite a 2 tentativas de laringoscopia<br>
+                    Se falha: Plano B (dispositivo extraglótico) → Plano C (cricotireoidostomia)<br>
+                    Mantenha oxigenação entre tentativas
+                </div>
+            </div>
             <div class="card">
                 <div class="card-title">Plano A — Laringoscopia</div>
                 <div class="check-item" onclick="toggleTriple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Laringoscópio testado</div><div class="check-desc">VL e/ou lâmina direta</div></div></div>
@@ -316,7 +352,7 @@
         <div class="step" id="step-7">
             <div class="step-header"><div class="step-number">Passo 7 de 11</div><div class="step-title">Pré-oxigenação</div></div>
             <div class="card">
-                <div class="card-title">Meta: EtO₂ ≥ 85% ou 3 a 5 min</div>
+                <div class="card-title">Meta: pré-oxigenação por 3 a 5 minutos com FiO₂ de 100%</div>
                 
                 <div class="check-item" onclick="togglePreoxDevice(this, 'vni')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">VNI (CPAP/BiPAP)</div><div class="check-desc">FiO₂ 100%, se tolerar</div></div></div>
                 <div class="check-item" onclick="togglePreoxDevice(this, 'nrb')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Máscara não reinalante 15 L/min (flush rate) <span class="info-badge" onclick="event.stopPropagation(); openPopup('flushrate')">?</span></div><div class="check-desc">Flush rate se disponível</div></div></div>
@@ -337,7 +373,7 @@
                 <p style="font-size: 0.75rem; color: var(--text-muted);">Toque no card para selecionar. Selecione: 1 indutor + 1 BNM (bloqueio simpático opcional)</p>
             </div>
 
-            <div class="card"><div class="card-title">Bloqueio simpático (opcional)</div>
+            <div class="card"><div class="card-title">Bloqueio simpático — simpatólise (opcional)</div>
                 <div class="dose-card" id="fentanilCard" onclick="toggleMedCard('fentanil')">
                     <div class="dose-header"><div><div class="dose-name">Fentanil</div><div class="dose-presentation">50 mcg/mL — ampola 2-10 mL | IV lento, 3 min antes da indução</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
                     <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mcg/kg</span><span id="fentanilRate">3 mcg/kg</span><span>3 mcg/kg</span></div><input type="range" class="dose-slider" id="fentanilSlider" min="1" max="3" step="0.5" value="3" oninput="updateFentanil()"></div>
@@ -361,11 +397,6 @@
                     <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mg/kg</span><span id="propofolRate">1.5 mg/kg</span><span>2.5 mg/kg</span></div><input type="range" class="dose-slider" id="propofolSlider" min="1" max="2.5" step="0.5" value="1.5" oninput="updatePropofol()"></div>
                     <div class="dose-result"><div class="dose-value" id="propofolDose">105 mg</div><div class="dose-volume" id="propofolVol">= 10.5 mL</div></div>
                 </div>
-                <div class="dose-card" id="midazolamCard" onclick="toggleMedCard('midazolam')">
-                    <div class="dose-header"><div><div class="dose-name">Midazolam (alternativa)</div><div class="dose-presentation">5 mg/mL — ampola 3 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
-                    <div class="dose-slider-container"><div class="dose-slider-label"><span>0.2 mg/kg</span><span id="midazolamRate">0.3 mg/kg</span><span>0.3 mg/kg</span></div><input type="range" class="dose-slider" id="midazolamSlider" min="0.2" max="0.3" step="0.1" value="0.3" oninput="updateMidazolam()"></div>
-                    <div class="dose-result"><div class="dose-value" id="midazolamDose">21 mg</div><div class="dose-volume" id="midazolamVol">= 4.2 mL</div></div>
-                </div>
             </div>
 
             <div class="card"><div class="card-title">BNM (selecione 1)</div>
@@ -386,21 +417,55 @@
         <!-- STEP 9 -->
         <div class="step" id="step-9">
             <div class="step-header"><div class="step-number">Passo 9 de 11</div><div class="step-title">Procedimento</div></div>
-            <div class="timer-display">
-                <div class="timer-total" id="timerTotal">00:00</div>
-                <div class="timer-phases">
-                    <div class="timer-phase" id="phasePreox"><div class="timer-phase-label">Pré-Ox</div><div class="timer-phase-time" id="phasePreoxTime">00:00</div></div>
-                    <div class="timer-phase" id="phaseInducao"><div class="timer-phase-label">Indução</div><div class="timer-phase-time" id="phaseInducaoTime">00:00</div></div>
-                    <div class="timer-phase" id="phaseLaringoscopia"><div class="timer-phase-label">Laringoscopia</div><div class="timer-phase-time" id="phaseLaringoscopiaTime">00:00</div></div>
-                    <div class="timer-phase" id="phaseChecagem"><div class="timer-phase-label">Checagem</div><div class="timer-phase-time" id="phaseChecagemTime">00:00</div></div>
-                </div>
-                <div class="timer-controls mt-16">
-                    <button class="btn btn-primary" id="timerStartBtn" onclick="toggleTimer()"> Iniciar</button>
-                    <button class="btn btn-secondary" onclick="nextPhase()">Próxima fase</button>
-                    <button class="btn btn-secondary" onclick="resetTimer()"></button>
+            <div class="alert alert-danger hidden" id="vadAlertStep9">
+                <div class="alert-text">
+                    <div class="alert-title">Via aérea difícil identificada</div>
+                    Considere pedir ajuda precoce<br>
+                    Limite a 2 tentativas de laringoscopia<br>
+                    Se falha: Plano B (dispositivo extraglótico) → Plano C (cricotireoidostomia)<br>
+                    Mantenha oxigenação entre tentativas
                 </div>
             </div>
             <div class="card">
+                <div class="card-title">Laringoscopia direta (Macintosh)</div>
+                <div style="font-size:13px;color:#888;line-height:1.8">
+                    1. Segurar laringoscópio com mão esquerda<br>
+                    2. Abrir boca com técnica de tesoura (mão direita)<br>
+                    3. Inserir lâmina pelo lado direito, varrer língua para a esquerda<br>
+                    4. Avançar até a valécula (base da língua)<br>
+                    5. Elevar em direção ventral e anterior — nunca alavanca nos dentes<br>
+                    6. Se visualização inadequada: manobra BURP (pressão para trás, para cima e para a direita na cartilagem tireóidea)<br>
+                    7. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
+                    8. Avançar tubo pelo canto direito da boca, sob visão direta das cordas vocais<br>
+                    9. Insuflar cuff
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">Videolaringoscopia</div>
+                <div style="font-size:13px;color:#888;line-height:1.8">
+                    1. Inserir lâmina na linha média sob visão na tela<br>
+                    2. Avançar até visualizar epiglote<br>
+                    3. Posicionar ponta da lâmina na valécula ou sob a epiglote<br>
+                    4. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
+                    5. Avançar tubo sob visão contínua na tela<br>
+                    6. Visualizar passagem do tubo entre as cordas vocais<br>
+                    7. Insuflar cuff
+                </div>
+            </div>
+            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                <span style="font-size:14px;font-weight:600">Erros comuns</span>
+                <span class="arrow">&#9660;</span>
+            </div>
+            <div class="collapsible-content">
+                <div class="collapsible-inner" style="font-size:13px;color:#888;line-height:1.8">
+                    <strong style="color:#F44336">Alavanca nos dentes</strong> — levantar, nunca rotacionar a lâmina<br>
+                    <strong style="color:#F44336">Lâmina superficial demais</strong> — não chega na valécula, sem visualização<br>
+                    <strong style="color:#F44336">Lâmina profunda demais</strong> — passa a epiglote, perde referência<br>
+                    <strong style="color:#F44336">Tubo pelo centro da boca</strong> — deve ser pelo canto direito<br>
+                    <strong style="color:#F44336">Força excessiva no bougie/tubo</strong> — avançar com movimentos suaves
+                </div>
+            </div>
+            <div class="card" style="margin-top:16px">
                 <div class="card-title">Registro</div>
                 <div class="input-group"><label>Tubo</label><p id="procedureTube" style="padding: 10px; background: var(--bg-elevated); border-radius: var(--radius-sm);">—</p></div>
                 <div class="input-group"><label>Cormack-Lehane</label><div class="toggle-group" id="cormackToggle"><button class="toggle-btn" onclick="selectCormack('I')">I</button><button class="toggle-btn" onclick="selectCormack('II')">II</button><button class="toggle-btn" onclick="selectCormack('III')">III</button><button class="toggle-btn" onclick="selectCormack('IV')">IV</button></div></div>
@@ -427,14 +492,10 @@
                 <div class="check-item" onclick="toggleSimple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Traqueal (fúrcula esternal)</div><div class="check-desc">Linear transversal: 1 sinal hiperecogênico (tubo) + esôfago vazio. Se "dupla via": intubação esofágica</div></div></div>
                 <div class="check-item" onclick="toggleSimple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Pulmonar bilateral</div><div class="check-desc">Lung sliding presente bilateralmente (se ausente unilateral: seletiva ou pneumotórax)</div></div></div>
             </div>
-            <div class="card" style="border-left:3px solid var(--info);margin-top:8px;">
-                <div class="card-title" style="color:var(--info);">Sedação pós-intubação</div>
-                <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">Inicie sedação contínua para conforto e sincronia com ventilador.</div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                    <a href="#" onclick="event.preventDefault(); parent.loadApp('infusion','fentanil')" style="color:var(--info);font-size:13px;text-decoration:underline;">Fentanil BIC →</a>
-                    <a href="#" onclick="event.preventDefault(); parent.loadApp('infusion','propofol')" style="color:var(--info);font-size:13px;text-decoration:underline;">Propofol BIC →</a>
-                    <a href="#" onclick="event.preventDefault(); parent.loadApp('infusion','midazolam')" style="color:var(--info);font-size:13px;text-decoration:underline;">Midazolam BIC →</a>
-                </div>
+            <div class="card" style="border-left:4px solid #2196F3;cursor:pointer" onclick="goToInfusion()">
+                <div class="card-title" style="color:#2196F3">Sedação em infusão contínua</div>
+                <div style="font-size:13px;color:#888">Abrir calculadora de infusões</div>
+                <div style="font-size:12px;color:#555;margin-top:4px">Fentanil - Propofol - Midazolam - Dexmedetomidina</div>
             </div>
             <div class="nav-buttons"><button class="btn btn-secondary" onclick="goToStep(9)">← Voltar</button><button class="btn btn-primary" onclick="goToStep(11)">Finalizar →</button></div>
         </div>
@@ -447,10 +508,10 @@
             <div class="summary-section"><div class="summary-title">Paciente</div><div class="summary-content" id="summaryPatient">—</div></div>
             <div class="summary-section"><div class="summary-title">Medicações</div><div class="summary-content" id="summaryMeds">—</div></div>
             <div class="summary-section"><div class="summary-title">Procedimento</div><div class="summary-content" id="summaryProcedure">—</div></div>
-            <div class="summary-section"><div class="summary-title">Tempos</div><div class="summary-content" id="summaryTimes">—</div></div>
             <div class="summary-section"><div class="summary-title">Confirmação</div><div class="summary-content" id="summaryConfirmation">—</div></div>
             <div class="nav-buttons"><button class="btn btn-secondary" onclick="goToStep(10)">← Voltar</button><button class="btn btn-primary" onclick="copyReport()">Copiar relatório</button></div>
         </div>
+        </div><!-- /pathwayContainer -->
     </div>
 
     <footer class="footer">
@@ -469,10 +530,11 @@
             <div class="popup-body">
                 <p>Técnica de abertura total do fluxômetro de O₂ (40-60 L/min), além dos 15 L/min convencionais, para maximizar a FiO₂ entregue.</p>
                 <p style="margin-top: 12px;"><strong>Como fazer:</strong></p>
-                <p>• Abrir o fluxômetro até o máximo (bolinha no topo)</p>
-                <p>• Manter reservatório sempre inflado</p>
-                <p>• Garantir vedação adequada da máscara</p>
-                <p style="margin-top: 12px;"><strong>Benefício:</strong> Pode elevar FiO₂ de ~60-70% para ~90% com máscara não reinalante.</p>
+                <p>1. Conectar O₂ ao fluxômetro</p>
+                <p>2. Abrir fluxômetro no máximo (flush rate = 40-60 L/min)</p>
+                <p>3. Manter reservatório da máscara inflado</p>
+                <p>4. Garantir vedação adequada da máscara na face</p>
+                <p style="margin-top: 12px;"><strong>Benefício:</strong> FiO₂ aumenta de ~60-70% para ~90%.</p>
             </div>
         </div>
     </div>
@@ -491,12 +553,11 @@
             sex: null,
             population: 'adulto',
             membrane: null,
-            meds: { fentanil: false, ketamina: false, etomidato: false, propofol: false, midazolam: false, rocuronio: false, succinilcolina: false },
-            cormack: null,
-            timer: { running: false, total: 0, phases: { preox: 0, inducao: 0, laringoscopia: 0, checagem: 0 }, currentPhase: 'preox', interval: null }
+            meds: { fentanil: false, ketamina: false, etomidato: false, propofol: false, rocuronio: false, succinilcolina: false },
+            cormack: null
         };
 
-        const indutores = ['ketamina', 'etomidato', 'propofol', 'midazolam'];
+        const indutores = ['ketamina', 'etomidato', 'propofol'];
         const bnms = ['rocuronio', 'succinilcolina'];
 
         function init() {
@@ -525,11 +586,24 @@
             if (n === 8) updateMedicationsDisplay();
             if (n === 9) updateProcedureDisplay();
             if (n === 11) generateSummary();
+            if (n === 5 || n === 9) {
+                var lemonCount = state.lemon ? state.lemon.filter(Boolean).length : 0;
+                var romanCount = state.roman ? state.roman.filter(Boolean).length : 0;
+                var alertId = n === 5 ? 'vadAlertStep5' : 'vadAlertStep9';
+                var alertEl = document.getElementById(alertId);
+                if (alertEl) {
+                    if (lemonCount >= 2 || romanCount >= 2) {
+                        alertEl.classList.remove('hidden');
+                    } else {
+                        alertEl.classList.add('hidden');
+                    }
+                }
+            }
             window.scrollTo(0, 0);
         }
 
         function restartGuide() {
-            if (confirm('Reiniciar todo o guia?')) location.reload();
+            if (confirm('Reiniciar todo o guia?')) backToHome();
         }
 
         function toggleIndication(el, i) {
@@ -592,7 +666,7 @@
             state.vadOption = opt;
             document.getElementById('vadYes').classList.toggle('active', opt === 'yes');
             document.getElementById('vadNo').classList.toggle('active', opt === 'no');
-            if (opt === 'no') { setTimeout(() => goToStep(4), 300); }
+            if (opt === 'no') { goToStep(4); }
             else {
                 document.getElementById('lemonCard').classList.remove('hidden');
                 document.getElementById('romanCard').classList.remove('hidden');
@@ -695,7 +769,7 @@
             document.getElementById('medWeight').textContent = w;
             document.getElementById('medPopulation').textContent = 'População: ' + state.population.charAt(0).toUpperCase() + state.population.slice(1);
             document.getElementById('doseReductionAlert').classList.toggle('hidden', !(state.crash.H || (state.shockIndex && state.shockIndex > 1.0) || state.population === 'idoso'));
-            updateFentanil(); updateKetamina(); updateEtomidato(); updatePropofol(); updateMidazolam(); updateRocuronio(); updateSuccinilcolina();
+            updateFentanil(); updateKetamina(); updateEtomidato(); updatePropofol(); updateRocuronio(); updateSuccinilcolina();
         }
 
         function toggleMedCard(med) {
@@ -713,41 +787,11 @@
         function updateKetamina() { const w = state.weight || 70, r = parseFloat(document.getElementById('ketaminaSlider').value), d = Math.round(w * r); document.getElementById('ketaminaRate').textContent = r + ' mg/kg'; document.getElementById('ketaminaDose').textContent = d + ' mg'; document.getElementById('ketaminaVol').textContent = '= ' + (d / 50).toFixed(1) + ' mL'; }
         function updateEtomidato() { const w = state.weight || 70, r = parseFloat(document.getElementById('etomidatoSlider').value), d = Math.round(w * r * 10) / 10; document.getElementById('etomidatoRate').textContent = r + ' mg/kg'; document.getElementById('etomidatoDose').textContent = d + ' mg'; document.getElementById('etomidatoVol').textContent = '= ' + (d / 2).toFixed(1) + ' mL'; }
         function updatePropofol() { const w = state.weight || 70, r = parseFloat(document.getElementById('propofolSlider').value), d = Math.round(w * r); document.getElementById('propofolRate').textContent = r + ' mg/kg'; document.getElementById('propofolDose').textContent = d + ' mg'; document.getElementById('propofolVol').textContent = '= ' + (d / 10).toFixed(1) + ' mL'; }
-        function updateMidazolam() { const w = state.weight || 70, r = parseFloat(document.getElementById('midazolamSlider').value), d = Math.round(w * r * 10) / 10; document.getElementById('midazolamRate').textContent = r + ' mg/kg'; document.getElementById('midazolamDose').textContent = d + ' mg'; document.getElementById('midazolamVol').textContent = '= ' + (d / 5).toFixed(1) + ' mL'; }
         function updateRocuronio() { const w = state.weight || 70, r = parseFloat(document.getElementById('rocuronioSlider').value), d = Math.round(w * r); document.getElementById('rocuronioRate').textContent = r + ' mg/kg'; document.getElementById('rocuronioDose').textContent = d + ' mg'; document.getElementById('rocuronioVol').textContent = '= ' + (d / 10).toFixed(1) + ' mL'; }
         function updateSuccinilcolina() { const w = state.weight || 70, r = parseFloat(document.getElementById('succinilcolinaSlider').value), d = Math.round(w * r); document.getElementById('succinilcolinaRate').textContent = r + ' mg/kg'; document.getElementById('succinilcolinaDose').textContent = d + ' mg'; document.getElementById('succinilcolinaVol').textContent = '= ' + (d / 10).toFixed(1) + ' mL'; }
 
         function updateProcedureDisplay() { document.getElementById('procedureTube').textContent = state.sex === 'M' ? '8.5 ou 8.0 mm' : '8.0 ou 7.5 mm'; }
 
-        function toggleTimer() { state.timer.running ? pauseTimer() : startTimer(); }
-        function startTimer() {
-            state.timer.running = true;
-            document.getElementById('timerStartBtn').textContent = 'Pausar';
-            document.getElementById('phase' + capitalize(state.timer.currentPhase)).classList.add('active');
-            state.timer.interval = setInterval(() => { state.timer.total++; state.timer.phases[state.timer.currentPhase]++; updateTimerDisplay(); }, 1000);
-        }
-        function pauseTimer() { state.timer.running = false; clearInterval(state.timer.interval); document.getElementById('timerStartBtn').textContent = ' Continuar'; }
-        function resetTimer() {
-            pauseTimer(); state.timer.total = 0; state.timer.phases = { preox: 0, inducao: 0, laringoscopia: 0, checagem: 0 }; state.timer.currentPhase = 'preox';
-            document.querySelectorAll('.timer-phase').forEach(p => p.classList.remove('active', 'completed'));
-            document.getElementById('timerStartBtn').textContent = ' Iniciar'; updateTimerDisplay();
-        }
-        function nextPhase() {
-            const phases = ['preox', 'inducao', 'laringoscopia', 'checagem'], idx = phases.indexOf(state.timer.currentPhase);
-            if (idx < phases.length - 1) {
-                document.getElementById('phase' + capitalize(state.timer.currentPhase)).classList.remove('active');
-                document.getElementById('phase' + capitalize(state.timer.currentPhase)).classList.add('completed');
-                state.timer.currentPhase = phases[idx + 1];
-                document.getElementById('phase' + capitalize(state.timer.currentPhase)).classList.add('active');
-            }
-        }
-        function updateTimerDisplay() {
-            document.getElementById('timerTotal').textContent = formatTime(state.timer.total);
-            document.getElementById('phasePreoxTime').textContent = formatTime(state.timer.phases.preox);
-            document.getElementById('phaseInducaoTime').textContent = formatTime(state.timer.phases.inducao);
-            document.getElementById('phaseLaringoscopiaTime').textContent = formatTime(state.timer.phases.laringoscopia);
-            document.getElementById('phaseChecagemTime').textContent = formatTime(state.timer.phases.checagem);
-        }
         function formatTime(s) { const m = Math.floor(s / 60); return m.toString().padStart(2, '0') + ':' + (s % 60).toString().padStart(2, '0'); }
         function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
@@ -776,7 +820,6 @@
             if (state.meds.ketamina) { const r = parseFloat(document.getElementById('ketaminaSlider').value); meds.push('Cetamina ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.etomidato) { const r = parseFloat(document.getElementById('etomidatoSlider').value); meds.push('Etomidato ' + (Math.round(w * r * 10) / 10) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.propofol) { const r = parseFloat(document.getElementById('propofolSlider').value); meds.push('Propofol ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
-            if (state.meds.midazolam) { const r = parseFloat(document.getElementById('midazolamSlider').value); meds.push('Midazolam ' + (Math.round(w * r * 10) / 10) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.rocuronio) { const r = parseFloat(document.getElementById('rocuronioSlider').value); meds.push('Rocurônio ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.succinilcolina) { const r = parseFloat(document.getElementById('succinilcolinaSlider').value); meds.push('Succinilcolina ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
             document.getElementById('summaryMeds').textContent = meds.join('\n') || 'Nenhuma selecionada';
@@ -788,14 +831,12 @@
             if (cuff) proc += '\nCuff: ' + cuff + ' cmH₂O';
             document.getElementById('summaryProcedure').textContent = proc;
             
-            let times = 'Total: ' + formatTime(state.timer.total) + '\nPré-Ox: ' + formatTime(state.timer.phases.preox) + '\nIndução: ' + formatTime(state.timer.phases.inducao) + '\nLaringoscopia: ' + formatTime(state.timer.phases.laringoscopia) + '\nChecagem: ' + formatTime(state.timer.phases.checagem);
-            document.getElementById('summaryTimes').textContent = times;
             document.getElementById('summaryConfirmation').textContent = 'Capnografia + Ausculta + POCUS (traqueal, pulmonar bilateral)';
         }
 
         function copyReport() {
-            const sections = ['summaryIndication', 'summaryVAD', 'summaryPatient', 'summaryMeds', 'summaryProcedure', 'summaryTimes', 'summaryConfirmation'];
-            const titles = ['INDICAÇÃO', 'AVALIAÇÃO DE VAD', 'PACIENTE', 'MEDICAÇÕES', 'PROCEDIMENTO', 'TEMPOS', 'CONFIRMAÇÃO'];
+            const sections = ['summaryIndication', 'summaryVAD', 'summaryPatient', 'summaryMeds', 'summaryProcedure', 'summaryConfirmation'];
+            const titles = ['INDICAÇÃO', 'AVALIAÇÃO DE VAD', 'PACIENTE', 'MEDICAÇÕES', 'PROCEDIMENTO', 'CONFIRMAÇÃO'];
             let report = 'RELATÓRIO DE IOT - AirwayGuide\n' + new Date().toLocaleString('pt-BR') + '\n\n';
             sections.forEach((id, i) => report += titles[i] + ':\n' + document.getElementById(id).textContent + '\n\n');
             report += '---\nGerado por AirwayGuide - ANY App v2.1.0';
@@ -819,13 +860,57 @@
             }
         }
 
+        function startPathway() {
+            document.getElementById('airwayHome').classList.add('hidden');
+            document.getElementById('pathwayContainer').style.display = '';
+            goToStep(1);
+        }
+
+        function showStandalone(type) {
+            document.getElementById('airwayHome').classList.add('hidden');
+            document.getElementById('pathwayContainer').style.display = '';
+            if (type === 'checklist') goToStep(5);
+            else if (type === 'doses') goToStep(8);
+        }
+
+        function backToHome() {
+            document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
+            document.getElementById('pathwayContainer').style.display = 'none';
+            document.getElementById('airwayHome').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function goToInfusion() {
+            try {
+                sessionStorage.setItem('airway_return', 'true');
+                sessionStorage.setItem('airway_step', state.currentStep.toString());
+            } catch(e) {}
+            parent.loadApp('infusion');
+        }
+
         // Deep link handler
         function handleDeepLink(target) {
             var stepNum = parseInt(target.replace('step-', ''));
-            if (!isNaN(stepNum)) { goToStep(stepNum); }
+            if (!isNaN(stepNum)) {
+                document.getElementById('airwayHome').classList.add('hidden');
+                document.getElementById('pathwayContainer').style.display = '';
+                goToStep(stepNum);
+            }
         }
 
         init();
+
+        // Check if returning from Infusion
+        try {
+            if (sessionStorage.getItem('airway_return') === 'true') {
+                sessionStorage.removeItem('airway_return');
+                var returnStep = parseInt(sessionStorage.getItem('airway_step') || '10');
+                sessionStorage.removeItem('airway_step');
+                document.getElementById('airwayHome').classList.add('hidden');
+                document.getElementById('pathwayContainer').style.display = '';
+                goToStep(returnStep);
+            }
+        } catch(e) {}
     
         function toggleFab() {
             var options = document.getElementById('fabOptions');
@@ -863,14 +948,12 @@
     </script>
 <div class="fab-menu">
     <div class="fab-options" id="fabOptions">
-        <a href="#" onclick="event.preventDefault(); toggleFab(); goToStep(1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Indicação</a>
-        <a href="#" onclick="event.preventDefault(); toggleFab(); goToStep(2)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Pré-oxigenação</a>
-        <a href="#" onclick="event.preventDefault(); toggleFab(); goToStep(3)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Preparo</a>
-        <a href="#" onclick="event.preventDefault(); toggleFab(); goToStep(4)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Equipamento</a>
-        <a href="#" onclick="event.preventDefault(); toggleFab(); goToStep(5)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Posicionamento</a>
-        <a href="#" onclick="event.preventDefault(); toggleFab(); goToStep(7)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Laringoscopia</a>
-        <a href="#" onclick="event.preventDefault(); toggleFab(); goToStep(9)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Falha de IOT</a>
-        <a href="#" onclick="event.preventDefault(); toggleFab(); goToStep(11)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Pós-IOT</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); startPathway(); goToStep(1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Indicação</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); startPathway(); goToStep(2)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> CRASH</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); startPathway(); goToStep(5)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Preparo</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); startPathway(); goToStep(8)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Medicações</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); startPathway(); goToStep(9)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Laringoscopia</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); startPathway(); goToStep(10)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Confirmação</a>
     </div>
     <button class="fab-btn" id="fabBtn" onclick="toggleFab()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="fabIcon">
