@@ -24782,36 +24782,40 @@ body{background:#FFF;color:#000}
         </div>
     </div>
 
-    <div id="classPage1">
-        <div class="alert alert-info" style="margin-bottom:12px">
-            <strong>O paciente apresenta algum sinal de gravidade?</strong>
-            <div style="font-size:12px;margin-top:4px">Marque apenas se presente. Se nenhum sinal de gravidade, avance.</div>
+    <div style="font-size:12px;color:#666;margin-bottom:16px;font-style:italic">Marque apenas o que se aplica. Se nenhum item se aplica em cada seção, prossiga para classificar.</div>
+
+    <!-- Gravidade -->
+    <div style="margin-bottom:20px">
+        <div style="font-size:13px;font-weight:700;color:#F44336;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Sinais de gravidade</div>
+        <div id="gravityChecks">
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Choque (hipotensão, TEC >2s, pulsos finos, extremidades frias)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hemorragia grave (hematêmese, melena, metrorragia volumosa, SNC)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Disfunção orgânica grave (miocardite, encefalite, hepatite grave, IRA)</div></div>
         </div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Choque (hipotensão, TEC >2s, pulsos finos, extremidades frias)</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hemorragia grave (hematêmese, melena, metrorragia volumosa, SNC)</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Disfunção orgânica grave (miocardite, encefalite, hepatite grave, IRA)</div></div>
-        <button class="btn btn-primary btn-sm" onclick="classifyStep1()" style="margin-top:12px;width:100%">Continuar →</button>
     </div>
-    <div id="classPage2" style="display:none">
-        <div class="alert alert-warning" style="margin-bottom:12px">
-            <strong>Há sinais de alarme?</strong>
-            <div style="font-size:12px;margin-top:4px">Se já marcou no passo anterior, os dados serão aproveitados.</div>
+
+    <!-- Alarmes (resumo do Passo 2) -->
+    <div style="margin-bottom:20px" id="alarmSummarySection">
+        <div style="font-size:13px;font-weight:700;color:#FFC107;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Sinais de alarme</div>
+        <div id="alarmSummaryBox"></div>
+    </div>
+
+    <!-- Condições de risco -->
+    <div style="margin-bottom:20px">
+        <div style="font-size:13px;font-weight:700;color:#2196F3;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Condições de risco</div>
+        <div id="riskChecks">
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Gestante</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Idade superior a 65 anos</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Comorbidades (HAS, DM, doença renal, DPOC, hepatopatia, doença hematológica)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Risco social (difícil acesso ao serviço de saúde)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Plaquetopenia &lt;100.000/mm³</div></div>
         </div>
-        <div id="classAlarmSummary"></div>
-        <button class="btn btn-primary btn-sm" onclick="classifyStep2()" style="margin-top:12px;width:100%">Continuar →</button>
     </div>
-    <div id="classPage3" style="display:none">
-        <div class="alert alert-success" style="margin-bottom:12px">
-            <strong>O paciente apresenta condição especial de risco?</strong>
-            <div style="font-size:12px;margin-top:4px">Marque apenas se presente. Se nenhuma condição se aplica, avance para classificar.</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Gestante</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Idade superior a 65 anos</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Comorbidades (HAS, DM, doença renal, DPOC, doença hematológica, hepatopatia)</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Risco social (difícil acesso ao serviço de saúde, morador de rua)</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Plaquetopenia &lt;100.000/mm³</div></div>
-        <button class="btn btn-primary btn-sm" onclick="classifyStep3()" style="margin-top:12px;width:100%">Classificar</button>
-    </div>
+
+    <!-- Botão classificar -->
+    <button class="btn btn-primary btn-sm" onclick="classifyNow()" style="width:100%;padding:16px;font-size:16px;font-weight:600;border-radius:10px">Classificar</button>
+
+    <!-- Resultado -->
     <div id="classResult" style="display:none"></div>
 
     <div class="step-nav">
@@ -26085,9 +26089,24 @@ function goTo(id) {
         document.getElementById('classStep3').style.display = 'none';
     }
 
-    // Reset trilha step 3 wizard when entering
+    // Reset and populate trilha step 3 when entering
     if (id === 'step3') {
         resetClassification();
+        // Populate alarm summary from step 2
+        var alarms = document.querySelectorAll('#screen-step2 .check-item.checked');
+        var box = document.getElementById('alarmSummaryBox');
+        if (alarms.length === 0) {
+            box.innerHTML = '<div style="background:rgba(76,175,80,0.1);border:1px solid #4CAF50;border-radius:8px;padding:12px;font-size:13px;color:#4CAF50">Nenhum sinal de alarme identificado no passo anterior</div>';
+        } else {
+            var count = alarms.length;
+            var word = count === 1 ? '1 sinal de alarme' : count + ' sinais de alarme';
+            var items = '';
+            alarms.forEach(function(item) {
+                var text = item.querySelector('div:last-child') ? item.querySelector('div:last-child').textContent : item.textContent;
+                items += '<div style="font-size:12px;color:#FFC107;padding:2px 0">- ' + text.trim() + '</div>';
+            });
+            box.innerHTML = '<div style="background:rgba(255,193,7,0.1);border:1px solid #FFC107;border-radius:8px;padding:12px"><div style="font-size:13px;font-weight:600;color:#FFC107;margin-bottom:4px">' + word + ' identificado(s)</div>' + items + '</div>';
+        }
     }
 
     window.scrollTo({top: 0, behavior: 'smooth'});
@@ -26143,42 +26162,28 @@ function updateTrilhaAlarmResult() {
     }
 }
 
-// Trilha step navigation
-function classifyStep1() {
-    var checked = document.querySelectorAll('#classPage1 .check-item.checked').length;
-    if (checked > 0) {
+// Trilha step 3 — single-page classification
+function classifyNow() {
+    // 1. Check gravity signs
+    var gravity = document.querySelectorAll('#gravityChecks .check-item.checked').length;
+    if (gravity > 0) {
         showClassResult('D', 'Sinais de gravidade presentes — considere UTI ou sala de emergência');
-    } else {
-        document.getElementById('classPage1').style.display = 'none';
-        document.getElementById('classPage2').style.display = 'block';
-        var alarms = document.querySelectorAll('#screen-step2 .check-item.checked').length;
-        var summaryEl = document.getElementById('classAlarmSummary');
-        if (alarms > 0) {
-            var txt = alarms === 1 ? '1 sinal de alarme' : alarms + ' sinais de alarme';
-            summaryEl.innerHTML = '<div class="alert alert-danger" style="font-size:13px"><strong>' + txt + ' identificado(s) no passo anterior</strong></div>';
-        } else {
-            summaryEl.innerHTML = '<div style="background:rgba(76,175,80,0.1);border:1px solid #4CAF50;border-radius:8px;padding:12px;font-size:13px;color:#4CAF50"><strong>Nenhum sinal de alarme identificado</strong> — prossiga para avaliar condições de risco.</div>';
-        }
+        return;
     }
-}
-
-function classifyStep2() {
-    var alarmsStep2 = document.querySelectorAll('#screen-step2 .check-item.checked').length;
-    if (alarmsStep2 > 0) {
+    // 2. Check alarms from Step 2 (not re-asked here)
+    var alarms = document.querySelectorAll('#screen-step2 .check-item.checked').length;
+    if (alarms > 0) {
         showClassResult('C', 'Sinais de alarme presentes — considere internação para hidratação IV e monitorização');
-    } else {
-        document.getElementById('classPage2').style.display = 'none';
-        document.getElementById('classPage3').style.display = 'block';
+        return;
     }
-}
-
-function classifyStep3() {
-    var checked = document.querySelectorAll('#classPage3 .check-item.checked').length;
-    if (checked > 0) {
+    // 3. Check risk conditions
+    var risks = document.querySelectorAll('#riskChecks .check-item.checked').length;
+    if (risks > 0) {
         showClassResult('B', 'Condição de risco presente — considere observação em unidade de saúde com reavaliação');
-    } else {
-        showClassResult('A', 'Sem sinais de alarme ou risco — considere acompanhamento ambulatorial com hidratação oral');
+        return;
     }
+    // 4. No findings
+    showClassResult('A', 'Sem sinais de alarme ou risco — considere acompanhamento ambulatorial com hidratação oral');
 }
 
 function showClassResult(grupo, desc) {
@@ -26204,12 +26209,9 @@ function showClassResult(grupo, desc) {
 }
 
 function resetClassification() {
-    document.querySelectorAll('#classPage1 .check-item, #classPage3 .check-item').forEach(function(item) {
+    document.querySelectorAll('#gravityChecks .check-item, #riskChecks .check-item').forEach(function(item) {
         item.classList.remove('checked');
     });
-    document.getElementById('classPage1').style.display = 'block';
-    document.getElementById('classPage2').style.display = 'none';
-    document.getElementById('classPage3').style.display = 'none';
     document.getElementById('classResult').style.display = 'none';
 }
 
