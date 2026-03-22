@@ -310,27 +310,35 @@ body{background:#FFF;color:#000}
         </div>
         <div class="collapsible-body">
             <div class="collapsible-content">
-                <div id="trilhaClassAutoAlarm" style="display:none"></div>
-                <div class="alert alert-info"><strong>Passo 1</strong>Há sinais de gravidade? (choque, hemorragia grave, disfunção orgânica)</div>
-                <div class="btn-group">
-                    <button class="btn btn-danger btn-sm" onclick="openTrilhaGrupo('D')">Sim → Grupo D</button>
-                    <button class="btn btn-secondary btn-sm" onclick="showTrilhaClass2()">Não →</button>
-                </div>
-                <div id="trilhaClass2" style="display:none;margin-top:12px">
-                    <div id="trilhaClass2Auto"></div>
-                    <div class="alert alert-warning"><strong>Passo 2</strong>Há sinais de alarme?</div>
-                    <div class="btn-group">
-                        <button class="btn btn-warning btn-sm" style="color:#000" onclick="openTrilhaGrupo('C')">Sim → Grupo C</button>
-                        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('trilhaClass3').style.display='block'">Não →</button>
+                <div id="classPage1">
+                    <div class="alert alert-info" style="margin-bottom:12px">
+                        <strong>O paciente apresenta algum sinal de gravidade?</strong>
                     </div>
+                    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Choque (hipotensão, TEC >2s, pulsos finos, extremidades frias)</div></div>
+                    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hemorragia grave (hematêmese, melena, metrorragia volumosa, SNC)</div></div>
+                    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Disfunção orgânica grave (miocardite, encefalite, hepatite grave, IRA)</div></div>
+                    <button class="btn btn-primary btn-sm" onclick="classifyStep1()" style="margin-top:12px;width:100%">Avaliar</button>
                 </div>
-                <div id="trilhaClass3" style="display:none;margin-top:12px">
-                    <div class="alert alert-success"><strong>Passo 3</strong>Condição de risco? (gestante, >65a, comorbidades, risco social)</div>
-                    <div class="btn-group">
-                        <button class="btn btn-secondary btn-sm" style="border-color:var(--warning)" onclick="openTrilhaGrupo('B')">Sim → Grupo B</button>
-                        <button class="btn btn-success btn-sm" onclick="openTrilhaGrupo('A')">Não → Grupo A</button>
+                <div id="classPage2" style="display:none">
+                    <div class="alert alert-warning" style="margin-bottom:12px">
+                        <strong>Há sinais de alarme?</strong>
+                        <div style="font-size:12px;margin-top:4px">Se já marcou no passo anterior, os dados serão aproveitados.</div>
                     </div>
+                    <div id="classAlarmSummary"></div>
+                    <button class="btn btn-primary btn-sm" onclick="classifyStep2()" style="margin-top:12px;width:100%">Avaliar</button>
                 </div>
+                <div id="classPage3" style="display:none">
+                    <div class="alert alert-success" style="margin-bottom:12px">
+                        <strong>O paciente apresenta condição especial de risco?</strong>
+                    </div>
+                    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Gestante</div></div>
+                    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Idade superior a 65 anos</div></div>
+                    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Comorbidades (HAS, DM, doença renal, DPOC, doença hematológica, hepatopatia)</div></div>
+                    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Risco social (difícil acesso ao serviço de saúde, morador de rua)</div></div>
+                    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Plaquetopenia &lt;100.000/mm³</div></div>
+                    <button class="btn btn-primary btn-sm" onclick="classifyStep3()" style="margin-top:12px;width:100%">Classificar</button>
+                </div>
+                <div id="classResult" style="display:none"></div>
             </div>
         </div>
     </div>
@@ -1671,16 +1679,73 @@ function updateTrilhaAlarmResult() {
 }
 
 // Trilha step navigation
-function showTrilhaClass2() {
-    var alarms = document.querySelectorAll('#trilha-step2 .check-item.checked').length;
-    var autoEl = document.getElementById('trilhaClass2Auto');
-    if (alarms > 0) {
-        var txt = alarms === 1 ? '1 sinal de alarme identificado' : alarms + ' sinais de alarme identificados';
-        autoEl.innerHTML = '<div class="alert alert-danger" style="margin-bottom:8px"><strong>Atenção</strong>' + txt + ' no passo anterior. Considere pelo menos Grupo C.</div>';
+function classifyStep1() {
+    var checked = document.querySelectorAll('#classPage1 .check-item.checked').length;
+    if (checked > 0) {
+        showClassResult('D', 'Sinais de gravidade presentes — considere UTI ou sala de emergência');
     } else {
-        autoEl.innerHTML = '<div class="alert alert-info" style="margin-bottom:8px;font-size:12px">Nenhum sinal de alarme marcado no passo anterior.</div>';
+        document.getElementById('classPage1').style.display = 'none';
+        document.getElementById('classPage2').style.display = 'block';
+        var alarms = document.querySelectorAll('#trilha-step2 .check-item.checked').length;
+        var summaryEl = document.getElementById('classAlarmSummary');
+        if (alarms > 0) {
+            var txt = alarms === 1 ? '1 sinal de alarme' : alarms + ' sinais de alarme';
+            summaryEl.innerHTML = '<div class="alert alert-danger" style="font-size:13px"><strong>' + txt + ' identificado(s) no passo anterior</strong></div>';
+        } else {
+            summaryEl.innerHTML = '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">Nenhum sinal de alarme identificado no passo anterior.</div>';
+        }
     }
-    document.getElementById('trilhaClass2').style.display = 'block';
+}
+
+function classifyStep2() {
+    var alarmsStep2 = document.querySelectorAll('#trilha-step2 .check-item.checked').length;
+    if (alarmsStep2 > 0) {
+        showClassResult('C', 'Sinais de alarme presentes — considere internação para hidratação IV e monitorização');
+    } else {
+        document.getElementById('classPage2').style.display = 'none';
+        document.getElementById('classPage3').style.display = 'block';
+    }
+}
+
+function classifyStep3() {
+    var checked = document.querySelectorAll('#classPage3 .check-item.checked').length;
+    if (checked > 0) {
+        showClassResult('B', 'Condição de risco presente — considere observação em unidade de saúde com reavaliação');
+    } else {
+        showClassResult('A', 'Sem sinais de alarme ou risco — considere acompanhamento ambulatorial com hidratação oral');
+    }
+}
+
+function showClassResult(grupo, desc) {
+    var colors = { A: '#4CAF50', B: '#FFC107', C: '#FF5252', D: '#F44336' };
+    var labels = { A: 'Ambulatorial', B: 'Observação', C: 'Internação', D: 'UTI / Emergência' };
+    var rgbas = { A: '76,175,80', B: '255,193,7', C: '255,82,82', D: '244,67,54' };
+    var color = colors[grupo];
+    var label = labels[grupo];
+    var rgba = rgbas[grupo];
+
+    document.getElementById('classResult').style.display = 'block';
+    document.getElementById('classResult').innerHTML =
+        '<div style="background:rgba(' + rgba + ',0.1);border:2px solid ' + color + ';border-radius:12px;padding:20px;margin-top:16px;text-align:center">' +
+        '<div style="font-size:14px;color:' + color + ';font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Classificação sugerida</div>' +
+        '<div style="font-size:28px;font-weight:700;color:' + color + '">GRUPO ' + grupo + '</div>' +
+        '<div style="font-size:13px;color:' + color + ';margin-bottom:8px">' + label + '</div>' +
+        '<div style="font-size:13px;color:var(--text-secondary);margin-top:8px">' + desc + '</div>' +
+        '<button class="btn btn-primary btn-sm" onclick="openTrilhaGrupo(\'' + grupo + '\')" style="margin-top:16px;background:' + color + '">Ver manejo do Grupo ' + grupo + '</button>' +
+        '<button class="btn btn-secondary btn-sm" onclick="resetClassification()" style="margin-top:8px;width:100%">Reavaliar classificação</button>' +
+        '</div>';
+
+    document.getElementById('classResult').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetClassification() {
+    document.querySelectorAll('#classPage1 .check-item, #classPage3 .check-item').forEach(function(item) {
+        item.classList.remove('checked');
+    });
+    document.getElementById('classPage1').style.display = 'block';
+    document.getElementById('classPage2').style.display = 'none';
+    document.getElementById('classPage3').style.display = 'none';
+    document.getElementById('classResult').style.display = 'none';
 }
 
 function openTrilhaStep(n) {
