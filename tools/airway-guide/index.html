@@ -115,6 +115,7 @@
         .dose-checkbox svg { display: none; }
         .dose-slider-container { margin: 12px 0; }
         .dose-slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px; }
+        .dose-slider-current { text-align: center; font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; font-variant-numeric: tabular-nums; }
         .dose-slider { width: 100%; height: 8px; -webkit-appearance: none; background: var(--bg-card); border-radius: 4px; outline: none; }
         .dose-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: var(--accent); border-radius: 50%; cursor: pointer; }
         .dose-result { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--bg-card); border-radius: var(--radius-sm); margin-top: 8px; }
@@ -197,37 +198,48 @@
             <div class="step-header"><div class="step-title">Checklist de IOT</div></div>
 
             <div class="card">
-                <div class="card-title">Plano A — Laringoscopia</div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Laringoscopio testado</div><div class="check-desc">Videolaringoscopio e/ou lamina direta</div></div></div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Tubo traqueal + fio-guia</div><div class="check-desc">Verificar cuff, ter segundo tamanho disponivel</div></div></div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Bougie disponivel</div><div class="check-desc">Fortemente recomendado como primeiro recurso</div></div></div>
+                <div class="card-title" style="color:var(--accent)">Paciente</div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Acesso venoso funcionante</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Posicionamento otimizado</div><div class="check-desc">Cabeceira elevada, coxins, posição olfativa</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Pré-oxigenação</div><div class="check-desc">3-5 min, FiO2 100% (BMV / VNI / CNAF) + oxigenação apneica</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Otimização hemodinâmica</div><div class="check-desc">Considere vasopressor ou cristaloide antes da indução</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Membrana cricotireóidea identificada</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Alergias e contraindicações verificadas</div></div></div>
             </div>
 
             <div class="card">
-                <div class="card-title">Plano B — Dispositivo extraglotico</div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">DEG testado e lubrificado</div><div class="check-desc">Mascara laringea ou tubo laringeo</div></div></div>
+                <div class="card-title" style="color:var(--accent)">Equipamento</div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Laringoscópio testado</div><div class="check-desc">Videolaringoscópio e/ou lâmina direta</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">TOT com cuff testado (2 tamanhos)</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Bougie + fio-guia</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">BMV + circuito + ventilador</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Aspiração montada e testada</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Monitorização completa + capnografia</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">DEG disponível e lubrificado</div><div class="check-desc">Plano B: máscara laríngea</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Kit de cricotireoidostomia</div><div class="check-desc">Plano C: bisturi + bougie + TOT 6.0</div></div></div>
             </div>
 
             <div class="card">
-                <div class="card-title">Plano C — Cricotireoidostomia</div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Kit de crico disponivel</div><div class="check-desc">Bisturi + bougie + tubo 6.0</div></div></div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Membrana cricotireoidea identificada</div><div class="check-desc">Palpacao ou POCUS</div></div></div>
+                <div class="card-title" style="color:var(--accent)">Equipe</div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Líder / intubador definido</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Médico backup disponível</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Drogas preparadas e checadas</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Planos A / B / C verbalizados</div></div></div>
             </div>
 
-            <div class="card">
-                <div class="card-title">Preparo geral</div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Acesso venoso calibroso</div><div class="check-desc">Minimo 18G, idealmente 2 acessos</div></div></div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Monitorizacao</div><div class="check-desc">Oximetria, capnografia, cardioscopio</div></div></div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Aspirador testado</div><div class="check-desc">Aspiracao orotraqueal disponivel</div></div></div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Posicionamento</div><div class="check-desc">Cabeceira elevada ou posicao olfativa</div></div></div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Pre-oxigenacao</div><div class="check-desc">3-5 min FiO2 100% + oxigenacao apneica</div></div></div>
-                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Equipe briefada</div><div class="check-desc">Planos verbalizados, papeis definidos</div></div></div>
+            <div class="card" style="border-left:4px solid var(--warning);background:rgba(255,193,7,0.05)">
+                <div class="card-title" style="color:var(--warning)">Pós-intubação</div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Confirmar com capnografia</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Fixação do tubo + pressão do cuff</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Elevar cabeceira + checar ventilação</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Sedação contínua</div></div></div>
+                <div class="check-item" onclick="this.classList.toggle('checked')"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Gasometria + Rx tórax</div></div></div>
             </div>
         </div>
 
         <div id="standaloneDoses" style="display:none">
             <button class="btn btn-secondary" onclick="backToHome()" style="margin-bottom:16px;font-size:13px;padding:10px 16px;width:auto">← Voltar</button>
-            <div class="step-header"><div class="step-title">Doses de medicacoes</div></div>
+            <div class="step-header"><div class="step-title">Doses de medicações</div></div>
 
             <div class="input-group">
                 <label>Peso (kg)</label>
@@ -239,39 +251,39 @@
             <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Bloqueio simpatico — simpatolise (opcional)</div>
             <div class="dose-card" onclick="this.classList.toggle('selected')">
                 <div class="dose-header"><div><div class="dose-name">Fentanil</div><div class="dose-presentation">50 mcg/mL — ampola 2-10 mL | IV lento, 3 min antes</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div></div>
-                <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mcg/kg</span><span>3 mcg/kg</span></div><input type="range" class="dose-slider" id="sa-fenta-slider" min="1" max="3" step="0.5" value="3" oninput="updateStandaloneDoses()"></div>
+                <div class="dose-slider-container"><div class="dose-slider-current" id="sa-fenta-current">3 mcg/kg</div><div class="dose-slider-label"><span>1 mcg/kg</span><span>3 mcg/kg</span></div><input type="range" class="dose-slider" id="sa-fenta-slider" min="1" max="3" step="0.5" value="3" oninput="updateStandaloneDoses()"></div>
                 <div class="dose-result"><span class="dose-value" id="sa-fenta-dose">--</span><span class="dose-volume" id="sa-fenta-vol">--</span></div>
             </div>
 
             <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:12px 0 8px">Indutores (selecionar 1)</div>
             <div class="dose-card" onclick="this.classList.toggle('selected')">
                 <div class="dose-header"><div><div class="dose-name">Cetamina</div><div class="dose-presentation">50 mg/mL — ampola 10 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div></div>
-                <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="sa-keta-slider" min="1" max="2" step="0.1" value="1.5" oninput="updateStandaloneDoses()"></div>
+                <div class="dose-slider-container"><div class="dose-slider-current" id="sa-keta-current">1.5 mg/kg</div><div class="dose-slider-label"><span>1 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="sa-keta-slider" min="1" max="2" step="0.1" value="1.5" oninput="updateStandaloneDoses()"></div>
                 <div class="dose-result"><span class="dose-value" id="sa-keta-dose">--</span><span class="dose-volume" id="sa-keta-vol">--</span></div>
             </div>
 
             <div class="dose-card" onclick="this.classList.toggle('selected')">
                 <div class="dose-header"><div><div class="dose-name">Etomidato</div><div class="dose-presentation">2 mg/mL — ampola 10 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div></div>
-                <div class="dose-slider-container"><div class="dose-slider-label"><span>0.2 mg/kg</span><span>0.4 mg/kg</span></div><input type="range" class="dose-slider" id="sa-etom-slider" min="0.2" max="0.4" step="0.01" value="0.3" oninput="updateStandaloneDoses()"></div>
+                <div class="dose-slider-container"><div class="dose-slider-current" id="sa-etom-current">0.3 mg/kg</div><div class="dose-slider-label"><span>0.2 mg/kg</span><span>0.4 mg/kg</span></div><input type="range" class="dose-slider" id="sa-etom-slider" min="0.2" max="0.4" step="0.01" value="0.3" oninput="updateStandaloneDoses()"></div>
                 <div class="dose-result"><span class="dose-value" id="sa-etom-dose">--</span><span class="dose-volume" id="sa-etom-vol">--</span></div>
             </div>
 
             <div class="dose-card" onclick="this.classList.toggle('selected')">
                 <div class="dose-header"><div><div class="dose-name">Propofol</div><div class="dose-presentation">10 mg/mL — ampola 20 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div></div>
-                <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mg/kg</span><span>2.5 mg/kg</span></div><input type="range" class="dose-slider" id="sa-prop-slider" min="1" max="2.5" step="0.1" value="1.5" oninput="updateStandaloneDoses()"></div>
+                <div class="dose-slider-container"><div class="dose-slider-current" id="sa-prop-current">1.5 mg/kg</div><div class="dose-slider-label"><span>1 mg/kg</span><span>2.5 mg/kg</span></div><input type="range" class="dose-slider" id="sa-prop-slider" min="1" max="2.5" step="0.1" value="1.5" oninput="updateStandaloneDoses()"></div>
                 <div class="dose-result"><span class="dose-value" id="sa-prop-dose">--</span><span class="dose-volume" id="sa-prop-vol">--</span></div>
             </div>
 
             <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin:12px 0 8px">BNM (selecionar 1)</div>
             <div class="dose-card" onclick="this.classList.toggle('selected')">
                 <div class="dose-header"><div><div class="dose-name">Rocuronio</div><div class="dose-presentation">10 mg/mL — ampola 5 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div></div>
-                <div class="dose-slider-container"><div class="dose-slider-label"><span>1.5 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="sa-rocu-slider" min="1.5" max="2" step="0.1" value="1.5" oninput="updateStandaloneDoses()"></div>
+                <div class="dose-slider-container"><div class="dose-slider-current" id="sa-rocu-current">1.5 mg/kg</div><div class="dose-slider-label"><span>1.5 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="sa-rocu-slider" min="1.5" max="2" step="0.1" value="1.5" oninput="updateStandaloneDoses()"></div>
                 <div class="dose-result"><span class="dose-value" id="sa-rocu-dose">--</span><span class="dose-volume" id="sa-rocu-vol">--</span></div>
             </div>
 
             <div class="dose-card" onclick="this.classList.toggle('selected')">
                 <div class="dose-header"><div><div class="dose-name">Succinilcolina</div><div class="dose-presentation">10 mg/mL — ampola 10 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="none" stroke="white" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div></div>
-                <div class="dose-slider-container"><div class="dose-slider-label"><span>1.5 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="sa-succ-slider" min="1.5" max="2" step="0.1" value="1.5" oninput="updateStandaloneDoses()"></div>
+                <div class="dose-slider-container"><div class="dose-slider-current" id="sa-succ-current">1.5 mg/kg</div><div class="dose-slider-label"><span>1.5 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="sa-succ-slider" min="1.5" max="2" step="0.1" value="1.5" oninput="updateStandaloneDoses()"></div>
                 <div class="dose-result"><span class="dose-value" id="sa-succ-dose">--</span><span class="dose-volume" id="sa-succ-vol">--</span></div>
             </div>
         </div>
@@ -973,6 +985,7 @@
                 document.getElementById('standaloneDoses').style.display = '';
                 document.getElementById('standaloneChecklist').style.display = 'none';
                 document.getElementById('pathwayContainer').style.display = 'none';
+                updateStandaloneDoses();
             }
             window.scrollTo(0, 0);
         }
@@ -989,26 +1002,25 @@
         function updateStandaloneDoses() {
             var w = parseFloat(document.getElementById('standalonePeso').value) || 70;
             var calcs = [
-                { slider: 'sa-fenta-slider', dose: 'sa-fenta-dose', vol: 'sa-fenta-vol', conc: 50, unit: 'mcg' },
-                { slider: 'sa-keta-slider', dose: 'sa-keta-dose', vol: 'sa-keta-vol', conc: 50, unit: 'mg' },
-                { slider: 'sa-etom-slider', dose: 'sa-etom-dose', vol: 'sa-etom-vol', conc: 2, unit: 'mg' },
-                { slider: 'sa-prop-slider', dose: 'sa-prop-dose', vol: 'sa-prop-vol', conc: 10, unit: 'mg' },
-                { slider: 'sa-rocu-slider', dose: 'sa-rocu-dose', vol: 'sa-rocu-vol', conc: 10, unit: 'mg' },
-                { slider: 'sa-succ-slider', dose: 'sa-succ-dose', vol: 'sa-succ-vol', conc: 10, unit: 'mg' }
+                { slider: 'sa-fenta-slider', dose: 'sa-fenta-dose', vol: 'sa-fenta-vol', current: 'sa-fenta-current', conc: 50, unit: 'mcg', rateUnit: 'mcg/kg' },
+                { slider: 'sa-keta-slider', dose: 'sa-keta-dose', vol: 'sa-keta-vol', current: 'sa-keta-current', conc: 50, unit: 'mg', rateUnit: 'mg/kg' },
+                { slider: 'sa-etom-slider', dose: 'sa-etom-dose', vol: 'sa-etom-vol', current: 'sa-etom-current', conc: 2, unit: 'mg', rateUnit: 'mg/kg' },
+                { slider: 'sa-prop-slider', dose: 'sa-prop-dose', vol: 'sa-prop-vol', current: 'sa-prop-current', conc: 10, unit: 'mg', rateUnit: 'mg/kg' },
+                { slider: 'sa-rocu-slider', dose: 'sa-rocu-dose', vol: 'sa-rocu-vol', current: 'sa-rocu-current', conc: 10, unit: 'mg', rateUnit: 'mg/kg' },
+                { slider: 'sa-succ-slider', dose: 'sa-succ-dose', vol: 'sa-succ-vol', current: 'sa-succ-current', conc: 10, unit: 'mg', rateUnit: 'mg/kg' }
             ];
             calcs.forEach(function(c) {
                 var el = document.getElementById(c.slider);
                 if (!el) return;
                 var rate = parseFloat(el.value);
-                if (c.unit === 'mcg') {
-                    var dose = Math.round(w * rate);
-                    document.getElementById(c.dose).textContent = dose + ' mcg';
-                    document.getElementById(c.vol).textContent = (dose / c.conc).toFixed(1) + ' mL';
-                } else {
-                    var dose = Math.round(w * rate);
-                    document.getElementById(c.dose).textContent = dose + ' mg';
-                    document.getElementById(c.vol).textContent = (dose / c.conc).toFixed(1) + ' mL';
+                var currentEl = document.getElementById(c.current);
+                if (currentEl) {
+                    var displayRate = (rate % 1 === 0) ? rate.toString() : rate.toFixed(rate < 1 ? 2 : 1);
+                    currentEl.textContent = displayRate + ' ' + c.rateUnit;
                 }
+                var dose = Math.round(w * rate);
+                document.getElementById(c.dose).textContent = dose + ' ' + c.unit;
+                document.getElementById(c.vol).textContent = (dose / c.conc).toFixed(1) + ' mL';
             });
         }
 
