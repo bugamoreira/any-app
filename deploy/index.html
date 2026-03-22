@@ -3823,6 +3823,27 @@
         .fab-options.open { display: block; }
         .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
         .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
+
+        /* Gate de peso */
+        .peso-gate { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; padding: 20px; }
+        .peso-gate-card { background: var(--bg-card, #0A0A0A); border: 1px solid var(--border-color, #333); border-radius: 16px; padding: 24px; width: 100%; max-width: 400px; }
+        .peso-gate-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        .peso-gate-required { font-size: 13px; color: #FF5252; font-weight: 600; text-align: right; margin-top: -24px; }
+        .peso-gate-input-wrap { display: flex; align-items: center; gap: 12px; margin: 20px 0 12px; }
+        .peso-gate-input-wrap input { flex: 1; background: #111; border: 2px solid #333; border-radius: 12px; color: #FFF; font-size: 28px; font-weight: 700; text-align: center; padding: 16px; }
+        .peso-gate-input-wrap input:focus { border-color: #FF5252; outline: none; }
+        .peso-gate-unit { font-size: 18px; color: #888; font-weight: 600; }
+        .peso-gate-recover { width: 100%; padding: 12px; background: #1A1A1A; border: 1px solid #333; border-radius: 8px; color: #888; font-size: 14px; cursor: pointer; margin-bottom: 8px; }
+        .peso-gate-recover:active { background: #252525; }
+        .peso-gate-range { text-align: center; font-size: 12px; color: #555; margin: 8px 0 16px; }
+        .peso-gate-btn { width: 100%; padding: 14px; background: #FF5252; border: none; border-radius: 10px; color: #FFF; font-size: 16px; font-weight: 600; cursor: pointer; opacity: 0.4; transition: opacity 0.2s; }
+        .peso-gate-btn:not([disabled]) { opacity: 1; }
+        .peso-gate-btn:not([disabled]):active { background: #D32F2F; }
+        .peso-gate-btn[disabled] { cursor: not-allowed; }
+        #mainContent { display: none; }
+        #mainContent.visible { display: block; }
+        .peso-card-sticky { position: sticky; top: 33px; z-index: 90; background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
+        .fab-menu.gate-hidden { display: none; }
     </style>
 </head>
 <body>
@@ -3832,6 +3853,24 @@
             <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
         </header>
         
+        <!-- GATE DE PESO -->
+        <div id="pesoGate" class="peso-gate">
+            <div class="peso-gate-card">
+                <div class="peso-gate-title">Peso do paciente</div>
+                <div class="peso-gate-required">Obrigatório</div>
+                <div class="peso-gate-input-wrap">
+                    <input type="number" inputmode="decimal" id="pesoGateInput" placeholder="70" min="40" max="200" autofocus>
+                    <span class="peso-gate-unit">kg</span>
+                </div>
+                <button class="peso-gate-recover" id="pesoGateRecover" onclick="recoverLastWeight()" style="display:none">Recuperar último peso</button>
+                <div class="peso-gate-range">Adultos: 40-200 kg</div>
+                <button class="peso-gate-btn" id="pesoGateBtn" onclick="confirmWeight()" disabled>Confirmar peso</button>
+            </div>
+        </div>
+
+        <!-- CONTEUDO PRINCIPAL (oculto até confirmar peso) -->
+        <div id="mainContent">
+
         <!-- PESO -->
         <div class="peso-card" id="pesoCard">
             <div class="peso-header"><span class="peso-label">Peso do paciente</span><span class="peso-required">Obrigatório</span></div>
@@ -4310,6 +4349,8 @@
             <div class="footer-credits">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
             <div class="footer-version">v2.3.1 — Fevereiro 2026</div>
         </footer>
+
+        </div><!-- /mainContent -->
     </div>
 
     <script>
@@ -4327,12 +4368,81 @@
             fenta: { mg: 2500, ml: 50, conc: 50, unit: 'mcg/mL' }
         };
 
+        // ==================== GATE DE PESO ====================
+        function recoverLastWeight() {
+            var last = localStorage.getItem('anyapp-peso');
+            if (last) {
+                document.getElementById('pesoGateInput').value = last;
+                document.getElementById('pesoGateInput').dispatchEvent(new Event('input'));
+            }
+        }
+
+        function confirmWeight() {
+            var p = parseFloat(document.getElementById('pesoGateInput').value);
+            if (!p || p < 40 || p > 200) return;
+
+            // Propagar para o input de peso existente
+            var pesoInput = document.getElementById('pesoInput');
+            if (pesoInput) {
+                pesoInput.value = p;
+                pesoInput.dispatchEvent(new Event('input'));
+            }
+
+            // Salvar no localStorage
+            localStorage.setItem('anyapp-peso', p.toString());
+
+            // Ocultar gate, exibir conteúdo
+            document.getElementById('pesoGate').style.display = 'none';
+            document.getElementById('mainContent').classList.add('visible');
+
+            // Tornar peso-card sticky
+            var pesoCard = document.getElementById('pesoCard');
+            if (pesoCard) {
+                pesoCard.classList.add('peso-card-sticky');
+            }
+
+            // Mostrar FAB
+            var fabMenu = document.querySelector('.fab-menu');
+            if (fabMenu) fabMenu.classList.remove('gate-hidden');
+        }
+
         // ==================== INICIALIZAÇÃO ====================
         document.addEventListener('DOMContentLoaded', function() {
+            // Gate de peso — verificar localStorage
+            var gateInput = document.getElementById('pesoGateInput');
+            var gateBtn = document.getElementById('pesoGateBtn');
+
+            gateInput.addEventListener('input', function() {
+                var p = parseFloat(this.value);
+                var valid = p && p >= 40 && p <= 200;
+                gateBtn.disabled = !valid;
+                if (p && !valid) {
+                    this.style.borderColor = '#F44336';
+                } else if (valid) {
+                    this.style.borderColor = '#4CAF50';
+                } else {
+                    this.style.borderColor = '#333';
+                }
+            });
+
+            gateInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !gateBtn.disabled) confirmWeight();
+            });
+
+            var lastWeight = localStorage.getItem('anyapp-peso');
+            if (lastWeight) {
+                document.getElementById('pesoGateRecover').style.display = 'block';
+            }
+
+            // Ocultar FAB enquanto gate ativo
+            var fabMenu = document.querySelector('.fab-menu');
+            if (fabMenu) fabMenu.classList.add('gate-hidden');
+
+            // Init existente
             if (localStorage.getItem('anyapp-peso')) document.getElementById('btnRecuperar').disabled = false;
             document.getElementById('pesoInput').addEventListener('input', handlePesoChange);
             document.getElementById('buscaInput').addEventListener('input', handleBusca);
-            
+
             // Carregar diluições customizadas
             carregarDiluicaoCustomizada('mida');
             carregarDiluicaoCustomizada('fenta');
