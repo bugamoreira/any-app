@@ -24727,6 +24727,7 @@ body{background:#FFF;color:#000}
     </div>
 
     <div class="alert alert-info"><strong>Caso suspeito</strong>Febre (geralmente 2-7 dias) + epidemiologia compatível + ≥2 dos seguintes: cefaleia, dor retroorbitária, mialgia, artralgia, prostração, exantema.</div>
+    <div style="font-size:12px;color:#666;margin-bottom:12px;font-style:italic">Marque apenas o que se aplica ao paciente. Se nenhum item se aplica, avance normalmente.</div>
     <div class="info-card">
         <strong>Prova do laço</strong>
         Insuflar manguito no ponto médio entre PAS e PAD por 5 min. Contar petéquias em quadrado 2,5 x 2,5 cm. Positiva: ≥20 petéquias (adultos). Resultado falso-negativo pode ocorrer em pacientes obesos, em choque ou em uso de anti-hipertensivos.
@@ -24751,6 +24752,7 @@ body{background:#FFF;color:#000}
         </div>
     </div>
 
+    <div style="font-size:12px;color:#666;margin-bottom:12px;font-style:italic">Marque os sinais presentes. Se nenhum, avance para a classificação.</div>
     <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px"><strong style="color:var(--warning)">Qualquer um</strong> presente → pelo menos Grupo C.</p>
     <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
     <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
@@ -24783,11 +24785,12 @@ body{background:#FFF;color:#000}
     <div id="classPage1">
         <div class="alert alert-info" style="margin-bottom:12px">
             <strong>O paciente apresenta algum sinal de gravidade?</strong>
+            <div style="font-size:12px;margin-top:4px">Marque apenas se presente. Se nenhum sinal de gravidade, avance.</div>
         </div>
         <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Choque (hipotensão, TEC >2s, pulsos finos, extremidades frias)</div></div>
         <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hemorragia grave (hematêmese, melena, metrorragia volumosa, SNC)</div></div>
         <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Disfunção orgânica grave (miocardite, encefalite, hepatite grave, IRA)</div></div>
-        <button class="btn btn-primary btn-sm" onclick="classifyStep1()" style="margin-top:12px;width:100%">Avaliar</button>
+        <button class="btn btn-primary btn-sm" onclick="classifyStep1()" style="margin-top:12px;width:100%">Continuar →</button>
     </div>
     <div id="classPage2" style="display:none">
         <div class="alert alert-warning" style="margin-bottom:12px">
@@ -24795,11 +24798,12 @@ body{background:#FFF;color:#000}
             <div style="font-size:12px;margin-top:4px">Se já marcou no passo anterior, os dados serão aproveitados.</div>
         </div>
         <div id="classAlarmSummary"></div>
-        <button class="btn btn-primary btn-sm" onclick="classifyStep2()" style="margin-top:12px;width:100%">Avaliar</button>
+        <button class="btn btn-primary btn-sm" onclick="classifyStep2()" style="margin-top:12px;width:100%">Continuar →</button>
     </div>
     <div id="classPage3" style="display:none">
         <div class="alert alert-success" style="margin-bottom:12px">
             <strong>O paciente apresenta condição especial de risco?</strong>
+            <div style="font-size:12px;margin-top:4px">Marque apenas se presente. Se nenhuma condição se aplica, avance para classificar.</div>
         </div>
         <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Gestante</div></div>
         <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Idade superior a 65 anos</div></div>
@@ -26153,7 +26157,7 @@ function classifyStep1() {
             var txt = alarms === 1 ? '1 sinal de alarme' : alarms + ' sinais de alarme';
             summaryEl.innerHTML = '<div class="alert alert-danger" style="font-size:13px"><strong>' + txt + ' identificado(s) no passo anterior</strong></div>';
         } else {
-            summaryEl.innerHTML = '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">Nenhum sinal de alarme identificado no passo anterior.</div>';
+            summaryEl.innerHTML = '<div style="background:rgba(76,175,80,0.1);border:1px solid #4CAF50;border-radius:8px;padding:12px;font-size:13px;color:#4CAF50"><strong>Nenhum sinal de alarme identificado</strong> — prossiga para avaliar condições de risco.</div>';
         }
     }
 }
