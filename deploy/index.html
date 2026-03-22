@@ -3028,20 +3028,20 @@
             <div class="alert alert-warning hidden" id="doseReductionAlert"><div class="alert-icon"></div><div><div class="alert-title">Considere redução de dose</div><div class="alert-text">Paciente com instabilidade/idoso: reduza dose do indutor em 30-50%.</div></div></div>
             <div class="card">
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Peso: <strong id="medWeight">70</strong> kg | <span id="medPopulation">População: Adulto</span></p>
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Toque no card para selecionar. Selecione: 1 indutor + 1 BNM (fentanil opcional)</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Toque no card para selecionar. Selecione: 1 indutor + 1 BNM (bloqueio simpático opcional)</p>
             </div>
 
-            <div class="card"><div class="card-title">Analgesia (opcional)</div>
+            <div class="card"><div class="card-title">Bloqueio simpático (opcional)</div>
                 <div class="dose-card" id="fentanilCard" onclick="toggleMedCard('fentanil')">
-                    <div class="dose-header"><div><div class="dose-name">Fentanil</div><div class="dose-presentation">50 mcg/mL (2-10 mL)</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
-                    <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mcg/kg</span><span id="fentanilRate">2 mcg/kg</span><span>3 mcg/kg</span></div><input type="range" class="dose-slider" id="fentanilSlider" min="1" max="3" step="0.5" value="2" oninput="updateFentanil()"></div>
-                    <div class="dose-result"><div class="dose-value" id="fentanilDose">140 mcg</div><div class="dose-volume" id="fentanilVol">= 2.8 mL</div></div>
+                    <div class="dose-header"><div><div class="dose-name">Fentanil</div><div class="dose-presentation">50 mcg/mL — ampola 2-10 mL | IV lento, 3 min antes da indução</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
+                    <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mcg/kg</span><span id="fentanilRate">3 mcg/kg</span><span>3 mcg/kg</span></div><input type="range" class="dose-slider" id="fentanilSlider" min="1" max="3" step="0.5" value="3" oninput="updateFentanil()"></div>
+                    <div class="dose-result"><div class="dose-value" id="fentanilDose">210 mcg</div><div class="dose-volume" id="fentanilVol">= 4.2 mL</div></div>
                 </div>
             </div>
 
             <div class="card"><div class="card-title">Indutores (selecione 1)</div>
                 <div class="dose-card" id="ketaminaCard" onclick="toggleMedCard('ketamina')">
-                    <div class="dose-header"><div><div class="dose-name">Ketamina</div><div class="dose-presentation">50 mg/mL (10 mL)</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
+                    <div class="dose-header"><div><div class="dose-name">Cetamina</div><div class="dose-presentation">50 mg/mL — ampola 10 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
                     <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mg/kg</span><span id="ketaminaRate">1.5 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="ketaminaSlider" min="1" max="2" step="0.5" value="1.5" oninput="updateKetamina()"></div>
                     <div class="dose-result"><div class="dose-value" id="ketaminaDose">105 mg</div><div class="dose-volume" id="ketaminaVol">= 2.1 mL</div></div>
                 </div>
@@ -3054,6 +3054,11 @@
                     <div class="dose-header"><div><div class="dose-name">Propofol</div><div class="dose-presentation">10 mg/mL (20 mL)</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
                     <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mg/kg</span><span id="propofolRate">1.5 mg/kg</span><span>2.5 mg/kg</span></div><input type="range" class="dose-slider" id="propofolSlider" min="1" max="2.5" step="0.5" value="1.5" oninput="updatePropofol()"></div>
                     <div class="dose-result"><div class="dose-value" id="propofolDose">105 mg</div><div class="dose-volume" id="propofolVol">= 10.5 mL</div></div>
+                </div>
+                <div class="dose-card" id="midazolamCard" onclick="toggleMedCard('midazolam')">
+                    <div class="dose-header"><div><div class="dose-name">Midazolam (alternativa)</div><div class="dose-presentation">5 mg/mL — ampola 3 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
+                    <div class="dose-slider-container"><div class="dose-slider-label"><span>0.2 mg/kg</span><span id="midazolamRate">0.3 mg/kg</span><span>0.3 mg/kg</span></div><input type="range" class="dose-slider" id="midazolamSlider" min="0.2" max="0.3" step="0.1" value="0.3" oninput="updateMidazolam()"></div>
+                    <div class="dose-result"><div class="dose-value" id="midazolamDose">21 mg</div><div class="dose-volume" id="midazolamVol">= 4.2 mL</div></div>
                 </div>
             </div>
 
@@ -3180,12 +3185,12 @@
             sex: null,
             population: 'adulto',
             membrane: null,
-            meds: { fentanil: false, ketamina: false, etomidato: false, propofol: false, rocuronio: false, succinilcolina: false },
+            meds: { fentanil: false, ketamina: false, etomidato: false, propofol: false, midazolam: false, rocuronio: false, succinilcolina: false },
             cormack: null,
             timer: { running: false, total: 0, phases: { preox: 0, inducao: 0, laringoscopia: 0, checagem: 0 }, currentPhase: 'preox', interval: null }
         };
 
-        const indutores = ['ketamina', 'etomidato', 'propofol'];
+        const indutores = ['ketamina', 'etomidato', 'propofol', 'midazolam'];
         const bnms = ['rocuronio', 'succinilcolina'];
 
         function init() {
@@ -3390,7 +3395,7 @@
             document.getElementById('medWeight').textContent = w;
             document.getElementById('medPopulation').textContent = 'População: ' + state.population.charAt(0).toUpperCase() + state.population.slice(1);
             document.getElementById('doseReductionAlert').classList.toggle('hidden', !(state.crash.H || (state.shockIndex && state.shockIndex > 1.0) || state.population === 'idoso'));
-            updateFentanil(); updateKetamina(); updateEtomidato(); updatePropofol(); updateRocuronio(); updateSuccinilcolina();
+            updateFentanil(); updateKetamina(); updateEtomidato(); updatePropofol(); updateMidazolam(); updateRocuronio(); updateSuccinilcolina();
         }
 
         function toggleMedCard(med) {
@@ -3408,6 +3413,7 @@
         function updateKetamina() { const w = state.weight || 70, r = parseFloat(document.getElementById('ketaminaSlider').value), d = Math.round(w * r); document.getElementById('ketaminaRate').textContent = r + ' mg/kg'; document.getElementById('ketaminaDose').textContent = d + ' mg'; document.getElementById('ketaminaVol').textContent = '= ' + (d / 50).toFixed(1) + ' mL'; }
         function updateEtomidato() { const w = state.weight || 70, r = parseFloat(document.getElementById('etomidatoSlider').value), d = Math.round(w * r * 10) / 10; document.getElementById('etomidatoRate').textContent = r + ' mg/kg'; document.getElementById('etomidatoDose').textContent = d + ' mg'; document.getElementById('etomidatoVol').textContent = '= ' + (d / 2).toFixed(1) + ' mL'; }
         function updatePropofol() { const w = state.weight || 70, r = parseFloat(document.getElementById('propofolSlider').value), d = Math.round(w * r); document.getElementById('propofolRate').textContent = r + ' mg/kg'; document.getElementById('propofolDose').textContent = d + ' mg'; document.getElementById('propofolVol').textContent = '= ' + (d / 10).toFixed(1) + ' mL'; }
+        function updateMidazolam() { const w = state.weight || 70, r = parseFloat(document.getElementById('midazolamSlider').value), d = Math.round(w * r * 10) / 10; document.getElementById('midazolamRate').textContent = r + ' mg/kg'; document.getElementById('midazolamDose').textContent = d + ' mg'; document.getElementById('midazolamVol').textContent = '= ' + (d / 5).toFixed(1) + ' mL'; }
         function updateRocuronio() { const w = state.weight || 70, r = parseFloat(document.getElementById('rocuronioSlider').value), d = Math.round(w * r); document.getElementById('rocuronioRate').textContent = r + ' mg/kg'; document.getElementById('rocuronioDose').textContent = d + ' mg'; document.getElementById('rocuronioVol').textContent = '= ' + (d / 10).toFixed(1) + ' mL'; }
         function updateSuccinilcolina() { const w = state.weight || 70, r = parseFloat(document.getElementById('succinilcolinaSlider').value), d = Math.round(w * r); document.getElementById('succinilcolinaRate').textContent = r + ' mg/kg'; document.getElementById('succinilcolinaDose').textContent = d + ' mg'; document.getElementById('succinilcolinaVol').textContent = '= ' + (d / 10).toFixed(1) + ' mL'; }
 
@@ -3467,9 +3473,10 @@
             
             const w = state.weight || 70, meds = [];
             if (state.meds.fentanil) { const r = parseFloat(document.getElementById('fentanilSlider').value); meds.push('Fentanil ' + Math.round(w * r) + ' mcg (' + r + ' mcg/kg)'); }
-            if (state.meds.ketamina) { const r = parseFloat(document.getElementById('ketaminaSlider').value); meds.push('Ketamina ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
+            if (state.meds.ketamina) { const r = parseFloat(document.getElementById('ketaminaSlider').value); meds.push('Cetamina ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.etomidato) { const r = parseFloat(document.getElementById('etomidatoSlider').value); meds.push('Etomidato ' + (Math.round(w * r * 10) / 10) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.propofol) { const r = parseFloat(document.getElementById('propofolSlider').value); meds.push('Propofol ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
+            if (state.meds.midazolam) { const r = parseFloat(document.getElementById('midazolamSlider').value); meds.push('Midazolam ' + (Math.round(w * r * 10) / 10) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.rocuronio) { const r = parseFloat(document.getElementById('rocuronioSlider').value); meds.push('Rocurônio ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.succinilcolina) { const r = parseFloat(document.getElementById('succinilcolinaSlider').value); meds.push('Succinilcolina ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
             document.getElementById('summaryMeds').textContent = meds.join('\\n') || 'Nenhuma selecionada';
@@ -3756,15 +3763,15 @@
         .resultado-unidade { font-size: 12px; color: var(--text-secondary); }
 
         /* Manual input row */
-        .manual-input-row { display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); align-items: flex-end; }
+        .manual-input-row { display: flex; gap: 10px; margin: 12px 0 16px; align-items: flex-end; }
         .manual-input-group { flex: 1; }
-        .manual-input-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
-        .manual-input-group input { width: 100%; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px 10px; font-size: 15px; color: var(--text-primary); text-align: center; -moz-appearance: textfield; }
+        .manual-input-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .manual-input-group input { width: 100%; background-color: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px 8px; font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
         .manual-input-group input::-webkit-outer-spin-button,
         .manual-input-group input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .manual-input-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255, 82, 82, 0.2); }
-        .manual-input-group .mi-unit { font-size: 10px; color: var(--text-muted); text-align: center; margin-top: 2px; }
-        .manual-input-swap { display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 16px; padding-bottom: 14px; flex-shrink: 0; }
+        .manual-input-group .mi-unit { font-size: 11px; color: var(--text-secondary); text-align: center; margin-top: 3px; }
+        .manual-input-swap { display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 18px; padding-bottom: 16px; flex-shrink: 0; }
         
         /* Inputs */
         .input-row { display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
@@ -4312,12 +4319,12 @@
             carregarDiluicaoCustomizada('mida');
             carregarDiluicaoCustomizada('fenta');
 
-            // Initialize manual inputs
-            initManualInputs();
-
             // Calcular iniciais
             calcularVaso();
             calcularMorfina();
+
+            // Initialize manual inputs after everything is loaded
+            setTimeout(initManualInputs, 100);
         });
 
         // ==================== PESO ====================
@@ -5128,16 +5135,14 @@
             var doseInput = document.getElementById('mi-dose-' + drugId);
             var mlInput = document.getElementById('mi-ml-' + drugId);
             if (!doseInput || !mlInput) return;
-            // Only sync if the manual input is not focused
+            // Sync values (not placeholders) — only if not focused
             if (document.activeElement !== doseInput) {
                 var sliderVal = document.getElementById(cfg.slider).value;
-                doseInput.value = '';
-                doseInput.placeholder = parseFloat(sliderVal).toFixed(cfg.dp).replace('.', ',');
+                doseInput.value = parseFloat(sliderVal).toFixed(cfg.dp);
             }
             if (document.activeElement !== mlInput) {
                 var mlVal = document.getElementById(cfg.ml).textContent;
-                mlInput.value = '';
-                mlInput.placeholder = mlVal;
+                mlInput.value = mlVal !== '--' ? mlVal.replace(',', '.') : '';
             }
         }
 
@@ -17517,9 +17522,7 @@ function showTab(tabName) {
         .cpr-box { background: #111; color: var(--white); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
         .cpr-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
         .cpr-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; color: var(--gray-400); }
-        .cpr-ratio-toggle { display: flex; background: var(--gray-800); border-radius: 8px; padding: 4px; }
-        .cpr-ratio-btn { padding: 8px 12px; border: none; background: transparent; color: var(--gray-400); font-size: .75rem; font-weight: 700; cursor: pointer; border-radius: 6px; }
-        .cpr-ratio-btn.active { background: var(--red); color: white; }
+        /* cpr-ratio-toggle e cpr-ratio-btn removidos — relação fixa 15:2 */
         .cpr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
         @media (max-width: 500px) { .cpr-grid { grid-template-columns: repeat(2, 1fr); } }
         .cpr-item { background: #1A1A1A; border-radius: 12px; padding: 16px; text-align: center; }
@@ -17683,10 +17686,7 @@ function showTab(tabName) {
             <div class="cpr-box">
                 <div class="cpr-header">
                     <div class="cpr-title">Parâmetros de RCP Pediátrica</div>
-                    <div class="cpr-ratio-toggle">
-                        <button class="cpr-ratio-btn" data-ratio="30:2" onclick="setCPRRatio('30:2')">30:2 (1 socorrista)</button>
-                        <button class="cpr-ratio-btn active" data-ratio="15:2" onclick="setCPRRatio('15:2')">15:2 (2 socorristas)</button>
-                    </div>
+                    <div class="cpr-ratio-fixed" style="font-size:.75rem;font-weight:700;color:var(--gray-400);">Compressão:Ventilação — 15:2</div>
                 </div>
                 <div class="cpr-grid">
                     <div class="cpr-item"><div class="cpr-label">Frequência</div><div class="cpr-value">100-120/min</div></div>
@@ -18061,12 +18061,38 @@ function showTab(tabName) {
 
         function buildInfusionsSection() {
             var html = '<div class="infusion-weight-badge" id="infusion-weight-badge">Faixa: <strong>--</strong></div>';
+            html += '<div style="margin-bottom:16px;"><input type="text" id="infusion-search" placeholder="Buscar medicamento..." oninput="filterInfusions(this.value)" style="width:100%;padding:12px 16px;background:#1A1A1A;border:2px solid #333;border-radius:10px;color:#F5F5F5;font-size:.9rem;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor=\\'#42A5F5\\'" onblur="this.style.borderColor=\\'#333\\'"></div>';
 
             html += '<div class="infusion-category"><div class="infusion-category-title">Vasoativos</div><div id="infusions-vasoativos"></div></div>';
             html += '<div class="infusion-category"><div class="infusion-category-title">💤 Sedativos e Analgesia</div><div id="infusions-sedativos"></div></div>';
             html += '<div class="infusion-category"><div class="infusion-category-title">Outros</div><div id="infusions-outros"></div></div>';
 
             document.getElementById('infusions-section').innerHTML = html;
+        }
+
+        function filterInfusions(query) {
+            var q = query.toLowerCase().trim();
+            var cards = document.querySelectorAll('.infusion-card');
+            var catCounts = { vasoativos: 0, sedativos: 0, outros: 0 };
+            for (var i = 0; i < cards.length; i++) {
+                var nameEl = cards[i].querySelector('.infusion-name');
+                var name = nameEl ? nameEl.textContent.toLowerCase() : '';
+                var match = !q || name.indexOf(q) !== -1;
+                cards[i].style.display = match ? '' : 'none';
+                // count visible per category
+                var cardId = cards[i].id.replace('inf-card-', '');
+                if (infusionData[cardId]) {
+                    if (match) catCounts[infusionData[cardId].category]++;
+                }
+            }
+            // hide empty category sections
+            var catMap = { vasoativos: 'infusions-vasoativos', sedativos: 'infusions-sedativos', outros: 'infusions-outros' };
+            for (var cat in catMap) {
+                var catEl = document.getElementById(catMap[cat]);
+                if (catEl && catEl.parentElement) {
+                    catEl.parentElement.style.display = catCounts[cat] === 0 && q ? 'none' : '';
+                }
+            }
         }
 
         var infusionData = {
@@ -18513,17 +18539,7 @@ function showTab(tabName) {
             document.getElementById('scenarios-section').classList.toggle('collapsed');
         }
 
-        function setCPRRatio(r) {
-            var btns = document.querySelectorAll('.cpr-ratio-btn');
-            for (var i = 0; i < btns.length; i++) {
-                if (btns[i].dataset.ratio === r) {
-                    btns[i].classList.add('active');
-                } else {
-                    btns[i].classList.remove('active');
-                }
-            }
-            document.getElementById('cpr-ratio').textContent = r;
-        }
+        /* setCPRRatio removida — relação fixa 15:2 (2 socorristas) */
 
         function loadScenario(s) {
             var btns = document.querySelectorAll('.scenario-btn');

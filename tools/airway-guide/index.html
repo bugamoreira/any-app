@@ -334,20 +334,20 @@
             <div class="alert alert-warning hidden" id="doseReductionAlert"><div class="alert-icon"></div><div><div class="alert-title">Considere redução de dose</div><div class="alert-text">Paciente com instabilidade/idoso: reduza dose do indutor em 30-50%.</div></div></div>
             <div class="card">
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Peso: <strong id="medWeight">70</strong> kg | <span id="medPopulation">População: Adulto</span></p>
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Toque no card para selecionar. Selecione: 1 indutor + 1 BNM (fentanil opcional)</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Toque no card para selecionar. Selecione: 1 indutor + 1 BNM (bloqueio simpático opcional)</p>
             </div>
 
-            <div class="card"><div class="card-title">Analgesia (opcional)</div>
+            <div class="card"><div class="card-title">Bloqueio simpático (opcional)</div>
                 <div class="dose-card" id="fentanilCard" onclick="toggleMedCard('fentanil')">
-                    <div class="dose-header"><div><div class="dose-name">Fentanil</div><div class="dose-presentation">50 mcg/mL (2-10 mL)</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
-                    <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mcg/kg</span><span id="fentanilRate">2 mcg/kg</span><span>3 mcg/kg</span></div><input type="range" class="dose-slider" id="fentanilSlider" min="1" max="3" step="0.5" value="2" oninput="updateFentanil()"></div>
-                    <div class="dose-result"><div class="dose-value" id="fentanilDose">140 mcg</div><div class="dose-volume" id="fentanilVol">= 2.8 mL</div></div>
+                    <div class="dose-header"><div><div class="dose-name">Fentanil</div><div class="dose-presentation">50 mcg/mL — ampola 2-10 mL | IV lento, 3 min antes da indução</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
+                    <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mcg/kg</span><span id="fentanilRate">3 mcg/kg</span><span>3 mcg/kg</span></div><input type="range" class="dose-slider" id="fentanilSlider" min="1" max="3" step="0.5" value="3" oninput="updateFentanil()"></div>
+                    <div class="dose-result"><div class="dose-value" id="fentanilDose">210 mcg</div><div class="dose-volume" id="fentanilVol">= 4.2 mL</div></div>
                 </div>
             </div>
 
             <div class="card"><div class="card-title">Indutores (selecione 1)</div>
                 <div class="dose-card" id="ketaminaCard" onclick="toggleMedCard('ketamina')">
-                    <div class="dose-header"><div><div class="dose-name">Ketamina</div><div class="dose-presentation">50 mg/mL (10 mL)</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
+                    <div class="dose-header"><div><div class="dose-name">Cetamina</div><div class="dose-presentation">50 mg/mL — ampola 10 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
                     <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mg/kg</span><span id="ketaminaRate">1.5 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="ketaminaSlider" min="1" max="2" step="0.5" value="1.5" oninput="updateKetamina()"></div>
                     <div class="dose-result"><div class="dose-value" id="ketaminaDose">105 mg</div><div class="dose-volume" id="ketaminaVol">= 2.1 mL</div></div>
                 </div>
@@ -360,6 +360,11 @@
                     <div class="dose-header"><div><div class="dose-name">Propofol</div><div class="dose-presentation">10 mg/mL (20 mL)</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
                     <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mg/kg</span><span id="propofolRate">1.5 mg/kg</span><span>2.5 mg/kg</span></div><input type="range" class="dose-slider" id="propofolSlider" min="1" max="2.5" step="0.5" value="1.5" oninput="updatePropofol()"></div>
                     <div class="dose-result"><div class="dose-value" id="propofolDose">105 mg</div><div class="dose-volume" id="propofolVol">= 10.5 mL</div></div>
+                </div>
+                <div class="dose-card" id="midazolamCard" onclick="toggleMedCard('midazolam')">
+                    <div class="dose-header"><div><div class="dose-name">Midazolam (alternativa)</div><div class="dose-presentation">5 mg/mL — ampola 3 mL</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
+                    <div class="dose-slider-container"><div class="dose-slider-label"><span>0.2 mg/kg</span><span id="midazolamRate">0.3 mg/kg</span><span>0.3 mg/kg</span></div><input type="range" class="dose-slider" id="midazolamSlider" min="0.2" max="0.3" step="0.1" value="0.3" oninput="updateMidazolam()"></div>
+                    <div class="dose-result"><div class="dose-value" id="midazolamDose">21 mg</div><div class="dose-volume" id="midazolamVol">= 4.2 mL</div></div>
                 </div>
             </div>
 
@@ -486,12 +491,12 @@
             sex: null,
             population: 'adulto',
             membrane: null,
-            meds: { fentanil: false, ketamina: false, etomidato: false, propofol: false, rocuronio: false, succinilcolina: false },
+            meds: { fentanil: false, ketamina: false, etomidato: false, propofol: false, midazolam: false, rocuronio: false, succinilcolina: false },
             cormack: null,
             timer: { running: false, total: 0, phases: { preox: 0, inducao: 0, laringoscopia: 0, checagem: 0 }, currentPhase: 'preox', interval: null }
         };
 
-        const indutores = ['ketamina', 'etomidato', 'propofol'];
+        const indutores = ['ketamina', 'etomidato', 'propofol', 'midazolam'];
         const bnms = ['rocuronio', 'succinilcolina'];
 
         function init() {
@@ -690,7 +695,7 @@
             document.getElementById('medWeight').textContent = w;
             document.getElementById('medPopulation').textContent = 'População: ' + state.population.charAt(0).toUpperCase() + state.population.slice(1);
             document.getElementById('doseReductionAlert').classList.toggle('hidden', !(state.crash.H || (state.shockIndex && state.shockIndex > 1.0) || state.population === 'idoso'));
-            updateFentanil(); updateKetamina(); updateEtomidato(); updatePropofol(); updateRocuronio(); updateSuccinilcolina();
+            updateFentanil(); updateKetamina(); updateEtomidato(); updatePropofol(); updateMidazolam(); updateRocuronio(); updateSuccinilcolina();
         }
 
         function toggleMedCard(med) {
@@ -708,6 +713,7 @@
         function updateKetamina() { const w = state.weight || 70, r = parseFloat(document.getElementById('ketaminaSlider').value), d = Math.round(w * r); document.getElementById('ketaminaRate').textContent = r + ' mg/kg'; document.getElementById('ketaminaDose').textContent = d + ' mg'; document.getElementById('ketaminaVol').textContent = '= ' + (d / 50).toFixed(1) + ' mL'; }
         function updateEtomidato() { const w = state.weight || 70, r = parseFloat(document.getElementById('etomidatoSlider').value), d = Math.round(w * r * 10) / 10; document.getElementById('etomidatoRate').textContent = r + ' mg/kg'; document.getElementById('etomidatoDose').textContent = d + ' mg'; document.getElementById('etomidatoVol').textContent = '= ' + (d / 2).toFixed(1) + ' mL'; }
         function updatePropofol() { const w = state.weight || 70, r = parseFloat(document.getElementById('propofolSlider').value), d = Math.round(w * r); document.getElementById('propofolRate').textContent = r + ' mg/kg'; document.getElementById('propofolDose').textContent = d + ' mg'; document.getElementById('propofolVol').textContent = '= ' + (d / 10).toFixed(1) + ' mL'; }
+        function updateMidazolam() { const w = state.weight || 70, r = parseFloat(document.getElementById('midazolamSlider').value), d = Math.round(w * r * 10) / 10; document.getElementById('midazolamRate').textContent = r + ' mg/kg'; document.getElementById('midazolamDose').textContent = d + ' mg'; document.getElementById('midazolamVol').textContent = '= ' + (d / 5).toFixed(1) + ' mL'; }
         function updateRocuronio() { const w = state.weight || 70, r = parseFloat(document.getElementById('rocuronioSlider').value), d = Math.round(w * r); document.getElementById('rocuronioRate').textContent = r + ' mg/kg'; document.getElementById('rocuronioDose').textContent = d + ' mg'; document.getElementById('rocuronioVol').textContent = '= ' + (d / 10).toFixed(1) + ' mL'; }
         function updateSuccinilcolina() { const w = state.weight || 70, r = parseFloat(document.getElementById('succinilcolinaSlider').value), d = Math.round(w * r); document.getElementById('succinilcolinaRate').textContent = r + ' mg/kg'; document.getElementById('succinilcolinaDose').textContent = d + ' mg'; document.getElementById('succinilcolinaVol').textContent = '= ' + (d / 10).toFixed(1) + ' mL'; }
 
@@ -767,9 +773,10 @@
             
             const w = state.weight || 70, meds = [];
             if (state.meds.fentanil) { const r = parseFloat(document.getElementById('fentanilSlider').value); meds.push('Fentanil ' + Math.round(w * r) + ' mcg (' + r + ' mcg/kg)'); }
-            if (state.meds.ketamina) { const r = parseFloat(document.getElementById('ketaminaSlider').value); meds.push('Ketamina ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
+            if (state.meds.ketamina) { const r = parseFloat(document.getElementById('ketaminaSlider').value); meds.push('Cetamina ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.etomidato) { const r = parseFloat(document.getElementById('etomidatoSlider').value); meds.push('Etomidato ' + (Math.round(w * r * 10) / 10) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.propofol) { const r = parseFloat(document.getElementById('propofolSlider').value); meds.push('Propofol ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
+            if (state.meds.midazolam) { const r = parseFloat(document.getElementById('midazolamSlider').value); meds.push('Midazolam ' + (Math.round(w * r * 10) / 10) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.rocuronio) { const r = parseFloat(document.getElementById('rocuronioSlider').value); meds.push('Rocurônio ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
             if (state.meds.succinilcolina) { const r = parseFloat(document.getElementById('succinilcolinaSlider').value); meds.push('Succinilcolina ' + Math.round(w * r) + ' mg (' + r + ' mg/kg)'); }
             document.getElementById('summaryMeds').textContent = meds.join('\n') || 'Nenhuma selecionada';

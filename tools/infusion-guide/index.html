@@ -180,15 +180,15 @@
         .resultado-unidade { font-size: 12px; color: var(--text-secondary); }
 
         /* Manual input row */
-        .manual-input-row { display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); align-items: flex-end; }
+        .manual-input-row { display: flex; gap: 10px; margin: 12px 0 16px; align-items: flex-end; }
         .manual-input-group { flex: 1; }
-        .manual-input-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
-        .manual-input-group input { width: 100%; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px 10px; font-size: 15px; color: var(--text-primary); text-align: center; -moz-appearance: textfield; }
+        .manual-input-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .manual-input-group input { width: 100%; background-color: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px 8px; font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
         .manual-input-group input::-webkit-outer-spin-button,
         .manual-input-group input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .manual-input-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255, 82, 82, 0.2); }
-        .manual-input-group .mi-unit { font-size: 10px; color: var(--text-muted); text-align: center; margin-top: 2px; }
-        .manual-input-swap { display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 16px; padding-bottom: 14px; flex-shrink: 0; }
+        .manual-input-group .mi-unit { font-size: 11px; color: var(--text-secondary); text-align: center; margin-top: 3px; }
+        .manual-input-swap { display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 18px; padding-bottom: 16px; flex-shrink: 0; }
         
         /* Inputs */
         .input-row { display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
@@ -738,12 +738,12 @@
             carregarDiluicaoCustomizada('mida');
             carregarDiluicaoCustomizada('fenta');
 
-            // Initialize manual inputs
-            initManualInputs();
-
             // Calcular iniciais
             calcularVaso();
             calcularMorfina();
+
+            // Initialize manual inputs after everything is loaded
+            setTimeout(initManualInputs, 100);
         });
 
         // ==================== PESO ====================
@@ -1554,16 +1554,14 @@
             var doseInput = document.getElementById('mi-dose-' + drugId);
             var mlInput = document.getElementById('mi-ml-' + drugId);
             if (!doseInput || !mlInput) return;
-            // Only sync if the manual input is not focused
+            // Sync values (not placeholders) — only if not focused
             if (document.activeElement !== doseInput) {
                 var sliderVal = document.getElementById(cfg.slider).value;
-                doseInput.value = '';
-                doseInput.placeholder = parseFloat(sliderVal).toFixed(cfg.dp).replace('.', ',');
+                doseInput.value = parseFloat(sliderVal).toFixed(cfg.dp);
             }
             if (document.activeElement !== mlInput) {
                 var mlVal = document.getElementById(cfg.ml).textContent;
-                mlInput.value = '';
-                mlInput.placeholder = mlVal;
+                mlInput.value = mlVal !== '--' ? mlVal.replace(',', '.') : '';
             }
         }
 

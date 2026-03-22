@@ -127,9 +127,7 @@
         .cpr-box { background: #111; color: var(--white); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
         .cpr-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
         .cpr-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; color: var(--gray-400); }
-        .cpr-ratio-toggle { display: flex; background: var(--gray-800); border-radius: 8px; padding: 4px; }
-        .cpr-ratio-btn { padding: 8px 12px; border: none; background: transparent; color: var(--gray-400); font-size: .75rem; font-weight: 700; cursor: pointer; border-radius: 6px; }
-        .cpr-ratio-btn.active { background: var(--red); color: white; }
+        /* cpr-ratio-toggle e cpr-ratio-btn removidos — relação fixa 15:2 */
         .cpr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
         @media (max-width: 500px) { .cpr-grid { grid-template-columns: repeat(2, 1fr); } }
         .cpr-item { background: #1A1A1A; border-radius: 12px; padding: 16px; text-align: center; }
@@ -293,10 +291,7 @@
             <div class="cpr-box">
                 <div class="cpr-header">
                     <div class="cpr-title">Parâmetros de RCP Pediátrica</div>
-                    <div class="cpr-ratio-toggle">
-                        <button class="cpr-ratio-btn" data-ratio="30:2" onclick="setCPRRatio('30:2')">30:2 (1 socorrista)</button>
-                        <button class="cpr-ratio-btn active" data-ratio="15:2" onclick="setCPRRatio('15:2')">15:2 (2 socorristas)</button>
-                    </div>
+                    <div class="cpr-ratio-fixed" style="font-size:.75rem;font-weight:700;color:var(--gray-400);">Compressão:Ventilação — 15:2</div>
                 </div>
                 <div class="cpr-grid">
                     <div class="cpr-item"><div class="cpr-label">Frequência</div><div class="cpr-value">100-120/min</div></div>
@@ -671,12 +666,38 @@
 
         function buildInfusionsSection() {
             var html = '<div class="infusion-weight-badge" id="infusion-weight-badge">Faixa: <strong>--</strong></div>';
+            html += '<div style="margin-bottom:16px;"><input type="text" id="infusion-search" placeholder="Buscar medicamento..." oninput="filterInfusions(this.value)" style="width:100%;padding:12px 16px;background:#1A1A1A;border:2px solid #333;border-radius:10px;color:#F5F5F5;font-size:.9rem;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor=\'#42A5F5\'" onblur="this.style.borderColor=\'#333\'"></div>';
 
             html += '<div class="infusion-category"><div class="infusion-category-title">Vasoativos</div><div id="infusions-vasoativos"></div></div>';
             html += '<div class="infusion-category"><div class="infusion-category-title">💤 Sedativos e Analgesia</div><div id="infusions-sedativos"></div></div>';
             html += '<div class="infusion-category"><div class="infusion-category-title">Outros</div><div id="infusions-outros"></div></div>';
 
             document.getElementById('infusions-section').innerHTML = html;
+        }
+
+        function filterInfusions(query) {
+            var q = query.toLowerCase().trim();
+            var cards = document.querySelectorAll('.infusion-card');
+            var catCounts = { vasoativos: 0, sedativos: 0, outros: 0 };
+            for (var i = 0; i < cards.length; i++) {
+                var nameEl = cards[i].querySelector('.infusion-name');
+                var name = nameEl ? nameEl.textContent.toLowerCase() : '';
+                var match = !q || name.indexOf(q) !== -1;
+                cards[i].style.display = match ? '' : 'none';
+                // count visible per category
+                var cardId = cards[i].id.replace('inf-card-', '');
+                if (infusionData[cardId]) {
+                    if (match) catCounts[infusionData[cardId].category]++;
+                }
+            }
+            // hide empty category sections
+            var catMap = { vasoativos: 'infusions-vasoativos', sedativos: 'infusions-sedativos', outros: 'infusions-outros' };
+            for (var cat in catMap) {
+                var catEl = document.getElementById(catMap[cat]);
+                if (catEl && catEl.parentElement) {
+                    catEl.parentElement.style.display = catCounts[cat] === 0 && q ? 'none' : '';
+                }
+            }
         }
 
         var infusionData = {
@@ -1123,17 +1144,7 @@
             document.getElementById('scenarios-section').classList.toggle('collapsed');
         }
 
-        function setCPRRatio(r) {
-            var btns = document.querySelectorAll('.cpr-ratio-btn');
-            for (var i = 0; i < btns.length; i++) {
-                if (btns[i].dataset.ratio === r) {
-                    btns[i].classList.add('active');
-                } else {
-                    btns[i].classList.remove('active');
-                }
-            }
-            document.getElementById('cpr-ratio').textContent = r;
-        }
+        /* setCPRRatio removida — relação fixa 15:2 (2 socorristas) */
 
         function loadScenario(s) {
             var btns = document.querySelectorAll('.scenario-btn');
