@@ -48,6 +48,7 @@ Deploy automático via Netlify (git push → auto-deploy).
 | `palia` | `tools/palia-path/` | Palia Path | Cuidados paliativos |
 | `block` | `tools/block-path/` | Block Path | Bloqueios regionais (14 técnicas) |
 | `acls` | `tools/acls/` | ACLS Guide | Gestão de PCR com metrônomo |
+| `dengue` | `tools/dengue-path/` | Dengue Path | Manejo de dengue na emergência |
 
 ### 2.2 Para adicionar um novo app
 
@@ -577,6 +578,7 @@ ANY APP/
 ├── tools/
 │   ├── acls/index.html         <- ACLS Guide
 │   ├── airway-guide/index.html <- Airway Guide
+│   ├── dengue-path/index.html  <- Dengue Path
 │   ├── block-path/index.html   <- Block Path
 │   ├── infusion-guide/index.html <- Calculadora de Infusões
 │   ├── palia-path/index.html   <- Palia Path

@@ -404,6 +404,8 @@
             color: #555;
             margin-top: 4px;
         }
+        .new-badge-wrap{position:relative;overflow:hidden}
+        .new-badge{position:absolute;top:10px;right:-28px;background:#FFC107;color:#000;font-size:9px;font-weight:700;padding:3px 30px;transform:rotate(45deg);letter-spacing:1px;z-index:2}
     </style>
 </head>
 <body>
@@ -521,6 +523,15 @@
                     </svg>
                 </div>
                 <div class="name">ACLS Guide</div>
+            </a>
+            <a href="#" onclick="event.preventDefault(); parent.loadApp('dengue')" class="main-card new-badge-wrap">
+                <div class="new-badge">NOVO</div>
+                <div class="icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <div class="name">Dengue Path</div>
             </a>
         </div>
         
@@ -17428,7 +17439,7 @@ function showTab(tabName) {
             --purple: #AB47BC;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #000; color: #F5F5F5; min-height: 100vh; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #000; color: #F5F5F5; min-height: 100vh; padding-bottom: 90px; }
         .header { text-align: center; padding: 20px 16px; }
         .header img { max-width: 200px; height: auto; cursor: pointer; }
         .header h1 { font-size: 24px; font-weight: 700; margin-top: 12px; color: #F5F5F5; }
@@ -17750,30 +17761,30 @@ function showTab(tabName) {
             <h2 style="font-size:20px;font-weight:700;margin-bottom:16px">Cenários</h2>
             <div class="scenario-card" onclick="loadScenarioView('anafilaxia')">
                 <div class="scenario-card-title">Anafilaxia</div>
-                <div class="scenario-card-desc">Epinefrina IM, corticoide, anti-histaminico</div>
+                <div class="scenario-card-desc">Epinefrina IM, corticoide, anti-histamínico</div>
             </div>
             <div class="scenario-card" onclick="loadScenarioView('convulsao')">
                 <div class="scenario-card-title">Status Epilepticus</div>
-                <div class="scenario-card-desc">Diazepam, midazolam, fenitoina, fenobarbital</div>
+                <div class="scenario-card-desc">Diazepam, midazolam, fenitoína, fenobarbital</div>
             </div>
             <div class="scenario-card" onclick="loadScenarioView('isr')">
                 <div class="scenario-card-title">IOT / ISR</div>
-                <div class="scenario-card-desc">Checklist, cetamina, rocuronio, succinilcolina</div>
+                <div class="scenario-card-desc">Checklist, cetamina, rocurônio, succinilcolina</div>
             </div>
             <div class="scenario-card" onclick="loadScenarioView('choque')">
                 <div class="scenario-card-title">Choque</div>
                 <div class="scenario-card-desc">Fluidos, epinefrina, norepinefrina, dobutamina</div>
             </div>
             <div class="scenario-card" onclick="loadScenarioView('choque-cardio')">
-                <div class="scenario-card-title">Choque Cardiogenico</div>
+                <div class="scenario-card-title">Choque cardiogênico</div>
                 <div class="scenario-card-desc">Dobutamina, milrinona, epinefrina</div>
             </div>
             <div class="scenario-card" onclick="loadScenarioView('pos-pcr')">
-                <div class="scenario-card-title">Pos-PCR / Arritmia</div>
+                <div class="scenario-card-title">Pós-PCR / Arritmia</div>
                 <div class="scenario-card-desc">Amiodarona, epinefrina, norepinefrina</div>
             </div>
             <div class="scenario-card" onclick="loadScenarioView('sedação')">
-                <div class="scenario-card-title">Sedacao Pos-IOT</div>
+                <div class="scenario-card-title">Sedação pós-IOT</div>
                 <div class="scenario-card-desc">Fentanil, midazolam, dexmedetomidina, cetamina</div>
             </div>
         </div>
@@ -24314,7 +24325,1876 @@ function syncMetroBtn() {
 </button>
 </div>
 </body>
-</html>`
+</html>`,
+            dengue: `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dengue Path — ANY App</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+--bg:#000000;--bg-card:#0A0A0A;--bg-elevated:#111111;--bg-hover:#1A1A1A;
+--border:#333333;--border-light:#333333;
+--text:#FFFFFF;--text-secondary:#A0A0A0;--text-muted:#666666;
+--accent:#FF5252;--accent-hover:#FF6B6B;--accent-dark:#CC4040;
+--success:#4CAF50;--warning:#FFC107;--danger:#F44336;--info:#2196F3;
+--radius:12px;--radius-sm:8px;--radius-lg:16px;
+--transition:300ms ease;
+--max-width:540px;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;font-size:15px;display:flex;flex-direction:column;padding-bottom:70px}
+a{color:var(--info);text-decoration:none}
+
+/* DISCLAIMER */
+.disclaimer{position:sticky;top:0;z-index:100;background:rgba(255,193,7,0.1);color:#FFC107;text-align:center;padding:8px 16px;font-size:11px;font-weight:500;letter-spacing:0.3px;border-bottom:1px solid rgba(255,193,7,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+
+/* HEADER */
+.header{padding:20px 16px 12px;text-align:center;border-bottom:1px solid var(--border)}
+.header a{display:inline-block}
+.header img{max-width:260px;width:100%;height:auto}
+.header .tool-title{font-size:20px;font-weight:700;margin-top:8px;color:var(--text)}
+.header .tool-subtitle{font-size:12px;color:var(--text-secondary);margin-top:2px}
+
+/* WEIGHT INPUT */
+.weight-bar{background:var(--bg-card);border-bottom:1px solid var(--border);padding:12px 16px;display:none;position:sticky;top:33px;z-index:90}
+.weight-bar.visible{display:flex}
+.weight-bar-inner{max-width:var(--max-width);margin:0 auto;display:flex;align-items:center;gap:12px;width:100%}
+.weight-bar label{font-size:13px;color:var(--text-secondary);white-space:nowrap}
+.weight-bar input{flex:1;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);padding:8px 12px;font-size:16px;max-width:100px;text-align:center}
+.weight-bar input:focus{outline:none;border-color:var(--accent)}
+.weight-bar .weight-status{font-size:12px;font-weight:500}
+
+/* CONTAINER */
+.container{flex:1;max-width:var(--max-width);margin:0 auto;padding:16px;width:100%}
+
+/* SCREENS */
+.screen{display:none}
+.screen.active{display:block}
+
+/* HOME GRID */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.grid-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;transition:var(--transition);min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.grid-btn:active{background:var(--bg-hover);transform:scale(0.97)}
+.grid-btn .grid-icon{font-size:24px}
+.grid-btn .grid-label{font-size:12px;font-weight:600;color:var(--text);line-height:1.3}
+.grid-btn .grid-desc{font-size:10px;color:var(--text-muted);line-height:1.2}
+.grid-btn.highlight{border-color:var(--accent);background:rgba(255,82,82,0.05)}
+.full-width{grid-column:1/-1}
+
+/* BACK BUTTON */
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-secondary);font-size:13px;font-weight:500;padding:8px 0;margin-bottom:12px;cursor:pointer;border:none;background:none}
+.back-btn:active{color:var(--text)}
+
+/* SECTION HEADERS */
+.section-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.section-subtitle{font-size:13px;color:var(--text-secondary);margin-bottom:16px}
+
+/* COLLAPSIBLE */
+.collapsible{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
+.collapsible-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;min-height:44px}
+.collapsible-header:active{background:var(--bg-hover)}
+.collapsible-header .ch-title{font-size:14px;font-weight:600;flex:1}
+.collapsible-header .ch-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-right:8px}
+.badge-green{background:rgba(76,175,80,0.15);color:#4CAF50}
+.badge-yellow{background:rgba(255,193,7,0.15);color:#FFC107}
+.badge-red{background:rgba(244,67,54,0.15);color:#F44336}
+.badge-blue{background:rgba(33,150,243,0.15);color:#2196F3}
+.chevron{color:var(--text-muted);font-size:12px;transition:transform var(--transition)}
+.collapsible.open .chevron{transform:rotate(180deg)}
+.collapsible-body{max-height:0;overflow:hidden;transition:max-height 400ms ease}
+.collapsible.open .collapsible-body{max-height:none}
+.collapsible-content{padding:0 16px 16px}
+
+/* ALERT CARDS */
+.alert{padding:12px 16px;border-radius:var(--radius-sm);margin-bottom:10px;font-size:13px;line-height:1.5}
+.alert-danger{background:rgba(244,67,54,0.1);border:1px solid rgba(244,67,54,0.25);color:#FF6B6B}
+.alert-warning{background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.25);color:#FFD740}
+.alert-success{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.25);color:#66BB6A}
+.alert-info{background:rgba(33,150,243,0.1);border:1px solid rgba(33,150,243,0.25);color:#64B5F6}
+.alert strong{display:block;margin-bottom:4px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px}
+
+/* CHECKLIST */
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;cursor:pointer}
+.check-item:last-child{border-bottom:none}
+.check-box{width:22px;height:22px;min-width:22px;border:2px solid var(--border-light);border-radius:6px;display:flex;align-items:center;justify-content:center;transition:var(--transition);margin-top:1px}
+.check-item.checked .check-box{background:var(--danger);border-color:var(--danger)}
+.check-item.checked .check-box::after{content:'✓';color:#FFF;font-size:13px;font-weight:700}
+
+/* CALCULATOR */
+.calc-card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.calc-card label{font-size:12px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:8px}
+.calc-result{text-align:center;padding:12px;background:var(--bg-card);border-radius:var(--radius-sm);margin-top:8px}
+.calc-result .big-number{font-size:32px;font-weight:700;line-height:1}
+.calc-result .unit{font-size:14px;color:var(--text-secondary);margin-left:4px}
+.calc-result .secondary{font-size:13px;color:var(--text-secondary);margin-top:4px}
+.calc-row{display:flex;gap:8px;margin-top:8px}
+.calc-row .calc-result{flex:1}
+
+/* BUTTONS */
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:var(--transition);min-height:44px}
+.btn-primary{background:var(--accent);color:#FFF}
+.btn-primary:active{background:var(--accent-dark)}
+.btn-secondary{background:var(--bg-elevated);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:active{background:var(--bg-hover)}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:active{background:rgba(255,82,82,0.1)}
+.btn-success{background:var(--success);color:#FFF}
+.btn-warning{background:var(--warning);color:#000}
+.btn-danger{background:var(--danger);color:#FFF}
+.btn+.btn{margin-top:8px}
+.btn-sm{padding:10px;font-size:13px;min-height:38px}
+.btn-group{display:flex;gap:8px;margin-top:8px}
+.btn-group .btn{flex:1}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+.data-table th{background:var(--bg-hover);color:var(--text-secondary);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.data-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+
+/* INFO CARD */
+.info-card{background:var(--bg-card);border-left:3px solid var(--info);padding:12px 16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:10px 0;font-size:13px;color:var(--text-secondary)}
+.info-card strong{color:var(--text);display:block;margin-bottom:4px}
+
+/* TAG */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.tag-red{background:rgba(244,67,54,0.15);color:#F44336}
+.tag-yellow{background:rgba(255,193,7,0.15);color:#FFC107}
+.tag-green{background:rgba(76,175,80,0.15);color:#4CAF50}
+.tag-blue{background:rgba(33,150,243,0.15);color:#2196F3}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* STEP FLOW */
+.step{display:flex;gap:12px;margin-bottom:16px}
+.step-marker{width:28px;height:28px;min-width:28px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:2px}
+.step-content{flex:1}
+.step-content h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-content p{font-size:13px;color:var(--text-secondary);line-height:1.5}
+
+/* FOOTER */
+.footer{text-align:center;padding:24px 16px;border-top:1px solid var(--border);margin-top:32px}
+.footer-credits{font-size:12px;color:var(--text-muted)}
+.footer-version{font-size:11px;color:var(--text-muted);margin-top:4px}
+.footer-ref{font-size:10px;color:var(--text-muted);margin-top:8px;line-height:1.5}
+
+/* PRINT */
+.print-section{display:none}
+@media print{
+body{background:#FFF;color:#000}
+.disclaimer,.header,.footer,.back-btn,.weight-bar,.home-grid,.grid-btn{display:none!important}
+.print-section{display:block!important;padding:20px;font-size:14px;line-height:1.6}
+.print-section h2{font-size:18px;margin-bottom:12px;border-bottom:2px solid #000;padding-bottom:8px}
+.print-section ul{margin-left:20px}
+.print-section li{margin-bottom:6px}
+}
+
+/* RESPONSIVE */
+@media(max-width:380px){
+.home-grid{gap:8px}
+.grid-btn{padding:12px 8px}
+.grid-btn .grid-icon{font-size:20px}
+.grid-btn .grid-label{font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer"><strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.</div>
+
+<!-- HEADER -->
+<div class="header">
+  <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App" style="max-width:260px;width:100%;height:auto"></a>
+  <div class="tool-title">Dengue Path</div>
+  <div class="tool-subtitle">Manejo de dengue na emergência</div>
+</div>
+
+<!-- WEIGHT BAR -->
+<div class="weight-bar" id="weightBar">
+    <div class="weight-bar-inner">
+        <label>Peso (kg):</label>
+        <input type="number" id="pesoInput" inputmode="decimal" placeholder="70" min="40" max="200" step="1">
+        <span class="weight-status" id="weightStatus"></span>
+    </div>
+</div>
+
+<div class="container">
+
+<!-- ============================================ -->
+<!-- SCREEN: HOME -->
+<!-- ============================================ -->
+<div class="screen active" id="screen-home">
+    <div class="alert alert-warning" style="margin-bottom:16px">
+        Ferramenta para adultos (≥15 anos)
+    </div>
+
+    <!-- TRILHA: botão destaque full-width -->
+    <div class="grid-btn highlight full-width" onclick="goTo('trilha')" style="padding:20px 16px;border-color:var(--accent);background:rgba(255,82,82,0.08);margin-bottom:16px">
+        <div class="grid-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="grid-label" style="font-size:16px">Dengue Path</div>
+        <div class="grid-desc" style="font-size:11px">Trilha completa: avaliação → classificação → manejo → alta</div>
+    </div>
+
+    <!-- MÓDULOS: grid 2×2 -->
+    <div class="home-grid">
+        <div class="grid-btn" onclick="goTo('grupos')">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+            <div class="grid-label">Manejo por grupos</div>
+            <div class="grid-desc">Grupos A, B, C e D</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('calculadoras')">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg></div>
+            <div class="grid-label">Calculadoras</div>
+            <div class="grid-desc">VO, IV, albumina</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('efasd')">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+            <div class="grid-label">Protocolo E-FASD</div>
+            <div class="grid-desc">POCUS na dengue</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('examediff')">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></div>
+            <div class="grid-label">Exames e diferenciais</div>
+            <div class="grid-desc">Laboratório e arboviroses</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('altasegura')">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <div class="grid-label">Alta segura</div>
+            <div class="grid-desc">Critérios e orientações</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('referencias')">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+            <div class="grid-label">Referências</div>
+            <div class="grid-desc">Fontes e bibliografia</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: TRILHA (Dengue Path completo) -->
+<!-- ============================================ -->
+<div class="screen" id="screen-trilha">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Dengue Path</div>
+    <div class="section-subtitle">Trilha completa de manejo — siga os passos</div>
+
+    <!-- PASSO 1: Avaliação inicial -->
+    <div class="collapsible" id="trilha-step1">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-badge badge-blue" style="margin-right:8px">1</span>
+            <span class="ch-title">Avaliação inicial e suspeita</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-info"><strong>Caso suspeito</strong>Febre (geralmente 2–7 dias) + epidemiologia compatível + ≥2 dos seguintes: cefaleia, dor retroorbitária, mialgia, artralgia, prostração, exantema.</div>
+                <div class="info-card">
+                    <strong>Prova do laço</strong>
+                    Insuflar manguito no ponto médio entre PAS e PAD por 5 min. Contar petéquias em quadrado 2,5 × 2,5 cm. Positiva: ≥20 petéquias (adultos). Pode ser negativa em obesos, choque ou anti-hipertensivos.
+                </div>
+                <div class="alert alert-warning" style="font-size:12px"><strong>Exames iniciais sugeridos</strong>Hemograma com hematócrito. Se sinais de alarme ou gravidade: função renal, hepática, coagulograma, tipagem.</div>
+                <button class="btn btn-secondary btn-sm" onclick="openTrilhaStep(2)" style="margin-top:8px">Próximo: sinais de alarme →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSO 2: Sinais de alarme -->
+    <div class="collapsible" id="trilha-step2">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-badge badge-yellow" style="margin-right:8px">2</span>
+            <span class="ch-title">Sinais de alarme</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px"><strong style="color:var(--warning)">Qualquer um</strong> presente → pelo menos Grupo C.</p>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
+                <div id="trilhaAlarmResult" style="margin-top:12px"></div>
+                <button class="btn btn-secondary btn-sm" onclick="openTrilhaStep(3)" style="margin-top:8px">Próximo: classificação →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSO 3: Classificação -->
+    <div class="collapsible" id="trilha-step3">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-badge badge-red" style="margin-right:8px">3</span>
+            <span class="ch-title">Classificação e manejo inicial</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-info"><strong>Passo 1</strong>Há sinais de gravidade? (choque, hemorragia grave, disfunção orgânica)</div>
+                <div class="btn-group">
+                    <button class="btn btn-danger btn-sm" onclick="openTrilhaGrupo('D')">Sim → Grupo D</button>
+                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('trilhaClass2').style.display='block'">Não →</button>
+                </div>
+                <div id="trilhaClass2" style="display:none;margin-top:12px">
+                    <div class="alert alert-warning"><strong>Passo 2</strong>Há sinais de alarme?</div>
+                    <div class="btn-group">
+                        <button class="btn btn-warning btn-sm" style="color:#000" onclick="openTrilhaGrupo('C')">Sim → Grupo C</button>
+                        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('trilhaClass3').style.display='block'">Não →</button>
+                    </div>
+                </div>
+                <div id="trilhaClass3" style="display:none;margin-top:12px">
+                    <div class="alert alert-success"><strong>Passo 3</strong>Condição de risco? (gestante, >65a, comorbidades, risco social)</div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm" style="border-color:var(--warning)" onclick="openTrilhaGrupo('B')">Sim → Grupo B</button>
+                        <button class="btn btn-success btn-sm" onclick="openTrilhaGrupo('A')">Não → Grupo A</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSO 4: Manejo Grupo A (aparece quando selecionado) -->
+    <div class="collapsible" id="trilha-grupoA" style="display:none">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-badge badge-green" style="margin-right:8px">A</span>
+            <span class="ch-title">Grupo A — Ambulatorial</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-success"><strong>Conduta</strong>Hidratação oral domiciliar + acompanhamento ambulatorial.</div>
+                <div class="calc-card">
+                    <label>Hidratação oral: 60 mL/kg/dia</label>
+                    <div class="calc-result">
+                        <div class="big-number" id="trilha-A-vol">—</div>
+                        <div class="unit">mL/dia</div>
+                        <div class="secondary">1/3 SRO (<span id="trilha-A-sro">—</span> mL) + 2/3 líquidos (<span id="trilha-A-liq">—</span> mL)</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <strong>Antieméticos (se necessário)</strong>
+                    Metoclopramida 10 mg IV/VO 8/8h (ampola 10 mg/2 mL) ou ondansetrona 4–8 mg IV/VO 8/8h (ampola 4 mg/2 mL). Evitar AINEs e AAS.
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="openTrilhaStep(5)" style="margin-top:8px">Próximo: critérios de alta →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSO 4: Manejo Grupo B -->
+    <div class="collapsible" id="trilha-grupoB" style="display:none">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-badge badge-yellow" style="margin-right:8px">B</span>
+            <span class="ch-title">Grupo B — Observação (≥6h)</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-warning"><strong>Conduta</strong>Hidratação oral supervisionada em unidade de saúde. Hemograma com Ht antes e após (4–6h).</div>
+                <div class="calc-card">
+                    <label>Hidratação oral: 60 mL/kg/dia</label>
+                    <div class="calc-result">
+                        <div class="big-number" id="trilha-B-vol">—</div>
+                        <div class="unit">mL/dia</div>
+                    </div>
+                </div>
+                <div class="alert alert-danger"><strong>Reclassificar para C se:</strong>Sinal de alarme ou hematócrito em ascensão (≥20% do basal) na reavaliação.</div>
+                <button class="btn btn-secondary btn-sm" onclick="openTrilhaStep(5)" style="margin-top:8px">Próximo: critérios de alta →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSO 4: Manejo Grupo C -->
+    <div class="collapsible" id="trilha-grupoC" style="display:none">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-badge badge-red" style="margin-right:8px">C</span>
+            <span class="ch-title">Grupo C — Internação + IV</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-danger"><strong>Conduta imediata</strong>Hidratação IV: SF 0,9% ou RL — 10 mL/kg/h por 2 horas.</div>
+                <div class="calc-card">
+                    <label>Fase de expansão (2h)</label>
+                    <div class="calc-row">
+                        <div class="calc-result">
+                            <div class="big-number" id="trilha-C-hora">—</div>
+                            <div class="unit">mL/h</div>
+                        </div>
+                        <div class="calc-result">
+                            <div class="big-number" id="trilha-C-2h">—</div>
+                            <div class="unit">mL em 2h</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-success"><strong>Se melhora + Ht queda</strong>Manutenção: 25 mL/kg em 6h (<span id="trilha-C-man6">—</span> mL → <span id="trilha-C-man6h">—</span> mL/h). Depois 25 mL/kg em 8h.</div>
+                <div class="alert alert-warning"><strong>Sem melhora</strong>Repetir expansão. Se falhar 2ª vez → manejar como Grupo D.</div>
+                <button class="btn btn-secondary btn-sm" onclick="openTrilhaStep(5)" style="margin-top:8px">Próximo: critérios de alta →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSO 4: Manejo Grupo D -->
+    <div class="collapsible" id="trilha-grupoD" style="display:none">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-badge badge-red" style="margin-right:8px">D</span>
+            <span class="ch-title">Grupo D — UTI / Emergência</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-danger"><strong>Emergência</strong>SF 0,9% — 20 mL/kg em até 20 min. Repetir até 3×. Dois acessos calibrosos.</div>
+                <div class="calc-card">
+                    <label>Bolus rápido — 20 mL/kg</label>
+                    <div class="calc-result">
+                        <div class="big-number" id="trilha-D-bolus">—</div>
+                        <div class="unit">mL por bolus (até 3×)</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <strong>Refratário a cristaloide</strong>
+                    Albumina 20%: 0,5–1 g/kg (<span id="trilha-D-alb05">—</span> a <span id="trilha-D-alb1">—</span> mL). Se Ht em queda + choque → hemotransfusão. Se refratário a volume → noradrenalina.
+                </div>
+                <div class="info-card">
+                    <strong>Metas</strong>
+                    </strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- PAS >90 mmHg</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- FC <100</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- TEC <2s</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Diurese >0,5 mL/kg/h</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Ht estável</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Melhora do nível de consciência</div>
+                    <strong style="display:none">
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="openTrilhaStep(5)" style="margin-top:8px">Próximo: critérios de alta →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSO 5: Critérios de alta -->
+    <div class="collapsible" id="trilha-step5">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-badge badge-green" style="margin-right:8px">5</span>
+            <span class="ch-title">Critérios de alta e seguimento</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Ausência de febre por 24-48h sem antitérmicos</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Melhora clínica visível</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hematócrito estável</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Plaquetas em ascensão</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Estabilidade hemodinâmica por 24h</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hidratação oral adequada</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Diurese >0,5 mL/kg/h</div>
+                </div>
+                <div class="alert alert-warning" style="margin-top:12px"><strong>Orientar retorno imediato se:</strong>Dor abdominal intensa, vômitos persistentes, sangramento, tontura ao levantar, pele fria/pálida, dispneia, sonolência ou agitação.</div>
+                <div style="margin-top:12px">
+                    <button class="btn btn-outline btn-sm" onclick="goTo('altasegura')">Ver orientações completas para alta segura →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: MANEJO POR GRUPOS (hub) -->
+<!-- ============================================ -->
+<div class="screen" id="screen-grupos">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Manejo por grupos</div>
+    <div class="section-subtitle">Acesso direto ao manejo por classificação</div>
+
+    <div class="home-grid">
+        <div class="grid-btn" onclick="goTo('grupoA')" style="border-color:var(--success)">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2"><path d="M12 2L6 12a6 6 0 1 0 12 0L12 2z"/></svg></div>
+            <div class="grid-label">Grupo A</div>
+            <div class="grid-desc">Ambulatorial</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('grupoB')" style="border-color:var(--warning)">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFC107" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <div class="grid-label">Grupo B</div>
+            <div class="grid-desc">Observação ≥6h</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('grupoC')" style="border-color:var(--danger)">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F44336" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+            <div class="grid-label">Grupo C</div>
+            <div class="grid-desc">Internação + IV</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('grupoD')" style="border-color:var(--danger);background:rgba(244,67,54,0.05)">
+            <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F44336" stroke-width="2" fill-opacity="0.2"><circle cx="12" cy="12" r="10" fill="#F44336"/></svg></div>
+            <div class="grid-label">Grupo D</div>
+            <div class="grid-desc">UTI / Emergência</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: CLASSIFICAÇÃO -->
+<!-- ============================================ -->
+<div class="screen" id="screen-classificacao">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Classificação clínica</div>
+    <div class="section-subtitle">Ministério da Saúde, 6ª edição (2024)</div>
+
+    <!-- Sinais de alarme checklist -->
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Sinais de alarme</span>
+            <span class="ch-badge badge-red">Avaliar</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Marque os sinais presentes. A presença de <strong style="color:var(--warning)">qualquer um</strong> indica pelo menos Grupo C.</p>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
+                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
+                <div id="alarmResult" style="margin-top:12px"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prova do laço -->
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Prova do laço</span>
+            <span class="ch-badge badge-blue">Técnica</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="step">
+                    <div class="step-marker">1</div>
+                    <div class="step-content">
+                        <h4>Aferir PA</h4>
+                        <p>Insufle o manguito até o ponto médio entre PAS e PAD.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-marker">2</div>
+                    <div class="step-content">
+                        <h4>Manter por 5 minutos</h4>
+                        <p>Manter o manguito insuflado no ponto médio. Em crianças, considere 3 minutos.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-marker">3</div>
+                    <div class="step-content">
+                        <h4>Contar petéquias</h4>
+                        <p>Desenhe um quadrado de 2,5 × 2,5 cm no antebraço e conte as petéquias.</p>
+                    </div>
+                </div>
+                <div class="alert alert-danger" style="margin-top:8px">
+                    <strong>Positiva</strong>≥ 20 petéquias em adultos no quadrado. Considere fragilidade capilar — não exclui nem confirma dengue isoladamente.
+                </div>
+                <div class="info-card">
+                    <strong>Atenção</strong>
+                    A prova do laço pode ser negativa em pacientes obesos, em choque ou uso de anti-hipertensivos. Não substitui avaliação clínica e laboratorial.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fluxo de classificação -->
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Fluxo de classificação</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-info"><strong>Passo 1</strong>Há sinais de gravidade? (choque, sangramento grave, disfunção orgânica grave)</div>
+                <div class="btn-group">
+                    <button class="btn btn-danger btn-sm" onclick="goTo('grupoD')">Sim → Grupo D</button>
+                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('classStep2').style.display='block'">Não → Próximo</button>
+                </div>
+
+                <div id="classStep2" style="display:none;margin-top:16px">
+                    <div class="alert alert-warning"><strong>Passo 2</strong>Há sinais de alarme? (use o checklist acima)</div>
+                    <div class="btn-group">
+                        <button class="btn btn-warning btn-sm" style="color:#000" onclick="goTo('grupoC')">Sim → Grupo C</button>
+                        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('classStep3').style.display='block'">Não → Próximo</button>
+                    </div>
+                </div>
+
+                <div id="classStep3" style="display:none;margin-top:16px">
+                    <div class="alert alert-success"><strong>Passo 3</strong>Há condição de risco?<br><span style="font-size:12px">Gestante, <2 anos ou >65 anos, comorbidades (HAS, DM, DPOC, doença hematológica, renal crônica, doença péptica, hepatopatia), risco social</span></div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm" style="border-color:var(--warning)" onclick="goTo('grupoB')">Sim → Grupo B</button>
+                        <button class="btn btn-success btn-sm" onclick="goTo('grupoA')">Não → Grupo A</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: GRUPO A -->
+<!-- ============================================ -->
+<div class="screen" id="screen-grupoA">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Grupo A <span class="tag tag-green">Ambulatorial</span></div>
+    <div class="section-subtitle">Sem sinais de alarme, sem condições de risco</div>
+
+    <div class="alert alert-success"><strong>Conduta</strong>Hidratação oral domiciliar + acompanhamento ambulatorial</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Hidratação oral</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="calc-card">
+                    <label>Volume total: 60 mL/kg/dia</label>
+                    <div class="calc-result">
+                        <div class="big-number" id="grupoA-vol">—</div>
+                        <div class="unit">mL/dia</div>
+                        <div class="secondary">1/3 SRO (<span id="grupoA-sro">—</span> mL) + 2/3 líquidos (<span id="grupoA-liq">—</span> mL)</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <strong>Orientação prática</strong>
+                    Considere oferecer água, suco de frutas, chá, água de coco. Evitar bebidas com cafeína. O volume diário inclui alimentação líquida. Distribuir ao longo do dia (não forçar grandes volumes de uma vez).
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Antieméticos</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Metoclopramida</strong>
+                    10 mg IV ou VO, a cada 8 horas. Ampola: 10 mg/2 mL.
+                </div>
+                <div class="info-card">
+                    <strong>Ondansetrona</strong>
+                    4–8 mg IV ou VO, a cada 8 horas. Ampola: 4 mg/2 mL ou 8 mg/4 mL.
+                </div>
+                <div class="alert alert-info" style="font-size:12px"><strong>Nota</strong>Considere antieméticos se vômitos dificultarem a hidratação oral. Evitar anti-inflamatórios não esteroidais (AINEs) e ácido acetilsalicílico.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Retorno e sinais de alarme</span>
+            <span class="ch-badge badge-yellow">Importante</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Orientar o paciente a retornar <strong style="color:var(--warning)">imediatamente</strong> se apresentar qualquer um dos seguintes:</p>
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Dor abdominal intensa e contínua</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Vômitos persistentes</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sangramento (gengiva, nariz, fezes escuras, urina escura)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Tontura ou desmaio ao levantar</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Pele fria, pálida ou pegajosa</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Dificuldade para respirar</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sonolência excessiva ou agitação</div>
+                </div>
+                <div style="margin-top:12px">
+                    <button class="btn btn-outline btn-sm" onclick="window.print()">Imprimir orientações de alta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="goTo('altasegura')" style="margin-top:12px">Orientações de alta completas →</button>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-warning btn-sm" onclick="goTo('grupoC')" style="margin-top:8px;color:#000">Evoluiu com sinais de alarme → Grupo C</button></div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: GRUPO B -->
+<!-- ============================================ -->
+<div class="screen" id="screen-grupoB">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Grupo B <span class="tag tag-yellow">Observação</span></div>
+    <div class="section-subtitle">Sem sinais de alarme, com condição de risco</div>
+
+    <div class="alert alert-warning"><strong>Conduta</strong>Hidratação oral supervisionada em unidade de saúde por pelo menos 6 horas. Solicitar hemograma com hematócrito.</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Condições de risco</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Gestante</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Idade <2 anos ou >65 anos</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hipertensão arterial ou outras doenças cardiovasculares</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Diabetes mellitus</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- DPOC</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Doença hematológica (anemia falciforme, etc.)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Doença renal crônica</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Doença ácido-péptica</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hepatopatia</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Doença autoimune</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Uso de anticoagulantes</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Risco social ou comorbidade não listada</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Hidratação e monitorização</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="calc-card">
+                    <label>Hidratação oral: 60 mL/kg/dia</label>
+                    <div class="calc-result">
+                        <div class="big-number" id="grupoB-vol">—</div>
+                        <div class="unit">mL/dia</div>
+                        <div class="secondary">1/3 SRO + 2/3 líquidos</div>
+                    </div>
+                </div>
+                <div class="alert alert-info"><strong>Acompanhamento</strong>Hemograma com hematócrito antes da hidratação e após (em 4–6h). Se o Ht estiver estável e sem sinais de alarme, considere alta com orientações. Se Ht subindo, considere reclassificar para Grupo C.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-danger" style="margin-top:12px"><strong>Reclassificar para Grupo C se:</strong>Surgimento de qualquer sinal de alarme ou aumento do hematócrito na reavaliação.</div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-success btn-sm" onclick="goTo('grupoA')" style="margin-top:8px">Sem critérios de risco → Grupo A</button> <button class="btn btn-warning btn-sm" onclick="goTo('grupoC')" style="margin-top:8px;color:#000">Sinais de alarme → Grupo C</button></div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: GRUPO C -->
+<!-- ============================================ -->
+<div class="screen" id="screen-grupoC">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Grupo C <span class="tag tag-red">Internação</span></div>
+    <div class="section-subtitle">Com sinais de alarme — Iniciar reposição volêmica imediata</div>
+
+    <div class="alert alert-danger"><strong>Conduta imediata</strong>Hidratação IV: 10 mL/kg/h por 2 horas (fase de expansão). Solicitar hemograma, função renal, hepática, tipagem sanguínea.</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Fase de expansão (primeiras 2h)</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="calc-card">
+                    <label>SF 0,9% ou RL — 10 mL/kg/h × 2h</label>
+                    <div class="calc-row">
+                        <div class="calc-result">
+                            <div class="big-number" id="grupoC-hora">—</div>
+                            <div class="unit">mL/h</div>
+                        </div>
+                        <div class="calc-result">
+                            <div class="big-number" id="grupoC-2h">—</div>
+                            <div class="unit">mL em 2h</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Reavaliação após 2h</span>
+            <span class="ch-badge badge-yellow">Decisão</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Reavaliar clinicamente e repetir hematócrito:</p>
+
+                <div class="alert alert-success">
+                    <strong>Melhora clínica + Ht em queda</strong>
+                    Reduzir para fase de manutenção: 25 mL/kg em 6h. Reavaliar em 6h. Se mantiver melhora, passar para 25 mL/kg em 8h (etapa final).
+                </div>
+
+                <div class="alert alert-warning">
+                    <strong>Sem melhora ou Ht em ascensão</strong>
+                    Repetir fase de expansão (10 mL/kg/h por mais 2h). Se não houver melhora após segunda expansão, manejar como Grupo D.
+                </div>
+
+                <div class="calc-card" style="margin-top:12px">
+                    <label>Fase de manutenção</label>
+                    <div class="calc-row">
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">25 mL/kg em 6h</div>
+                            <div class="big-number" id="grupoC-man6">—</div>
+                            <div class="unit">mL total</div>
+                        </div>
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">25 mL/kg em 8h</div>
+                            <div class="big-number" id="grupoC-man8">—</div>
+                            <div class="unit">mL total</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-danger btn-sm" style="margin-top:12px" onclick="goTo('grupoD')">Sem resposta → Grupo D</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Manejo prolongado na emergência</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-info"><strong>Reavaliações seriadas</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hemograma + Ht a cada 2-4h (fase crítica)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sinais vitais a cada 15-30 min (choque)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Débito urinário por sonda: alvo >0,5 mL/kg/h</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Balanço hídrico rigoroso</div>
+                </div>
+                <div class="alert alert-warning"><strong>Fases do manejo hídrico</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Expansão: SF 0,9% 20 mL/kg em 20 min (repetir até 3x)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Manutenção: 25 mL/kg/dia após estabilização</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Redução progressiva quando Ht normalizar e diurese adequada</div>
+                </div>
+                <div class="alert alert-danger"><strong>Critérios para considerar UTI</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Choque refratário a 60 mL/kg de expansão</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Necessidade de vasopressor</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hemorragia grave</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Disfunção orgânica (renal, hepática, cardíaca)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Rebaixamento do nível de consciência</div>
+                </div>
+                <div class="info-card"><strong>Fase crítica (defervescência)</strong>
+                    Ocorre geralmente entre o 3º e 7º dia. Janela de 24-48h de maior risco de extravasamento plasmático. Considere intensificar monitorização quando a febre ceder.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-danger btn-sm" onclick="goTo('grupoD')" style="margin-top:8px">Sinais de gravidade → Grupo D</button> <button class="btn btn-secondary btn-sm" onclick="goTo('grupoB')" style="margin-top:8px">Melhora clínica → Grupo B</button></div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: GRUPO D -->
+<!-- ============================================ -->
+<div class="screen" id="screen-grupoD">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Grupo D <span class="tag tag-red">UTI / Emergência</span></div>
+    <div class="section-subtitle">Dengue grave — Choque, hemorragia grave ou disfunção orgânica</div>
+
+    <div class="alert alert-danger"><strong>Emergência</strong>Iniciar reposição volêmica agressiva imediatamente. Acesso venoso calibroso (dois acessos). Considere UTI.</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Critérios de dengue grave</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Choque:</strong> pulso rápido e fino, TEC >2s, PA convergente (≤20 mmHg) ou hipotensão, extremidades frias</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Hemorragia grave:</strong> hematêmese, melena volumosa, sangramento do SNC</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Disfunção orgânica:</strong> hepatite (AST/ALT >1.000), encefalite, miocardite, insuficiência renal aguda</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Fase de expansão rápida</span>
+            <span class="ch-badge badge-red">Urgente</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="calc-card">
+                    <label>SF 0,9% — 20 mL/kg em até 20 minutos</label>
+                    <div class="calc-result">
+                        <div class="big-number" id="grupoD-bolus">—</div>
+                        <div class="unit">mL por bolus</div>
+                        <div class="secondary">Pode repetir até 3 vezes</div>
+                    </div>
+                </div>
+                <div class="alert alert-warning"><strong>Reavaliação contínua</strong>Após cada bolus: PA, FC, TEC, diurese, Ht. Se melhora → transição para fase de manutenção do Grupo C (25 mL/kg em 6h).</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Refratário a cristaloide</span>
+            <span class="ch-badge badge-red">Escalar</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="step">
+                    <div class="step-marker">1</div>
+                    <div class="step-content">
+                        <h4>Albumina 20%</h4>
+                        <p>Se Ht em ascensão após 3 expansões com cristaloide. Considere 0,5–1 g/kg.</p>
+                    </div>
+                </div>
+                <div class="calc-card">
+                    <label>Albumina 20% — 0,5 a 1 g/kg</label>
+                    <div class="calc-row">
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">0,5 g/kg</div>
+                            <div class="big-number" id="grupoD-alb05">—</div>
+                            <div class="unit">mL</div>
+                        </div>
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">1 g/kg</div>
+                            <div class="big-number" id="grupoD-alb1">—</div>
+                            <div class="unit">mL</div>
+                        </div>
+                    </div>
+                    <div class="secondary" style="text-align:center;margin-top:8px;font-size:12px;color:var(--text-muted)">Apresentação: frasco 50 mL (20% = 10 g/frasco)</div>
+                </div>
+
+                <div class="step">
+                    <div class="step-marker">2</div>
+                    <div class="step-content">
+                        <h4>Se Ht em queda + choque persistente</h4>
+                        <p>Sugere hemorragia. Considere hemotransfusão (CH) e investigar foco hemorrágico.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-marker">3</div>
+                    <div class="step-content">
+                        <h4>Noradrenalina</h4>
+                        <p>Se choque refratário a volume (após reposição adequada). Considere acesso venoso central.</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <strong>Metas de ressuscitação</strong>
+                    </strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- PAS >90 mmHg (ou PAM >65 mmHg)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- FC <100 bpm</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- TEC <2s</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Diurese >0,5 mL/kg/h</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Ht estável ou em queda</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Melhora do nível de consciência</div>
+                    <strong style="display:none">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Manejo prolongado na emergência</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-info"><strong>Reavaliações seriadas</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hemograma + Ht a cada 2-4h (fase crítica)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sinais vitais a cada 15-30 min (choque)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Débito urinário por sonda: alvo >0,5 mL/kg/h</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Balanço hídrico rigoroso</div>
+                </div>
+                <div class="alert alert-warning"><strong>Fases do manejo hídrico</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Expansão: SF 0,9% 20 mL/kg em 20 min (repetir até 3x)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Manutenção: 25 mL/kg/dia após estabilização</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Redução progressiva quando Ht normalizar e diurese adequada</div>
+                </div>
+                <div class="alert alert-danger"><strong>Critérios para considerar UTI</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Choque refratário a 60 mL/kg de expansão</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Necessidade de vasopressor</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hemorragia grave</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Disfunção orgânica (renal, hepática, cardíaca)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Rebaixamento do nível de consciência</div>
+                </div>
+                <div class="info-card"><strong>Fase crítica (defervescência)</strong>
+                    Ocorre geralmente entre o 3º e 7º dia. Janela de 24-48h de maior risco de extravasamento plasmático. Considere intensificar monitorização quando a febre ceder.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-secondary btn-sm" onclick="goTo('grupoC')" style="margin-top:8px">Estabilizou → Grupo C</button></div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: CALCULADORAS -->
+<!-- ============================================ -->
+<div class="screen" id="screen-calculadoras">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Calculadoras</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Hidratação oral (Grupos A e B)</span>
+            <span class="ch-badge badge-green">60 mL/kg/dia</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="calc-card">
+                    <label>Volume total diário</label>
+                    <div class="calc-result">
+                        <div class="big-number" id="calc-vo-total">—</div>
+                        <div class="unit">mL/dia</div>
+                    </div>
+                    <div class="calc-row">
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted)">1/3 SRO</div>
+                            <div class="big-number" style="font-size:22px" id="calc-vo-sro">—</div>
+                            <div class="unit">mL</div>
+                        </div>
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted)">2/3 Líquidos</div>
+                            <div class="big-number" style="font-size:22px" id="calc-vo-liq">—</div>
+                            <div class="unit">mL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Hidratação IV (Grupos C e D)</span>
+            <span class="ch-badge badge-yellow">Expansão + manutenção</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="calc-card">
+                    <label>Expansão — 20 mL/kg em 20 min (Grupo D) ou 10 mL/kg/h x 2h (Grupo C)</label>
+                    <div class="calc-row">
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted)">Bolus 20 mL/kg</div>
+                            <div class="big-number" style="font-size:22px" id="calc-bolus">—</div>
+                            <div class="unit">mL</div>
+                        </div>
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted)">10 mL/kg/h</div>
+                            <div class="big-number" style="font-size:22px" id="calc-iv-hora">—</div>
+                            <div class="unit">mL/h</div>
+                        </div>
+                    </div>
+                    <div class="calc-result" style="margin-top:8px">
+                        <div style="font-size:11px;color:var(--text-muted)">Volume em 2h (Grupo C)</div>
+                        <div class="big-number" style="font-size:22px" id="calc-iv-2h">—</div>
+                        <div class="unit">mL</div>
+                    </div>
+                </div>
+                <div class="calc-card">
+                    <label>Manutenção — 25 mL/kg/dia</label>
+                    <div class="calc-row">
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted)">25 mL/kg em 6h</div>
+                            <div class="big-number" style="font-size:22px" id="calc-iv-m6">—</div>
+                            <div class="unit">mL</div>
+                            <div class="secondary" id="calc-iv-m6h">—</div>
+                        </div>
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted)">25 mL/kg em 8h</div>
+                            <div class="big-number" style="font-size:22px" id="calc-iv-m8">—</div>
+                            <div class="unit">mL</div>
+                            <div class="secondary" id="calc-iv-m8h">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Albumina 20%</span>
+            <span class="ch-badge badge-red">Refratário</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-info" style="font-size:12px"><strong>Indicação</strong>Considere albumina quando houver refratariedade a cristaloide (após 3 expansões) com Ht em ascensão. Não é hidratação de rotina.</div>
+                <div class="calc-card">
+                    <label>Albumina 20% — 0,5 a 1 g/kg (frasco 50 mL = 10 g)</label>
+                    <div class="calc-row">
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted)">0,5 g/kg</div>
+                            <div class="big-number" style="font-size:22px" id="calc-alb05">—</div>
+                            <div class="unit">mL</div>
+                            <div class="secondary" id="calc-alb05f">—</div>
+                        </div>
+                        <div class="calc-result">
+                            <div style="font-size:11px;color:var(--text-muted)">1 g/kg</div>
+                            <div class="big-number" style="font-size:22px" id="calc-alb1">—</div>
+                            <div class="unit">mL</div>
+                            <div class="secondary" id="calc-alb1f">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Variação do hematócrito</span>
+            <span class="ch-badge badge-yellow">Monitorização</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="calc-card">
+                    <label>Cálculo de variação do Ht (%)</label>
+                    <div style="display:flex;gap:12px;margin-bottom:12px">
+                        <div style="flex:1">
+                            <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Ht basal (%)</div>
+                            <input type="number" id="htBasalInput" inputmode="decimal" placeholder="45" min="20" max="70" step="0.1" style="width:100%;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);padding:8px 12px;font-size:16px;text-align:center" oninput="calcHtVariation()">
+                        </div>
+                        <div style="flex:1">
+                            <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Ht atual (%)</div>
+                            <input type="number" id="htAtualInput" inputmode="decimal" placeholder="54" min="20" max="70" step="0.1" style="width:100%;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);padding:8px 12px;font-size:16px;text-align:center" oninput="calcHtVariation()">
+                        </div>
+                    </div>
+                    <div class="calc-result">
+                        <div class="big-number" id="calc-ht-var">—</div>
+                        <div class="unit">% de variação</div>
+                        <div class="secondary" id="calc-ht-interp">Insira os valores de Ht</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <strong>Referência</strong>
+                    Homens: ~45% (40-54%). Mulheres: ~40% (36-48%). Elevação ≥20% do basal sugere hemoconcentração significativa.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: E-FASD -->
+<!-- ============================================ -->
+<div class="screen" id="screen-efasd">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">POCUS / E-FASD</div>
+    <div class="section-subtitle">Extended Focused Assessment Sonography in Dengue — Tambelli et al., JBMEDE 2024</div>
+
+    <div class="alert alert-info"><strong>Objetivo</strong>Rastrear sinais de extravasamento plasmático e gravidade em pacientes com dengue, à beira-leito.</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Preparação</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong>Transdutor:</strong> Curvilíneo (2,5-5 MHz). Alternativa: setorial</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong>Preset:</strong> Abdominal</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong>Posição do paciente:</strong> Decúbito dorsal a 0°</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong>Indicador da sonda:</strong> Para a direita ou cranial em relação ao paciente</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong>Posição Trendelenburg:</strong> Opcional — aumenta sensibilidade no andar superior do abdome</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Janelas 1 e 2 — Pulmão anterior</span>
+            <span class="ch-badge badge-blue">Intersticial</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Avaliação de síndrome intersticial pulmonar</strong>
+                    Sonda na caixa torácica anterior, linha hemiclavicular, marcador cranial. Visualizar a linha pleural entre duas costelas. Profundidade: 3–5 cm (linha pleural) → ajustar para 8–12 cm (linhas B). Repetir em ambos os hemitórax.
+                </div>
+                <div class="alert alert-danger"><strong>E-FASD positivo</strong>≥ 3 linhas B entre duas costelas → possível extravasamento plasmático ou sobrecarga volêmica.</div>
+                <table class="data-table">
+                    <tr><th>Acurácia do POCUS</th><th>Valor</th></tr>
+                    <tr><td>Sensibilidade</td><td style="color:var(--success)">98%</td></tr>
+                    <tr><td>Especificidade</td><td style="color:var(--success)">88%</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Janelas 3 e 4 — QSD (ascite + DP direito)</span>
+            <span class="ch-badge badge-blue">Morrison</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Janela 3 — Ascite à direita</strong>
+                    Sonda com marcador cefálico na linha axilar posterior direita, transição toracoabdominal. Rotacionar 15–20° se costelas atrapalharem. Avaliar: espaço de Morrison, borda caudal do fígado, espaço supra-hepático. Líquido anecoico nesses espaços → E-FASD positivo.
+                </div>
+                <div class="info-card">
+                    <strong>Janela 4 — Derrame pleural D</strong>
+                    Mover a sonda cranialmente. Conteúdo anecoico acima do diafragma + sinal da coluna → derrame pleural confirmado.
+                </div>
+                <table class="data-table">
+                    <tr><th>Achado</th><th>Sensibilidade</th><th>Especificidade</th></tr>
+                    <tr><td>Ascite (J3)</td><td style="color:var(--success)">90%</td><td style="color:var(--success)">99%</td></tr>
+                    <tr><td>Derrame pleural (J4)</td><td style="color:var(--success)">94%</td><td style="color:var(--success)">97%</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Janela 5 — Vesícula biliar</span>
+            <span class="ch-badge badge-yellow">Gravidade</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Avaliação da parede da vesícula biliar</strong>
+                    Sonda na região anterior do QSD, abaixo da última costela, paralela à linha mediana, marcador cefálico. Movimento pendular suave. Avaliar a parede <strong>anterior</strong> da vesícula.
+                </div>
+                <div class="alert alert-danger"><strong>E-FASD positivo</strong>Parede >3 mm de espessura e/ou líquido perivesicular → correlaciona-se com gravidade e extravasamento plasmático.</div>
+                <div class="alert alert-warning"><strong>Atenção</strong>Espessamento da vesícula biliar não exclui necessidade de investigar diagnósticos diferenciais de patologias biliares.</div>
+                <table class="data-table">
+                    <tr><th>Acurácia do POCUS</th><th>Valor</th></tr>
+                    <tr><td>Sensibilidade</td><td style="color:var(--success)">94%</td></tr>
+                    <tr><td>Especificidade</td><td style="color:var(--success)">91%</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Janelas 6 e 7 — QSE (ascite + DP esquerdo)</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Janela 6 — Ascite à esquerda</strong>
+                    Sonda com marcador cefálico na linha axilar posterior esquerda (mais posterior que no QSD — o baço é mais posterior que o fígado). Avaliar espaço subdiafragmático (mais sensível) e esplenorrenal.
+                </div>
+                <div class="info-card">
+                    <strong>Janela 7 — Derrame pleural E</strong>
+                    Mover cranialmente. Conteúdo anecoico + sinal da coluna acima do diafragma → derrame pleural.
+                </div>
+                <div class="alert alert-info"><strong>Dica</strong>Considere solicitar pausa inspiratória ao paciente para melhor visualização. O ligamento esplenorrenal limita o líquido no espaço entre baço e rim — o espaço subdiafragmático é mais sensível para detecção.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Janela 8 — Retrovesical (pelve)</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Avaliação de ascite pélvica</strong>
+                    Sonda na linha média suprapúbica, marcador cefálico (longitudinal), depois rotacionar 90° (transversal). Preferencialmente com bexiga cheia (antes da sonda vesical). Identificar bexiga, útero ou próstata, reto. Líquido anecoico ao redor → E-FASD positivo.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Janela 9 — Subcostal (pericárdio)</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Avaliação de derrame pericárdico</strong>
+                    Sonda paralela à pele, região subxifoide, feixe de US apontando para o ombro esquerdo. Profundidade: 15–20 cm. Usar o fígado como janela acústica. Conteúdo anecoico no espaço pericárdico → derrame pericárdico.
+                </div>
+                <div class="alert alert-warning"><strong>Dificuldades</strong>Pode ser difícil em obesos, distensão abdominal, xifoide proeminente ou ascite volumosa. Considere outras janelas cardíacas (paraesternal, apical).</div>
+                <table class="data-table">
+                    <tr><th>Acurácia do POCUS</th><th>Valor</th></tr>
+                    <tr><td>Sensibilidade</td><td style="color:var(--success)">96%</td></tr>
+                    <tr><td>Especificidade</td><td style="color:var(--success)">98%</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Resumo — Tabela de acurácia</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <table class="data-table">
+                    <tr><th>Janela</th><th>Achado</th><th>Sens.</th><th>Esp.</th></tr>
+                    <tr><td>1–2</td><td>Síndrome intersticial</td><td>98%</td><td>88%</td></tr>
+                    <tr><td>3, 6, 8</td><td>Ascite</td><td>90%</td><td>99%</td></tr>
+                    <tr><td>4, 7</td><td>Derrame pleural</td><td>94%</td><td>97%</td></tr>
+                    <tr><td>5</td><td>Espessamento vesicular</td><td>94%</td><td>91%</td></tr>
+                    <tr><td>9</td><td>Derrame pericárdico</td><td>96%</td><td>98%</td></tr>
+                </table>
+                <div class="alert alert-info" style="margin-top:8px"><strong>Limitação</strong>O E-FASD não diagnostica nem classifica gravidade isoladamente. É uma ferramenta de triagem complementar à avaliação clínica e laboratorial.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: EXAMES E DIFERENCIAIS (merged) -->
+<!-- ============================================ -->
+<div class="screen" id="screen-examediff">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Exames e diferenciais</div>
+    <div class="section-subtitle">Laboratório, monitorização e diagnósticos diferenciais</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Exames por grupo</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <table class="data-table">
+                    <tr><th>Grupo</th><th>Exames sugeridos</th></tr>
+                    <tr><td><span class="tag tag-green">A</span></td><td>Hemograma (não obrigatório). Orientar retorno se sinais de alarme.</td></tr>
+                    <tr><td><span class="tag tag-yellow">B</span></td><td>Hemograma com Ht obrigatório. Repetir em 4–6h.</td></tr>
+                    <tr><td><span class="tag tag-red">C</span></td><td>Hemograma seriado (Ht a cada 2h na expansão). Função renal, hepática, coagulograma, tipagem sanguínea.</td></tr>
+                    <tr><td><span class="tag tag-red">D</span></td><td>Hemograma seriado, função renal e hepática, coagulograma (TP, TTPa, fibrinogênio), tipagem + reserva, gasometria, lactato. Rx de tórax se disponível.</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Interpretação do hematócrito</span>
+            <span class="ch-badge badge-yellow">Parâmetro-chave</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-warning"><strong>Ht em ascensão</strong>Sugere hemoconcentração por extravasamento plasmático → escalar tratamento (maior aporte de volume).</div>
+                <div class="alert alert-success"><strong>Ht em queda com melhora clínica</strong>Sugere reabsorção plasmática → considere reduzir velocidade de infusão.</div>
+                <div class="alert alert-danger"><strong>Ht em queda com piora clínica</strong>Sugere hemorragia → investigar sangramento e considere hemotransfusão.</div>
+                <div class="info-card">
+                    <strong>Valores de referência</strong>
+                    Homens: ~45% (referência: 40–54%). Mulheres: ~40% (referência: 36–48%). Fórmula: (Ht atual - Ht basal) / Ht basal × 100. Elevação ≥20% sugere hemoconcentração significativa. Monitorizar a cada 2-4h nos Grupos C/D, a cada 12-24h no Grupo B.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Plaquetas</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Plaquetopenia na dengue</strong>
+                    Plaquetopenia <100.000/mm³ é comum na dengue e pode ser grave (<20.000/mm³). Isoladamente, não indica gravidade nem necessidade de transfusão de plaquetas. A decisão de transfundir deve ser individualizada e baseada em sangramento ativo, não no número absoluto.
+                </div>
+                <div class="alert alert-danger"><strong>Atenção</strong>Considere transfusão de plaquetas apenas se sangramento ativo grave com plaquetopenia <50.000/mm³. Evitar transfusão profilática — não há evidência de benefício na dengue.</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;padding-top:16px;border-top:1px solid var(--border)">Diagnósticos diferenciais</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Outras arboviroses</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <table class="data-table">
+                    <tr><th>Achado</th><th>Dengue</th><th>Zika</th><th>Chikungunya</th></tr>
+                    <tr><td>Febre</td><td>Alta (>38,5°C)</td><td>Baixa ou ausente</td><td>Alta</td></tr>
+                    <tr><td>Exantema</td><td>Tardio (3–5º dia)</td><td>Precoce (1–2º dia)</td><td>2–5º dia</td></tr>
+                    <tr><td>Artralgia</td><td>Leve</td><td>Leve</td><td>Intensa (incapacitante)</td></tr>
+                    <tr><td>Mialgia</td><td>Intensa</td><td>Leve</td><td>Moderada</td></tr>
+                    <tr><td>Conjuntivite</td><td>Raro</td><td>Frequente</td><td>Raro</td></tr>
+                    <tr><td>Cefaleia</td><td>Intensa (retroorbitária)</td><td>Leve</td><td>Moderada</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Outros diferenciais</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Leptospirose (exposição epidemiológica, icterícia, IRA)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Meningococcemia (petéquias, rigidez de nuca, evolução rápida)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Rickettsioses (febre maculosa, carrapatos)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hepatites virais agudas</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Farmacodermia</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Abdome agudo</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Malária (viagem a áreas endêmicas)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Complicações da dengue</span>
+            <span class="ch-badge badge-red">Atenção</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Miocardite:</strong> arritmias, disfunção ventricular, troponina elevada</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Encefalite:</strong> rebaixamento do nível de consciência, convulsões</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Hepatite:</strong> AST/ALT >1.000, pode evoluir para insuficiência hepática</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">CIVD:</strong> coagulograma alargado, fibrinogênio baixo, sangramento difuso</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--warning)">Rabdomiólise:</strong> CPK elevada, IRA</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--warning)">Síndrome hemofagocítica:</strong> febre persistente, citopenias, ferritina muito elevada</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: ALTA -->
+<!-- ============================================ -->
+<div class="screen" id="screen-altasegura">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Orientações para alta segura</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Critérios de alta hospitalar</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Ausência de febre por 24-48h sem uso de antitérmicos</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Melhora clínica visível</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hematócrito estável (sem hemoconcentração)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Plaquetas em ascensão (tendência de melhora)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Estabilidade hemodinâmica por 24h</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Capacidade de manter hidratação oral adequada</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Diurese adequada (>0,5 mL/kg/h)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Orientações ao paciente</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Manter hidratação oral abundante (60 mL/kg/dia)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Repouso relativo</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Usar apenas paracetamol ou dipirona se febre ou dor (evitar AINEs e AAS)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Retorno para reavaliação conforme orientação médica</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Retornar <strong style="color:var(--warning)">imediatamente</strong> se sinais de alarme</div>
+                </div>
+                <div class="divider"></div>
+                <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px"><strong>Sinais de alarme para retorno imediato:</strong></p>
+                <div>
+                    <div style="font-size:13px;color:var(--danger);padding:3px 0;padding-left:12px">- Dor abdominal intensa e contínua</div>
+                    <div style="font-size:13px;color:var(--danger);padding:3px 0;padding-left:12px">- Vômitos persistentes</div>
+                    <div style="font-size:13px;color:var(--danger);padding:3px 0;padding-left:12px">- Sangramento (gengiva, nariz, fezes escuras, urina escura)</div>
+                    <div style="font-size:13px;color:var(--danger);padding:3px 0;padding-left:12px">- Tontura ou desmaio ao levantar</div>
+                    <div style="font-size:13px;color:var(--danger);padding:3px 0;padding-left:12px">- Pele fria, pálida ou pegajosa</div>
+                    <div style="font-size:13px;color:var(--danger);padding:3px 0;padding-left:12px">- Dificuldade para respirar</div>
+                    <div style="font-size:13px;color:var(--danger);padding:3px 0;padding-left:12px">- Sonolência excessiva ou agitação intensa</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="window.print()" style="margin-top:16px">Imprimir orientações para o paciente</button>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: REFERÊNCIAS -->
+<!-- ============================================ -->
+<div class="screen" id="screen-referencias">
+    <button class="back-btn" onclick="goTo('home')">← Início</button>
+    <div class="section-title">Referências</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Fontes bibliográficas</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div style="font-size:12px;line-height:1.8;color:var(--text-secondary)">
+                    <strong style="color:var(--text)">1.</strong> Brasil. Ministério da Saúde. Dengue: diagnóstico e manejo clínico — adulto e criança. 6ª edição. Brasília, 2024.<br><br>
+                    <strong style="color:var(--text)">2.</strong> Associação Brasileira de Medicina de Emergência (ABRAMEDE). Recomendações para manejo de dengue no departamento de emergência.<br><br>
+                    <strong style="color:var(--text)">3.</strong> World Health Organization. Dengue: guidelines for diagnosis, treatment, prevention and control. WHO, 2009 (atualizada 2012).<br><br>
+                    <strong style="color:var(--text)">4.</strong> Tambelli RA, Silva PS, Schubert DU, et al. Extended Focused Assessment Sonography in Dengue (E-FASD): protocolo de ultrassom point of care para avaliação de pacientes com dengue. JBMEDE. 2024;4(1):e24005.<br><br>
+                    <strong style="color:var(--text)">5.</strong> Tejo AM, Hamasaki DT, Menezes LM, Ho YL. Severe dengue in the intensive care unit. J Intensive Med. 2023;4(1):16-33.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- PRINT SECTION -->
+<div class="print-section">
+    <h2>Orientações de alta — Dengue</h2>
+    <p><strong>Data:</strong> ___/___/______</p>
+    <p><strong>Paciente:</strong> ________________________________________</p>
+    <br>
+    <p><strong>Hidratação:</strong> Beber bastante líquido ao longo do dia (água, suco, chá, água de coco). Pelo menos 2 a 3 litros por dia, incluindo soro de reidratação oral.</p>
+    <p><strong>Repouso:</strong> Manter repouso relativo nos primeiros dias.</p>
+    <p><strong>Medicação:</strong> Usar apenas paracetamol ou dipirona para febre ou dor. <strong>NÃO usar</strong> ibuprofeno, diclofenaco, AAS (aspirina) ou outros anti-inflamatórios.</p>
+    <p><strong>Retorno:</strong> Conforme orientação médica para reavaliação.</p>
+    <br>
+    <p><strong>Procure atendimento IMEDIATO se apresentar:</strong></p>
+    <ul>
+        <li>Dor abdominal forte e contínua</li>
+        <li>Vômitos que não param</li>
+        <li>Sangramento (pela gengiva, nariz, fezes escuras ou urina escura)</li>
+        <li>Tontura ou desmaio ao levantar</li>
+        <li>Pele fria, pálida ou suada</li>
+        <li>Falta de ar</li>
+        <li>Sonolência excessiva ou agitação</li>
+    </ul>
+    <br>
+    <p style="font-size:12px;text-align:center">Dengue Path — ANY App™ — Medicina de Emergência<br>Ferramenta de apoio à decisão clínica — não substitui o julgamento médico</p>
+</div>
+
+<!-- FOOTER -->
+<footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:var(--bg);border-top:1px solid var(--border);z-index:50">
+<div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:2px">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
+<div style="font-size:0.65rem;color:var(--text-muted)">Dengue Path v1.0.0 — ANY App</div>
+</footer>
+
+<script>
+// ==========================================
+// NAVIGATION
+// ==========================================
+const screens = {
+    home:'screen-home', trilha:'screen-trilha', grupos:'screen-grupos',
+    classificacao:'screen-classificacao',
+    grupoA:'screen-grupoA', grupoB:'screen-grupoB',
+    grupoC:'screen-grupoC', grupoD:'screen-grupoD',
+    calculadoras:'screen-calculadoras', efasd:'screen-efasd',
+    examediff:'screen-examediff',
+    altasegura:'screen-altasegura',
+    referencias:'screen-referencias'
+};
+
+const needsWeight = ['trilha','grupoA','grupoB','grupoC','grupoD','calculadoras'];
+
+function goTo(id) {
+    Object.values(screens).forEach(s => {
+        document.getElementById(s).classList.remove('active');
+    });
+    document.getElementById(screens[id]).classList.add('active');
+
+    // Show/hide weight bar
+    const wb = document.getElementById('weightBar');
+    if (needsWeight.includes(id)) {
+        wb.classList.add('visible');
+    } else {
+        wb.classList.remove('visible');
+    }
+
+    // Reset classification steps
+    if (id === 'classificacao') {
+        document.getElementById('classStep2').style.display = 'none';
+        document.getElementById('classStep3').style.display = 'none';
+    }
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    updateCalculations();
+}
+
+// ==========================================
+// COLLAPSIBLE
+// ==========================================
+function toggleCollapsible(header) {
+    const parent = header.parentElement;
+    const wasOpen = parent.classList.contains('open');
+    parent.classList.toggle('open');
+    if (!wasOpen) {
+        setTimeout(function() { header.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+    }
+}
+
+// ==========================================
+// CHECKLIST
+// ==========================================
+function toggleCheck(item) {
+    item.classList.toggle('checked');
+    updateAlarmResult();
+    updateTrilhaAlarmResult();
+}
+
+function updateAlarmResult() {
+    const checked = document.querySelectorAll('#screen-classificacao .check-item.checked').length;
+    const el = document.getElementById('alarmResult');
+    if (!el) return;
+    if (checked === 0) {
+        el.style.display = 'none';
+        el.innerHTML = '';
+    } else {
+        el.style.display = 'block';
+        var label = checked === 1 ? '1 SINAL DE ALARME' : checked + ' SINAIS DE ALARME';
+        el.innerHTML = '<div class="alert alert-danger"><strong>' + label + '</strong>Classificar como pelo menos Grupo C. Iniciar hidratação IV.</div>';
+    }
+}
+
+function updateTrilhaAlarmResult() {
+    const checked = document.querySelectorAll('#trilha-step2 .check-item.checked').length;
+    const el = document.getElementById('trilhaAlarmResult');
+    if (!el) return;
+    if (checked === 0) {
+        el.style.display = 'none';
+        el.innerHTML = '';
+    } else {
+        el.style.display = 'block';
+        var label = checked === 1 ? '1 SINAL DE ALARME' : checked + ' SINAIS DE ALARME';
+        el.innerHTML = '<div class="alert alert-danger"><strong>' + label + '</strong>Classificar como pelo menos Grupo C.</div>';
+    }
+}
+
+// Trilha step navigation
+function openTrilhaStep(n) {
+    const step = document.getElementById('trilha-step' + n);
+    if (step) {
+        step.classList.add('open');
+        step.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+}
+
+function openTrilhaGrupo(g) {
+    // Hide all grupo cards in trilha
+    ['A','B','C','D'].forEach(x => {
+        const el = document.getElementById('trilha-grupo' + x);
+        if (el) { el.style.display = 'none'; el.classList.remove('open'); }
+    });
+    // Show and open the selected one
+    const el = document.getElementById('trilha-grupo' + g);
+    if (el) {
+        el.style.display = 'block';
+        el.classList.add('open');
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    updateCalculations();
+}
+
+// ==========================================
+// WEIGHT & CALCULATIONS
+// ==========================================
+const pesoInput = document.getElementById('pesoInput');
+const weightStatus = document.getElementById('weightStatus');
+
+pesoInput.addEventListener('input', function() {
+    const p = parseFloat(this.value);
+    if (!p || p < 40 || p > 200) {
+        weightStatus.textContent = p && (p < 40 || p > 200) ? 'Fora do range (40-200 kg)' : '';
+        weightStatus.style.color = '#F44336';
+    } else {
+        weightStatus.textContent = p + ' kg';
+        weightStatus.style.color = '#4CAF50';
+    }
+    updateCalculations();
+});
+
+// Persist weight
+if (localStorage.getItem('anyapp-peso')) {
+    pesoInput.value = localStorage.getItem('anyapp-peso');
+    pesoInput.dispatchEvent(new Event('input'));
+}
+pesoInput.addEventListener('change', function() {
+    if (this.value) localStorage.setItem('anyapp-peso', this.value);
+});
+
+function getPeso() {
+    const p = parseFloat(pesoInput.value);
+    return (p && p >= 40 && p <= 200) ? p : null;
+}
+
+function fmt(n) {
+    return n ? Math.round(n).toLocaleString('pt-BR') : '—';
+}
+
+function updateCalculations() {
+    const p = getPeso();
+    const s = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = fmt(v); };
+
+    // Grupo A
+    const voTotal = p ? p * 60 : null;
+    s('grupoA-vol', voTotal);
+    s('grupoA-sro', voTotal ? voTotal / 3 : null);
+    s('grupoA-liq', voTotal ? voTotal * 2 / 3 : null);
+
+    // Grupo B
+    s('grupoB-vol', voTotal);
+
+    // Grupo C
+    const ivHora = p ? p * 10 : null;
+    s('grupoC-hora', ivHora);
+    s('grupoC-2h', ivHora ? ivHora * 2 : null);
+    s('grupoC-man6', p ? p * 25 : null);
+    s('grupoC-man8', p ? p * 25 : null);
+
+    // Grupo D
+    s('grupoD-bolus', p ? p * 20 : null);
+    s('grupoD-alb05', p ? (p * 0.5) / 0.2 : null);
+    s('grupoD-alb1', p ? (p * 1) / 0.2 : null);
+
+    // Trilha calcs
+    s('trilha-A-vol', voTotal);
+    s('trilha-A-sro', voTotal ? voTotal / 3 : null);
+    s('trilha-A-liq', voTotal ? voTotal * 2 / 3 : null);
+    s('trilha-B-vol', voTotal);
+    s('trilha-C-hora', ivHora);
+    s('trilha-C-2h', ivHora ? ivHora * 2 : null);
+    const man6t = p ? p * 25 : null;
+    s('trilha-C-man6', man6t);
+    s('trilha-C-man6h', man6t ? Math.round(man6t / 6) : null);
+    s('trilha-D-bolus', p ? p * 20 : null);
+    s('trilha-D-alb05', p ? (p * 0.5) / 0.2 : null);
+    s('trilha-D-alb1', p ? (p * 1) / 0.2 : null);
+
+    // Calculadoras screen
+    s('calc-vo-total', voTotal);
+    s('calc-vo-sro', voTotal ? voTotal / 3 : null);
+    s('calc-vo-liq', voTotal ? voTotal * 2 / 3 : null);
+
+    s('calc-iv-hora', ivHora);
+    s('calc-iv-2h', ivHora ? ivHora * 2 : null);
+
+    const man6 = p ? p * 25 : null;
+    const man8 = p ? p * 25 : null;
+    s('calc-iv-m6', man6);
+    const m6hEl = document.getElementById('calc-iv-m6h');
+    if (m6hEl) m6hEl.textContent = man6 ? fmt(man6 / 6) + ' mL/h' : '—';
+    s('calc-iv-m8', man8);
+    const m8hEl = document.getElementById('calc-iv-m8h');
+    if (m8hEl) m8hEl.textContent = man8 ? fmt(man8 / 8) + ' mL/h' : '—';
+
+    s('calc-bolus', p ? p * 20 : null);
+
+    const alb05 = p ? (p * 0.5) / 0.2 : null;
+    const alb1 = p ? (p * 1) / 0.2 : null;
+    s('calc-alb05', alb05);
+    const a05f = document.getElementById('calc-alb05f');
+    if (a05f) a05f.textContent = alb05 ? Math.ceil(alb05 / 50) + ' frasco(s)' : '—';
+    s('calc-alb1', alb1);
+    const a1f = document.getElementById('calc-alb1f');
+    if (a1f) a1f.textContent = alb1 ? Math.ceil(alb1 / 50) + ' frasco(s)' : '—';
+}
+
+// Init
+updateAlarmResult();
+updateTrilhaAlarmResult();
+updateCalculations();
+
+// ==========================================
+// FAB MENU
+// ==========================================
+function toggleFab() {
+    var o = document.getElementById('fabOptions');
+    var b = document.getElementById('fabBtn');
+    o.style.display = o.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.fab-menu')) {
+        document.getElementById('fabOptions').style.display = 'none';
+    }
+});
+
+// ==========================================
+// HT VARIATION CALCULATOR
+// ==========================================
+function calcHtVariation() {
+    var basal = parseFloat(document.getElementById('htBasalInput').value);
+    var atual = parseFloat(document.getElementById('htAtualInput').value);
+    var resultEl = document.getElementById('calc-ht-var');
+    var interpEl = document.getElementById('calc-ht-interp');
+    if (!basal || !atual || basal <= 0) {
+        if (resultEl) resultEl.textContent = '—';
+        if (interpEl) interpEl.textContent = 'Insira os valores de Ht';
+        return;
+    }
+    var variation = ((atual - basal) / basal) * 100;
+    if (resultEl) resultEl.textContent = (variation >= 0 ? '+' : '') + variation.toFixed(1) + '%';
+    if (interpEl) {
+        if (variation >= 20) {
+            interpEl.textContent = 'Hemoconcentração significativa (≥20%)';
+            interpEl.style.color = '#F44336';
+        } else if (variation >= 10) {
+            interpEl.textContent = 'Elevação moderada — monitorizar';
+            interpEl.style.color = '#FFC107';
+        } else if (variation > 0) {
+            interpEl.textContent = 'Elevação discreta';
+            interpEl.style.color = '#4CAF50';
+        } else if (variation < -10) {
+            interpEl.textContent = 'Queda significativa — avaliar hemorragia se piora clínica';
+            interpEl.style.color = '#FFC107';
+        } else {
+            interpEl.textContent = 'Estável ou em queda discreta';
+            interpEl.style.color = '#4CAF50';
+        }
+    }
+}
+<\/script>
+
+<!-- FAB MENU -->
+<div class="fab-menu" style="position:fixed;bottom:20px;right:20px;z-index:1000">
+<div class="fab-options" id="fabOptions" style="position:absolute;bottom:70px;right:0;background:#111;border:1px solid #333;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);padding:8px;display:none;min-width:200px">
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('home')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Início</a>
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('trilha')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Trilha</a>
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('grupos')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Grupos</a>
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('calculadoras')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Calculadoras</a>
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('examediff')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Exames</a>
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('altasegura')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Alta segura</a>
+</div>
+<button id="fabBtn" onclick="toggleFab()" style="width:56px;height:56px;border-radius:50%;background:#FF5252;border:none;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(255,82,82,0.4);display:flex;align-items:center;justify-content:center">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+</button>
+</div>
+</body>
+</html>
+`
         };
 
         function loadApp(name, target) {
