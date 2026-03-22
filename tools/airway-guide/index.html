@@ -97,6 +97,8 @@
         .vital-alert.warning { background: rgba(255, 193, 7, 0.2); color: var(--warning); }
         .vital-alert.danger { background: rgba(244, 67, 54, 0.2); color: var(--danger); }
         .toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .toggle-group.no-wrap { flex-wrap: nowrap; }
+        .toggle-group.no-wrap .toggle-btn { min-width: 0; }
         .toggle-btn { flex: 1; min-width: 80px; padding: 12px 16px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; cursor: pointer; text-align: center; transition: all 0.2s; }
         .toggle-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
         .input-group { margin-bottom: 16px; }
@@ -114,7 +116,8 @@
         .dose-card.selected .dose-checkbox svg { display: block; }
         .dose-checkbox svg { display: none; }
         .dose-slider-container { margin: 12px 0; }
-        .dose-slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px; }
+        .dose-slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
+        .dose-slider-label span[id] { color: #FFFFFF; font-weight: 600; }
         .dose-slider-current { text-align: center; font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; font-variant-numeric: tabular-nums; }
         .dose-slider { width: 100%; height: 8px; -webkit-appearance: none; background: var(--bg-card); border-radius: 4px; outline: none; }
         .dose-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: var(--accent); border-radius: 50%; cursor: pointer; }
@@ -523,41 +526,31 @@
                     Mantenha oxigenação entre tentativas
                 </div>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+            <div style="margin-bottom:16px">
                 <div class="card" style="padding:0;overflow:hidden">
-                    <div class="collapsible-header" onclick="toggleCollapsible(this)" style="border:none;background:transparent;margin:0">
-                        <span style="font-size:14px;font-weight:600">Laringoscopia direta</span>
-                        <span class="arrow">&#9660;</span>
+                    <div style="display:flex;border-bottom:1px solid var(--border)">
+                        <button class="proc-tab active" onclick="switchProcTab('ld')" id="procTabLd" style="flex:1;padding:14px 12px;background:transparent;border:none;color:var(--text-secondary);font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s">Laringoscopia direta</button>
+                        <button class="proc-tab" onclick="switchProcTab('vl')" id="procTabVl" style="flex:1;padding:14px 12px;background:transparent;border:none;color:var(--text-secondary);font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s">Videolaringoscopia</button>
                     </div>
-                    <div class="collapsible-content">
-                        <div class="collapsible-inner" style="font-size:12px;color:#888;line-height:1.7">
-                            1. Segurar laringoscópio com mão esquerda<br>
-                            2. Abrir boca com técnica de tesoura (mão direita)<br>
-                            3. Inserir lâmina pelo lado direito, varrer língua para a esquerda<br>
-                            4. Avançar até a valécula (base da língua)<br>
-                            5. Elevar em direção ventral e anterior — nunca alavanca nos dentes<br>
-                            6. Se visualização inadequada: manobra BURP<br>
-                            7. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
-                            8. Avançar tubo pelo canto direito da boca<br>
-                            9. Insuflar cuff
-                        </div>
+                    <div id="procPanelLd" style="padding:16px;font-size:12px;color:#A0A0A0;line-height:1.7">
+                        1. Segurar laringoscópio com mão esquerda<br>
+                        2. Abrir boca com técnica de tesoura (mão direita)<br>
+                        3. Inserir lâmina pelo lado direito, varrer língua para a esquerda<br>
+                        4. Avançar até a valécula (base da língua)<br>
+                        5. Elevar em direção ventral e anterior — nunca alavanca nos dentes<br>
+                        6. Se visualização inadequada: manobra BURP<br>
+                        7. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
+                        8. Avançar tubo pelo canto direito da boca<br>
+                        9. Insuflar cuff
                     </div>
-                </div>
-                <div class="card" style="padding:0;overflow:hidden">
-                    <div class="collapsible-header" onclick="toggleCollapsible(this)" style="border:none;background:transparent;margin:0">
-                        <span style="font-size:14px;font-weight:600">Videolaringoscopia</span>
-                        <span class="arrow">&#9660;</span>
-                    </div>
-                    <div class="collapsible-content">
-                        <div class="collapsible-inner" style="font-size:12px;color:#888;line-height:1.7">
-                            1. Inserir lâmina na linha média sob visão na tela<br>
-                            2. Avançar até visualizar epiglote<br>
-                            3. Posicionar ponta na valécula ou sob a epiglote<br>
-                            4. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
-                            5. Avançar tubo sob visão contínua na tela<br>
-                            6. Visualizar passagem entre as cordas vocais<br>
-                            7. Insuflar cuff
-                        </div>
+                    <div id="procPanelVl" style="display:none;padding:16px;font-size:12px;color:#A0A0A0;line-height:1.7">
+                        1. Inserir lâmina na linha média sob visão na tela<br>
+                        2. Avançar até visualizar epiglote<br>
+                        3. Posicionar ponta na valécula ou sob a epiglote<br>
+                        4. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
+                        5. Avançar tubo sob visão contínua na tela<br>
+                        6. Visualizar passagem entre as cordas vocais<br>
+                        7. Insuflar cuff
                     </div>
                 </div>
             </div>
@@ -577,7 +570,7 @@
             <div class="card" style="margin-top:16px">
                 <div class="card-title">Registro</div>
                 <div class="input-group"><label>Tubo</label><p id="procedureTube" style="padding: 10px; background: var(--bg-elevated); border-radius: var(--radius-sm);">—</p></div>
-                <div class="input-group"><label>Cormack-Lehane</label><div class="toggle-group" id="cormackToggle"><button class="toggle-btn" onclick="selectCormack('I')">I</button><button class="toggle-btn" onclick="selectCormack('II')">II</button><button class="toggle-btn" onclick="selectCormack('III')">III</button><button class="toggle-btn" onclick="selectCormack('IV')">IV</button></div></div>
+                <div class="input-group"><label>Cormack-Lehane</label><div class="toggle-group no-wrap" id="cormackToggle"><button class="toggle-btn" onclick="selectCormack('I')">I</button><button class="toggle-btn" onclick="selectCormack('II')">II</button><button class="toggle-btn" onclick="selectCormack('III')">III</button><button class="toggle-btn" onclick="selectCormack('IV')">IV</button></div></div>
                 <div class="input-row">
                     <div class="input-group"><label>Profundidade (cm)</label><input type="number" id="inputDepth" inputmode="decimal" placeholder="Ex: 22"></div>
                     <div class="input-group"><label>Cuff (cmH₂O)</label><input type="number" id="inputCuff" inputmode="decimal" placeholder="Ex: 25"></div>
@@ -906,6 +899,26 @@
 
         function selectCormack(g) { state.cormack = g; document.querySelectorAll('#cormackToggle .toggle-btn').forEach(b => b.classList.toggle('active', b.textContent === g)); }
         function toggleSimple(el) { el.classList.toggle('checked'); }
+
+        function switchProcTab(tab) {
+            document.getElementById('procTabLd').style.borderBottomColor = tab === 'ld' ? '#FF5252' : 'transparent';
+            document.getElementById('procTabLd').style.color = tab === 'ld' ? '#FFFFFF' : '#A0A0A0';
+            document.getElementById('procTabVl').style.borderBottomColor = tab === 'vl' ? '#FF5252' : 'transparent';
+            document.getElementById('procTabVl').style.color = tab === 'vl' ? '#FFFFFF' : '#A0A0A0';
+            document.getElementById('procPanelLd').style.display = tab === 'ld' ? 'block' : 'none';
+            document.getElementById('procPanelVl').style.display = tab === 'vl' ? 'block' : 'none';
+        }
+        // Init first tab
+        switchProcTab('ld');
+
+        function openPopup(id) {
+            var el = document.getElementById('popup' + id.charAt(0).toUpperCase() + id.slice(1));
+            if (el) el.classList.add('visible');
+        }
+        function closePopup(id) {
+            var el = document.getElementById('popup' + id.charAt(0).toUpperCase() + id.slice(1));
+            if (el) el.classList.remove('visible');
+        }
 
         function generateSummary() {
             const indTexts = ['Falha em manter/proteger VA', 'Falha de ventilação/oxigenação', 'Curso clínico antecipado'];

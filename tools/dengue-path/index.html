@@ -408,7 +408,7 @@ body{background:#FFF;color:#000}
                 <div class="unit">mL/dia</div>
             </div>
         </div>
-        <div class="alert alert-danger"><strong>Reclassificar para C se:</strong>Sinal de alarme ou hematócrito em ascensão (≥20% do basal) na reavaliação.</div>
+        <div class="alert alert-danger"><strong>Reclassificar para C se:</strong>Sinal de alarme ou hematócrito em ascensão (aumento ≥20% do valor basal) na reavaliação. Referência: homem ~45%, mulher ~40%. Repetir Ht a cada 2-4h durante expansão.</div>
     </div>
 
     <!-- Grupo C -->
@@ -823,8 +823,8 @@ body{background:#FFF;color:#000}
                 </div>
 
                 <div class="alert alert-warning">
-                    <strong>Sem melhora ou Ht em ascensão</strong>
-                    Repetir fase de expansão (10 mL/kg/h por mais 2h). Se não houver melhora após segunda expansão, manejar como Grupo D.
+                    <strong>Sem melhora ou Ht em ascensão (aumento ≥20% do basal)</strong>
+                    Repetir fase de expansão (10 mL/kg/h por mais 2h). Repetir Ht a cada 2-4h durante expansão. Se não houver melhora após segunda expansão, manejar como Grupo D.
                 </div>
 
                 <div class="calc-card" style="margin-top:12px">
@@ -850,35 +850,75 @@ body{background:#FFF;color:#000}
     
     <div class="collapsible">
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
-            <span class="ch-title">Manejo prolongado na emergência</span>
+            <span class="ch-title">Monitorização durante observação</span>
             <span class="chevron">▼</span>
         </div>
         <div class="collapsible-body">
             <div class="collapsible-content">
-                <div class="alert alert-info"><strong>Reavaliações seriadas</strong>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hemograma + Ht a cada 2-4h (fase crítica)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sinais vitais a cada 15-30 min (choque)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Débito urinário por sonda: alvo >0,5 mL/kg/h</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Balanço hídrico rigoroso</div>
-                </div>
-                <div class="alert alert-warning"><strong>Fases do manejo hídrico</strong>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Expansão: SF 0,9% 20 mL/kg em 20 min (repetir até 3x)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Manutenção: 25 mL/kg/dia após estabilização</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Redução progressiva quando Ht normalizar e diurese adequada</div>
-                </div>
-                <div class="alert alert-danger"><strong>Critérios para considerar UTI</strong>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Choque refratário a 60 mL/kg de expansão</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Necessidade de vasopressor</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hemorragia grave</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Disfunção orgânica (renal, hepática, cardíaca)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Rebaixamento do nível de consciência</div>
-                </div>
-                <div class="info-card"><strong>Fase crítica (defervescência)</strong>
-                    Ocorre geralmente entre o 3º e 7º dia. Janela de 24-48h de maior risco de extravasamento plasmático. Considere intensificar monitorização quando a febre ceder.
+                <div class="info-card">
+                    <strong>Parâmetros de monitorização</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sinais vitais a cada 1-2h</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Ht de controle a cada 4-6h</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Repetir Ht a cada 2-4h durante expansão</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Diurese (alvo >0,5 mL/kg/h)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Balanço hídrico a cada 6h</div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Reavaliação seriada</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Após cada fase de expansão</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Checar PA, FC, TEC, diurese</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Se melhora: passar para manutenção</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Se piora: reclassificar para Grupo D</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Fase crítica (defervescência)</span>
+            <span class="ch-badge badge-red">Atenção</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-danger"><strong>Período de maior risco</strong>Ocorre entre o 3o e 7o dia de doença. Janela de 24-48h de maior risco de extravasamento plasmático.</div>
+                <div class="info-card">
+                    <strong>Conduta</strong>
+                    Considere intensificar monitorização quando a febre ceder. A melhora da febre não significa melhora clínica — pode indicar o início da fase crítica.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Critérios para considerar UTI</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Choque refratário a 2 expansões</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Necessidade de vasopressor</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sangramento grave ativo</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Disfunção orgânica (IRA, SDRA, encefalite)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Rebaixamento do nível de consciência</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-danger btn-sm" onclick="goTo('grupoD')" style="margin-top:8px">Sinais de gravidade → Grupo D</button> <button class="btn btn-secondary btn-sm" onclick="goTo('grupoB')" style="margin-top:8px">Melhora clínica → Grupo B</button></div>
 </div>
 
@@ -941,7 +981,7 @@ body{background:#FFF;color:#000}
                     <div class="step-marker">1</div>
                     <div class="step-content">
                         <h4>Albumina 20%</h4>
-                        <p>Se Ht em ascensão após 3 expansões com cristaloide. Considere 0,5–1 g/kg.</p>
+                        <p>Se Ht em ascensão (aumento ≥20% do valor basal) após 3 expansões com cristaloide. Considere 0,5-1 g/kg. Repetir Ht a cada 2-4h durante expansão.</p>
                     </div>
                 </div>
                 <div class="calc-card">
@@ -979,14 +1019,12 @@ body{background:#FFF;color:#000}
 
                 <div class="info-card">
                     <strong>Metas de ressuscitação</strong>
-                    </strong>
                     <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- PAS >90 mmHg (ou PAM >65 mmHg)</div>
                     <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- FC <100 bpm</div>
                     <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- TEC <2s</div>
                     <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Diurese >0,5 mL/kg/h</div>
                     <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Ht estável ou em queda</div>
                     <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Melhora do nível de consciência</div>
-                    <strong style="display:none">
                 </div>
             </div>
         </div>
@@ -994,35 +1032,76 @@ body{background:#FFF;color:#000}
     
     <div class="collapsible">
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
-            <span class="ch-title">Manejo prolongado na emergência</span>
+            <span class="ch-title">Monitorização intensiva</span>
+            <span class="ch-badge badge-red">Contínua</span>
             <span class="chevron">▼</span>
         </div>
         <div class="collapsible-body">
             <div class="collapsible-content">
-                <div class="alert alert-info"><strong>Reavaliações seriadas</strong>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hemograma + Ht a cada 2-4h (fase crítica)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sinais vitais a cada 15-30 min (choque)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Débito urinário por sonda: alvo >0,5 mL/kg/h</div>
+                <div class="info-card">
+                    <strong>Parâmetros de monitorização</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sinais vitais contínuos ou a cada 15-30 min</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Ht de controle a cada 2h durante expansão</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Diurese por sonda vesical (alvo >0,5 mL/kg/h)</div>
                     <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Balanço hídrico rigoroso</div>
-                </div>
-                <div class="alert alert-warning"><strong>Fases do manejo hídrico</strong>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Expansão: SF 0,9% 20 mL/kg em 20 min (repetir até 3x)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Manutenção: 25 mL/kg/dia após estabilização</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Redução progressiva quando Ht normalizar e diurese adequada</div>
-                </div>
-                <div class="alert alert-danger"><strong>Critérios para considerar UTI</strong>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Choque refratário a 60 mL/kg de expansão</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Necessidade de vasopressor</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hemorragia grave</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Disfunção orgânica (renal, hepática, cardíaca)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Rebaixamento do nível de consciência</div>
-                </div>
-                <div class="info-card"><strong>Fase crítica (defervescência)</strong>
-                    Ocorre geralmente entre o 3º e 7º dia. Janela de 24-48h de maior risco de extravasamento plasmático. Considere intensificar monitorização quando a febre ceder.
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Considerar acesso venoso central e PAI</div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Critérios para UTI</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Choque refratário a 2 expansões</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Necessidade de vasopressor</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sangramento grave ativo</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Disfunção orgânica (IRA, SDRA, encefalite)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Rebaixamento do nível de consciência</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Complicações a monitorizar</span>
+            <span class="ch-badge badge-red">Atenção</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">CIVD:</strong> monitorar fibrinogênio, D-dímero, TP</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Miocardite:</strong> ECG, troponina, eco se disponível</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Hepatite grave:</strong> AST/ALT >1000</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Síndrome hemofagocítica:</strong> ferritina, triglicerídeos</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Fase crítica (defervescência)</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="alert alert-danger"><strong>Período de maior risco</strong>Ocorre entre o 3o e 7o dia de doença. Janela de 24-48h de maior risco de extravasamento plasmático.</div>
+                <div class="info-card">
+                    <strong>Conduta</strong>
+                    Considere intensificar monitorização quando a febre ceder. A melhora da febre não significa melhora clínica — pode indicar o início da fase crítica.
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-secondary btn-sm" onclick="goTo('grupoC')" style="margin-top:8px">Estabilizou → Grupo C</button></div>
 </div>
 
@@ -1033,14 +1112,19 @@ body{background:#FFF;color:#000}
     <button class="back-btn" onclick="goTo('home')">← Início</button>
     <div class="section-title">Calculadoras</div>
 
+    <!-- a) Hidratação oral -->
     <div class="collapsible">
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
-            <span class="ch-title">Hidratação oral (Grupos A e B)</span>
+            <span class="ch-title">Hidratação oral (Grupo A)</span>
             <span class="ch-badge badge-green">60 mL/kg/dia</span>
             <span class="chevron">▼</span>
         </div>
         <div class="collapsible-body">
             <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Indicação</strong>
+                    Volume: 60 mL/kg/dia (1/3 com SRO). Distribuir ao longo do dia. Inclui alimentação líquida.
+                </div>
                 <div class="calc-card">
                     <label>Volume total diário</label>
                     <div class="calc-result">
@@ -1064,14 +1148,22 @@ body{background:#FFF;color:#000}
         </div>
     </div>
 
+    <!-- b) Hidratação IV — expansão -->
     <div class="collapsible">
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
-            <span class="ch-title">Hidratação IV (Grupos C e D)</span>
-            <span class="ch-badge badge-yellow">Expansão + manutenção</span>
+            <span class="ch-title">Hidratação IV — expansão (Grupos C/D)</span>
+            <span class="ch-badge badge-red">Expansão</span>
             <span class="chevron">▼</span>
         </div>
         <div class="collapsible-body">
             <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Protocolo de expansão</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Fase de expansão: 20 mL/kg em 2h (cristaloide isotônico)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Reavaliação após cada fase</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Se melhora: manutenção 25 mL/kg em 6h</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Se não melhora: repetir expansão (máximo 3 expansões)</div>
+                </div>
                 <div class="calc-card">
                     <label>Expansão — 20 mL/kg em 20 min (Grupo D) ou 10 mL/kg/h x 2h (Grupo C)</label>
                     <div class="calc-row">
@@ -1092,8 +1184,27 @@ body{background:#FFF;color:#000}
                         <div class="unit">mL</div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- c) Hidratação IV — manutenção -->
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Hidratação IV — manutenção</span>
+            <span class="ch-badge badge-yellow">Manutenção</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div class="info-card">
+                    <strong>Protocolo de manutenção</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- 25 mL/kg em 6h (primeira fase)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Depois 25 mL/kg em 8h (segunda fase)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Reduzir conforme melhora clínica</div>
+                </div>
                 <div class="calc-card">
-                    <label>Manutenção — 25 mL/kg/dia</label>
+                    <label>Manutenção — 25 mL/kg</label>
                     <div class="calc-row">
                         <div class="calc-result">
                             <div style="font-size:11px;color:var(--text-muted)">25 mL/kg em 6h</div>
@@ -1113,17 +1224,24 @@ body{background:#FFF;color:#000}
         </div>
     </div>
 
+    <!-- d) Albumina -->
     <div class="collapsible">
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
-            <span class="ch-title">Albumina 20%</span>
+            <span class="ch-title">Albumina (reposição coloidosmótica)</span>
             <span class="ch-badge badge-red">Refratário</span>
             <span class="chevron">▼</span>
         </div>
         <div class="collapsible-body">
             <div class="collapsible-content">
-                <div class="alert alert-info" style="font-size:12px"><strong>Indicação</strong>Considere albumina quando houver refratariedade a cristaloide (após 3 expansões) com Ht em ascensão. Não é hidratação de rotina.</div>
+                <div class="alert alert-danger" style="font-size:12px"><strong>Atenção</strong>Albumina NÃO é hidratação — é para choque refratário após 3 expansões com cristaloide.</div>
+                <div class="info-card">
+                    <strong>Indicação e dose</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Dose: 0,5-1 g/kg (albumina 20%)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Indicação: choque refratário a cristaloide + Ht em queda</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Apresentação: frasco 50 mL (20% = 10 g/frasco)</div>
+                </div>
                 <div class="calc-card">
-                    <label>Albumina 20% — 0,5 a 1 g/kg (frasco 50 mL = 10 g)</label>
+                    <label>Albumina 20% — 0,5 a 1 g/kg</label>
                     <div class="calc-row">
                         <div class="calc-result">
                             <div style="font-size:11px;color:var(--text-muted)">0,5 g/kg</div>
@@ -1143,16 +1261,18 @@ body{background:#FFF;color:#000}
         </div>
     </div>
 
+    <!-- e) Variação do Ht -->
     <div class="collapsible">
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
-            <span class="ch-title">Variação do hematócrito</span>
+            <span class="ch-title">Cálculo de variação do Ht</span>
             <span class="ch-badge badge-yellow">Monitorização</span>
             <span class="chevron">▼</span>
         </div>
         <div class="collapsible-body">
             <div class="collapsible-content">
                 <div class="calc-card">
-                    <label>Cálculo de variação do Ht (%)</label>
+                    <label>Variação do hematócrito (%)</label>
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Fórmula: (Ht atual - Ht basal) / Ht basal x 100</div>
                     <div style="display:flex;gap:12px;margin-bottom:12px">
                         <div style="flex:1">
                             <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Ht basal (%)</div>
@@ -1170,8 +1290,13 @@ body{background:#FFF;color:#000}
                     </div>
                 </div>
                 <div class="info-card">
+                    <strong>Classificação</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--success)">&lt;20%:</strong> variação normal</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">≥20%:</strong> hemoconcentração significativa</div>
+                </div>
+                <div class="info-card">
                     <strong>Referência</strong>
-                    Homens: ~45% (40-54%). Mulheres: ~40% (36-48%). Elevação ≥20% do basal sugere hemoconcentração significativa.
+                    Homens: ~45% (40-54%). Mulheres: ~40% (36-48%). Ex: Ht basal 40% → Ht atual ≥48% = hemoconcentração significativa.
                 </div>
             </div>
         </div>
@@ -1354,12 +1479,36 @@ body{background:#FFF;color:#000}
 </div>
 
 <!-- ============================================ -->
-<!-- SCREEN: EXAMES E DIFERENCIAIS (merged) -->
+<!-- SCREEN: EXAMES E DIFERENCIAIS -->
 <!-- ============================================ -->
 <div class="screen" id="screen-examediff">
     <button class="back-btn" onclick="goTo('home')">← Início</button>
     <div class="section-title">Exames e diferenciais</div>
     <div class="section-subtitle">Laboratório, monitorização e diagnósticos diferenciais</div>
+
+    <!-- SEÇÃO: EXAMES LABORATORIAIS -->
+    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:0 0 8px">Exames laboratoriais</div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Exames sugeridos na dengue</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hemograma completo com hematócrito</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Coagulograma (TP, TTPa, fibrinogênio)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Função renal (ureia, creatinina)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Função hepática (AST, ALT, albumina)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Tipagem sanguínea</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Lactato</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Gasometria arterial (se grave)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- NS1 (até 5o dia) / IgM (a partir do 6o dia)</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="collapsible">
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
@@ -1371,7 +1520,7 @@ body{background:#FFF;color:#000}
                 <table class="data-table">
                     <tr><th>Grupo</th><th>Exames sugeridos</th></tr>
                     <tr><td><span class="tag tag-green">A</span></td><td>Hemograma (não obrigatório). Orientar retorno se sinais de alarme.</td></tr>
-                    <tr><td><span class="tag tag-yellow">B</span></td><td>Hemograma com Ht obrigatório. Repetir em 4–6h.</td></tr>
+                    <tr><td><span class="tag tag-yellow">B</span></td><td>Hemograma com Ht obrigatório. Repetir em 4-6h.</td></tr>
                     <tr><td><span class="tag tag-red">C</span></td><td>Hemograma seriado (Ht a cada 2h na expansão). Função renal, hepática, coagulograma, tipagem sanguínea.</td></tr>
                     <tr><td><span class="tag tag-red">D</span></td><td>Hemograma seriado, função renal e hepática, coagulograma (TP, TTPa, fibrinogênio), tipagem + reserva, gasometria, lactato. Rx de tórax se disponível.</td></tr>
                 </table>
@@ -1387,12 +1536,12 @@ body{background:#FFF;color:#000}
         </div>
         <div class="collapsible-body">
             <div class="collapsible-content">
-                <div class="alert alert-warning"><strong>Ht em ascensão</strong>Sugere hemoconcentração por extravasamento plasmático → escalar tratamento (maior aporte de volume).</div>
-                <div class="alert alert-success"><strong>Ht em queda com melhora clínica</strong>Sugere reabsorção plasmática → considere reduzir velocidade de infusão.</div>
-                <div class="alert alert-danger"><strong>Ht em queda com piora clínica</strong>Sugere hemorragia → investigar sangramento e considere hemotransfusão.</div>
+                <div class="alert alert-warning"><strong>Ht em ascensão (aumento ≥20% do valor basal)</strong>Sugere hemoconcentração por extravasamento plasmático. Escalar tratamento (maior aporte de volume). Referência: homem ~45%, mulher ~40%. Ex: Ht basal 40% → Ht atual ≥48% = alarme.</div>
+                <div class="alert alert-success"><strong>Ht em queda com melhora clínica</strong>Sugere reabsorção plasmática. Considere reduzir velocidade de infusão.</div>
+                <div class="alert alert-danger"><strong>Ht em queda com piora clínica</strong>Sugere hemorragia. Investigar sangramento e considere hemotransfusão.</div>
                 <div class="info-card">
                     <strong>Valores de referência</strong>
-                    Homens: ~45% (referência: 40–54%). Mulheres: ~40% (referência: 36–48%). Fórmula: (Ht atual - Ht basal) / Ht basal × 100. Elevação ≥20% sugere hemoconcentração significativa. Monitorizar a cada 2-4h nos Grupos C/D, a cada 12-24h no Grupo B.
+                    Homens: ~45% (referência: 40-54%). Mulheres: ~40% (referência: 36-48%). Fórmula: (Ht atual - Ht basal) / Ht basal x 100. Elevação ≥20% sugere hemoconcentração significativa. Repetir Ht a cada 2-4h durante expansão (Grupos C/D). Monitorizar a cada 12-24h no Grupo B.
                 </div>
             </div>
         </div>
@@ -1406,19 +1555,46 @@ body{background:#FFF;color:#000}
         <div class="collapsible-body">
             <div class="collapsible-content">
                 <div class="info-card">
-                    <strong>Plaquetopenia na dengue</strong>
-                    Plaquetopenia <100.000/mm³ é comum na dengue e pode ser grave (<20.000/mm³). Isoladamente, não indica gravidade nem necessidade de transfusão de plaquetas. A decisão de transfundir deve ser individualizada e baseada em sangramento ativo, não no número absoluto.
+                    <strong>Classificação da plaquetopenia na dengue</strong>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--warning)">Plaquetopenia:</strong> &lt;100.000/mm³ (critério de risco — Grupo B)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Plaquetopenia grave:</strong> &lt;50.000/mm³ (considere avaliação de hemostasia)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- <strong style="color:var(--danger)">Plaquetopenia crítica:</strong> &lt;20.000/mm³ (risco de sangramento espontâneo)</div>
                 </div>
-                <div class="alert alert-danger"><strong>Atenção</strong>Considere transfusão de plaquetas apenas se sangramento ativo grave com plaquetopenia <50.000/mm³. Evitar transfusão profilática — não há evidência de benefício na dengue.</div>
+                <div class="info-card">
+                    <strong>Conduta</strong>
+                    Isoladamente, a plaquetopenia não indica gravidade nem necessidade de transfusão de plaquetas. A decisão de transfundir deve ser individualizada e baseada em sangramento ativo, não no número absoluto.
+                </div>
+                <div class="alert alert-danger"><strong>Atenção</strong>Considere transfusão de plaquetas apenas se sangramento ativo grave com plaquetopenia &lt;50.000/mm³. Evitar transfusão profilática — não há evidência de benefício na dengue.</div>
             </div>
         </div>
     </div>
 
+    <!-- SEÇÃO: DIAGNÓSTICOS DIFERENCIAIS -->
     <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;padding-top:16px;border-top:1px solid var(--border)">Diagnósticos diferenciais</div>
 
     <div class="collapsible">
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
-            <span class="ch-title">Outras arboviroses</span>
+            <span class="ch-title">Diagnósticos diferenciais principais</span>
+            <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Outras arboviroses (Zika, Chikungunya)</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Leptospirose</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Meningococcemia</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Febre maculosa</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Malária</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hepatites virais</div>
+                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Influenza / COVID-19</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapsible">
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <span class="ch-title">Comparativo entre arboviroses</span>
             <span class="chevron">▼</span>
         </div>
         <div class="collapsible-body">
@@ -1426,32 +1602,12 @@ body{background:#FFF;color:#000}
                 <table class="data-table">
                     <tr><th>Achado</th><th>Dengue</th><th>Zika</th><th>Chikungunya</th></tr>
                     <tr><td>Febre</td><td>Alta (>38,5°C)</td><td>Baixa ou ausente</td><td>Alta</td></tr>
-                    <tr><td>Exantema</td><td>Tardio (3–5º dia)</td><td>Precoce (1–2º dia)</td><td>2–5º dia</td></tr>
+                    <tr><td>Exantema</td><td>Tardio (3-5o dia)</td><td>Precoce (1-2o dia)</td><td>2-5o dia</td></tr>
                     <tr><td>Artralgia</td><td>Leve</td><td>Leve</td><td>Intensa (incapacitante)</td></tr>
                     <tr><td>Mialgia</td><td>Intensa</td><td>Leve</td><td>Moderada</td></tr>
                     <tr><td>Conjuntivite</td><td>Raro</td><td>Frequente</td><td>Raro</td></tr>
                     <tr><td>Cefaleia</td><td>Intensa (retroorbitária)</td><td>Leve</td><td>Moderada</td></tr>
                 </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="collapsible">
-        <div class="collapsible-header" onclick="toggleCollapsible(this)">
-            <span class="ch-title">Outros diferenciais</span>
-            <span class="chevron">▼</span>
-        </div>
-        <div class="collapsible-body">
-            <div class="collapsible-content">
-                <div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Leptospirose (exposição epidemiológica, icterícia, IRA)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Meningococcemia (petéquias, rigidez de nuca, evolução rápida)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Rickettsioses (febre maculosa, carrapatos)</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Hepatites virais agudas</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Farmacodermia</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Abdome agudo</div>
-                    <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Malária (viagem a áreas endêmicas)</div>
-                </div>
             </div>
         </div>
     </div>

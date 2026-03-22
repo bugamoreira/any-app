@@ -241,8 +241,8 @@
         .peso-gate-btn[disabled] { cursor: not-allowed; }
         #mainContent { display: none; }
         #mainContent.visible { display: block; }
-        .peso-card-sticky { position: sticky; top: 33px; z-index: 90; background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
-        .peso-bar { display:flex; align-items:center; gap:8px; padding:10px 16px; background:#111; border-bottom:1px solid #333; position:sticky; top:33px; z-index:90; }
+        .peso-card-sticky { position: sticky; top: 54px; z-index: 90; background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
+        .peso-bar { display:flex; align-items:center; gap:8px; padding:10px 16px; background:#111; border-bottom:1px solid #333; position:sticky; top:54px; z-index:90; }
         .peso-bar-label { font-size:13px; color:#888; }
         .peso-bar-input { width:60px; background:transparent; border:none; border-bottom:2px solid #FF5252; color:#FF5252; font-size:16px; font-weight:700; text-align:center; padding:2px 0; -moz-appearance:textfield; }
         .peso-bar-input::-webkit-inner-spin-button, .peso-bar-input::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
@@ -829,7 +829,7 @@
         }
 
         // ==================== INICIALIZAÇÃO ====================
-        document.addEventListener('DOMContentLoaded', function() {
+        (function() {
             // Gate de peso — verificar localStorage
             var gateInput = document.getElementById('pesoGateInput');
             var gateBtn = document.getElementById('pesoGateBtn');
@@ -875,7 +875,7 @@
 
             // Initialize manual inputs after everything is loaded
             setTimeout(initManualInputs, 100);
-        });
+        })();
 
         // ==================== PESO ====================
         function handlePesoChange(e) {
@@ -1767,5 +1767,15 @@
         </svg>
     </button>
 </div>
+<script>
+// Esconder FAB enquanto gate de peso estiver visível
+(function(){
+    var gate = document.getElementById('pesoGate');
+    var fab = document.querySelector('.fab-menu');
+    if (gate && fab && gate.style.display !== 'none') {
+        fab.classList.add('gate-hidden');
+    }
+})();
+</script>
 </body>
 </html>

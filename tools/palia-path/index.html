@@ -3293,7 +3293,7 @@
         }
 
         // Busca de medicações na hipodermóclise
-        document.addEventListener('DOMContentLoaded', function() {
+        (function() {
             var searchInput = document.getElementById('hipoMedSearch');
             if (!searchInput) return;
             searchInput.addEventListener('input', function() {
@@ -3315,7 +3315,7 @@
                 });
                 noResults.style.display = (visibleCount === 0 && query !== '') ? 'block' : 'none';
             });
-        });
+        })();
 
         // Scale Selection
         function selectScale(item, scaleType) {
@@ -3416,27 +3416,27 @@
         }
 
         // Inicializar PPI listeners
-        document.addEventListener('DOMContentLoaded', function() {
+        (function() {
             document.querySelectorAll('.ppi-options input[type="radio"]').forEach(input => {
                 input.addEventListener('change', calculatePPI);
             });
-            
+
             // Highlight selected option
             document.querySelectorAll('.ppi-option').forEach(option => {
                 option.addEventListener('click', function() {
                     const input = this.querySelector('input[type="radio"]');
                     input.checked = true;
-                    
+
                     // Remove selected de irmãos
                     this.parentElement.querySelectorAll('.ppi-option').forEach(opt => {
                         opt.classList.remove('selected');
                     });
                     this.classList.add('selected');
-                    
+
                     calculatePPI();
                 });
             });
-        });
+        })();
 
         // Deep link handler
         function handleDeepLink(target) {

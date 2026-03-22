@@ -7099,7 +7099,7 @@
         }
 
         // Inicializar
-        document.addEventListener('DOMContentLoaded', init);
+        init();
 
 // === JS from Descontaminacao ===
 // Estado do fluxo
@@ -7354,7 +7354,7 @@ function toggleCriteria(header) {
         }
 
         // Inicializar
-        document.addEventListener('DOMContentLoaded', updateResult);
+        updateResult();
 
 // === JS from Antidotos ===
 function toggleAntidote(header) {
@@ -7391,7 +7391,7 @@ function toggleAntidote(header) {
         }
 
         // Abrir automaticamente se vier de link com hash
-        document.addEventListener('DOMContentLoaded', function() {
+        (function() {
             if (window.location.hash) {
                 var targetCard = document.querySelector(window.location.hash);
                 if (targetCard) {
@@ -7404,7 +7404,7 @@ function toggleAntidote(header) {
                     }
                 }
             }
-        });
+        })();
 
         // Calculadora de Atropina
         function calcularAtropina() {
@@ -7552,10 +7552,10 @@ var totalItems = 32;
         
 
         // Inicializar
-        document.addEventListener('DOMContentLoaded', function() {
+        (function() {
             checklistUpdateProgress();
             updateSectionCounts();
-        });
+        })();
 
 // === JS from Tabelas ===
 function showTab(tabName) {
@@ -8005,26 +8005,26 @@ function showTab(tabName) {
         }
 
         // Inicializar ao carregar
-        document.addEventListener('DOMContentLoaded', initDosesSearch);
+        initDosesSearch();
 
         // Verificar hash na URL para abrir aba específica
-        document.addEventListener('DOMContentLoaded', function() {
+        (function() {
             if (window.location.hash === '#panel-bombas') {
                 // Ativar aba de bombas-relógio
                 document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
                 document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
-                
+
                 var bombasTab = document.querySelector('.tab:last-child');
                 var bombasPanel = document.getElementById('panel-bombas');
-                
+
                 if (bombasTab) bombasTab.classList.add('active');
                 if (bombasPanel) bombasPanel.classList.add('active');
-                
+
                 setTimeout(() => {
                     bombasPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 100);
             }
-        });
+        })();
     </script>
 </body>
 </html>

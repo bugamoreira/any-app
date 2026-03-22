@@ -631,12 +631,12 @@ CRM: ${crm}`;
             document.getElementById('evo-result').style.display='block';
         }
         function editEvolution(){document.querySelector('.evo-form').style.display='block';document.getElementById('evo-result').style.display='none'}
-        document.addEventListener('DOMContentLoaded',function(){
+        (function(){
             calcDoses(70);calcLipid(70);
             document.querySelectorAll('input[name="interc"]').forEach(r=>r.addEventListener('change',function(){
                 document.getElementById('evo-interc-desc').style.display=this.value==='Sim'?'block':'none';
             }));
-        })
+        })()
 
         function toggleFab() {
             var options = document.getElementById('fabOptions');
