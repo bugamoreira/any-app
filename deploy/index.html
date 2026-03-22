@@ -3845,9 +3845,10 @@
         .peso-card-sticky { position: sticky; top: 33px; z-index: 90; background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
         .peso-bar { display:flex; align-items:center; gap:8px; padding:10px 16px; background:#111; border-bottom:1px solid #333; position:sticky; top:33px; z-index:90; }
         .peso-bar-label { font-size:13px; color:#888; }
-        .peso-bar-value { font-size:15px; font-weight:700; color:#FF5252; }
-        .peso-bar-edit { background:none; border:1px solid #333; border-radius:6px; color:#888; padding:4px 8px; cursor:pointer; display:flex; align-items:center; }
-        .peso-bar-edit:active { background:#1A1A1A; }
+        .peso-bar-input { width:60px; background:transparent; border:none; border-bottom:2px solid #FF5252; color:#FF5252; font-size:16px; font-weight:700; text-align:center; padding:2px 0; -moz-appearance:textfield; }
+        .peso-bar-input::-webkit-inner-spin-button, .peso-bar-input::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+        .peso-bar-input:focus { outline:none; border-bottom-color:#FF6B6B; }
+        .peso-bar-unit { font-size:14px; color:#888; }
         .fab-menu.gate-hidden { display: none; }
     </style>
 </head>
@@ -3879,10 +3880,8 @@
         <!-- PESO BAR (compacto) -->
         <div class="peso-bar" id="pesoBar">
             <span class="peso-bar-label">Peso:</span>
-            <span class="peso-bar-value" id="pesoBarValue">70 kg</span>
-            <button class="peso-bar-edit" onclick="editWeight()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
+            <input type="number" inputmode="decimal" class="peso-bar-input" id="pesoBarInput" min="40" max="200" value="70" oninput="updateWeightInline()">
+            <span class="peso-bar-unit">kg</span>
         </div>
 
         <!-- PESO (oculto — mantido para lógica interna) -->
@@ -4406,7 +4405,7 @@
             localStorage.setItem('anyapp-peso', p.toString());
 
             // Atualizar peso-bar compacto
-            document.getElementById('pesoBarValue').textContent = p + ' kg';
+            document.getElementById('pesoBarInput').value = p;
 
             // Ocultar gate, exibir conteúdo
             document.getElementById('pesoGate').style.display = 'none';
@@ -4417,11 +4416,15 @@
             if (fabMenu) fabMenu.classList.remove('gate-hidden');
         }
 
-        function editWeight() {
-            document.getElementById('mainContent').classList.remove('visible');
-            document.getElementById('pesoGate').style.display = 'flex';
-            document.getElementById('pesoGateInput').value = document.getElementById('pesoInput').value;
-            document.getElementById('pesoGateInput').focus();
+        function updateWeightInline() {
+            var p = parseFloat(document.getElementById('pesoBarInput').value);
+            if (!p || p < 40 || p > 200) return;
+            var pesoInput = document.getElementById('pesoInput');
+            if (pesoInput) {
+                pesoInput.value = p;
+                pesoInput.dispatchEvent(new Event('input'));
+            }
+            localStorage.setItem('anyapp-peso', p.toString());
         }
 
         // ==================== INICIALIZAÇÃO ====================
