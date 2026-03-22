@@ -211,7 +211,7 @@ body{background:#FFF;color:#000}
     <div class="grid-btn highlight full-width" onclick="goTo('trilha')" style="padding:20px 16px;border-color:var(--accent);background:rgba(255,82,82,0.08);margin-bottom:16px">
         <div class="grid-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
         <div class="grid-label" style="font-size:16px">Dengue Path</div>
-        <div class="grid-desc" style="font-size:11px">Trilha completa: avaliação → classificação → manejo → alta</div>
+        <div class="grid-desc" style="font-size:11px">Trilha completa: avaliação → classificação → manejo → desfecho</div>
     </div>
 
     <!-- MÓDULOS: grid 2×2 -->
@@ -269,7 +269,7 @@ body{background:#FFF;color:#000}
                 <div class="alert alert-info"><strong>Caso suspeito</strong>Febre (geralmente 2–7 dias) + epidemiologia compatível + ≥2 dos seguintes: cefaleia, dor retroorbitária, mialgia, artralgia, prostração, exantema.</div>
                 <div class="info-card">
                     <strong>Prova do laço</strong>
-                    Insuflar manguito no ponto médio entre PAS e PAD por 5 min. Contar petéquias em quadrado 2,5 × 2,5 cm. Positiva: ≥20 petéquias (adultos). Pode ser negativa em obesos, choque ou anti-hipertensivos.
+                    Insuflar manguito no ponto médio entre PAS e PAD por 5 min. Contar petéquias em quadrado 2,5 × 2,5 cm. Positiva: ≥20 petéquias (adultos). Resultado falso-negativo pode ocorrer em pacientes obesos, em choque ou em uso de anti-hipertensivos.
                 </div>
                 <div class="alert alert-warning" style="font-size:12px"><strong>Exames iniciais sugeridos</strong>Hemograma com hematócrito. Se sinais de alarme ou gravidade: função renal, hepática, coagulograma, tipagem.</div>
                 <button class="btn btn-secondary btn-sm" onclick="openTrilhaStep(2)" style="margin-top:8px">Próximo: sinais de alarme →</button>
@@ -310,12 +310,14 @@ body{background:#FFF;color:#000}
         </div>
         <div class="collapsible-body">
             <div class="collapsible-content">
+                <div id="trilhaClassAutoAlarm" style="display:none"></div>
                 <div class="alert alert-info"><strong>Passo 1</strong>Há sinais de gravidade? (choque, hemorragia grave, disfunção orgânica)</div>
                 <div class="btn-group">
                     <button class="btn btn-danger btn-sm" onclick="openTrilhaGrupo('D')">Sim → Grupo D</button>
-                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('trilhaClass2').style.display='block'">Não →</button>
+                    <button class="btn btn-secondary btn-sm" onclick="showTrilhaClass2()">Não →</button>
                 </div>
                 <div id="trilhaClass2" style="display:none;margin-top:12px">
+                    <div id="trilhaClass2Auto"></div>
                     <div class="alert alert-warning"><strong>Passo 2</strong>Há sinais de alarme?</div>
                     <div class="btn-group">
                         <button class="btn btn-warning btn-sm" style="color:#000" onclick="openTrilhaGrupo('C')">Sim → Grupo C</button>
@@ -1669,6 +1671,18 @@ function updateTrilhaAlarmResult() {
 }
 
 // Trilha step navigation
+function showTrilhaClass2() {
+    var alarms = document.querySelectorAll('#trilha-step2 .check-item.checked').length;
+    var autoEl = document.getElementById('trilhaClass2Auto');
+    if (alarms > 0) {
+        var txt = alarms === 1 ? '1 sinal de alarme identificado' : alarms + ' sinais de alarme identificados';
+        autoEl.innerHTML = '<div class="alert alert-danger" style="margin-bottom:8px"><strong>Atenção</strong>' + txt + ' no passo anterior. Considere pelo menos Grupo C.</div>';
+    } else {
+        autoEl.innerHTML = '<div class="alert alert-info" style="margin-bottom:8px;font-size:12px">Nenhum sinal de alarme marcado no passo anterior.</div>';
+    }
+    document.getElementById('trilhaClass2').style.display = 'block';
+}
+
 function openTrilhaStep(n) {
     const step = document.getElementById('trilha-step' + n);
     if (step) {
