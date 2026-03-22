@@ -2809,7 +2809,7 @@
         <!-- STEP 6 -->
         <div class="step" id="step-6">
             <div class="step-header"><div class="step-number">Passo 6 de 11</div><div class="step-title">Otimização</div></div>
-            <div class="alert alert-danger hidden" id="hemoAlert"><div class="alert-icon"></div><div><div class="alert-title">Instabilidade hemodinâmica</div><div class="alert-text">Considere vasopressor antes da indução. <a href="#" onclick="event.preventDefault(); parent.loadApp('infusion','noradrenalina')" style="color: var(--info);">Calculadora de Noradrenalina →</a></div></div></div>
+            <div class="alert alert-danger hidden" id="hemoAlert"><div class="alert-icon"></div><div><div class="alert-title">Instabilidade hemodinâmica</div><div class="alert-text">Considere vasopressor antes da indução. <a href="#" onclick="event.preventDefault(); goToInfusion('noradrenalina')" style="color: var(--info);">Calculadora de Noradrenalina →</a></div></div></div>
             <div class="card">
                 <div class="card-title">Otimização hemodinâmica</div>
                 <div class="check-item" onclick="toggleSimple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Acesso venoso calibroso</div><div class="check-desc">Jelco 18G ou maior, testar patência</div></div></div>
@@ -2844,7 +2844,7 @@
         <!-- STEP 8 -->
         <div class="step" id="step-8">
             <div class="step-header"><div class="step-number">Passo 8 de 11</div><div class="step-title">Medicações</div></div>
-            <div class="alert alert-warning hidden" id="doseReductionAlert"><div class="alert-icon"></div><div><div class="alert-title">Considere redução de dose</div><div class="alert-text">Paciente com instabilidade/idoso: reduza dose do indutor em 30-50%.</div></div></div>
+            <div class="alert alert-warning hidden" id="doseReductionAlert"><div class="alert-icon"></div><div><div class="alert-title">Considere redução de dose</div><div class="alert-text">Paciente com instabilidade/idoso: considere reduzir a dose do indutor em 30-50%.</div></div></div>
             <div class="card">
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Peso: <strong id="medWeight">70</strong> kg | <span id="medPopulation">População: Adulto</span></p>
                 <p style="font-size: 0.75rem; color: var(--text-muted);">Toque no card para selecionar. Selecione: 1 indutor + 1 BNM (bloqueio simpático opcional)</p>
@@ -2866,7 +2866,7 @@
                 </div>
                 <div class="dose-card" id="etomidatoCard" onclick="toggleMedCard('etomidato')">
                     <div class="dose-header"><div><div class="dose-name">Etomidato</div><div class="dose-presentation">2 mg/mL (10 mL)</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
-                    <div class="dose-slider-container"><div class="dose-slider-label"><span>0.2 mg/kg</span><span id="etomidatoRate">0.3 mg/kg</span><span>0.4 mg/kg</span></div><input type="range" class="dose-slider" id="etomidatoSlider" min="0.2" max="0.4" step="0.1" value="0.3" oninput="updateEtomidato()"></div>
+                    <div class="dose-slider-container"><div class="dose-slider-label"><span>0.2 mg/kg</span><span id="etomidatoRate">0.3 mg/kg</span><span>0.4 mg/kg</span></div><input type="range" class="dose-slider" id="etomidatoSlider" min="0.2" max="0.4" step="0.01" value="0.3" oninput="updateEtomidato()"></div>
                     <div class="dose-result"><div class="dose-value" id="etomidatoDose">21 mg</div><div class="dose-volume" id="etomidatoVol">= 10.5 mL</div></div>
                 </div>
                 <div class="dose-card" id="propofolCard" onclick="toggleMedCard('propofol')">
@@ -2879,12 +2879,12 @@
             <div class="card"><div class="card-title">BNM (selecione 1)</div>
                 <div class="dose-card" id="rocuronioCard" onclick="toggleMedCard('rocuronio')">
                     <div class="dose-header"><div><div class="dose-name">Rocurônio</div><div class="dose-presentation">10 mg/mL (5 mL)</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
-                    <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mg/kg</span><span id="rocuronioRate">1.2 mg/kg</span><span>1.6 mg/kg</span></div><input type="range" class="dose-slider" id="rocuronioSlider" min="1" max="1.6" step="0.2" value="1.2" oninput="updateRocuronio()"></div>
+                    <div class="dose-slider-container"><div class="dose-slider-label"><span>1.5 mg/kg</span><span id="rocuronioRate">1.5 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="rocuronioSlider" min="1.5" max="2" step="0.1" value="1.5" oninput="updateRocuronio()"></div>
                     <div class="dose-result"><div class="dose-value" id="rocuronioDose">84 mg</div><div class="dose-volume" id="rocuronioVol">= 8.4 mL</div></div>
                 </div>
                 <div class="dose-card" id="succinilcolinaCard" onclick="toggleMedCard('succinilcolina')">
                     <div class="dose-header"><div><div class="dose-name">Succinilcolina</div><div class="dose-presentation">10 mg/mL (10 mL)</div></div><div class="dose-checkbox"><svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="3" fill="none"/></svg></div></div>
-                    <div class="dose-slider-container"><div class="dose-slider-label"><span>1 mg/kg</span><span id="succinilcolinaRate">1.5 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="succinilcolinaSlider" min="1" max="2" step="0.5" value="1.5" oninput="updateSuccinilcolina()"></div>
+                    <div class="dose-slider-container"><div class="dose-slider-label"><span>1.5 mg/kg</span><span id="succinilcolinaRate">1.5 mg/kg</span><span>2 mg/kg</span></div><input type="range" class="dose-slider" id="succinilcolinaSlider" min="1.5" max="2" step="0.1" value="1.5" oninput="updateSuccinilcolina()"></div>
                     <div class="dose-result"><div class="dose-value" id="succinilcolinaDose">105 mg</div><div class="dose-volume" id="succinilcolinaVol">= 10.5 mL</div></div>
                 </div>
             </div>
@@ -2903,30 +2903,42 @@
                     Mantenha oxigenação entre tentativas
                 </div>
             </div>
-            <div class="card">
-                <div class="card-title">Laringoscopia direta (Macintosh)</div>
-                <div style="font-size:13px;color:#888;line-height:1.8">
-                    1. Segurar laringoscópio com mão esquerda<br>
-                    2. Abrir boca com técnica de tesoura (mão direita)<br>
-                    3. Inserir lâmina pelo lado direito, varrer língua para a esquerda<br>
-                    4. Avançar até a valécula (base da língua)<br>
-                    5. Elevar em direção ventral e anterior — nunca alavanca nos dentes<br>
-                    6. Se visualização inadequada: manobra BURP (pressão para trás, para cima e para a direita na cartilagem tireóidea)<br>
-                    7. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
-                    8. Avançar tubo pelo canto direito da boca, sob visão direta das cordas vocais<br>
-                    9. Insuflar cuff
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+                <div class="card" style="padding:0;overflow:hidden">
+                    <div class="collapsible-header" onclick="toggleCollapsible(this)" style="border:none;background:transparent;margin:0">
+                        <span style="font-size:14px;font-weight:600">Laringoscopia direta</span>
+                        <span class="arrow">&#9660;</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="collapsible-inner" style="font-size:12px;color:#888;line-height:1.7">
+                            1. Segurar laringoscópio com mão esquerda<br>
+                            2. Abrir boca com técnica de tesoura (mão direita)<br>
+                            3. Inserir lâmina pelo lado direito, varrer língua para a esquerda<br>
+                            4. Avançar até a valécula (base da língua)<br>
+                            5. Elevar em direção ventral e anterior — nunca alavanca nos dentes<br>
+                            6. Se visualização inadequada: manobra BURP<br>
+                            7. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
+                            8. Avançar tubo pelo canto direito da boca<br>
+                            9. Insuflar cuff
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-title">Videolaringoscopia</div>
-                <div style="font-size:13px;color:#888;line-height:1.8">
-                    1. Inserir lâmina na linha média sob visão na tela<br>
-                    2. Avançar até visualizar epiglote<br>
-                    3. Posicionar ponta da lâmina na valécula ou sob a epiglote<br>
-                    4. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
-                    5. Avançar tubo sob visão contínua na tela<br>
-                    6. Visualizar passagem do tubo entre as cordas vocais<br>
-                    7. Insuflar cuff
+                <div class="card" style="padding:0;overflow:hidden">
+                    <div class="collapsible-header" onclick="toggleCollapsible(this)" style="border:none;background:transparent;margin:0">
+                        <span style="font-size:14px;font-weight:600">Videolaringoscopia</span>
+                        <span class="arrow">&#9660;</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <div class="collapsible-inner" style="font-size:12px;color:#888;line-height:1.7">
+                            1. Inserir lâmina na linha média sob visão na tela<br>
+                            2. Avançar até visualizar epiglote<br>
+                            3. Posicionar ponta na valécula ou sob a epiglote<br>
+                            4. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br>
+                            5. Avançar tubo sob visão contínua na tela<br>
+                            6. Visualizar passagem entre as cordas vocais<br>
+                            7. Insuflar cuff
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="collapsible-header" onclick="toggleCollapsible(this)">
@@ -3357,12 +3369,12 @@
             window.scrollTo(0, 0);
         }
 
-        function goToInfusion() {
+        function goToInfusion(drug) {
             try {
                 sessionStorage.setItem('airway_return', 'true');
                 sessionStorage.setItem('airway_step', state.currentStep.toString());
             } catch(e) {}
-            parent.loadApp('infusion');
+            parent.loadApp('infusion', drug || '');
         }
 
         // Deep link handler
