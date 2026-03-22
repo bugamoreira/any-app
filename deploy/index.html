@@ -26518,10 +26518,10 @@ function updateCalculations() {
     const alb1 = p ? (p * 1) / 0.2 : null;
     s('calc-alb05', alb05);
     const a05f = document.getElementById('calc-alb05f');
-    if (a05f) a05f.textContent = alb05 ? Math.ceil(alb05 / 50) + ' frasco(s)' : '—';
+    if (a05f) { var n05 = Math.ceil(alb05 / 50); a05f.textContent = alb05 ? n05 + (n05 === 1 ? ' frasco' : ' frascos') : '—'; }
     s('calc-alb1', alb1);
     const a1f = document.getElementById('calc-alb1f');
-    if (a1f) a1f.textContent = alb1 ? Math.ceil(alb1 / 50) + ' frasco(s)' : '—';
+    if (a1f) { var n1 = Math.ceil(alb1 / 50); a1f.textContent = alb1 ? n1 + (n1 === 1 ? ' frasco' : ' frascos') : '—'; }
 }
 
 // Init
