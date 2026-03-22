@@ -193,9 +193,9 @@
         .prep-step { display: flex; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #333; }
         .prep-step-number { width: 28px; height: 28px; background: #FF5252; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
         .prep-step-text { font-size: .9rem; line-height: 1.5; }
-        .footer { background: #111; padding: 20px; text-align: center; border-top: 1px solid #333; margin-top: 20px; }
-        .footer-disclaimer { font-size: .75rem; color: #FFB74D; background: rgba(255,183,77,0.1); border: 1px solid rgba(255,183,77,0.3); border-radius: 8px; max-width: 600px; margin: 0 auto 12px; padding: 12px 16px; line-height: 1.5; text-align: center; }
-        .footer-sources { font-size: .65rem; color: var(--gray-400); }
+        .footer { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; padding: 12px 16px; background: #000; border-top: 1px solid #333; z-index: 50; }
+        .footer-names { font-size: 0.75rem; color: #888; margin-bottom: 2px; }
+        .footer-version { font-size: 0.65rem; color: #555; }
         .timestamp { text-align: center; padding: 16px; color: #888; font-size: .75rem; }
         .timestamp strong { color: #CCC; }
             .fab-menu { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
@@ -224,7 +224,7 @@
     <header class="header">
         <img src="__LOGO__" alt="ANY App" onclick="event.preventDefault(); parent.loadApp('hub')">
         <h1>PedGuide</h1>
-        <p>Calculadora pediatrica</p>
+        <p>Calculadora pediátrica</p>
     </header>
 
     <section class="input-section">
@@ -275,7 +275,7 @@
 
             <div class="cpr-box">
                 <div class="cpr-header">
-                    <div class="cpr-title">Parametros de RCP Pediatrica</div>
+                    <div class="cpr-title">Parâmetros de RCP pediátrica</div>
                     <div class="cpr-ratio-fixed" style="font-size:.75rem;font-weight:700;color:var(--gray-400);">Compressao:Ventilacao — 15:2</div>
                 </div>
                 <div class="cpr-grid">
@@ -440,21 +440,18 @@
             <div class="section collapsed" id="section-infusoes">
                 <div class="section-header" onclick="toggleSection('section-infusoes')">
                     <div class="section-icon purple"><svg viewBox="0 0 24 24"><path d="M3,3V21H21V3H3M18,18H6V17H18V18M18,16H6V15H18V16M18,12H6V6H18V12Z"/></svg></div>
-                    <span class="section-title">Infusoes Continuas</span>
+                    <span class="section-title">Infusões contínuas</span>
                 </div>
                 <div class="section-body" id="infusions-section"></div>
             </div>
         </div>
 
-        <div class="timestamp" id="timestamp">Calculado em: <strong>--</strong></div>
     </main>
 
     <footer class="footer">
-        <div class="footer-disclaimer"><strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.</div>
-        <div class="footer-sources">Fontes: PALS/AHA 2020 | Pronto-Socorro Pediátrico HCFMUSP 4ª Ed. | Pediatric Drug Doses (Shann) 17th Ed</div>
-        <div style="margin-top:12px;font-size:11px;color:#999;">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div style="margin-top:4px;font-size:10px;color:#666;">Ambassadors: Ariadne Becker • Daniel Raylander</div>
-        <div style="margin-top:4px;font-size:10px;color:#555;">v1.0.0 — Março 2026</div>
+        <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
+        <div style="margin-top:4px;font-size:10px;color:#FF5252;">Ambassadors: Ariadne Becker • Daniel Raylander</div>
+        <div class="footer-version">Ped Guide v1.1.0 — ANY App</div>
     </footer>
 
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
@@ -1043,8 +1040,6 @@
             }
 
             var now = new Date();
-            document.getElementById('timestamp').innerHTML = 'Calculado em: <strong>' + now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR') + '</strong>';
-
             document.getElementById('defib1').textContent = Math.round(peso * 2);
             document.getElementById('defib2').textContent = Math.round(peso * 4);
             document.getElementById('cardioversao').textContent = Math.round(peso * 0.5) + '-' + Math.round(peso);
