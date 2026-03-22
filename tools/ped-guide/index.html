@@ -72,28 +72,8 @@
         .dot-blue { background: #3B82F6; }
         .dot-orange { background: #F97316; }
         .dot-green { background: #10B981; }
-        .scenarios-section { background: #111; padding: 0; border-bottom: 1px solid #333; }
-        .scenarios-container { max-width: 800px; margin: 0 auto; }
-        .scenarios-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; cursor: pointer; }
-        .scenarios-header:hover { background: #1A1A1A; }
-        .scenarios-title { font-size: .75rem; font-weight: 700; text-transform: uppercase; color: var(--gray-600); display: flex; align-items: center; gap: 8px; }
-        .scenarios-title::before { content: none; }
-        .scenarios-toggle { font-size: .8rem; color: var(--gray-400); transition: transform .2s; }
-        .scenarios-section.collapsed .scenarios-toggle { transform: rotate(-90deg); }
-        .scenarios-content { padding: 0 20px 14px; }
-        .scenarios-section.collapsed .scenarios-content { display: none; }
-        .scenarios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        @media (max-width: 600px) { .scenarios-grid { grid-template-columns: repeat(2, 1fr); } }
-        .scenario-btn { padding: 10px 12px; border: 2px solid #555; background: #1A1A1A; border-radius: 10px; font-size: .75rem; font-weight: 600; cursor: pointer; text-align: center; transition: all .15s; color: #F5F5F5; }
-        .scenario-btn:hover { background: #333; }
-        .scenario-btn.active { background: #FF5252; border-color: #FF5252; color: white; }
-        .tabs-container { background: #111; padding: 8px 20px 0; border-bottom: 1px solid #333; }
-        .tabs { display: flex; max-width: 800px; margin: 0 auto; gap: 4px; }
-        .tab { flex: 1; padding: 14px 20px; border: none; background: #1A1A1A; cursor: pointer; font-size: .8rem; font-weight: 700; color: #999; border-radius: 12px 12px 0 0; }
-        .tab.active { background: #1A1A1A; color: #FF5252; box-shadow: inset 0 -3px 0 #FF5252; }
+        /* old scenarios/tabs CSS removed — now using view system */
         .content { max-width: 800px; margin: 0 auto; padding: 20px; background: #000; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
         .section { background: #111; border-radius: 16px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
         .section-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #1A1A1A; border-bottom: 1px solid #333; cursor: pointer; }
         .section-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -226,6 +206,18 @@
         .fab-options.open { display: block; }
         .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
         .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
+        .ped-view { display: none; }
+        .ped-view.active { display: block; }
+        .home-card { background: #1A1A1A; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-bottom: 12px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+        .home-card:active { background: #252525; }
+        .home-card-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+        .home-card-desc { font-size: 13px; color: #888; }
+        .scenario-card { background: #1A1A1A; border: 1px solid #333; border-radius: 12px; padding: 16px; margin-bottom: 10px; cursor: pointer; transition: border-color 0.2s; }
+        .scenario-card:active { border-color: #FF5252; }
+        .scenario-card-title { font-size: 16px; font-weight: 600; }
+        .scenario-card-desc { font-size: 12px; color: #888; margin-top: 4px; }
+        .back-btn { background: none; border: 1px solid #333; color: #888; padding: 8px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; margin-bottom: 16px; }
+        .back-btn:active { background: #1A1A1A; }
     </style>
 </head>
 <body>
@@ -259,58 +251,51 @@
         </div>
     </section>
 
-    <section class="scenarios-section" id="scenarios-section">
-        <div class="scenarios-container">
-            <div class="scenarios-header" onclick="toggleScenarios()">
-                <div class="scenarios-title">Atalhos Rápidos</div>
-                <span class="scenarios-toggle">▼</span>
-            </div>
-            <div class="scenarios-content">
-                <div class="scenarios-grid">
-                    <button class="scenario-btn" data-scenario="anafilaxia" onclick="loadScenario('anafilaxia')">Anafilaxia</button>
-                    <button class="scenario-btn" data-scenario="convulsao" onclick="loadScenario('convulsao')">Status Epilepticus</button>
-                    <button class="scenario-btn" data-scenario="isr" onclick="loadScenario('isr')">IOT / ISR</button>
-                    <button class="scenario-btn" data-scenario="choque" onclick="loadScenario('choque')">Choque</button>
-                    <button class="scenario-btn" data-scenario="choque-cardio" onclick="loadScenario('choque-cardio')">Choque Cardiogênico</button>
-                    <button class="scenario-btn" data-scenario="pos-pcr" onclick="loadScenario('pos-pcr')">Pós-PCR / Arritmia</button>
-                    <button class="scenario-btn" data-scenario="sedacao" onclick="loadScenario('sedacao')">Sedação Pós-IOT</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="tabs-container">
-        <div class="tabs">
-            <button class="tab active" data-tab="critico" onclick="switchTab('critico')">PCR</button>
-            <button class="tab" data-tab="completo" onclick="switchTab('completo')">Completo</button>
-        </div>
-    </div>
-
     <main class="content">
-        <div class="tab-content active" id="tab-critico">
+        <!-- VIEW: HOME -->
+        <div class="ped-view active" id="view-home">
+            <div class="home-card" onclick="showView('view-pcr')" style="border-left: 4px solid #F44336;">
+                <div class="home-card-title">PCR Pediátrica</div>
+                <div class="home-card-desc">Guia rápido de parada cardiorrespiratória</div>
+            </div>
+            <div class="home-card" onclick="showView('view-cenarios')" style="border-left: 4px solid #FF5252;">
+                <div class="home-card-title">Cenários</div>
+                <div class="home-card-desc">Anafilaxia, status, choque, IOT, sedação</div>
+            </div>
+            <div class="home-card" onclick="showView('view-calculadoras')" style="border-left: 4px solid #2196F3;">
+                <div class="home-card-title">Calculadoras</div>
+                <div class="home-card-desc">Infusões, doses por peso, equipamentos</div>
+            </div>
+        </div>
+
+        <!-- VIEW: PCR -->
+        <div class="ped-view" id="view-pcr">
+            <button class="back-btn" onclick="showView('view-home')">Voltar</button>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:16px">PCR Pediátrica</h2>
+
             <div class="cpr-box">
                 <div class="cpr-header">
-                    <div class="cpr-title">Parâmetros de RCP Pediátrica</div>
-                    <div class="cpr-ratio-fixed" style="font-size:.75rem;font-weight:700;color:var(--gray-400);">Compressão:Ventilação — 15:2</div>
+                    <div class="cpr-title">Parametros de RCP Pediatrica</div>
+                    <div class="cpr-ratio-fixed" style="font-size:.75rem;font-weight:700;color:var(--gray-400);">Compressao:Ventilacao — 15:2</div>
                 </div>
                 <div class="cpr-grid">
-                    <div class="cpr-item"><div class="cpr-label">Frequência</div><div class="cpr-value">100-120/min</div></div>
-                    <div class="cpr-item"><div class="cpr-label">Relação C:V</div><div class="cpr-value" id="cpr-ratio">15:2</div></div>
+                    <div class="cpr-item"><div class="cpr-label">Frequencia</div><div class="cpr-value">100-120/min</div></div>
+                    <div class="cpr-item"><div class="cpr-label">Relacao C:V</div><div class="cpr-value" id="cpr-ratio">15:2</div></div>
                     <div class="cpr-item"><div class="cpr-label">Profundidade</div><div class="cpr-value" id="cpr-depth">1/3 AP (~5cm)</div></div>
                     <div class="cpr-item"><div class="cpr-label">Com TOT</div><div class="cpr-value">1 a cada 2-3s</div></div>
                 </div>
             </div>
 
             <div class="defib-grid">
-                <div class="defib-card shock"><div class="defib-label">1ª Desfibrilação (2 J/kg)</div><div class="defib-value"><span id="defib1">--</span></div><div class="defib-unit">Joules</div></div>
-                <div class="defib-card shock"><div class="defib-label">2ª Desfibrilação (4 J/kg)</div><div class="defib-value"><span id="defib2">--</span></div><div class="defib-unit">Joules</div></div>
-                <div class="defib-card"><div class="defib-label">Cardioversão (0,5-1 J/kg)</div><div class="defib-value"><span id="cardioversao">--</span></div><div class="defib-unit">Joules</div></div>
+                <div class="defib-card shock"><div class="defib-label">1a Desfibrilacao (2 J/kg)</div><div class="defib-value"><span id="defib1">--</span></div><div class="defib-unit">Joules</div></div>
+                <div class="defib-card shock"><div class="defib-label">2a Desfibrilacao (4 J/kg)</div><div class="defib-value"><span id="defib2">--</span></div><div class="defib-unit">Joules</div></div>
+                <div class="defib-card"><div class="defib-label">Cardioversao (0,5-1 J/kg)</div><div class="defib-value"><span id="cardioversao">--</span></div><div class="defib-unit">Joules</div></div>
             </div>
 
             <div class="section collapsed" id="section-pcr">
                 <div class="section-header" onclick="toggleSection('section-pcr')">
                     <div class="section-icon critical"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg></div>
-                    <span class="section-title">Drogas de Parada Cardiorrespiratória</span>
+                    <span class="section-title">Drogas de Parada Cardiorrespiratoria</span>
                 </div>
                 <div class="section-body" id="pcr-drugs"></div>
             </div>
@@ -318,16 +303,16 @@
             <div class="section collapsed" id="section-causas">
                 <div class="section-header" onclick="toggleSection('section-causas')">
                     <div class="section-icon warning"><svg viewBox="0 0 24 24"><path d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/></svg></div>
-                    <span class="section-title">Causas Reversíveis (6H e 6T)</span>
+                    <span class="section-title">Causas Reversiveis (6H e 6T)</span>
                 </div>
                 <div class="section-body">
                     <div class="causes-grid">
                         <div class="causes-column">
                             <div class="causes-title hs">6 H</div>
                             <ul class="causes-list">
-                                <li><span class="cause-letter">H</span> Hipóxia</li>
+                                <li><span class="cause-letter">H</span> Hipoxia</li>
                                 <li><span class="cause-letter">H</span> Hipovolemia</li>
-                                <li><span class="cause-letter">H</span> Hidrogênio (Acidose)</li>
+                                <li><span class="cause-letter">H</span> Hidrogenio (Acidose)</li>
                                 <li><span class="cause-letter">H</span> Hipoglicemia</li>
                                 <li><span class="cause-letter">H</span> Hipo/Hipercalemia</li>
                                 <li><span class="cause-letter">H</span> Hipotermia</li>
@@ -336,8 +321,8 @@
                         <div class="causes-column">
                             <div class="causes-title ts">6 T</div>
                             <ul class="causes-list">
-                                <li><span class="cause-letter">T</span> Tensão (Pneumotórax)</li>
-                                <li><span class="cause-letter">T</span> Tamponamento cardíaco</li>
+                                <li><span class="cause-letter">T</span> Tensao (Pneumotorax)</li>
+                                <li><span class="cause-letter">T</span> Tamponamento cardiaco</li>
                                 <li><span class="cause-letter">T</span> Toxinas</li>
                                 <li><span class="cause-letter">T</span> Trombose pulmonar (TEP)</li>
                                 <li><span class="cause-letter">T</span> Trombose coronariana</li>
@@ -351,17 +336,55 @@
             <div class="section collapsed" id="section-via-aerea">
                 <div class="section-header" onclick="toggleSection('section-via-aerea')">
                     <div class="section-icon info"><svg viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/></svg></div>
-                    <span class="section-title">Via Aérea e Equipamentos</span>
+                    <span class="section-title">Via Aerea e Equipamentos</span>
                 </div>
                 <div class="section-body"><div class="equipment-grid" id="equipment-grid"></div></div>
             </div>
         </div>
 
-        <div class="tab-content" id="tab-completo">
+        <!-- VIEW: CENARIOS -->
+        <div class="ped-view" id="view-cenarios">
+            <button class="back-btn" onclick="showView('view-home')">Voltar</button>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:16px">Cenários</h2>
+            <div class="scenario-card" onclick="loadScenarioView('anafilaxia')">
+                <div class="scenario-card-title">Anafilaxia</div>
+                <div class="scenario-card-desc">Epinefrina IM, corticoide, anti-histaminico</div>
+            </div>
+            <div class="scenario-card" onclick="loadScenarioView('convulsao')">
+                <div class="scenario-card-title">Status Epilepticus</div>
+                <div class="scenario-card-desc">Diazepam, midazolam, fenitoina, fenobarbital</div>
+            </div>
+            <div class="scenario-card" onclick="loadScenarioView('isr')">
+                <div class="scenario-card-title">IOT / ISR</div>
+                <div class="scenario-card-desc">Checklist, cetamina, rocuronio, succinilcolina</div>
+            </div>
+            <div class="scenario-card" onclick="loadScenarioView('choque')">
+                <div class="scenario-card-title">Choque</div>
+                <div class="scenario-card-desc">Fluidos, epinefrina, norepinefrina, dobutamina</div>
+            </div>
+            <div class="scenario-card" onclick="loadScenarioView('choque-cardio')">
+                <div class="scenario-card-title">Choque Cardiogenico</div>
+                <div class="scenario-card-desc">Dobutamina, milrinona, epinefrina</div>
+            </div>
+            <div class="scenario-card" onclick="loadScenarioView('pos-pcr')">
+                <div class="scenario-card-title">Pos-PCR / Arritmia</div>
+                <div class="scenario-card-desc">Amiodarona, epinefrina, norepinefrina</div>
+            </div>
+            <div class="scenario-card" onclick="loadScenarioView('sedação')">
+                <div class="scenario-card-title">Sedacao Pos-IOT</div>
+                <div class="scenario-card-desc">Fentanil, midazolam, dexmedetomidina, cetamina</div>
+            </div>
+        </div>
+
+        <!-- VIEW: CALCULADORAS -->
+        <div class="ped-view" id="view-calculadoras">
+            <button class="back-btn" id="calc-back-btn" onclick="showView('view-home')">Voltar</button>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:16px">Calculadoras</h2>
+
             <div class="section collapsed" id="section-iot">
                 <div class="section-header" onclick="toggleSection('section-iot')">
                     <div class="section-icon success"><svg viewBox="0 0 24 24"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg></div>
-                    <span class="section-title">Checklist de Intubação Orotraqueal</span>
+                    <span class="section-title">Checklist de Intubacao Orotraqueal</span>
                 </div>
                 <div class="section-body"><div class="checklist" id="iot-checklist"></div></div>
             </div>
@@ -369,7 +392,7 @@
             <div class="section collapsed" id="section-drogas-iot">
                 <div class="section-header" onclick="toggleSection('section-drogas-iot')">
                     <div class="section-icon purple"><svg viewBox="0 0 24 24"><path d="M6,3H8V5H6V3M10,3H12V5H10V3M14,3H16V5H14V3M18,3H20V5H18V3M20,7V9H18V7H20M6,7H8V9H6V7M6,11H8V13H6V11M6,15H8V17H6V15M6,19H8V21H6V19M10,19H12V21H10V19M14,19H16V21H14V19M18,19H20V21H18V19Z"/></svg></div>
-                    <span class="section-title">Drogas de Intubação (ISR)</span>
+                    <span class="section-title">Drogas de Intubacao (ISR)</span>
                 </div>
                 <div class="section-body" id="iot-drugs"></div>
             </div>
@@ -377,7 +400,7 @@
             <div class="section collapsed" id="section-emergencias">
                 <div class="section-header" onclick="toggleSection('section-emergencias')">
                     <div class="section-icon critical"><svg viewBox="0 0 24 24"><path d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/></svg></div>
-                    <span class="section-title">Outras Drogas de Emergência</span>
+                    <span class="section-title">Outras Drogas de Emergencia</span>
                 </div>
                 <div class="section-body" id="emergency-drugs"></div>
             </div>
@@ -393,7 +416,7 @@
             <div class="section collapsed" id="section-neuro">
                 <div class="section-header" onclick="toggleSection('section-neuro')">
                     <div class="section-icon info"><svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/></svg></div>
-                    <span class="section-title">Neuroproteção e Osmoterapia</span>
+                    <span class="section-title">Neuroprotecao e Osmoterapia</span>
                 </div>
                 <div class="section-body" id="neuro-drugs"></div>
             </div>
@@ -401,7 +424,7 @@
             <div class="section collapsed" id="section-transfusao">
                 <div class="section-header" onclick="toggleSection('section-transfusao')">
                     <div class="section-icon critical"><svg viewBox="0 0 24 24"><path d="M12,2C12,2 7,7.33 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12C17,7.33 12,2 12,2Z"/></svg></div>
-                    <span class="section-title">Transfusão e Hemocomponentes</span>
+                    <span class="section-title">Transfusao e Hemocomponentes</span>
                 </div>
                 <div class="section-body" id="transfusion-section"></div>
             </div>
@@ -417,7 +440,7 @@
             <div class="section collapsed" id="section-infusoes">
                 <div class="section-header" onclick="toggleSection('section-infusoes')">
                     <div class="section-icon purple"><svg viewBox="0 0 24 24"><path d="M3,3V21H21V3H3M18,18H6V17H18V18M18,16H6V15H18V16M18,12H6V6H18V12Z"/></svg></div>
-                    <span class="section-title">Infusões Contínuas</span>
+                    <span class="section-title">Infusoes Continuas</span>
                 </div>
                 <div class="section-body" id="infusions-section"></div>
             </div>
@@ -1123,125 +1146,116 @@
             }
         }
 
-        function switchTab(tabName) {
-            var tabs = document.querySelectorAll('.tab');
-            var contents = document.querySelectorAll('.tab-content');
-            for (var i = 0; i < tabs.length; i++) {
-                tabs[i].classList.remove('active');
-            }
-            for (var j = 0; j < contents.length; j++) {
-                contents[j].classList.remove('active');
-            }
-            document.querySelector('.tab[data-tab="' + tabName + '"]').classList.add('active');
-            document.getElementById('tab-' + tabName).classList.add('active');
+        function showView(viewId) {
+            document.querySelectorAll('.ped-view').forEach(function(v) { v.classList.remove('active'); });
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo(0, 0);
         }
 
         function toggleSection(id) {
             document.getElementById(id).classList.toggle('collapsed');
         }
 
-        function toggleScenarios() {
-            document.getElementById('scenarios-section').classList.toggle('collapsed');
-        }
-
-        /* setCPRRatio removida — relação fixa 15:2 (2 socorristas) */
-
-        function loadScenario(s) {
-            var btns = document.querySelectorAll('.scenario-btn');
-            for (var i = 0; i < btns.length; i++) {
-                if (btns[i].dataset.scenario === s) {
-                    btns[i].classList.add('active');
-                } else {
-                    btns[i].classList.remove('active');
-                }
+        var scenarioCfg = {
+            anafilaxia: {
+                highlight: ['epinefrina-im', 'hidrocortisona', 'difenidramina'],
+                sections: ['section-emergencias'],
+                scrollTo: 'epinefrina-im',
+                infusionHighlight: []
+            },
+            convulsao: {
+                highlight: ['diazepam', 'midazolam-conv', 'fenitoina', 'fenobarbital', 'levetiracetam'],
+                sections: ['section-convulsao'],
+                scrollTo: 'diazepam',
+                infusionHighlight: []
+            },
+            isr: {
+                highlight: ['cetamina', 'midazolam', 'fentanil', 'rocuronio'],
+                sections: ['section-iot', 'section-drogas-iot'],
+                scrollTo: 'cetamina',
+                infusionHighlight: []
+            },
+            choque: {
+                highlight: [],
+                sections: ['section-fluidos', 'section-infusoes'],
+                scrollTo: null,
+                infusionHighlight: ['epinefrina', 'norepinefrina', 'dobutamina']
+            },
+            'choque-cardio': {
+                highlight: [],
+                sections: ['section-infusoes'],
+                scrollTo: null,
+                infusionHighlight: ['dobutamina', 'milrinona', 'epinefrina']
+            },
+            'pos-pcr': {
+                highlight: [],
+                sections: ['section-infusoes'],
+                scrollTo: null,
+                infusionHighlight: ['amiodarona', 'epinefrina', 'norepinefrina']
+            },
+            'sedação': {
+                highlight: [],
+                sections: ['section-infusoes'],
+                scrollTo: null,
+                infusionHighlight: ['fentanil', 'midazolam_inf', 'dexmedetomidina', 'cetamina_inf']
             }
+        };
 
-            var cards = document.querySelectorAll('.drug-card');
-            for (var j = 0; j < cards.length; j++) {
-                cards[j].classList.remove('highlight');
+        function loadScenarioView(s) {
+            var cfg = scenarioCfg[s];
+            if (!cfg) return;
+
+            // Switch to calculadoras view
+            showView('view-calculadoras');
+
+            // Change back button to go to cenarios instead of home
+            var backBtn = document.getElementById('calc-back-btn');
+            if (backBtn) {
+                backBtn.textContent = 'Voltar aos cenarios';
+                backBtn.onclick = function() {
+                    // Reset back button
+                    backBtn.textContent = 'Voltar';
+                    backBtn.onclick = function() { showView('view-home'); };
+                    // Clear highlights
+                    document.querySelectorAll('.drug-card.highlight').forEach(function(c) { c.classList.remove('highlight'); });
+                    document.querySelectorAll('.infusion-card.highlight').forEach(function(c) { c.classList.remove('highlight'); });
+                    showView('view-cenarios');
+                };
             }
-
-            var cfg = {
-                anafilaxia: {
-                    tab: 'completo',
-                    highlight: ['epinefrina-im', 'hidrocortisona', 'difenidramina'],
-                    sections: ['section-emergencias'],
-                    scrollTo: 'epinefrina-im'
-                },
-                convulsao: {
-                    tab: 'completo',
-                    highlight: ['diazepam', 'midazolam-conv', 'fenitoina', 'fenobarbital', 'levetiracetam'],
-                    sections: ['section-convulsao'],
-                    scrollTo: 'diazepam'
-                },
-                isr: {
-                    tab: 'completo',
-                    highlight: ['cetamina', 'midazolam', 'fentanil', 'rocuronio'],
-                    sections: ['section-iot', 'section-drogas-iot'],
-                    scrollTo: 'cetamina'
-                },
-                choque: {
-                    tab: 'completo',
-                    highlight: [],
-                    sections: ['section-fluidos', 'section-infusoes'],
-                    scrollTo: null,
-                    infusionHighlight: ['epinefrina', 'norepinefrina', 'dobutamina']
-                },
-                'choque-cardio': {
-                    tab: 'completo',
-                    highlight: [],
-                    sections: ['section-infusoes'],
-                    scrollTo: null,
-                    infusionHighlight: ['dobutamina', 'milrinona', 'epinefrina']
-                },
-                'pos-pcr': {
-                    tab: 'completo',
-                    highlight: [],
-                    sections: ['section-infusoes'],
-                    scrollTo: null,
-                    infusionHighlight: ['amiodarona', 'epinefrina', 'norepinefrina']
-                },
-                sedacao: {
-                    tab: 'completo',
-                    highlight: [],
-                    sections: ['section-infusoes'],
-                    scrollTo: null,
-                    infusionHighlight: ['fentanil', 'midazolam_inf', 'dexmedetomidina', 'cetamina_inf']
-                }
-            };
-
-            if (!cfg[s]) return;
-            switchTab(cfg[s].tab);
 
             setTimeout(function() {
-                if (cfg[s].sections) {
-                    for (var m = 0; m < cfg[s].sections.length; m++) {
-                        var sec = document.getElementById(cfg[s].sections[m]);
+                // Clear previous highlights
+                document.querySelectorAll('.drug-card').forEach(function(c) { c.classList.remove('highlight'); });
+                document.querySelectorAll('.infusion-card').forEach(function(c) { c.classList.remove('highlight'); });
+
+                // Open relevant sections
+                if (cfg.sections) {
+                    for (var m = 0; m < cfg.sections.length; m++) {
+                        var sec = document.getElementById(cfg.sections[m]);
                         if (sec) sec.classList.remove('collapsed');
                     }
                 }
 
-                for (var k = 0; k < cfg[s].highlight.length; k++) {
-                    var el = document.getElementById('drug-' + cfg[s].highlight[k]);
+                // Highlight drug cards
+                for (var k = 0; k < cfg.highlight.length; k++) {
+                    var el = document.getElementById('drug-' + cfg.highlight[k]);
                     if (el) el.classList.add('highlight');
                 }
 
-                var allInfCards = document.querySelectorAll('.infusion-card');
-                for (var n = 0; n < allInfCards.length; n++) {
-                    allInfCards[n].classList.remove('highlight');
-                }
-                if (cfg[s].infusionHighlight) {
-                    for (var p = 0; p < cfg[s].infusionHighlight.length; p++) {
-                        var infEl = document.getElementById('inf-card-' + cfg[s].infusionHighlight[p]);
+                // Highlight infusion cards
+                if (cfg.infusionHighlight) {
+                    for (var p = 0; p < cfg.infusionHighlight.length; p++) {
+                        var infEl = document.getElementById('inf-card-' + cfg.infusionHighlight[p]);
                         if (infEl) infEl.classList.add('highlight');
                     }
                 }
 
-                if (cfg[s].scrollTo) {
-                    var firstEl = document.getElementById('drug-' + cfg[s].scrollTo);
+                // Scroll to first relevant element
+                if (cfg.scrollTo) {
+                    var firstEl = document.getElementById('drug-' + cfg.scrollTo);
                     if (firstEl) firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else if (cfg[s].sections && cfg[s].sections[0]) {
-                    var secEl = document.getElementById(cfg[s].sections[0]);
+                } else if (cfg.sections && cfg.sections[0]) {
+                    var secEl = document.getElementById(cfg.sections[0]);
                     if (secEl) secEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }, 100);
@@ -1326,8 +1340,10 @@
     </script>
 <div class="fab-menu">
     <div class="fab-options" id="fabOptions">
-        <a href="#" onclick="event.preventDefault(); toggleFab(); switchTab('critico')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> PCR</a>
-        <a href="#" onclick="event.preventDefault(); toggleFab(); switchTab('completo')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Completo</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showView('view-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Home</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showView('view-pcr')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> PCR</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showView('view-cenarios')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Cenários</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); showView('view-calculadoras')"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Calculadoras</a>
     </div>
     <button class="fab-btn" id="fabBtn" onclick="toggleFab()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="fabIcon">
