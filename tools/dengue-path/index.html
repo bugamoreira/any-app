@@ -1946,6 +1946,7 @@ function openTrilhaGrupo(g) {
 const pesoInput = document.getElementById('pesoInput');
 const weightStatus = document.getElementById('weightStatus');
 
+pesoInput.addEventListener('focus', function() { this.select(); });
 pesoInput.addEventListener('input', function() {
     const p = parseFloat(this.value);
     if (!p || p < 40 || p > 200) {
