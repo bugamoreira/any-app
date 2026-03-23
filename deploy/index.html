@@ -3897,22 +3897,15 @@
         .resultado-item.caution { background-color: var(--warning-bg); border: 1px solid var(--warning); }
         .resultado-item.critical { background-color: var(--danger-bg); border: 1px solid var(--danger); }
         .resultado-label { font-size: 11px; color: var(--text-secondary); margin-bottom: var(--spacing-xs); text-transform: uppercase; letter-spacing: 0.5px; }
-        .resultado-valor { font-size: 28px; font-weight: 700; }
+        .resultado-valor { font-size: 28px; font-weight: 700; background: transparent; border: none; text-align: center; width: 100%; color: inherit; outline: none; -moz-appearance: textfield; }
+        .resultado-valor::-webkit-outer-spin-button,
+        .resultado-valor::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .resultado-valor:focus { border-bottom: 2px solid var(--accent); }
+        .resultado-valor::placeholder { color: var(--text-muted); }
         .resultado-item.therapeutic .resultado-valor { color: var(--success); }
         .resultado-item.caution .resultado-valor { color: var(--warning); }
         .resultado-item.critical .resultado-valor { color: var(--danger); }
         .resultado-unidade { font-size: 12px; color: var(--text-secondary); }
-
-        /* Manual input row */
-        .manual-input-row { display: flex; gap: 10px; margin: 12px 0 16px; align-items: flex-end; }
-        .manual-input-group { flex: 1; }
-        .manual-input-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-        .manual-input-group input { width: 100%; background-color: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px 8px; font-size: 18px; font-weight: 700; color: var(--text-primary); text-align: center; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
-        .manual-input-group input::-webkit-outer-spin-button,
-        .manual-input-group input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        .manual-input-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255, 82, 82, 0.2); }
-        .manual-input-group .mi-unit { font-size: 11px; color: var(--text-secondary); text-align: center; margin-top: 3px; }
-        .manual-input-swap { display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 18px; padding-bottom: 16px; flex-shrink: 0; }
         
         /* Inputs */
         .input-row { display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
@@ -4003,7 +3996,7 @@
         <!-- PESO BAR (compacto) -->
         <div class="peso-bar" id="pesoBar">
             <span class="peso-bar-label">Peso:</span>
-            <input type="number" inputmode="decimal" class="peso-bar-input" id="pesoBarInput" min="40" max="200" value="70" oninput="updateWeightInline()">
+            <input type="number" inputmode="decimal" class="peso-bar-input" id="pesoBarInput" min="40" max="200" placeholder="70" oninput="updateWeightInline()" onblur="pesoBarBlur()">
             <span class="peso-bar-unit">kg</span>
         </div>
 
@@ -4040,8 +4033,8 @@
                         <div class="peso-alert" id="nora-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="nora-dose" min="0.01" max="3" step="0.01" value="0.1" oninput="calcularNora()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="nora-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="nora-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="nora-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="nora-dose-val">--</div><div class="resultado-unidade">mcg/kg/min</div></div>
+                            <div class="resultado-item therapeutic" id="nora-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="nora-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="nora-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="nora-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4055,8 +4048,8 @@
                         <div class="peso-alert" id="adrenalina-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="adrenalina-dose" min="0.05" max="2" step="0.01" value="0.1" oninput="calcularAdrenalina()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="adrenalina-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="adrenalina-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="adrenalina-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="adrenalina-dose-val">--</div><div class="resultado-unidade">mcg/kg/min</div></div>
+                            <div class="resultado-item therapeutic" id="adrenalina-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="adrenalina-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="adrenalina-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="adrenalina-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4075,8 +4068,8 @@
                         <div class="peso-alert" id="dobuta-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="dobuta-dose" min="2" max="40" step="0.5" value="5" oninput="calcularDobuta()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="dobuta-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="dobuta-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="dobuta-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="dobuta-dose-val">--</div><div class="resultado-unidade">mcg/kg/min</div></div>
+                            <div class="resultado-item therapeutic" id="dobuta-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="dobuta-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="dobuta-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="dobuta-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4090,8 +4083,8 @@
                         <div class="peso-alert" id="dopamina-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="dopamina-dose" min="2" max="50" step="0.5" value="5" oninput="calcularDopamina()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="dopamina-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="dopamina-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="dopamina-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="dopamina-dose-val">--</div><div class="resultado-unidade">mcg/kg/min</div></div>
+                            <div class="resultado-item therapeutic" id="dopamina-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="dopamina-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="dopamina-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="dopamina-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4104,8 +4097,8 @@
                         <div class="range-box"><span class="range-label">Range (SSC 2021)</span><span class="range-value">0,01 - 0,04 UI/min</span></div>
                         <div class="calc-section"><div class="calc-label">Dose (UI/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="vaso-dose" min="0.01" max="0.04" step="0.005" value="0.03" oninput="calcularVaso()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="vaso-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="vaso-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="vaso-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="vaso-dose-val">--</div><div class="resultado-unidade">UI/min</div></div>
+                            <div class="resultado-item therapeutic" id="vaso-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="vaso-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="vaso-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="vaso-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">UI/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4120,8 +4113,8 @@
                         <div class="peso-alert" id="milri-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="milri-dose" min="0.375" max="0.75" step="0.025" value="0.5" oninput="calcularMilri()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="milri-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="milri-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="milri-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="milri-dose-val">--</div><div class="resultado-unidade">mcg/kg/min</div></div>
+                            <div class="resultado-item therapeutic" id="milri-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="milri-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="milri-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="milri-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4166,8 +4159,8 @@
                         <div class="peso-alert" id="mida-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mg/kg/h)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="mida-dose" min="0.04" max="0.2" step="0.01" value="0.1" oninput="calcularMida()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="mida-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="mida-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="mida-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="mida-dose-val">--</div><div class="resultado-unidade">mg/kg/h</div></div>
+                            <div class="resultado-item therapeutic" id="mida-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="mida-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="mida-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="mida-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mg/kg/h</div></div>
                         </div>
                     </div>
                 </div>
@@ -4199,8 +4192,8 @@
                         <div class="peso-alert" id="fenta-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/h)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="fenta-dose" min="0.3" max="2" step="0.1" value="1" oninput="calcularFenta()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="fenta-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="fenta-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="fenta-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="fenta-dose-val">--</div><div class="resultado-unidade">mcg/kg/h</div></div>
+                            <div class="resultado-item therapeutic" id="fenta-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="fenta-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="fenta-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="fenta-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/h</div></div>
                         </div>
                     </div>
                 </div>
@@ -4219,8 +4212,8 @@
                         <div class="peso-alert" id="propofol-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mg/kg/h)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="propofol-dose" min="1" max="4" step="0.1" value="2" oninput="calcularPropofol()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="propofol-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="propofol-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="propofol-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="propofol-dose-val">--</div><div class="resultado-unidade">mg/kg/h</div></div>
+                            <div class="resultado-item therapeutic" id="propofol-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="propofol-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="propofol-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="propofol-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mg/kg/h</div></div>
                         </div>
                     </div>
                 </div>
@@ -4234,8 +4227,8 @@
                         <div class="peso-alert" id="dex-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/h)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="dex-dose" min="0.2" max="1.4" step="0.1" value="0.7" oninput="calcularDex()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="dex-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="dex-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="dex-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="dex-dose-val">--</div><div class="resultado-unidade">mcg/kg/h</div></div>
+                            <div class="resultado-item therapeutic" id="dex-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="dex-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="dex-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="dex-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/h</div></div>
                         </div>
                     </div>
                 </div>
@@ -4254,8 +4247,8 @@
                         <div class="peso-alert" id="ceta-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mg/kg/h)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="ceta-dose" min="0.5" max="2" step="0.1" value="1" oninput="calcularCeta()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="ceta-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="ceta-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="ceta-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="ceta-dose-val">--</div><div class="resultado-unidade">mg/kg/h</div></div>
+                            <div class="resultado-item therapeutic" id="ceta-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="ceta-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="ceta-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="ceta-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mg/kg/h</div></div>
                         </div>
                     </div>
                 </div>
@@ -4268,8 +4261,8 @@
                         <div class="range-box"><span class="range-label">Range terapêutico</span><span class="range-value">1 - 10 mg/h</span></div>
                         <div class="calc-section"><div class="calc-label">Dose (mg/h)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="morfina-dose" min="1" max="10" step="0.5" value="2" oninput="calcularMorfina()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="morfina-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="morfina-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="morfina-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="morfina-dose-val">--</div><div class="resultado-unidade">mg/h</div></div>
+                            <div class="resultado-item therapeutic" id="morfina-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="morfina-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="morfina-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="morfina-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mg/h</div></div>
                         </div>
                     </div>
                 </div>
@@ -4291,8 +4284,8 @@
                         <div class="peso-alert" id="cisa-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="cisa-dose" min="1" max="3" step="0.1" value="2" oninput="calcularCisa()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="cisa-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="cisa-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="cisa-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="cisa-dose-val">--</div><div class="resultado-unidade">mcg/kg/min</div></div>
+                            <div class="resultado-item therapeutic" id="cisa-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="cisa-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="cisa-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="cisa-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4306,8 +4299,8 @@
                         <div class="peso-alert" id="rocu-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="rocu-dose" min="5" max="12" step="0.5" value="8" oninput="calcularRocu()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="rocu-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="rocu-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="rocu-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="rocu-dose-val">--</div><div class="resultado-unidade">mcg/kg/min</div></div>
+                            <div class="resultado-item therapeutic" id="rocu-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="rocu-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="rocu-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="rocu-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4334,8 +4327,8 @@
                         <div class="peso-alert" id="nitro-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="nitro-dose" min="0.25" max="2" step="0.05" value="0.5" oninput="calcularNitro()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="nitro-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="nitro-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="nitro-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="nitro-dose-val">--</div><div class="resultado-unidade">mcg/kg/min</div></div>
+                            <div class="resultado-item therapeutic" id="nitro-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="nitro-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="nitro-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="nitro-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4349,8 +4342,8 @@
                         <div class="peso-alert" id="nipride-peso-alert">Informe o peso do paciente</div>
                         <div class="calc-section"><div class="calc-label">Dose (mcg/kg/min)</div><div class="calc-slider-container"><input type="range" class="calc-slider" id="nipride-dose" min="0.25" max="10" step="0.25" value="1" oninput="calcularNipride()"></div></div>
                         <div class="resultado-grid">
-                            <div class="resultado-item therapeutic" id="nipride-res-ml"><div class="resultado-label">Velocidade</div><div class="resultado-valor" id="nipride-ml">--</div><div class="resultado-unidade">mL/h</div></div>
-                            <div class="resultado-item therapeutic" id="nipride-res-dose"><div class="resultado-label">Dose</div><div class="resultado-valor" id="nipride-dose-val">--</div><div class="resultado-unidade">mcg/kg/min</div></div>
+                            <div class="resultado-item therapeutic" id="nipride-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="nipride-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
+                            <div class="resultado-item therapeutic" id="nipride-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="nipride-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
                     </div>
                 </div>
@@ -4527,8 +4520,10 @@
             // Salvar no localStorage
             localStorage.setItem('anyapp-peso', p.toString());
 
-            // Atualizar peso-bar compacto
-            document.getElementById('pesoBarInput').value = p;
+            // Atualizar peso-bar compacto (placeholder, não value — permite edição limpa)
+            var barInput = document.getElementById('pesoBarInput');
+            barInput.value = '';
+            barInput.placeholder = p;
 
             // Ocultar gate, exibir conteúdo
             document.getElementById('pesoGate').style.display = 'none';
@@ -4540,7 +4535,8 @@
         }
 
         function updateWeightInline() {
-            var p = parseFloat(document.getElementById('pesoBarInput').value);
+            var barInput = document.getElementById('pesoBarInput');
+            var p = parseFloat(barInput.value);
             if (!p || p < 40 || p > 200) return;
             var pesoInput = document.getElementById('pesoInput');
             if (pesoInput) {
@@ -4548,6 +4544,14 @@
                 pesoInput.dispatchEvent(new Event('input'));
             }
             localStorage.setItem('anyapp-peso', p.toString());
+        }
+        function pesoBarBlur() {
+            var barInput = document.getElementById('pesoBarInput');
+            var p = parseFloat(barInput.value);
+            if (p && p >= 40 && p <= 200) {
+                barInput.placeholder = p;
+            }
+            barInput.value = '';
         }
 
         // ==================== INICIALIZAÇÃO ====================
@@ -4595,11 +4599,15 @@
             calcularVaso();
             calcularMorfina();
 
-            // Initialize manual inputs after everything is loaded
-            setTimeout(initManualInputs, 100);
         })();
 
         // ==================== PESO ====================
+        function atualizarReadonly() {
+            Object.keys(drugConfig).forEach(function(id) {
+                if (drugConfig[id]._updateReadonly) drugConfig[id]._updateReadonly();
+            });
+        }
+
         function handlePesoChange(e) {
             const v = parseFloat(e.target.value);
             if (v >= 40 && v <= 200) {
@@ -4609,15 +4617,18 @@
                 localStorage.setItem('anyapp-peso', v);
                 recalcularTodas();
                 atualizarAlertas(false);
+                atualizarReadonly();
             } else if (v) {
                 peso = null;
                 e.target.classList.add('invalid');
                 document.getElementById('pesoCard').classList.add('invalid');
                 atualizarAlertas(true);
+                atualizarReadonly();
             } else {
                 peso = null;
                 e.target.classList.remove('invalid');
                 document.getElementById('pesoCard').classList.remove('invalid');
+                atualizarReadonly();
             }
         }
 
@@ -4628,6 +4639,7 @@
                 peso = parseFloat(s);
                 recalcularTodas();
                 atualizarAlertas(false);
+                atualizarReadonly();
             }
         }
         document.getElementById('btnRecuperar').addEventListener('click', recuperarPeso);
@@ -4834,20 +4846,22 @@
 
         function calcularNora() {
             const d = parseFloat(document.getElementById('nora-dose').value);
-            document.getElementById('nora-dose-val').textContent = fmt(d, 2);
-            if (!peso) { document.getElementById('nora-ml').textContent = '--'; syncManualInputs('nora'); return; }
-            document.getElementById('nora-ml').textContent = fmt((d * peso * 60) / noraConc);
+            var doseEl = document.getElementById('nora-dose-val');
+            var mlEl = document.getElementById('nora-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d, 2);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / noraConc);
             setStatus(document.getElementById('nora-res-ml'), document.getElementById('nora-res-dose'), d, 0.01, 1, 2);
-            syncManualInputs('nora');
         }
 
         function calcularAdrenalina() {
             const d = parseFloat(document.getElementById('adrenalina-dose').value);
-            document.getElementById('adrenalina-dose-val').textContent = fmt(d, 2);
-            if (!peso) { document.getElementById('adrenalina-ml').textContent = '--'; syncManualInputs('adrenalina'); return; }
-            document.getElementById('adrenalina-ml').textContent = fmt((d * peso * 60) / 64);
+            var doseEl = document.getElementById('adrenalina-dose-val');
+            var mlEl = document.getElementById('adrenalina-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d, 2);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / 64);
             setStatus(document.getElementById('adrenalina-res-ml'), document.getElementById('adrenalina-res-dose'), d, 0.05, 0.5, 1);
-            syncManualInputs('adrenalina');
         }
 
         function setDobutaConc(t) {
@@ -4865,37 +4879,41 @@
 
         function calcularDobuta() {
             const d = parseFloat(document.getElementById('dobuta-dose').value);
-            document.getElementById('dobuta-dose-val').textContent = fmt(d);
-            if (!peso) { document.getElementById('dobuta-ml').textContent = '--'; syncManualInputs('dobuta'); return; }
-            document.getElementById('dobuta-ml').textContent = fmt((d * peso * 60) / dobutaConc);
+            var doseEl = document.getElementById('dobuta-dose-val');
+            var mlEl = document.getElementById('dobuta-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / dobutaConc);
             setStatus(document.getElementById('dobuta-res-ml'), document.getElementById('dobuta-res-dose'), d, 2, 20, 30);
-            syncManualInputs('dobuta');
         }
 
         function calcularDopamina() {
             const d = parseFloat(document.getElementById('dopamina-dose').value);
-            document.getElementById('dopamina-dose-val').textContent = fmt(d);
-            if (!peso) { document.getElementById('dopamina-ml').textContent = '--'; syncManualInputs('dopamina'); return; }
-            document.getElementById('dopamina-ml').textContent = fmt((d * peso * 60) / 1000);
+            var doseEl = document.getElementById('dopamina-dose-val');
+            var mlEl = document.getElementById('dopamina-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / 1000);
             setStatus(document.getElementById('dopamina-res-ml'), document.getElementById('dopamina-res-dose'), d, 2, 20, 35);
-            syncManualInputs('dopamina');
         }
 
         function calcularVaso() {
             const d = parseFloat(document.getElementById('vaso-dose').value);
-            document.getElementById('vaso-dose-val').textContent = fmt(d, 3);
-            document.getElementById('vaso-ml').textContent = fmt((d * 60) / 0.4);
+            var doseEl = document.getElementById('vaso-dose-val');
+            var mlEl = document.getElementById('vaso-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d, 3);
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * 60) / 0.4);
             setStatus(document.getElementById('vaso-res-ml'), document.getElementById('vaso-res-dose'), d, 0.01, 0.03, 0.04);
-            syncManualInputs('vaso');
         }
 
         function calcularMilri() {
             const d = parseFloat(document.getElementById('milri-dose').value);
-            document.getElementById('milri-dose-val').textContent = fmt(d, 3);
-            if (!peso) { document.getElementById('milri-ml').textContent = '--'; syncManualInputs('milri'); return; }
-            document.getElementById('milri-ml').textContent = fmt((d * peso * 60) / 200);
+            var doseEl = document.getElementById('milri-dose-val');
+            var mlEl = document.getElementById('milri-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d, 3);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / 200);
             setStatus(document.getElementById('milri-res-ml'), document.getElementById('milri-res-dose'), d, 0.375, 0.6, 0.75);
-            syncManualInputs('milri');
         }
 
         // ==================== SEDAÇÃO ====================
@@ -4917,21 +4935,23 @@
 
         function calcularMida() {
             const d = parseFloat(document.getElementById('mida-dose').value);
-            document.getElementById('mida-dose-val').textContent = fmt(d, 2);
+            var doseEl = document.getElementById('mida-dose-val');
+            var mlEl = document.getElementById('mida-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d, 2);
             if (peso) document.querySelector('#mida-bolus-calc .info-value').textContent = fmt(Math.min(0.2 * peso, 20)) + ' mg';
-            if (!peso) { document.getElementById('mida-ml').textContent = '--'; syncManualInputs('mida'); return; }
-            document.getElementById('mida-ml').textContent = fmt((d * peso) / midaConc);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso) / midaConc);
             setStatus(document.getElementById('mida-res-ml'), document.getElementById('mida-res-dose'), d, 0.04, midaMode === 'sedacao' ? 0.15 : 1.5, midaMode === 'sedacao' ? 0.2 : 2);
-            syncManualInputs('mida');
         }
 
         function calcularFenta() {
             const d = parseFloat(document.getElementById('fenta-dose').value);
-            document.getElementById('fenta-dose-val').textContent = fmt(d);
-            if (!peso) { document.getElementById('fenta-ml').textContent = '--'; syncManualInputs('fenta'); return; }
-            document.getElementById('fenta-ml').textContent = fmt((d * peso) / fentaConc);
+            var doseEl = document.getElementById('fenta-dose-val');
+            var mlEl = document.getElementById('fenta-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso) / fentaConc);
             setStatus(document.getElementById('fenta-res-ml'), document.getElementById('fenta-res-dose'), d, 0.3, 1.5, 2);
-            syncManualInputs('fenta');
         }
 
         function setPropofolMode(m) {
@@ -4952,21 +4972,23 @@
 
         function calcularPropofol() {
             const d = parseFloat(document.getElementById('propofol-dose').value);
-            document.getElementById('propofol-dose-val').textContent = fmt(d);
+            var doseEl = document.getElementById('propofol-dose-val');
+            var mlEl = document.getElementById('propofol-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
             if (peso) document.querySelector('#propofol-bolus-calc .info-value').textContent = fmt(0.5 * peso) + ' - ' + fmt(2.5 * peso) + ' mg';
-            if (!peso) { document.getElementById('propofol-ml').textContent = '--'; syncManualInputs('propofol'); return; }
-            document.getElementById('propofol-ml').textContent = fmt((d * peso) / 10);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso) / 10);
             setStatus(document.getElementById('propofol-res-ml'), document.getElementById('propofol-res-dose'), d, 1, 3, propofolMode === 'sedacao' ? 4 : 4.8);
-            syncManualInputs('propofol');
         }
 
         function calcularDex() {
             const d = parseFloat(document.getElementById('dex-dose').value);
-            document.getElementById('dex-dose-val').textContent = fmt(d);
-            if (!peso) { document.getElementById('dex-ml').textContent = '--'; syncManualInputs('dex'); return; }
-            document.getElementById('dex-ml').textContent = fmt((d * peso) / 4);
+            var doseEl = document.getElementById('dex-dose-val');
+            var mlEl = document.getElementById('dex-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso) / 4);
             setStatus(document.getElementById('dex-res-ml'), document.getElementById('dex-res-dose'), d, 0.2, 1.2, 1.4);
-            syncManualInputs('dex');
         }
 
         function setCetaMode(m) {
@@ -4987,38 +5009,43 @@
 
         function calcularCeta() {
             const d = parseFloat(document.getElementById('ceta-dose').value);
-            document.getElementById('ceta-dose-val').textContent = fmt(d);
+            var doseEl = document.getElementById('ceta-dose-val');
+            var mlEl = document.getElementById('ceta-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
             if (peso) document.querySelector('#ceta-bolus-calc .info-value').textContent = fmt(1.5 * peso) + ' mg';
-            if (!peso) { document.getElementById('ceta-ml').textContent = '--'; syncManualInputs('ceta'); return; }
-            document.getElementById('ceta-ml').textContent = fmt((d * peso) / 5);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso) / 5);
             setStatus(document.getElementById('ceta-res-ml'), document.getElementById('ceta-res-dose'), d, 0.5, cetaMode === 'sedacao' ? 1.5 : 5, cetaMode === 'sedacao' ? 2 : 7.5);
-            syncManualInputs('ceta');
         }
 
         function calcularMorfina() {
             const d = parseFloat(document.getElementById('morfina-dose').value);
-            document.getElementById('morfina-ml').textContent = fmt(d);
-            document.getElementById('morfina-dose-val').textContent = fmt(d);
+            var doseEl = document.getElementById('morfina-dose-val');
+            var mlEl = document.getElementById('morfina-ml');
+            if (document.activeElement !== mlEl) mlEl.value = fmt(d);
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
             setStatus(document.getElementById('morfina-res-ml'), document.getElementById('morfina-res-dose'), d, 1, 5, 8);
         }
 
         // ==================== BNM ====================
         function calcularCisa() {
             const d = parseFloat(document.getElementById('cisa-dose').value);
-            document.getElementById('cisa-dose-val').textContent = fmt(d);
-            if (!peso) { document.getElementById('cisa-ml').textContent = '--'; syncManualInputs('cisa'); return; }
-            document.getElementById('cisa-ml').textContent = fmt((d * peso * 60) / 1000);
+            var doseEl = document.getElementById('cisa-dose-val');
+            var mlEl = document.getElementById('cisa-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / 1000);
             setStatus(document.getElementById('cisa-res-ml'), document.getElementById('cisa-res-dose'), d, 1, 2.5, 3);
-            syncManualInputs('cisa');
         }
 
         function calcularRocu() {
             const d = parseFloat(document.getElementById('rocu-dose').value);
-            document.getElementById('rocu-dose-val').textContent = fmt(d);
-            if (!peso) { document.getElementById('rocu-ml').textContent = '--'; syncManualInputs('rocu'); return; }
-            document.getElementById('rocu-ml').textContent = fmt((d * peso * 60) / 5000);
+            var doseEl = document.getElementById('rocu-dose-val');
+            var mlEl = document.getElementById('rocu-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / 5000);
             setStatus(document.getElementById('rocu-res-ml'), document.getElementById('rocu-res-dose'), d, 5, 10, 12);
-            syncManualInputs('rocu');
         }
 
         // ==================== VASODILATADORES ====================
@@ -5040,20 +5067,22 @@
 
         function calcularNitro() {
             const d = parseFloat(document.getElementById('nitro-dose').value);
-            document.getElementById('nitro-dose-val').textContent = fmt(d, 2);
-            if (!peso) { document.getElementById('nitro-ml').textContent = '--'; syncManualInputs('nitro'); return; }
-            document.getElementById('nitro-ml').textContent = fmt((d * peso * 60) / 200);
+            var doseEl = document.getElementById('nitro-dose-val');
+            var mlEl = document.getElementById('nitro-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d, 2);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / 200);
             setStatus(document.getElementById('nitro-res-ml'), document.getElementById('nitro-res-dose'), d, 0.25, nitroMode === 'padrao' ? 1.5 : 7, nitroMode === 'padrao' ? 2 : 10);
-            syncManualInputs('nitro');
         }
 
         function calcularNipride() {
             const d = parseFloat(document.getElementById('nipride-dose').value);
-            document.getElementById('nipride-dose-val').textContent = fmt(d);
-            if (!peso) { document.getElementById('nipride-ml').textContent = '--'; syncManualInputs('nipride'); return; }
-            document.getElementById('nipride-ml').textContent = fmt((d * peso * 60) / 200);
+            var doseEl = document.getElementById('nipride-dose-val');
+            var mlEl = document.getElementById('nipride-ml');
+            if (document.activeElement !== doseEl) doseEl.value = fmt(d);
+            if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
+            if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / 200);
             setStatus(document.getElementById('nipride-res-ml'), document.getElementById('nipride-res-dose'), d, 0.25, 5, 8);
-            syncManualInputs('nipride');
         }
 
         // ==================== HEPARINA ====================
@@ -5316,64 +5345,24 @@
             nipride:   { slider: 'nipride-dose',    ml: 'nipride-ml',   doseVal: 'nipride-dose-val',   getConc: () => 200,       factor: 60, usePeso: true,  calc: calcularNipride,    dp: 1 }
         };
 
-        function initManualInputs() {
+        function setupBidirectional() {
             Object.keys(drugConfig).forEach(function(drugId) {
                 var cfg = drugConfig[drugId];
+                var mlInput = document.getElementById(cfg.ml);
+                var doseValInput = document.getElementById(cfg.doseVal);
                 var slider = document.getElementById(cfg.slider);
-                if (!slider) return;
+                if (!mlInput || !doseValInput || !slider) return;
 
-                var calcSection = slider.closest('.calc-section');
-                if (!calcSection) return;
+                // Remove readonly when peso is available
+                function updateReadonly() {
+                    var ro = cfg.usePeso ? !peso : false;
+                    mlInput.readOnly = ro;
+                    doseValInput.readOnly = false;
+                }
 
-                // Get slider attributes for the input
-                var unit = calcSection.querySelector('.calc-label') ? calcSection.querySelector('.calc-label').textContent.replace('Dose ', '').replace('(', '').replace(')', '') : '';
-
-                // Create manual input row
-                var row = document.createElement('div');
-                row.className = 'manual-input-row';
-
-                // Dose input
-                var doseGroup = document.createElement('div');
-                doseGroup.className = 'manual-input-group';
-                doseGroup.innerHTML = '<label>Dose</label><input type="number" id="mi-dose-' + drugId + '" inputmode="decimal" placeholder="' + slider.value + '" step="' + slider.step + '" min="' + slider.min + '" max="' + slider.max + '"><div class="mi-unit">' + unit + '</div>';
-
-                // Swap icon
-                var swap = document.createElement('div');
-                swap.className = 'manual-input-swap';
-                swap.innerHTML = '&#8644;';
-
-                // mL/h input
-                var mlGroup = document.createElement('div');
-                mlGroup.className = 'manual-input-group';
-                mlGroup.innerHTML = '<label>mL/h</label><input type="number" id="mi-ml-' + drugId + '" inputmode="decimal" placeholder="--" step="0.1" min="0"><div class="mi-unit">mL/h</div>';
-
-                row.appendChild(doseGroup);
-                row.appendChild(swap);
-                row.appendChild(mlGroup);
-
-                // Insert after the slider container
-                calcSection.appendChild(row);
-
-                // Event: dose input → update slider + calculate
-                var doseInput = document.getElementById('mi-dose-' + drugId);
-                doseInput.addEventListener('input', function() {
-                    var v = parseFloat(this.value);
-                    if (isNaN(v)) return;
-                    // Clamp to slider range
-                    var s = document.getElementById(cfg.slider);
-                    v = Math.max(parseFloat(s.min), Math.min(parseFloat(s.max), v));
-                    s.value = v;
-                    cfg.calc();
-                    // Update mL/h input to match
-                    var mlVal = document.getElementById(cfg.ml).textContent;
-                    var mlInput = document.getElementById('mi-ml-' + drugId);
-                    mlInput.value = mlVal !== '--' ? mlVal.replace(',', '.') : '';
-                });
-
-                // Event: mL/h input → reverse calculate dose → update slider
-                var mlInput = document.getElementById('mi-ml-' + drugId);
+                // mL/h input -> reverse calculate dose
                 mlInput.addEventListener('input', function() {
-                    var mlh = parseFloat(this.value);
+                    var mlh = parseFloat(this.value.replace(',', '.'));
                     if (isNaN(mlh) || mlh < 0) return;
                     var conc = cfg.getConc();
                     var dose;
@@ -5383,40 +5372,34 @@
                     } else {
                         dose = (mlh * conc) / cfg.factor;
                     }
-                    // Update slider
-                    var s = document.getElementById(cfg.slider);
-                    s.value = dose;
+                    slider.value = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), dose));
                     cfg.calc();
-                    // Update dose input
-                    doseInput.value = parseFloat(dose.toFixed(cfg.dp + 1));
+                    // Keep user's typed value in mL field
+                    mlInput.value = this.value;
                 });
+
+                // Dose input -> forward calculate
+                doseValInput.addEventListener('input', function() {
+                    var v = parseFloat(this.value.replace(',', '.'));
+                    if (isNaN(v)) return;
+                    slider.value = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), v));
+                    cfg.calc();
+                    // Keep user's typed value in dose field
+                    doseValInput.value = this.value;
+                });
+
+                // Focus: select all for easy replacement
+                mlInput.addEventListener('focus', function() { this.select(); });
+                doseValInput.addEventListener('focus', function() { this.select(); });
+
+                // Store updateReadonly for later calls
+                cfg._updateReadonly = updateReadonly;
+                updateReadonly();
             });
         }
 
-        // Sync manual inputs after each slider calculation
-        var _origCalcs = {};
-        Object.keys(drugConfig).forEach(function(drugId) {
-            var cfg = drugConfig[drugId];
-            var origFn = cfg.calc;
-            _origCalcs[drugId] = origFn;
-        });
-
-        function syncManualInputs(drugId) {
-            var cfg = drugConfig[drugId];
-            if (!cfg) return;
-            var doseInput = document.getElementById('mi-dose-' + drugId);
-            var mlInput = document.getElementById('mi-ml-' + drugId);
-            if (!doseInput || !mlInput) return;
-            // Sync values (not placeholders) — only if not focused
-            if (document.activeElement !== doseInput) {
-                var sliderVal = document.getElementById(cfg.slider).value;
-                doseInput.value = parseFloat(sliderVal).toFixed(cfg.dp);
-            }
-            if (document.activeElement !== mlInput) {
-                var mlVal = document.getElementById(cfg.ml).textContent;
-                mlInput.value = mlVal !== '--' ? mlVal.replace(',', '.') : '';
-            }
-        }
+        // Setup bidirectional input on resultado-valor fields
+        setupBidirectional();
 
         function recalcularTodas() {
             calcularNora();
@@ -17891,7 +17874,10 @@ function showTab(tabName) {
         .infusion-result { display: flex; justify-content: center; }
         .infusion-result-box { background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; border-radius: 12px; padding: 14px 24px; text-align: center; min-width: 140px; }
         .infusion-result-label { font-size: .65rem; font-weight: 600; text-transform: uppercase; opacity: .9; margin-bottom: 4px; }
-        .infusion-result-value { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 1.6rem; font-weight: 700; }
+        .infusion-result-value { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 1.6rem; font-weight: 700; background: transparent; border: none; border-bottom: 2px solid transparent; text-align: center; width: 100%; color: white; outline: none; -moz-appearance: textfield; }
+        .infusion-result-value::-webkit-outer-spin-button, .infusion-result-value::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .infusion-result-value:focus { border-bottom-color: rgba(255,255,255,0.6); }
+        .infusion-result-value::placeholder { color: rgba(255,255,255,0.5); }
         .infusion-result-unit { font-size: .75rem; opacity: .9; }
         .transfusion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .transfusion-card { background: #1A1A1A; border: 2px solid #333; border-radius: 12px; padding: 16px; }
@@ -18639,7 +18625,7 @@ function showTab(tabName) {
                             '<div class="infusion-result">' +
                                 '<div class="infusion-result-box">' +
                                     '<div class="infusion-result-label">VELOCIDADE</div>' +
-                                    '<div class="infusion-result-value" id="inf-' + id + '-rate">--</div>' +
+                                    '<input class="infusion-result-value" id="inf-' + id + '-rate" type="text" inputmode="decimal" placeholder="--" readonly>' +
                                     '<div class="infusion-result-unit">mL/h</div>' +
                                 '</div>' +
                             '</div>' +
@@ -18654,6 +18640,8 @@ function showTab(tabName) {
             for (var id2 in infusionData) {
                 calcInfusion(id2);
             }
+
+            setupRateInputs();
         }
 
         function formatConc(conc, unit) {
@@ -18675,7 +18663,8 @@ function showTab(tabName) {
             if (currentPeso <= 0) {
                 var rateEl = document.getElementById('inf-' + id + '-rate');
                 if (rateEl) {
-                    rateEl.textContent = 'Insira o peso';
+                    rateEl.value = '';
+                    rateEl.placeholder = 'Insira peso';
                     rateEl.style.fontSize = '12px';
                     rateEl.style.color = '#FF5252';
                 }
@@ -18698,6 +18687,65 @@ function showTab(tabName) {
             // Clamp slider but allow input to keep the typed value
             slider.value = Math.min(Math.max(val, inf.range[0]), inf.range[1]);
             calcInfusion(id);
+        }
+
+        function setupRateInputs() {
+            for (var id in infusionData) {
+                (function(drugId) {
+                    var rateInput = document.getElementById('inf-' + drugId + '-rate');
+                    if (!rateInput) return;
+
+                    rateInput.addEventListener('focus', function() {
+                        if (currentPeso <= 0) return;
+                        this.readOnly = false;
+                        this.select();
+                    });
+
+                    rateInput.addEventListener('input', function() {
+                        var mlh = parseFloat(this.value);
+                        if (isNaN(mlh) || mlh <= 0 || currentPeso <= 0) return;
+
+                        var inf = infusionData[drugId];
+                        var cat = getWeightCategory(currentPeso);
+                        var dil = inf.dilutions[cat];
+                        if (!dil) return;
+
+                        // Reverse calculation: mL/h -> dose
+                        var dose;
+                        if (inf.unit === 'mcg/kg/min') {
+                            dose = (mlh * dil.conc) / (currentPeso * 60);
+                        } else if (inf.unit === 'mcg/kg/h') {
+                            dose = (mlh * dil.conc) / currentPeso;
+                        } else if (inf.unit === 'mg/kg/h') {
+                            dose = (mlh * dil.conc) / currentPeso;
+                        } else if (inf.unit === 'mU/kg/min') {
+                            dose = (mlh * dil.conc) / (currentPeso * 60);
+                        }
+
+                        if (dose === undefined || isNaN(dose)) return;
+
+                        var slider = document.getElementById('inf-' + drugId + '-slider');
+                        var doseInput = document.getElementById('inf-' + drugId + '-dose');
+                        var warning = document.getElementById('inf-' + drugId + '-warning');
+
+                        var decimals = inf.step < 0.1 ? 2 : (inf.step < 1 ? 1 : 0);
+                        if (doseInput) doseInput.value = dose.toFixed(decimals);
+
+                        var clampedDose = Math.max(inf.range[0], Math.min(inf.range[1], dose));
+                        if (slider) slider.value = clampedDose;
+
+                        var outOfRange = dose < inf.range[0] || dose > inf.range[1];
+                        if (doseInput) doseInput.classList.toggle('out-of-range', outOfRange);
+                        if (warning) warning.classList.toggle('visible', outOfRange);
+                    });
+
+                    rateInput.addEventListener('blur', function() {
+                        this.readOnly = true;
+                        // Recalc to normalize displayed value
+                        calcInfusion(drugId);
+                    });
+                })(id);
+            }
         }
 
         function setupEventListeners() {
@@ -18826,7 +18874,7 @@ function showTab(tabName) {
             var peso = currentPeso;
             var rateEl = document.getElementById('inf-' + id + '-rate');
             if (peso <= 0) {
-                if (rateEl) rateEl.textContent = '--';
+                if (rateEl) { rateEl.value = ''; rateEl.placeholder = '--'; }
                 return;
             }
 
@@ -18854,9 +18902,9 @@ function showTab(tabName) {
             }
 
             if (!rateEl) rateEl = document.getElementById('inf-' + id + '-rate');
-            if (rateEl) {
-                if (rate < 0.1) rateEl.textContent = rate.toFixed(2);
-                else rateEl.textContent = rate.toFixed(1);
+            if (rateEl && document.activeElement !== rateEl) {
+                if (rate < 0.1) rateEl.value = rate.toFixed(2);
+                else rateEl.value = rate.toFixed(1);
             }
         }
 
@@ -26599,7 +26647,7 @@ function openTrilhaGrupo(g) {
 const pesoInput = document.getElementById('pesoInput');
 const weightStatus = document.getElementById('weightStatus');
 
-pesoInput.addEventListener('focus', function() { this.select(); });
+pesoInput.addEventListener('focus', function() { this.value = ''; });
 pesoInput.addEventListener('input', function() {
     const p = parseFloat(this.value);
     if (!p || p < 40 || p > 200) {
@@ -26608,21 +26656,30 @@ pesoInput.addEventListener('input', function() {
     } else {
         weightStatus.textContent = p + ' kg';
         weightStatus.style.color = '#4CAF50';
+        localStorage.setItem('anyapp-peso', p.toString());
     }
     updateCalculations();
 });
-
-// Persist weight
-if (localStorage.getItem('anyapp-peso')) {
-    pesoInput.value = localStorage.getItem('anyapp-peso');
-    pesoInput.dispatchEvent(new Event('input'));
-}
-pesoInput.addEventListener('change', function() {
-    if (this.value) localStorage.setItem('anyapp-peso', this.value);
+pesoInput.addEventListener('blur', function() {
+    const p = parseFloat(this.value);
+    if (p && p >= 40 && p <= 200) {
+        this.placeholder = p;
+    }
+    this.value = '';
 });
 
+// Recover weight from localStorage
+if (localStorage.getItem('anyapp-peso')) {
+    var lp = localStorage.getItem('anyapp-peso');
+    pesoInput.placeholder = lp;
+    weightStatus.textContent = lp + ' kg';
+    weightStatus.style.color = '#4CAF50';
+    updateCalculations();
+}
+
 function getPeso() {
-    const p = parseFloat(pesoInput.value);
+    var v = pesoInput.value || pesoInput.placeholder;
+    const p = parseFloat(v);
     return (p && p >= 40 && p <= 200) ? p : null;
 }
 

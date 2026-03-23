@@ -1961,7 +1961,7 @@ function openTrilhaGrupo(g) {
 const pesoInput = document.getElementById('pesoInput');
 const weightStatus = document.getElementById('weightStatus');
 
-pesoInput.addEventListener('focus', function() { this.select(); });
+pesoInput.addEventListener('focus', function() { this.value = ''; });
 pesoInput.addEventListener('input', function() {
     const p = parseFloat(this.value);
     if (!p || p < 40 || p > 200) {
@@ -1970,21 +1970,30 @@ pesoInput.addEventListener('input', function() {
     } else {
         weightStatus.textContent = p + ' kg';
         weightStatus.style.color = '#4CAF50';
+        localStorage.setItem('anyapp-peso', p.toString());
     }
     updateCalculations();
 });
-
-// Persist weight
-if (localStorage.getItem('anyapp-peso')) {
-    pesoInput.value = localStorage.getItem('anyapp-peso');
-    pesoInput.dispatchEvent(new Event('input'));
-}
-pesoInput.addEventListener('change', function() {
-    if (this.value) localStorage.setItem('anyapp-peso', this.value);
+pesoInput.addEventListener('blur', function() {
+    const p = parseFloat(this.value);
+    if (p && p >= 40 && p <= 200) {
+        this.placeholder = p;
+    }
+    this.value = '';
 });
 
+// Recover weight from localStorage
+if (localStorage.getItem('anyapp-peso')) {
+    var lp = localStorage.getItem('anyapp-peso');
+    pesoInput.placeholder = lp;
+    weightStatus.textContent = lp + ' kg';
+    weightStatus.style.color = '#4CAF50';
+    updateCalculations();
+}
+
 function getPeso() {
-    const p = parseFloat(pesoInput.value);
+    var v = pesoInput.value || pesoInput.placeholder;
+    const p = parseFloat(v);
     return (p && p >= 40 && p <= 200) ? p : null;
 }
 

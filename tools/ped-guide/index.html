@@ -172,7 +172,10 @@
         .infusion-result { display: flex; justify-content: center; }
         .infusion-result-box { background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; border-radius: 12px; padding: 14px 24px; text-align: center; min-width: 140px; }
         .infusion-result-label { font-size: .65rem; font-weight: 600; text-transform: uppercase; opacity: .9; margin-bottom: 4px; }
-        .infusion-result-value { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 1.6rem; font-weight: 700; }
+        .infusion-result-value { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 1.6rem; font-weight: 700; background: transparent; border: none; border-bottom: 2px solid transparent; text-align: center; width: 100%; color: white; outline: none; -moz-appearance: textfield; }
+        .infusion-result-value::-webkit-outer-spin-button, .infusion-result-value::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .infusion-result-value:focus { border-bottom-color: rgba(255,255,255,0.6); }
+        .infusion-result-value::placeholder { color: rgba(255,255,255,0.5); }
         .infusion-result-unit { font-size: .75rem; opacity: .9; }
         .transfusion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .transfusion-card { background: #1A1A1A; border: 2px solid #333; border-radius: 12px; padding: 16px; }
@@ -920,7 +923,7 @@
                             '<div class="infusion-result">' +
                                 '<div class="infusion-result-box">' +
                                     '<div class="infusion-result-label">VELOCIDADE</div>' +
-                                    '<div class="infusion-result-value" id="inf-' + id + '-rate">--</div>' +
+                                    '<input class="infusion-result-value" id="inf-' + id + '-rate" type="text" inputmode="decimal" placeholder="--" readonly>' +
                                     '<div class="infusion-result-unit">mL/h</div>' +
                                 '</div>' +
                             '</div>' +
@@ -935,6 +938,8 @@
             for (var id2 in infusionData) {
                 calcInfusion(id2);
             }
+
+            setupRateInputs();
         }
 
         function formatConc(conc, unit) {
@@ -956,7 +961,8 @@
             if (currentPeso <= 0) {
                 var rateEl = document.getElementById('inf-' + id + '-rate');
                 if (rateEl) {
-                    rateEl.textContent = 'Insira o peso';
+                    rateEl.value = '';
+                    rateEl.placeholder = 'Insira peso';
                     rateEl.style.fontSize = '12px';
                     rateEl.style.color = '#FF5252';
                 }
@@ -979,6 +985,65 @@
             // Clamp slider but allow input to keep the typed value
             slider.value = Math.min(Math.max(val, inf.range[0]), inf.range[1]);
             calcInfusion(id);
+        }
+
+        function setupRateInputs() {
+            for (var id in infusionData) {
+                (function(drugId) {
+                    var rateInput = document.getElementById('inf-' + drugId + '-rate');
+                    if (!rateInput) return;
+
+                    rateInput.addEventListener('focus', function() {
+                        if (currentPeso <= 0) return;
+                        this.readOnly = false;
+                        this.select();
+                    });
+
+                    rateInput.addEventListener('input', function() {
+                        var mlh = parseFloat(this.value);
+                        if (isNaN(mlh) || mlh <= 0 || currentPeso <= 0) return;
+
+                        var inf = infusionData[drugId];
+                        var cat = getWeightCategory(currentPeso);
+                        var dil = inf.dilutions[cat];
+                        if (!dil) return;
+
+                        // Reverse calculation: mL/h -> dose
+                        var dose;
+                        if (inf.unit === 'mcg/kg/min') {
+                            dose = (mlh * dil.conc) / (currentPeso * 60);
+                        } else if (inf.unit === 'mcg/kg/h') {
+                            dose = (mlh * dil.conc) / currentPeso;
+                        } else if (inf.unit === 'mg/kg/h') {
+                            dose = (mlh * dil.conc) / currentPeso;
+                        } else if (inf.unit === 'mU/kg/min') {
+                            dose = (mlh * dil.conc) / (currentPeso * 60);
+                        }
+
+                        if (dose === undefined || isNaN(dose)) return;
+
+                        var slider = document.getElementById('inf-' + drugId + '-slider');
+                        var doseInput = document.getElementById('inf-' + drugId + '-dose');
+                        var warning = document.getElementById('inf-' + drugId + '-warning');
+
+                        var decimals = inf.step < 0.1 ? 2 : (inf.step < 1 ? 1 : 0);
+                        if (doseInput) doseInput.value = dose.toFixed(decimals);
+
+                        var clampedDose = Math.max(inf.range[0], Math.min(inf.range[1], dose));
+                        if (slider) slider.value = clampedDose;
+
+                        var outOfRange = dose < inf.range[0] || dose > inf.range[1];
+                        if (doseInput) doseInput.classList.toggle('out-of-range', outOfRange);
+                        if (warning) warning.classList.toggle('visible', outOfRange);
+                    });
+
+                    rateInput.addEventListener('blur', function() {
+                        this.readOnly = true;
+                        // Recalc to normalize displayed value
+                        calcInfusion(drugId);
+                    });
+                })(id);
+            }
         }
 
         function setupEventListeners() {
@@ -1107,7 +1172,7 @@
             var peso = currentPeso;
             var rateEl = document.getElementById('inf-' + id + '-rate');
             if (peso <= 0) {
-                if (rateEl) rateEl.textContent = '--';
+                if (rateEl) { rateEl.value = ''; rateEl.placeholder = '--'; }
                 return;
             }
 
@@ -1135,9 +1200,9 @@
             }
 
             if (!rateEl) rateEl = document.getElementById('inf-' + id + '-rate');
-            if (rateEl) {
-                if (rate < 0.1) rateEl.textContent = rate.toFixed(2);
-                else rateEl.textContent = rate.toFixed(1);
+            if (rateEl && document.activeElement !== rateEl) {
+                if (rate < 0.1) rateEl.value = rate.toFixed(2);
+                else rateEl.value = rate.toFixed(1);
             }
         }
 
