@@ -26519,35 +26519,35 @@ function gerarMsgWhatsApp() {
     var data = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
     var hora = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
 
-    var msg = '*ORIENTACOES DE ALTA - DENGUE*\\n'
-        + '_Emitido em ' + data + ' as ' + hora + '_\\n'
+    var msg = '*ORIENTA\\u00C7\\u00D5ES DE ALTA \\u2014 DENGUE*\\n'
+        + '_Emitido em ' + data + ' \\u00E0s ' + hora + '_\\n'
         + '\\n'
-        + '*Hidratacao:*\\n'
-        + 'Beber bastante liquido ao longo do dia (agua, suco, cha, agua de coco). Pelo menos 2 a 3 litros por dia, incluindo soro de reidratacao oral.\\n'
+        + '*Hidrata\\u00E7\\u00E3o:*\\n'
+        + 'Beber bastante l\\u00EDquido ao longo do dia (\\u00E1gua, suco, ch\\u00E1, \\u00E1gua de coco). Pelo menos 2 a 3 litros por dia, incluindo soro de reidrata\\u00E7\\u00E3o oral.\\n'
         + '\\n'
         + '*Repouso:*\\n'
         + 'Manter repouso relativo nos primeiros dias.\\n'
         + '\\n'
-        + '*Medicacao:*\\n'
+        + '*Medica\\u00E7\\u00E3o:*\\n'
         + 'Usar apenas paracetamol ou dipirona para febre ou dor.\\n'
-        + '*NAO usar* ibuprofeno, diclofenaco, AAS (aspirina) ou outros anti-inflamatorios.\\n'
+        + '*N\\u00C3O usar* ibuprofeno, diclofenaco, AAS (aspirina) ou outros anti-inflamat\\u00F3rios.\\n'
         + '\\n'
         + '*Retorno:*\\n'
-        + 'Conforme orientacao medica para reavaliacao.\\n'
+        + 'Conforme orienta\\u00E7\\u00E3o m\\u00E9dica para reavalia\\u00E7\\u00E3o.\\n'
         + '\\n'
         + '---\\n'
         + '\\n'
         + '*PROCURE ATENDIMENTO IMEDIATO SE:*\\n'
-        + '- Dor abdominal forte e continua\\n'
-        + '- Vomitos que nao param\\n'
+        + '- Dor abdominal forte e cont\\u00EDnua\\n'
+        + '- V\\u00F4mitos que n\\u00E3o param\\n'
         + '- Sangramento (gengiva, nariz, fezes ou urina escuras)\\n'
         + '- Tontura ou desmaio ao levantar\\n'
-        + '- Pele fria, palida ou suada\\n'
+        + '- Pele fria, p\\u00E1lida ou suada\\n'
         + '- Falta de ar\\n'
-        + '- Sonolencia excessiva ou agitacao\\n'
+        + '- Sonol\\u00EAncia excessiva ou agita\\u00E7\\u00E3o\\n'
         + '\\n'
-        + '_Dengue Path - ANY App - Medicina de Emergencia_\\n'
-        + '_Ferramenta de apoio a decisao clinica_';
+        + '_Dengue Path \\u2014 ANY App \\u2014 Medicina de Emerg\\u00EAncia_\\n'
+        + '_Ferramenta de apoio \\u00E0 decis\\u00E3o cl\\u00EDnica_';
 
     document.getElementById('wppMsgText').textContent = msg;
     document.getElementById('wppMsgBox').style.display = 'block';
