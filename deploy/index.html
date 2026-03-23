@@ -9539,7 +9539,7 @@ function showHome() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ToxPath — Central de Intoxicações</title>
+    <title>Tox Path — Central de Intoxicações</title>
     <style>
         /* === Global view switching === */
         .app-view { display: none; }
@@ -13131,7 +13131,7 @@ function showHome() {
     <div class="container">
         <header class="header-home">
             <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" class="logo-header" alt="ANY App"></a>
-            <h1>ToxPath</h1>
+            <h1>Tox Path</h1>
             <p>Manejo de intoxicações agudas</p>
         </header>
 
@@ -24636,16 +24636,6 @@ a{color:var(--info);text-decoration:none}
 .footer-version{font-size:11px;color:var(--text-muted);margin-top:4px}
 .footer-ref{font-size:10px;color:var(--text-muted);margin-top:8px;line-height:1.5}
 
-/* PRINT */
-.print-section{display:none}
-@media print{
-body{background:#FFF;color:#000}
-.disclaimer,.header,.footer,.back-btn,.weight-bar,.home-grid,.grid-btn{display:none!important}
-.print-section{display:block!important;padding:20px;font-size:14px;line-height:1.6}
-.print-section h2{font-size:18px;margin-bottom:12px;border-bottom:2px solid #000;padding-bottom:8px}
-.print-section ul{margin-left:20px}
-.print-section li{margin-bottom:6px}
-}
 
 /* STEP NAVIGATION */
 .step-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
@@ -24724,7 +24714,7 @@ body{background:#FFF;color:#000}
         </div>
         <div class="grid-btn" onclick="goTo('examediff')">
             <div class="grid-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></div>
-            <div class="grid-label">Exames e diferenciais</div>
+            <div class="grid-label">Exames e diagnósticos diferenciais</div>
             <div class="grid-desc">Laboratório e arboviroses</div>
         </div>
         <div class="grid-btn" onclick="goTo('altasegura')">
@@ -25963,7 +25953,7 @@ body{background:#FFF;color:#000}
 <!-- ============================================ -->
 <div class="screen" id="screen-examediff">
     <button class="back-btn" onclick="goTo('home')">← Início</button>
-    <div class="section-title">Exames e diferenciais</div>
+    <div class="section-title">Exames e diagnósticos diferenciais</div>
     <div class="section-subtitle">Laboratório, monitorização e diagnósticos diferenciais</div>
 
     <!-- SEÇÃO: EXAMES LABORATORIAIS -->
@@ -26169,7 +26159,19 @@ body{background:#FFF;color:#000}
         </div>
     </div>
 
-    <button class="btn btn-primary" onclick="window.print()" style="margin-top:16px">Imprimir orientações para o paciente</button>
+    <button class="btn btn-primary" onclick="gerarMsgWhatsApp()" style="margin-top:16px;width:100%">Gerar orientações para WhatsApp</button>
+
+    <div id="wppMsgBox" style="display:none;margin-top:16px">
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Mensagem gerada — toque para copiar</div>
+            <pre id="wppMsgText" style="white-space:pre-wrap;word-wrap:break-word;font-family:inherit;font-size:13px;color:var(--text-secondary);line-height:1.6;margin:0;max-height:300px;overflow-y:auto;padding-bottom:8px"></pre>
+            <div style="display:flex;gap:8px;margin-top:12px">
+                <button class="btn btn-primary" onclick="copiarMsgWpp()" style="flex:1;font-size:13px;padding:10px 12px">Copiar mensagem</button>
+                <button class="btn btn-primary" onclick="compartilharWpp()" style="flex:1;font-size:13px;padding:10px 12px;background:#25D366">Enviar no WhatsApp</button>
+            </div>
+            <div id="wppCopied" style="display:none;text-align:center;color:var(--success);font-size:12px;margin-top:8px">Mensagem copiada!</div>
+        </div>
+    </div>
 </div>
 
 <!-- ============================================ -->
@@ -26200,30 +26202,6 @@ body{background:#FFF;color:#000}
 
 </div><!-- /container -->
 
-<!-- PRINT SECTION -->
-<div class="print-section">
-    <h2>Orientações de alta — Dengue</h2>
-    <p><strong>Data:</strong> ___/___/______</p>
-    <p><strong>Paciente:</strong> ________________________________________</p>
-    <br>
-    <p><strong>Hidratação:</strong> Beber bastante líquido ao longo do dia (água, suco, chá, água de coco). Pelo menos 2 a 3 litros por dia, incluindo soro de reidratação oral.</p>
-    <p><strong>Repouso:</strong> Manter repouso relativo nos primeiros dias.</p>
-    <p><strong>Medicação:</strong> Usar apenas paracetamol ou dipirona para febre ou dor. <strong>NÃO usar</strong> ibuprofeno, diclofenaco, AAS (aspirina) ou outros anti-inflamatórios.</p>
-    <p><strong>Retorno:</strong> Conforme orientação médica para reavaliação.</p>
-    <br>
-    <p><strong>Procure atendimento IMEDIATO se apresentar:</strong></p>
-    <ul>
-        <li>Dor abdominal forte e contínua</li>
-        <li>Vômitos que não param</li>
-        <li>Sangramento (pela gengiva, nariz, fezes escuras ou urina escura)</li>
-        <li>Tontura ou desmaio ao levantar</li>
-        <li>Pele fria, pálida ou suada</li>
-        <li>Falta de ar</li>
-        <li>Sonolência excessiva ou agitação</li>
-    </ul>
-    <br>
-    <p style="font-size:12px;text-align:center">Dengue Path — ANY App™ — Medicina de Emergência<br>Ferramenta de apoio à decisão clínica — não substitui o julgamento médico</p>
-</div>
 
 <!-- FOOTER -->
 <footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:var(--bg);border-top:1px solid var(--border);z-index:50">
@@ -26532,6 +26510,76 @@ updateCalculations();
 // ==========================================
 // FAB MENU
 // ==========================================
+// ==========================================
+// WHATSAPP MESSAGE GENERATOR
+// ==========================================
+function gerarMsgWhatsApp() {
+    var now = new Date();
+    var data = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
+    var hora = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+
+    var msg = '*ORIENTACOES DE ALTA - DENGUE*\\n'
+        + '_Emitido em ' + data + ' as ' + hora + '_\\n'
+        + '\\n'
+        + '*Hidratacao:*\\n'
+        + 'Beber bastante liquido ao longo do dia (agua, suco, cha, agua de coco). Pelo menos 2 a 3 litros por dia, incluindo soro de reidratacao oral.\\n'
+        + '\\n'
+        + '*Repouso:*\\n'
+        + 'Manter repouso relativo nos primeiros dias.\\n'
+        + '\\n'
+        + '*Medicacao:*\\n'
+        + 'Usar apenas paracetamol ou dipirona para febre ou dor.\\n'
+        + '*NAO usar* ibuprofeno, diclofenaco, AAS (aspirina) ou outros anti-inflamatorios.\\n'
+        + '\\n'
+        + '*Retorno:*\\n'
+        + 'Conforme orientacao medica para reavaliacao.\\n'
+        + '\\n'
+        + '---\\n'
+        + '\\n'
+        + '*PROCURE ATENDIMENTO IMEDIATO SE:*\\n'
+        + '- Dor abdominal forte e continua\\n'
+        + '- Vomitos que nao param\\n'
+        + '- Sangramento (gengiva, nariz, fezes ou urina escuras)\\n'
+        + '- Tontura ou desmaio ao levantar\\n'
+        + '- Pele fria, palida ou suada\\n'
+        + '- Falta de ar\\n'
+        + '- Sonolencia excessiva ou agitacao\\n'
+        + '\\n'
+        + '_Dengue Path - ANY App - Medicina de Emergencia_\\n'
+        + '_Ferramenta de apoio a decisao clinica_';
+
+    document.getElementById('wppMsgText').textContent = msg;
+    document.getElementById('wppMsgBox').style.display = 'block';
+    document.getElementById('wppCopied').style.display = 'none';
+}
+
+function copiarMsgWpp() {
+    var msg = document.getElementById('wppMsgText').textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(msg).then(function() {
+            document.getElementById('wppCopied').style.display = 'block';
+            setTimeout(function() { document.getElementById('wppCopied').style.display = 'none'; }, 2000);
+        });
+    } else {
+        var ta = document.createElement('textarea');
+        ta.value = msg;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        document.getElementById('wppCopied').style.display = 'block';
+        setTimeout(function() { document.getElementById('wppCopied').style.display = 'none'; }, 2000);
+    }
+}
+
+function compartilharWpp() {
+    var msg = document.getElementById('wppMsgText').textContent;
+    var url = 'https://wa.me/?text=' + encodeURIComponent(msg);
+    window.open(url, '_blank');
+}
+
 function toggleFab() {
     var o = document.getElementById('fabOptions');
     var b = document.getElementById('fabBtn');
