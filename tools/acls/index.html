@@ -652,14 +652,20 @@ function showScreen(id) {
 
 // ===== START =====
 function startCode() {
-  state.startTime = Date.now();
-  state.running = true;
-  requestWakeLock();
-  state.events.push({ time: 0, type: 'system', detail: 'Código iniciado' });
-  document.getElementById('footerBar').style.display = 'block';
-  document.getElementById('staticFooter').style.display = 'none';
-  startMainTick();
-  showScreen('screenRhythm');
+  try {
+    state.startTime = Date.now();
+    state.running = true;
+    requestWakeLock();
+    state.events.push({ time: 0, type: 'system', detail: 'Código iniciado' });
+    var fb = document.getElementById('footerBar');
+    var sf = document.getElementById('staticFooter');
+    if (fb) fb.style.display = 'block';
+    if (sf) sf.style.display = 'none';
+    startMainTick();
+    showScreen('screenRhythm');
+  } catch(e) {
+    alert('Erro ao iniciar: ' + e.message);
+  }
 }
 
 // ===== RHYTHM =====

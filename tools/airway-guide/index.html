@@ -576,18 +576,38 @@
                     <div class="input-group"><label>Cuff (cmH₂O)</label><input type="number" id="inputCuff" inputmode="decimal" placeholder="Ex: 25"></div>
                 </div>
             </div>
+            <div id="difficultAirwayAlert" class="alert-card" style="display:none;background:rgba(255,82,82,0.08);border:1px solid #FF5252;border-radius:12px;padding:16px;margin-top:12px">
+                <div style="font-weight:700;color:#FF5252;margin-bottom:8px">Visualização limitada (Cormack III-IV)</div>
+                <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">
+                    - Considere bougie como primeira opção<br>
+                    - Reposicionar: elevação da cabeça, manipulação laríngea externa (BURP)<br>
+                    - Considere videolaringoscópio se disponível<br>
+                    - Limite a 2 tentativas antes de acionar Plano B
+                </div>
+            </div>
             <div class="nav-buttons"><button class="btn btn-secondary" onclick="goToStep(8)">← Voltar</button><button class="btn btn-primary" onclick="goToStep(10)">Continuar →</button></div>
         </div>
 
         <!-- STEP 10 -->
         <div class="step" id="step-10">
-            <div class="step-header"><div class="step-number">Passo 10 de 11</div><div class="step-title">Confirmação</div></div>
+            <div class="step-header"><div class="step-number">Passo 10 de 11</div><div class="step-title">Resultado e confirmação</div></div>
+
+            <!-- Pergunta: Intubou? -->
+            <div id="intubationQuestion" class="card" style="text-align:center;padding:24px">
+                <div style="font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:16px">Intubou com sucesso?</div>
+                <div style="display:flex;gap:12px">
+                    <button class="btn btn-primary" onclick="intubationResult(true)" style="flex:1;background:#4CAF50">Sim</button>
+                    <button class="btn btn-primary" onclick="intubationResult(false)" style="flex:1;background:#F44336">Não</button>
+                </div>
+            </div>
+
+            <!-- Sucesso: confirmação normal -->
+            <div id="confirmationSection" style="display:none">
             <div class="card">
                 <div class="card-title">Confirme posicionamento</div>
                 <div class="check-item" onclick="toggleSimple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Capnografia</div><div class="check-desc">EtCO₂ com curva adequada (padrão-ouro)</div></div></div>
                 <div class="check-item" onclick="toggleSimple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Ausculta bilateral</div><div class="check-desc">Murmúrio vesicular simétrico, 5 pontos</div></div></div>
                 <div class="check-item" onclick="toggleSimple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Expansibilidade torácica</div><div class="check-desc">Simétrica bilateralmente</div></div></div>
-                
             </div>
             <div class="card">
                 <div class="card-title">POCUS confirmatório</div>
@@ -599,7 +619,42 @@
                 <div style="font-size:13px;color:#888">Abrir calculadora de infusões</div>
                 <div style="font-size:12px;color:#555;margin-top:4px">Fentanil - Propofol - Midazolam - Dexmedetomidina</div>
             </div>
-            <div class="nav-buttons"><button class="btn btn-secondary" onclick="goToStep(9)">← Voltar</button><button class="btn btn-primary" onclick="goToStep(11)">Finalizar →</button></div>
+            </div>
+
+            <!-- Falha: pathway de resgate -->
+            <div id="failedAirway" style="display:none">
+            <div class="card" style="border-left:4px solid #FF5252">
+                <div class="card-title" style="color:#FF5252">Plano B — Dispositivo extraglótico</div>
+                <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">
+                    - Máscara laríngea (ML) ou dispositivo supraglótico de 2a geração<br>
+                    - Inserir conforme técnica padrão, insuflar cuff<br>
+                    - Confirmar ventilação: EtCO₂ + ausculta<br>
+                    - Se ventilação adequada: considere intubação através do DEG com fibroscópio
+                </div>
+                <div style="display:flex;gap:12px;margin-top:12px">
+                    <button class="btn btn-primary btn-sm" onclick="rescueSuccess('DEG')" style="flex:1;background:#4CAF50">Resgatou com DEG</button>
+                    <button class="btn btn-primary btn-sm" onclick="showPlanC()" style="flex:1;background:#F44336">Falhou — Plano C</button>
+                </div>
+            </div>
+            <div id="planCSection" style="display:none">
+            <div class="card" style="border-left:4px solid #F44336;margin-top:12px">
+                <div class="card-title" style="color:#F44336">Plano C — Cricotireoidostomia</div>
+                <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">
+                    <strong>Técnica cirúrgica (bisturi-bougie-tubo):</strong><br>
+                    1. Palpar membrana cricotireoidea (entre cartilagens tireoide e cricoide)<br>
+                    2. Incisão vertical na pele (3-4 cm) + incisão horizontal na membrana<br>
+                    3. Inserir bougie pela incisão, direção caudal<br>
+                    4. Deslizar tubo 6.0 sobre o bougie<br>
+                    5. Confirmar posição: capnografia + ausculta
+                </div>
+                <div style="display:flex;gap:12px;margin-top:12px">
+                    <button class="btn btn-primary btn-sm" onclick="rescueSuccess('Cricotireoidostomia')" style="flex:1;background:#4CAF50">Via aérea estabelecida</button>
+                </div>
+            </div>
+            </div>
+            </div>
+
+            <div class="nav-buttons"><button class="btn btn-secondary" onclick="goToStep(9)">← Voltar</button><button class="btn btn-primary" id="btnFinalize" onclick="goToStep(11)">Finalizar →</button></div>
         </div>
 
         <!-- STEP 11 -->
@@ -656,7 +711,9 @@
             population: 'adulto',
             membrane: null,
             meds: { fentanil: false, ketamina: false, etomidato: false, propofol: false, rocuronio: false, succinilcolina: false },
-            cormack: null
+            cormack: null,
+            intubationSuccess: null,
+            rescueMethod: null
         };
 
         const indutores = ['ketamina', 'etomidato', 'propofol'];
@@ -687,6 +744,11 @@
             if (n === 6) updateHemoAlert();
             if (n === 8) updateMedicationsDisplay();
             if (n === 9) updateProcedureDisplay();
+            if (n === 10) {
+                document.getElementById('intubationQuestion').style.display = 'block';
+                document.getElementById('confirmationSection').style.display = 'none';
+                document.getElementById('failedAirway').style.display = 'none';
+            }
             if (n === 11) generateSummary();
             if (n === 5 || n === 9) {
                 var lemonCount = state.lemon ? state.lemon.filter(Boolean).length : 0;
@@ -883,6 +945,22 @@
                 state.meds[med] = !state.meds[med];
             } else { state.meds[med] = !state.meds[med]; }
             document.getElementById(med + 'Card').classList.toggle('selected', state.meds[med]);
+            // Drug alerts
+            var alerts = {
+                succinilcolina: 'Contraindicada em hipercalemia, queimaduras extensas (>72h), miopatias, lesão medular crônica, doença do neurônio motor',
+                ketamina: 'Uso com cautela em emergência hipertensiva. Considere etomidato como alternativa'
+            };
+            var alertEl = document.getElementById(med + 'Alert');
+            if (!alertEl && alerts[med]) {
+                alertEl = document.createElement('div');
+                alertEl.id = med + 'Alert';
+                alertEl.style.cssText = 'font-size:11px;color:#FFC107;padding:8px 12px;margin-top:4px;background:rgba(255,193,7,0.08);border-radius:8px;line-height:1.4';
+                document.getElementById(med + 'Card').appendChild(alertEl);
+            }
+            if (alertEl) {
+                alertEl.textContent = alerts[med] || '';
+                alertEl.style.display = state.meds[med] ? 'block' : 'none';
+            }
         }
 
         function updateFentanil() { const w = state.weight || 70, r = parseFloat(document.getElementById('fentanilSlider').value), d = Math.round(w * r); document.getElementById('fentanilRate').textContent = r + ' mcg/kg'; document.getElementById('fentanilDose').textContent = d + ' mcg'; document.getElementById('fentanilVol').textContent = '= ' + (d / 50).toFixed(1) + ' mL'; }
@@ -897,7 +975,12 @@
         function formatTime(s) { const m = Math.floor(s / 60); return m.toString().padStart(2, '0') + ':' + (s % 60).toString().padStart(2, '0'); }
         function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
-        function selectCormack(g) { state.cormack = g; document.querySelectorAll('#cormackToggle .toggle-btn').forEach(b => b.classList.toggle('active', b.textContent === g)); }
+        function selectCormack(g) {
+            state.cormack = g;
+            document.querySelectorAll('#cormackToggle .toggle-btn').forEach(b => b.classList.toggle('active', b.textContent === g));
+            var alert = document.getElementById('difficultAirwayAlert');
+            if (alert) alert.style.display = (g === 'III' || g === 'IV') ? 'block' : 'none';
+        }
         function toggleSimple(el) { el.classList.toggle('checked'); }
 
         function switchProcTab(tab) {
@@ -918,6 +1001,31 @@
         function closePopup(id) {
             var el = document.getElementById('popup' + id.charAt(0).toUpperCase() + id.slice(1));
             if (el) el.classList.remove('visible');
+        }
+
+        function intubationResult(success) {
+            state.intubationSuccess = success;
+            document.getElementById('intubationQuestion').style.display = 'none';
+            if (success) {
+                state.rescueMethod = null;
+                document.getElementById('confirmationSection').style.display = 'block';
+                document.getElementById('failedAirway').style.display = 'none';
+            } else {
+                document.getElementById('confirmationSection').style.display = 'none';
+                document.getElementById('failedAirway').style.display = 'block';
+                document.getElementById('planCSection').style.display = 'none';
+            }
+        }
+        function showPlanC() {
+            document.getElementById('planCSection').style.display = 'block';
+            document.getElementById('planCSection').scrollIntoView({behavior:'smooth', block:'center'});
+        }
+        function rescueSuccess(method) {
+            state.rescueMethod = method;
+            state.intubationSuccess = true;
+            document.getElementById('failedAirway').style.display = 'none';
+            document.getElementById('confirmationSection').style.display = 'block';
+            document.getElementById('confirmationSection').scrollIntoView({behavior:'smooth', block:'start'});
         }
 
         function generateSummary() {
@@ -953,7 +1061,9 @@
             if (cuff) proc += '\nCuff: ' + cuff + ' cmH₂O';
             document.getElementById('summaryProcedure').textContent = proc;
             
-            document.getElementById('summaryConfirmation').textContent = 'Capnografia + Ausculta + POCUS (traqueal, pulmonar bilateral)';
+            var confText = 'Capnografia + Ausculta + POCUS (traqueal, pulmonar bilateral)';
+            if (state.rescueMethod) confText = 'Resgate: ' + state.rescueMethod + '\n' + confText;
+            document.getElementById('summaryConfirmation').textContent = confText;
         }
 
         function copyReport() {

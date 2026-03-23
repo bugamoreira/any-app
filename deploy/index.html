@@ -3064,18 +3064,38 @@
                     <div class="input-group"><label>Cuff (cmH₂O)</label><input type="number" id="inputCuff" inputmode="decimal" placeholder="Ex: 25"></div>
                 </div>
             </div>
+            <div id="difficultAirwayAlert" class="alert-card" style="display:none;background:rgba(255,82,82,0.08);border:1px solid #FF5252;border-radius:12px;padding:16px;margin-top:12px">
+                <div style="font-weight:700;color:#FF5252;margin-bottom:8px">Visualização limitada (Cormack III-IV)</div>
+                <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">
+                    - Considere bougie como primeira opção<br>
+                    - Reposicionar: elevação da cabeça, manipulação laríngea externa (BURP)<br>
+                    - Considere videolaringoscópio se disponível<br>
+                    - Limite a 2 tentativas antes de acionar Plano B
+                </div>
+            </div>
             <div class="nav-buttons"><button class="btn btn-secondary" onclick="goToStep(8)">← Voltar</button><button class="btn btn-primary" onclick="goToStep(10)">Continuar →</button></div>
         </div>
 
         <!-- STEP 10 -->
         <div class="step" id="step-10">
-            <div class="step-header"><div class="step-number">Passo 10 de 11</div><div class="step-title">Confirmação</div></div>
+            <div class="step-header"><div class="step-number">Passo 10 de 11</div><div class="step-title">Resultado e confirmação</div></div>
+
+            <!-- Pergunta: Intubou? -->
+            <div id="intubationQuestion" class="card" style="text-align:center;padding:24px">
+                <div style="font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:16px">Intubou com sucesso?</div>
+                <div style="display:flex;gap:12px">
+                    <button class="btn btn-primary" onclick="intubationResult(true)" style="flex:1;background:#4CAF50">Sim</button>
+                    <button class="btn btn-primary" onclick="intubationResult(false)" style="flex:1;background:#F44336">Não</button>
+                </div>
+            </div>
+
+            <!-- Sucesso: confirmação normal -->
+            <div id="confirmationSection" style="display:none">
             <div class="card">
                 <div class="card-title">Confirme posicionamento</div>
                 <div class="check-item" onclick="toggleSimple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Capnografia</div><div class="check-desc">EtCO₂ com curva adequada (padrão-ouro)</div></div></div>
                 <div class="check-item" onclick="toggleSimple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Ausculta bilateral</div><div class="check-desc">Murmúrio vesicular simétrico, 5 pontos</div></div></div>
                 <div class="check-item" onclick="toggleSimple(this)"><div class="check-box"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check-content"><div class="check-title">Expansibilidade torácica</div><div class="check-desc">Simétrica bilateralmente</div></div></div>
-                
             </div>
             <div class="card">
                 <div class="card-title">POCUS confirmatório</div>
@@ -3087,7 +3107,42 @@
                 <div style="font-size:13px;color:#888">Abrir calculadora de infusões</div>
                 <div style="font-size:12px;color:#555;margin-top:4px">Fentanil - Propofol - Midazolam - Dexmedetomidina</div>
             </div>
-            <div class="nav-buttons"><button class="btn btn-secondary" onclick="goToStep(9)">← Voltar</button><button class="btn btn-primary" onclick="goToStep(11)">Finalizar →</button></div>
+            </div>
+
+            <!-- Falha: pathway de resgate -->
+            <div id="failedAirway" style="display:none">
+            <div class="card" style="border-left:4px solid #FF5252">
+                <div class="card-title" style="color:#FF5252">Plano B — Dispositivo extraglótico</div>
+                <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">
+                    - Máscara laríngea (ML) ou dispositivo supraglótico de 2a geração<br>
+                    - Inserir conforme técnica padrão, insuflar cuff<br>
+                    - Confirmar ventilação: EtCO₂ + ausculta<br>
+                    - Se ventilação adequada: considere intubação através do DEG com fibroscópio
+                </div>
+                <div style="display:flex;gap:12px;margin-top:12px">
+                    <button class="btn btn-primary btn-sm" onclick="rescueSuccess('DEG')" style="flex:1;background:#4CAF50">Resgatou com DEG</button>
+                    <button class="btn btn-primary btn-sm" onclick="showPlanC()" style="flex:1;background:#F44336">Falhou — Plano C</button>
+                </div>
+            </div>
+            <div id="planCSection" style="display:none">
+            <div class="card" style="border-left:4px solid #F44336;margin-top:12px">
+                <div class="card-title" style="color:#F44336">Plano C — Cricotireoidostomia</div>
+                <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">
+                    <strong>Técnica cirúrgica (bisturi-bougie-tubo):</strong><br>
+                    1. Palpar membrana cricotireoidea (entre cartilagens tireoide e cricoide)<br>
+                    2. Incisão vertical na pele (3-4 cm) + incisão horizontal na membrana<br>
+                    3. Inserir bougie pela incisão, direção caudal<br>
+                    4. Deslizar tubo 6.0 sobre o bougie<br>
+                    5. Confirmar posição: capnografia + ausculta
+                </div>
+                <div style="display:flex;gap:12px;margin-top:12px">
+                    <button class="btn btn-primary btn-sm" onclick="rescueSuccess('Cricotireoidostomia')" style="flex:1;background:#4CAF50">Via aérea estabelecida</button>
+                </div>
+            </div>
+            </div>
+            </div>
+
+            <div class="nav-buttons"><button class="btn btn-secondary" onclick="goToStep(9)">← Voltar</button><button class="btn btn-primary" id="btnFinalize" onclick="goToStep(11)">Finalizar →</button></div>
         </div>
 
         <!-- STEP 11 -->
@@ -3144,7 +3199,9 @@
             population: 'adulto',
             membrane: null,
             meds: { fentanil: false, ketamina: false, etomidato: false, propofol: false, rocuronio: false, succinilcolina: false },
-            cormack: null
+            cormack: null,
+            intubationSuccess: null,
+            rescueMethod: null
         };
 
         const indutores = ['ketamina', 'etomidato', 'propofol'];
@@ -3175,6 +3232,11 @@
             if (n === 6) updateHemoAlert();
             if (n === 8) updateMedicationsDisplay();
             if (n === 9) updateProcedureDisplay();
+            if (n === 10) {
+                document.getElementById('intubationQuestion').style.display = 'block';
+                document.getElementById('confirmationSection').style.display = 'none';
+                document.getElementById('failedAirway').style.display = 'none';
+            }
             if (n === 11) generateSummary();
             if (n === 5 || n === 9) {
                 var lemonCount = state.lemon ? state.lemon.filter(Boolean).length : 0;
@@ -3371,6 +3433,22 @@
                 state.meds[med] = !state.meds[med];
             } else { state.meds[med] = !state.meds[med]; }
             document.getElementById(med + 'Card').classList.toggle('selected', state.meds[med]);
+            // Drug alerts
+            var alerts = {
+                succinilcolina: 'Contraindicada em hipercalemia, queimaduras extensas (>72h), miopatias, lesão medular crônica, doença do neurônio motor',
+                ketamina: 'Uso com cautela em emergência hipertensiva. Considere etomidato como alternativa'
+            };
+            var alertEl = document.getElementById(med + 'Alert');
+            if (!alertEl && alerts[med]) {
+                alertEl = document.createElement('div');
+                alertEl.id = med + 'Alert';
+                alertEl.style.cssText = 'font-size:11px;color:#FFC107;padding:8px 12px;margin-top:4px;background:rgba(255,193,7,0.08);border-radius:8px;line-height:1.4';
+                document.getElementById(med + 'Card').appendChild(alertEl);
+            }
+            if (alertEl) {
+                alertEl.textContent = alerts[med] || '';
+                alertEl.style.display = state.meds[med] ? 'block' : 'none';
+            }
         }
 
         function updateFentanil() { const w = state.weight || 70, r = parseFloat(document.getElementById('fentanilSlider').value), d = Math.round(w * r); document.getElementById('fentanilRate').textContent = r + ' mcg/kg'; document.getElementById('fentanilDose').textContent = d + ' mcg'; document.getElementById('fentanilVol').textContent = '= ' + (d / 50).toFixed(1) + ' mL'; }
@@ -3385,7 +3463,12 @@
         function formatTime(s) { const m = Math.floor(s / 60); return m.toString().padStart(2, '0') + ':' + (s % 60).toString().padStart(2, '0'); }
         function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
-        function selectCormack(g) { state.cormack = g; document.querySelectorAll('#cormackToggle .toggle-btn').forEach(b => b.classList.toggle('active', b.textContent === g)); }
+        function selectCormack(g) {
+            state.cormack = g;
+            document.querySelectorAll('#cormackToggle .toggle-btn').forEach(b => b.classList.toggle('active', b.textContent === g));
+            var alert = document.getElementById('difficultAirwayAlert');
+            if (alert) alert.style.display = (g === 'III' || g === 'IV') ? 'block' : 'none';
+        }
         function toggleSimple(el) { el.classList.toggle('checked'); }
 
         function switchProcTab(tab) {
@@ -3406,6 +3489,31 @@
         function closePopup(id) {
             var el = document.getElementById('popup' + id.charAt(0).toUpperCase() + id.slice(1));
             if (el) el.classList.remove('visible');
+        }
+
+        function intubationResult(success) {
+            state.intubationSuccess = success;
+            document.getElementById('intubationQuestion').style.display = 'none';
+            if (success) {
+                state.rescueMethod = null;
+                document.getElementById('confirmationSection').style.display = 'block';
+                document.getElementById('failedAirway').style.display = 'none';
+            } else {
+                document.getElementById('confirmationSection').style.display = 'none';
+                document.getElementById('failedAirway').style.display = 'block';
+                document.getElementById('planCSection').style.display = 'none';
+            }
+        }
+        function showPlanC() {
+            document.getElementById('planCSection').style.display = 'block';
+            document.getElementById('planCSection').scrollIntoView({behavior:'smooth', block:'center'});
+        }
+        function rescueSuccess(method) {
+            state.rescueMethod = method;
+            state.intubationSuccess = true;
+            document.getElementById('failedAirway').style.display = 'none';
+            document.getElementById('confirmationSection').style.display = 'block';
+            document.getElementById('confirmationSection').scrollIntoView({behavior:'smooth', block:'start'});
         }
 
         function generateSummary() {
@@ -3441,7 +3549,9 @@
             if (cuff) proc += '\\nCuff: ' + cuff + ' cmH₂O';
             document.getElementById('summaryProcedure').textContent = proc;
             
-            document.getElementById('summaryConfirmation').textContent = 'Capnografia + Ausculta + POCUS (traqueal, pulmonar bilateral)';
+            var confText = 'Capnografia + Ausculta + POCUS (traqueal, pulmonar bilateral)';
+            if (state.rescueMethod) confText = 'Resgate: ' + state.rescueMethod + '\\n' + confText;
+            document.getElementById('summaryConfirmation').textContent = confText;
         }
 
         function copyReport() {
@@ -5780,6 +5890,12 @@
 
             <div class="alert alert-warning"><strong>Paciente já anticoagulado?</strong> D-dímero e algoritmo YEARS não foram validados em pacientes em anticoagulação terapêutica. Considere imagem direto se suspeita clínica relevante.</div>
 
+            <!-- Toggle: Não gestante (Wells) / Gestante (YEARS) -->
+            <div style="display:flex;gap:8px;margin-bottom:16px">
+                <button class="toggle-btn active" id="toggleNotPregnant" onclick="togglePregnant(false)" style="flex:1;padding:10px;border-radius:8px;border:1px solid #333;background:#1A1A1A;color:#FFF;font-size:14px;font-weight:500;cursor:pointer">Não gestante (Wells)</button>
+                <button class="toggle-btn" id="togglePregnant" onclick="togglePregnant(true)" style="flex:1;padding:10px;border-radius:8px;border:1px solid #333;background:transparent;color:#888;font-size:14px;font-weight:500;cursor:pointer">Gestante (YEARS)</button>
+            </div>
+
             <!-- Wells: direct buttons + collapsible calc -->
             <div id="step2Wells">
                 <p style="font-size:15px;font-weight:600;margin-bottom:12px;">Probabilidade pré-teste (Wells)</p>
@@ -5811,7 +5927,6 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-muted" style="font-size:12px;"><a href="javascript:void(0)" onclick="showPretest('pregnant')" style="color:var(--info);text-decoration:underline;">Gestante? Use YEARS adaptado</a></p>
             </div>
 
             <!-- Sub: Wells LOW → PERC + D-dimer -->
@@ -5831,7 +5946,7 @@
                     </div>
                     <div class="collapsible-body">
                         <div class="collapsible-content">
-                            <p class="text-muted mb-sm" style="font-size:12px;">Todos os 8 critérios devem ser negativos + gestalt &lt;15% para excluir TEP.</p>
+                            <p class="text-muted mb-sm" style="font-size:12px;">Todos os 8 critérios devem ser negativos + gestalt &lt;15% para considerar TEP improvável.</p>
                             <div class="calc-group" id="inlinePercItems">
                                 <div class="calc-item" onclick="toggleCalcItem(this,'inlinePerc')"><div class="calc-check"></div><div class="calc-label">Idade ≥50 anos</div></div>
                                 <div class="calc-item" onclick="toggleCalcItem(this,'inlinePerc')"><div class="calc-check"></div><div class="calc-label">FC ≥100 bpm</div></div>
@@ -5929,7 +6044,7 @@
                 <div class="alert alert-info"><strong>Gestante:</strong> Utilize YEARS adaptado para gestação (COR 2b). USG de MMII se sintomas — se positivo, considere tratar sem CTPA.</div>
                 <p style="font-size:14px;font-weight:600;margin-bottom:8px;">Resultado YEARS gestante:</p>
                 <div style="display:flex;gap:8px;margin-bottom:8px;">
-                    <button class="btn btn-secondary" style="flex:1;text-align:center;padding:12px 8px;" onclick="yearsPregDirect('neg')">TEP excluído</button>
+                    <button class="btn btn-secondary" style="flex:1;text-align:center;padding:12px 8px;" onclick="yearsPregDirect('neg')">TEP improvável</button>
                     <button class="btn btn-secondary" style="flex:1;text-align:center;padding:12px 8px;" onclick="yearsPregDirect('pos')">Imagem necessária</button>
                 </div>
                 <div class="collapsible" style="margin-bottom:8px;">
@@ -6127,6 +6242,7 @@
                 <div class="disposition-row"><span class="disposition-label">Anticoagulação</span><span class="disposition-value" id="dispAnticoag">—</span></div>
                 <div class="disposition-row"><span class="disposition-label">Monitorização</span><span class="disposition-value" id="dispMonitor">—</span></div>
                 <div class="disposition-row"><span class="disposition-label">Terapia avançada</span><span class="disposition-value" id="dispAdvanced">—</span></div>
+                <div class="disposition-row" id="rowFollowup" style="display:none"><span class="disposition-label">Seguimento</span><span class="disposition-value" id="dispFollowup">—</span></div>
             </div>
             <button class="btn btn-scroll mt-md" onclick="scrollToCalc('refAnticoag')" style="width:100%;text-align:center;">Ver esquemas de anticoagulação</button>
             <button class="btn btn-scroll" onclick="scrollToCalc('refContra')" style="width:100%;text-align:center;">Ver contraindicações</button>
@@ -6149,7 +6265,7 @@
     </div>
     <div class="collapsible-body">
         <div class="collapsible-content">
-            <p class="text-muted mb-sm">Aplicável apenas se gestalt &lt;15%. Todos critérios devem ser negativos para excluir TEP.</p>
+            <p class="text-muted mb-sm">Aplicável apenas se gestalt &lt;15%. Todos critérios devem ser negativos para considerar TEP improvável.</p>
             <div class="calc-group" id="percItems">
                 <div class="calc-item" onclick="toggleCalcItem(this,'perc')"><div class="calc-check"></div><div class="calc-label">Idade ≥50 anos</div></div>
                 <div class="calc-item" onclick="toggleCalcItem(this,'perc')"><div class="calc-check"></div><div class="calc-label">FC ≥100 bpm</div></div>
@@ -6799,6 +6915,29 @@ function updateProgress() {
 // ==========================================
 // PRETEST SUBSTEPS
 // ==========================================
+function togglePregnant(isPregnant) {
+    var wellsSection = document.getElementById('step2Wells');
+    var subPregnant = document.getElementById('subPregnant');
+    var btnNotPreg = document.getElementById('toggleNotPregnant');
+    var btnPreg = document.getElementById('togglePregnant');
+    // Hide sub-results when toggling
+    ['subLow','subModerate','subDdimer','subHigh'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+    if (isPregnant) {
+        if (wellsSection) wellsSection.style.display = 'none';
+        if (subPregnant) { subPregnant.classList.remove('hidden'); subPregnant.style.display = 'block'; }
+        btnPreg.style.background = '#1A1A1A'; btnPreg.style.color = '#FFF';
+        btnNotPreg.style.background = 'transparent'; btnNotPreg.style.color = '#888';
+    } else {
+        if (wellsSection) wellsSection.style.display = '';
+        if (subPregnant) { subPregnant.style.display = 'none'; }
+        btnNotPreg.style.background = '#1A1A1A'; btnNotPreg.style.color = '#FFF';
+        btnPreg.style.background = 'transparent'; btnPreg.style.color = '#888';
+    }
+}
+
 function showPretest(type) {
     ['subLow','subModerate','subDdimer','subHigh','subPregnant'].forEach(id => {
         var el = document.getElementById(id);
@@ -7005,6 +7144,15 @@ function showManagement() {
     document.getElementById('dispMonitor').textContent = mgmt.monitor;
     document.getElementById('dispAdvanced').textContent = mgmt.advanced;
 
+    var rowFollowup = document.getElementById('rowFollowup');
+    var dispFollowup = document.getElementById('dispFollowup');
+    if (mgmt.followup) {
+        dispFollowup.textContent = mgmt.followup;
+        rowFollowup.style.display = '';
+    } else {
+        rowFollowup.style.display = 'none';
+    }
+
     document.getElementById('step4').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -7016,7 +7164,8 @@ function getManagement(cat) {
             destino: 'Alta do DE',
             anticoag: 'Avaliar caso a caso',
             monitor: 'Ambulatorial',
-            advanced: 'Não indicada'
+            advanced: 'Não indicada',
+            followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.'
         },
         'A2': {
             description: 'TEP incidental, assintomático, segmentar ou mais proximal.',
@@ -7024,13 +7173,15 @@ function getManagement(cat) {
             destino: 'Alta do DE',
             anticoag: 'DOAC (preferido)',
             monitor: 'Ambulatorial',
-            advanced: 'Não indicada'
+            advanced: 'Não indicada',
+            followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.'
         },
         'B1': {
             description: 'TEP sintomático, baixo risco, subsegmentar.',
             actions: '• Avaliar necessidade de anticoagulação (considerar TVP, contexto)<br>• Se anticoagular: avaliar tratamento ambulatorial (Hestia negativo → razoável)<br>• Seguimento ambulatorial em 1-2 semanas',
             destino: 'Alta / Observação breve',
             anticoag: 'Avaliar caso a caso',
+            followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.',
             monitor: 'Ambulatorial',
             advanced: 'Não indicada'
         },
@@ -7040,7 +7191,8 @@ function getManagement(cat) {
             destino: 'Alta (se Hestia neg.) / Observação',
             anticoag: 'DOAC (preferido)',
             monitor: 'Ambulatorial',
-            advanced: 'Não indicada'
+            advanced: 'Não indicada',
+            followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.'
         },
         'C1': {
             description: 'TEP sintomático, risco elevado. Sem biomarcadores alterados e sem disfunção de VD.',
@@ -7178,12 +7330,12 @@ function updatePERC() {
 
     if (checked === 0) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">0 / 8</div><div class="result-text">PERC negativo — se gestalt &lt;15%, TEP pode ser excluído</div>';
+        res.innerHTML = '<div class="result-score">0 / 8</div><div class="result-text">PERC negativo — se gestalt &lt;15%, TEP pode ser considerado improvável</div>';
         next.classList.remove('hidden');
-        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP excluído — considere diagnósticos alternativos.<br><span style="font-size:12px;opacity:0.7;">Documente: PERC negativo + gestalt &lt;15%.</span></div></div>';
+        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP improvável — considere diagnósticos alternativos.<br><span style="font-size:12px;opacity:0.7;">Documente: PERC negativo + gestalt &lt;15%.</span></div></div>';
     } else {
         res.className = 'calc-result result-yellow';
-        res.innerHTML = '<div class="result-score">' + checked + ' / 8</div><div class="result-text">PERC positivo — não exclui TEP. Prossiga com D-dímero.</div>';
+        res.innerHTML = '<div class="result-score">' + checked + ' / 8</div><div class="result-text">PERC positivo — não descarta TEP. Prossiga com D-dímero.</div>';
         next.classList.remove('hidden');
         next.innerHTML = '<button class="btn btn-scroll" onclick="scrollToCalc(\\'calcDdimer\\')">Prosseguir com D-dímero →</button>';
     }
@@ -7309,8 +7461,8 @@ function calcDdimer() {
     next.classList.remove('hidden');
     if (value < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + value + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">D-dímero negativo — TEP excluído</div>';
-        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP excluído — D-dímero abaixo do threshold.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        res.innerHTML = '<div class="result-score">' + value + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">D-dímero negativo — TEP improvável</div>';
+        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP improvável — D-dímero abaixo do threshold.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         res.className = 'calc-result result-red';
         res.innerHTML = '<div class="result-score">' + value + ' ≥ ' + threshold + ' μg/L</div><div class="result-text">D-dímero positivo — imagem recomendada</div>';
@@ -7335,8 +7487,8 @@ function calcYears() {
     next.classList.remove('hidden');
     if (dd < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">YEARS negativo — TEP excluído</div>';
-        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP excluído pelo algoritmo YEARS.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">YEARS negativo — TEP improvável</div>';
+        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP improvável pelo algoritmo YEARS.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         res.className = 'calc-result result-red';
         res.innerHTML = '<div class="result-score">' + dd + ' ≥ ' + threshold + ' μg/L</div><div class="result-text">YEARS positivo — imagem recomendada</div>';
@@ -7361,8 +7513,8 @@ function calcYearsPreg() {
     next.classList.remove('hidden');
     if (dd < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">YEARS gestante negativo — TEP excluído</div>';
-        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP excluído — YEARS gestante negativo.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">YEARS gestante negativo — TEP improvável</div>';
+        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP improvável — YEARS gestante negativo.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         res.className = 'calc-result result-red';
         res.innerHTML = '<div class="result-score">' + dd + ' ≥ ' + threshold + ' μg/L</div><div class="result-text">YEARS gestante positivo — imagem necessária</div>';
@@ -7506,7 +7658,7 @@ function percDirect(result) {
     var area = document.getElementById('percResultArea');
     area.classList.remove('hidden');
     if (result === 'neg') {
-        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">PERC negativo + gestalt &lt;15% — TEP excluído.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">PERC negativo + gestalt &lt;15% — TEP improvável.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         area.innerHTML = '<div class="alert alert-warning" style="margin-top:8px;">PERC positivo — prossiga com D-dímero abaixo.</div>';
         document.getElementById('subDdimer').classList.remove('hidden');
@@ -7517,7 +7669,7 @@ function ddimerDirect(result) {
     var area = document.getElementById('ddimerResultArea');
     area.classList.remove('hidden');
     if (result === 'neg') {
-        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">D-dímero negativo — TEP excluído.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">D-dímero negativo — TEP improvável.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         area.innerHTML = '<div class="alert alert-info" style="margin-top:8px;"><strong>D-dímero positivo — imagem recomendada.</strong> CTPA (preferida) ou V/Q se contraindicação a contraste.</div>';
     }
@@ -7527,7 +7679,7 @@ function yearsPregDirect(result) {
     var area = document.getElementById('yearsPregResultArea');
     area.classList.remove('hidden');
     if (result === 'neg') {
-        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">YEARS gestante negativo — TEP excluído.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">YEARS gestante negativo — TEP improvável.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         area.innerHTML = '<div class="alert alert-info" style="margin-top:8px;"><strong>Imagem necessária.</strong> CTPA ou V/Q. Se sintomas em MMII, considere USG antes.</div>';
     }
@@ -7585,7 +7737,7 @@ function calcInlineDdimer() {
     }
     if (value < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + value + ' &lt; ' + threshold + '</div><div class="result-text">D-dímero negativo — TEP excluído</div>';
+        res.innerHTML = '<div class="result-score">' + value + ' &lt; ' + threshold + '</div><div class="result-text">D-dímero negativo — TEP improvável</div>';
         ddimerDirect('neg');
     } else {
         res.className = 'calc-result result-red';
@@ -7606,7 +7758,7 @@ function calcInlineYears() {
     }
     if (dd < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + '</div><div class="result-text">YEARS negativo — TEP excluído</div>';
+        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + '</div><div class="result-text">YEARS negativo — TEP improvável</div>';
         ddimerDirect('neg');
     } else {
         res.className = 'calc-result result-red';
@@ -7627,7 +7779,7 @@ function calcInlineYearsPreg() {
     }
     if (dd < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + '</div><div class="result-text">TEP excluído</div>';
+        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + '</div><div class="result-text">TEP improvável</div>';
         yearsPregDirect('neg');
     } else {
         res.className = 'calc-result result-red';
@@ -23748,14 +23900,20 @@ function showScreen(id) {
 
 // ===== START =====
 function startCode() {
-  state.startTime = Date.now();
-  state.running = true;
-  requestWakeLock();
-  state.events.push({ time: 0, type: 'system', detail: 'Código iniciado' });
-  document.getElementById('footerBar').style.display = 'block';
-  document.getElementById('staticFooter').style.display = 'none';
-  startMainTick();
-  showScreen('screenRhythm');
+  try {
+    state.startTime = Date.now();
+    state.running = true;
+    requestWakeLock();
+    state.events.push({ time: 0, type: 'system', detail: 'Código iniciado' });
+    var fb = document.getElementById('footerBar');
+    var sf = document.getElementById('staticFooter');
+    if (fb) fb.style.display = 'block';
+    if (sf) sf.style.display = 'none';
+    startMainTick();
+    showScreen('screenRhythm');
+  } catch(e) {
+    alert('Erro ao iniciar: ' + e.message);
+  }
 }
 
 // ===== RHYTHM =====
@@ -24770,14 +24928,14 @@ a{color:var(--info);text-decoration:none}
 
     <div style="font-size:12px;color:#666;margin-bottom:12px;font-style:italic">Marque os sinais presentes. Se nenhum, avance para a classificação.</div>
     <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px"><strong style="color:var(--warning)">Qualquer um</strong> presente → pelo menos Grupo C.</p>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
+    <div class="check-item" data-alarm="0" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
+    <div class="check-item" data-alarm="1" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
+    <div class="check-item" data-alarm="2" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
+    <div class="check-item" data-alarm="3" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
+    <div class="check-item" data-alarm="4" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
+    <div class="check-item" data-alarm="5" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
+    <div class="check-item" data-alarm="6" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
+    <div class="check-item" data-alarm="7" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
     <div id="trilhaAlarmResult" style="margin-top:12px"></div>
 
     <div class="step-nav">
@@ -24944,6 +25102,9 @@ a{color:var(--info);text-decoration:none}
         </div>
     </div>
 
+    <div id="noDischargeMsg" style="display:none;background:rgba(33,150,243,0.08);border:1px solid #2196F3;border-radius:12px;padding:16px;margin-top:12px">
+        <div style="font-size:13px;color:#2196F3;line-height:1.6">Paciente em internação — sem fluxo de alta neste momento. Use os botões de reclassificação conforme evolução clínica.</div>
+    </div>
     <div class="step-nav">
         <button class="step-nav-btn" onclick="goTo('step3')">← Voltar</button>
         <button class="step-nav-btn step-nav-next" id="btnStep5" onclick="goTo('step5')">Próximo →</button>
@@ -25032,14 +25193,14 @@ a{color:var(--info);text-decoration:none}
         <div class="collapsible-body">
             <div class="collapsible-content">
                 <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Marque os sinais presentes. A presença de <strong style="color:var(--warning)">qualquer um</strong> indica pelo menos Grupo C.</p>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
+                <div class="check-item" data-alarm="0" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
+                <div class="check-item" data-alarm="1" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
+                <div class="check-item" data-alarm="2" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
+                <div class="check-item" data-alarm="3" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
+                <div class="check-item" data-alarm="4" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
+                <div class="check-item" data-alarm="5" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
+                <div class="check-item" data-alarm="6" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
+                <div class="check-item" data-alarm="7" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
                 <div id="alarmResult" style="margin-top:12px"></div>
             </div>
         </div>
@@ -25199,7 +25360,7 @@ a{color:var(--info);text-decoration:none}
     </div>
 
     <button class="btn btn-primary" onclick="goTo('altasegura')" style="margin-top:12px">Orientações de alta completas →</button>
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-warning btn-sm" onclick="goTo('grupoC')" style="margin-top:8px;color:#000">Evoluiu com sinais de alarme → Grupo C</button></div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-secondary btn-sm" onclick="goTo('grupoB')" style="margin-top:8px;border-color:var(--warning)">Identificou condição de risco → Grupo B</button> <button class="btn btn-warning btn-sm" onclick="goTo('grupoC')" style="margin-top:8px;color:#000">Evoluiu com sinais de alarme → Grupo C</button></div>
 </div>
 
 <!-- ============================================ -->
@@ -26246,7 +26407,7 @@ const screens = {
     referencias:'screen-referencias'
 };
 
-const needsWeight = ['step1','step2','step3','stepGrupo','step5','grupoA','grupoB','grupoC','grupoD','calculadoras'];
+const needsWeight = ['step2','step3','stepGrupo','step5','grupos','classificacao','grupoA','grupoB','grupoC','grupoD','calculadoras'];
 
 function goTo(id) {
     Object.values(screens).forEach(s => {
@@ -26309,6 +26470,16 @@ function toggleCollapsible(header) {
 // ==========================================
 function toggleCheck(item) {
     item.classList.toggle('checked');
+    var idx = item.getAttribute('data-alarm');
+    if (idx !== null) {
+        var isChecked = item.classList.contains('checked');
+        document.querySelectorAll('.check-item[data-alarm="' + idx + '"]').forEach(function(el) {
+            if (el !== item) {
+                if (isChecked) el.classList.add('checked');
+                else el.classList.remove('checked');
+            }
+        });
+    }
     updateAlarmResult();
     updateTrilhaAlarmResult();
 }
@@ -26415,6 +26586,8 @@ function openTrilhaGrupo(g) {
     // Hide "Próximo" (step5) for groups C and D — no discharge flow
     var btnStep5 = document.getElementById('btnStep5');
     if (btnStep5) btnStep5.style.display = (g === 'C' || g === 'D') ? 'none' : '';
+    var noDischargeMsg = document.getElementById('noDischargeMsg');
+    if (noDischargeMsg) noDischargeMsg.style.display = (g === 'C' || g === 'D') ? 'block' : 'none';
     // Navigate to stepGrupo screen
     goTo('stepGrupo');
     updateCalculations();

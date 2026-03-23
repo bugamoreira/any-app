@@ -290,14 +290,14 @@ a{color:var(--info);text-decoration:none}
 
     <div style="font-size:12px;color:#666;margin-bottom:12px;font-style:italic">Marque os sinais presentes. Se nenhum, avance para a classificação.</div>
     <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px"><strong style="color:var(--warning)">Qualquer um</strong> presente → pelo menos Grupo C.</p>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
-    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
+    <div class="check-item" data-alarm="0" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
+    <div class="check-item" data-alarm="1" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
+    <div class="check-item" data-alarm="2" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
+    <div class="check-item" data-alarm="3" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
+    <div class="check-item" data-alarm="4" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
+    <div class="check-item" data-alarm="5" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
+    <div class="check-item" data-alarm="6" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
+    <div class="check-item" data-alarm="7" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
     <div id="trilhaAlarmResult" style="margin-top:12px"></div>
 
     <div class="step-nav">
@@ -464,6 +464,9 @@ a{color:var(--info);text-decoration:none}
         </div>
     </div>
 
+    <div id="noDischargeMsg" style="display:none;background:rgba(33,150,243,0.08);border:1px solid #2196F3;border-radius:12px;padding:16px;margin-top:12px">
+        <div style="font-size:13px;color:#2196F3;line-height:1.6">Paciente em internação — sem fluxo de alta neste momento. Use os botões de reclassificação conforme evolução clínica.</div>
+    </div>
     <div class="step-nav">
         <button class="step-nav-btn" onclick="goTo('step3')">← Voltar</button>
         <button class="step-nav-btn step-nav-next" id="btnStep5" onclick="goTo('step5')">Próximo →</button>
@@ -552,14 +555,14 @@ a{color:var(--info);text-decoration:none}
         <div class="collapsible-body">
             <div class="collapsible-content">
                 <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Marque os sinais presentes. A presença de <strong style="color:var(--warning)">qualquer um</strong> indica pelo menos Grupo C.</p>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
-                <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
+                <div class="check-item" data-alarm="0" onclick="toggleCheck(this)"><div class="check-box"></div><div>Dor abdominal intensa e contínua</div></div>
+                <div class="check-item" data-alarm="1" onclick="toggleCheck(this)"><div class="check-box"></div><div>Vômitos persistentes</div></div>
+                <div class="check-item" data-alarm="2" onclick="toggleCheck(this)"><div class="check-box"></div><div>Acúmulo de líquidos (ascite, derrame pleural ou pericárdico)</div></div>
+                <div class="check-item" data-alarm="3" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hipotensão postural e/ou lipotímia</div></div>
+                <div class="check-item" data-alarm="4" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hepatomegalia >2 cm abaixo do rebordo costal</div></div>
+                <div class="check-item" data-alarm="5" onclick="toggleCheck(this)"><div class="check-box"></div><div>Sangramento de mucosas</div></div>
+                <div class="check-item" data-alarm="6" onclick="toggleCheck(this)"><div class="check-box"></div><div>Letargia e/ou irritabilidade</div></div>
+                <div class="check-item" data-alarm="7" onclick="toggleCheck(this)"><div class="check-box"></div><div>Hematócrito em ascensão (aumento ≥20% do valor basal)</div></div>
                 <div id="alarmResult" style="margin-top:12px"></div>
             </div>
         </div>
@@ -719,7 +722,7 @@ a{color:var(--info);text-decoration:none}
     </div>
 
     <button class="btn btn-primary" onclick="goTo('altasegura')" style="margin-top:12px">Orientações de alta completas →</button>
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-warning btn-sm" onclick="goTo('grupoC')" style="margin-top:8px;color:#000">Evoluiu com sinais de alarme → Grupo C</button></div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-secondary btn-sm" onclick="goTo('grupoB')" style="margin-top:8px;border-color:var(--warning)">Identificou condição de risco → Grupo B</button> <button class="btn btn-warning btn-sm" onclick="goTo('grupoC')" style="margin-top:8px;color:#000">Evoluiu com sinais de alarme → Grupo C</button></div>
 </div>
 
 <!-- ============================================ -->
@@ -1766,7 +1769,7 @@ const screens = {
     referencias:'screen-referencias'
 };
 
-const needsWeight = ['step1','step2','step3','stepGrupo','step5','grupoA','grupoB','grupoC','grupoD','calculadoras'];
+const needsWeight = ['step2','step3','stepGrupo','step5','grupos','classificacao','grupoA','grupoB','grupoC','grupoD','calculadoras'];
 
 function goTo(id) {
     Object.values(screens).forEach(s => {
@@ -1829,6 +1832,16 @@ function toggleCollapsible(header) {
 // ==========================================
 function toggleCheck(item) {
     item.classList.toggle('checked');
+    var idx = item.getAttribute('data-alarm');
+    if (idx !== null) {
+        var isChecked = item.classList.contains('checked');
+        document.querySelectorAll('.check-item[data-alarm="' + idx + '"]').forEach(function(el) {
+            if (el !== item) {
+                if (isChecked) el.classList.add('checked');
+                else el.classList.remove('checked');
+            }
+        });
+    }
     updateAlarmResult();
     updateTrilhaAlarmResult();
 }
@@ -1935,6 +1948,8 @@ function openTrilhaGrupo(g) {
     // Hide "Próximo" (step5) for groups C and D — no discharge flow
     var btnStep5 = document.getElementById('btnStep5');
     if (btnStep5) btnStep5.style.display = (g === 'C' || g === 'D') ? 'none' : '';
+    var noDischargeMsg = document.getElementById('noDischargeMsg');
+    if (noDischargeMsg) noDischargeMsg.style.display = (g === 'C' || g === 'D') ? 'block' : 'none';
     // Navigate to stepGrupo screen
     goTo('stepGrupo');
     updateCalculations();

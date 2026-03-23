@@ -25,7 +25,7 @@ Plantonistas médicos de departamentos de emergência — principalmente emergen
 
 ### 1.3 Distribuição
 
-Hub central: `https://hubany.netlify.app`
+Hub central: `https://anyapp.netlify.app`
 Repositório: `github.com/bugamoreira/any-app.git` (branch `main`)
 Deploy automático via Netlify (git push → auto-deploy).
 
@@ -466,6 +466,46 @@ Para fluxos passo-a-passo, usar `translateX()` em vez de fade simples.
 }
 .btn-primary:hover { background: var(--accent-hover); }
 ```
+
+### 7.8 Árvores de decisão e branching
+
+Regras para fluxos de decisão clínica nas ferramentas:
+
+#### Branching pós-decisão obrigatório
+- Toda decisão binária (sucesso/falha, sim/não) deve ter **dois caminhos explícitos**
+- Nunca assumir sucesso — sempre perguntar "Deu certo?"
+- Exemplo: Intubação → "Intubou?" → Sim (confirmar) / Não (Plano B)
+
+#### Sync de estado entre views
+- Dados clínicos (checklists, scores) que aparecem em mais de um screen devem usar **modelo de dados compartilhado**
+- Nunca duplicar estado em DOM separados sem sincronização
+- Usar `data-attributes` para identificar items e array JS para estado
+- Ao toggle em uma view, refletir automaticamente na outra
+
+#### Feedback explícito em vez de ocultar
+- Botões escondidos devem ter mensagem explicando por quê
+- Botões disabled devem mostrar texto inline com o requisito
+- Nunca silenciar uma decisão do sistema — o médico precisa saber o que aconteceu
+
+#### Populações especiais visíveis
+- Toggle proeminente para populações especiais (gestante, pediátrico)
+- Nunca esconder atrás de link de texto pequeno
+- Exemplo: TEP gestante → toggle no topo "Gestante / Não gestante"
+
+#### Informação inline no fluxo
+- Referências e calculadoras acessíveis sem trocar de view
+- Collapsibles inline > links para outras seções
+- O médico não deve perder contexto para consultar uma dose ou esquema
+
+#### Reclassificação bidirecional
+- Todo grupo/categoria deve permitir escalar E desescalar
+- Exceto extremos lógicos (ex: Grupo A não desescala, Grupo D não escala além)
+- Botões de reclassificação sempre visíveis ao final de cada grupo
+
+#### Linguagem consistentemente sugestiva
+- Nunca "excluído", sempre "improvável" com ressalva
+- Nunca "indicado/contraindicado", sempre "considere/geralmente não recomendado"
+- Ver seção 9.2 para regras completas de tom sugestivo
 
 ---
 

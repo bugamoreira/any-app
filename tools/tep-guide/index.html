@@ -386,6 +386,12 @@
 
             <div class="alert alert-warning"><strong>Paciente já anticoagulado?</strong> D-dímero e algoritmo YEARS não foram validados em pacientes em anticoagulação terapêutica. Considere imagem direto se suspeita clínica relevante.</div>
 
+            <!-- Toggle: Não gestante (Wells) / Gestante (YEARS) -->
+            <div style="display:flex;gap:8px;margin-bottom:16px">
+                <button class="toggle-btn active" id="toggleNotPregnant" onclick="togglePregnant(false)" style="flex:1;padding:10px;border-radius:8px;border:1px solid #333;background:#1A1A1A;color:#FFF;font-size:14px;font-weight:500;cursor:pointer">Não gestante (Wells)</button>
+                <button class="toggle-btn" id="togglePregnant" onclick="togglePregnant(true)" style="flex:1;padding:10px;border-radius:8px;border:1px solid #333;background:transparent;color:#888;font-size:14px;font-weight:500;cursor:pointer">Gestante (YEARS)</button>
+            </div>
+
             <!-- Wells: direct buttons + collapsible calc -->
             <div id="step2Wells">
                 <p style="font-size:15px;font-weight:600;margin-bottom:12px;">Probabilidade pré-teste (Wells)</p>
@@ -417,7 +423,6 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-muted" style="font-size:12px;"><a href="javascript:void(0)" onclick="showPretest('pregnant')" style="color:var(--info);text-decoration:underline;">Gestante? Use YEARS adaptado</a></p>
             </div>
 
             <!-- Sub: Wells LOW → PERC + D-dimer -->
@@ -437,7 +442,7 @@
                     </div>
                     <div class="collapsible-body">
                         <div class="collapsible-content">
-                            <p class="text-muted mb-sm" style="font-size:12px;">Todos os 8 critérios devem ser negativos + gestalt &lt;15% para excluir TEP.</p>
+                            <p class="text-muted mb-sm" style="font-size:12px;">Todos os 8 critérios devem ser negativos + gestalt &lt;15% para considerar TEP improvável.</p>
                             <div class="calc-group" id="inlinePercItems">
                                 <div class="calc-item" onclick="toggleCalcItem(this,'inlinePerc')"><div class="calc-check"></div><div class="calc-label">Idade ≥50 anos</div></div>
                                 <div class="calc-item" onclick="toggleCalcItem(this,'inlinePerc')"><div class="calc-check"></div><div class="calc-label">FC ≥100 bpm</div></div>
@@ -535,7 +540,7 @@
                 <div class="alert alert-info"><strong>Gestante:</strong> Utilize YEARS adaptado para gestação (COR 2b). USG de MMII se sintomas — se positivo, considere tratar sem CTPA.</div>
                 <p style="font-size:14px;font-weight:600;margin-bottom:8px;">Resultado YEARS gestante:</p>
                 <div style="display:flex;gap:8px;margin-bottom:8px;">
-                    <button class="btn btn-secondary" style="flex:1;text-align:center;padding:12px 8px;" onclick="yearsPregDirect('neg')">TEP excluído</button>
+                    <button class="btn btn-secondary" style="flex:1;text-align:center;padding:12px 8px;" onclick="yearsPregDirect('neg')">TEP improvável</button>
                     <button class="btn btn-secondary" style="flex:1;text-align:center;padding:12px 8px;" onclick="yearsPregDirect('pos')">Imagem necessária</button>
                 </div>
                 <div class="collapsible" style="margin-bottom:8px;">
@@ -733,6 +738,7 @@
                 <div class="disposition-row"><span class="disposition-label">Anticoagulação</span><span class="disposition-value" id="dispAnticoag">—</span></div>
                 <div class="disposition-row"><span class="disposition-label">Monitorização</span><span class="disposition-value" id="dispMonitor">—</span></div>
                 <div class="disposition-row"><span class="disposition-label">Terapia avançada</span><span class="disposition-value" id="dispAdvanced">—</span></div>
+                <div class="disposition-row" id="rowFollowup" style="display:none"><span class="disposition-label">Seguimento</span><span class="disposition-value" id="dispFollowup">—</span></div>
             </div>
             <button class="btn btn-scroll mt-md" onclick="scrollToCalc('refAnticoag')" style="width:100%;text-align:center;">Ver esquemas de anticoagulação</button>
             <button class="btn btn-scroll" onclick="scrollToCalc('refContra')" style="width:100%;text-align:center;">Ver contraindicações</button>
@@ -755,7 +761,7 @@
     </div>
     <div class="collapsible-body">
         <div class="collapsible-content">
-            <p class="text-muted mb-sm">Aplicável apenas se gestalt &lt;15%. Todos critérios devem ser negativos para excluir TEP.</p>
+            <p class="text-muted mb-sm">Aplicável apenas se gestalt &lt;15%. Todos critérios devem ser negativos para considerar TEP improvável.</p>
             <div class="calc-group" id="percItems">
                 <div class="calc-item" onclick="toggleCalcItem(this,'perc')"><div class="calc-check"></div><div class="calc-label">Idade ≥50 anos</div></div>
                 <div class="calc-item" onclick="toggleCalcItem(this,'perc')"><div class="calc-check"></div><div class="calc-label">FC ≥100 bpm</div></div>
@@ -1405,6 +1411,29 @@ function updateProgress() {
 // ==========================================
 // PRETEST SUBSTEPS
 // ==========================================
+function togglePregnant(isPregnant) {
+    var wellsSection = document.getElementById('step2Wells');
+    var subPregnant = document.getElementById('subPregnant');
+    var btnNotPreg = document.getElementById('toggleNotPregnant');
+    var btnPreg = document.getElementById('togglePregnant');
+    // Hide sub-results when toggling
+    ['subLow','subModerate','subDdimer','subHigh'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+    if (isPregnant) {
+        if (wellsSection) wellsSection.style.display = 'none';
+        if (subPregnant) { subPregnant.classList.remove('hidden'); subPregnant.style.display = 'block'; }
+        btnPreg.style.background = '#1A1A1A'; btnPreg.style.color = '#FFF';
+        btnNotPreg.style.background = 'transparent'; btnNotPreg.style.color = '#888';
+    } else {
+        if (wellsSection) wellsSection.style.display = '';
+        if (subPregnant) { subPregnant.style.display = 'none'; }
+        btnNotPreg.style.background = '#1A1A1A'; btnNotPreg.style.color = '#FFF';
+        btnPreg.style.background = 'transparent'; btnPreg.style.color = '#888';
+    }
+}
+
 function showPretest(type) {
     ['subLow','subModerate','subDdimer','subHigh','subPregnant'].forEach(id => {
         var el = document.getElementById(id);
@@ -1611,6 +1640,15 @@ function showManagement() {
     document.getElementById('dispMonitor').textContent = mgmt.monitor;
     document.getElementById('dispAdvanced').textContent = mgmt.advanced;
 
+    var rowFollowup = document.getElementById('rowFollowup');
+    var dispFollowup = document.getElementById('dispFollowup');
+    if (mgmt.followup) {
+        dispFollowup.textContent = mgmt.followup;
+        rowFollowup.style.display = '';
+    } else {
+        rowFollowup.style.display = 'none';
+    }
+
     document.getElementById('step4').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1622,7 +1660,8 @@ function getManagement(cat) {
             destino: 'Alta do DE',
             anticoag: 'Avaliar caso a caso',
             monitor: 'Ambulatorial',
-            advanced: 'Não indicada'
+            advanced: 'Não indicada',
+            followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.'
         },
         'A2': {
             description: 'TEP incidental, assintomático, segmentar ou mais proximal.',
@@ -1630,13 +1669,15 @@ function getManagement(cat) {
             destino: 'Alta do DE',
             anticoag: 'DOAC (preferido)',
             monitor: 'Ambulatorial',
-            advanced: 'Não indicada'
+            advanced: 'Não indicada',
+            followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.'
         },
         'B1': {
             description: 'TEP sintomático, baixo risco, subsegmentar.',
             actions: '• Avaliar necessidade de anticoagulação (considerar TVP, contexto)<br>• Se anticoagular: avaliar tratamento ambulatorial (Hestia negativo → razoável)<br>• Seguimento ambulatorial em 1-2 semanas',
             destino: 'Alta / Observação breve',
             anticoag: 'Avaliar caso a caso',
+            followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.',
             monitor: 'Ambulatorial',
             advanced: 'Não indicada'
         },
@@ -1646,7 +1687,8 @@ function getManagement(cat) {
             destino: 'Alta (se Hestia neg.) / Observação',
             anticoag: 'DOAC (preferido)',
             monitor: 'Ambulatorial',
-            advanced: 'Não indicada'
+            advanced: 'Não indicada',
+            followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.'
         },
         'C1': {
             description: 'TEP sintomático, risco elevado. Sem biomarcadores alterados e sem disfunção de VD.',
@@ -1784,12 +1826,12 @@ function updatePERC() {
 
     if (checked === 0) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">0 / 8</div><div class="result-text">PERC negativo — se gestalt &lt;15%, TEP pode ser excluído</div>';
+        res.innerHTML = '<div class="result-score">0 / 8</div><div class="result-text">PERC negativo — se gestalt &lt;15%, TEP pode ser considerado improvável</div>';
         next.classList.remove('hidden');
-        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP excluído — considere diagnósticos alternativos.<br><span style="font-size:12px;opacity:0.7;">Documente: PERC negativo + gestalt &lt;15%.</span></div></div>';
+        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP improvável — considere diagnósticos alternativos.<br><span style="font-size:12px;opacity:0.7;">Documente: PERC negativo + gestalt &lt;15%.</span></div></div>';
     } else {
         res.className = 'calc-result result-yellow';
-        res.innerHTML = '<div class="result-score">' + checked + ' / 8</div><div class="result-text">PERC positivo — não exclui TEP. Prossiga com D-dímero.</div>';
+        res.innerHTML = '<div class="result-score">' + checked + ' / 8</div><div class="result-text">PERC positivo — não descarta TEP. Prossiga com D-dímero.</div>';
         next.classList.remove('hidden');
         next.innerHTML = '<button class="btn btn-scroll" onclick="scrollToCalc(\'calcDdimer\')">Prosseguir com D-dímero →</button>';
     }
@@ -1915,8 +1957,8 @@ function calcDdimer() {
     next.classList.remove('hidden');
     if (value < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + value + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">D-dímero negativo — TEP excluído</div>';
-        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP excluído — D-dímero abaixo do threshold.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        res.innerHTML = '<div class="result-score">' + value + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">D-dímero negativo — TEP improvável</div>';
+        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP improvável — D-dímero abaixo do threshold.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         res.className = 'calc-result result-red';
         res.innerHTML = '<div class="result-score">' + value + ' ≥ ' + threshold + ' μg/L</div><div class="result-text">D-dímero positivo — imagem recomendada</div>';
@@ -1941,8 +1983,8 @@ function calcYears() {
     next.classList.remove('hidden');
     if (dd < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">YEARS negativo — TEP excluído</div>';
-        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP excluído pelo algoritmo YEARS.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">YEARS negativo — TEP improvável</div>';
+        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP improvável pelo algoritmo YEARS.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         res.className = 'calc-result result-red';
         res.innerHTML = '<div class="result-score">' + dd + ' ≥ ' + threshold + ' μg/L</div><div class="result-text">YEARS positivo — imagem recomendada</div>';
@@ -1967,8 +2009,8 @@ function calcYearsPreg() {
     next.classList.remove('hidden');
     if (dd < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">YEARS gestante negativo — TEP excluído</div>';
-        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP excluído — YEARS gestante negativo.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + ' μg/L</div><div class="result-text">YEARS gestante negativo — TEP improvável</div>';
+        next.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">TEP improvável — YEARS gestante negativo.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         res.className = 'calc-result result-red';
         res.innerHTML = '<div class="result-score">' + dd + ' ≥ ' + threshold + ' μg/L</div><div class="result-text">YEARS gestante positivo — imagem necessária</div>';
@@ -2112,7 +2154,7 @@ function percDirect(result) {
     var area = document.getElementById('percResultArea');
     area.classList.remove('hidden');
     if (result === 'neg') {
-        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">PERC negativo + gestalt &lt;15% — TEP excluído.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">PERC negativo + gestalt &lt;15% — TEP improvável.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         area.innerHTML = '<div class="alert alert-warning" style="margin-top:8px;">PERC positivo — prossiga com D-dímero abaixo.</div>';
         document.getElementById('subDdimer').classList.remove('hidden');
@@ -2123,7 +2165,7 @@ function ddimerDirect(result) {
     var area = document.getElementById('ddimerResultArea');
     area.classList.remove('hidden');
     if (result === 'neg') {
-        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">D-dímero negativo — TEP excluído.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">D-dímero negativo — TEP improvável.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         area.innerHTML = '<div class="alert alert-info" style="margin-top:8px;"><strong>D-dímero positivo — imagem recomendada.</strong> CTPA (preferida) ou V/Q se contraindicação a contraste.</div>';
     }
@@ -2133,7 +2175,7 @@ function yearsPregDirect(result) {
     var area = document.getElementById('yearsPregResultArea');
     area.classList.remove('hidden');
     if (result === 'neg') {
-        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">YEARS gestante negativo — TEP excluído.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos.</span></div></div>';
+        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">YEARS gestante negativo — TEP improvável.<br><span style="font-size:12px;opacity:0.7;">Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta.</span></div></div>';
     } else {
         area.innerHTML = '<div class="alert alert-info" style="margin-top:8px;"><strong>Imagem necessária.</strong> CTPA ou V/Q. Se sintomas em MMII, considere USG antes.</div>';
     }
@@ -2191,7 +2233,7 @@ function calcInlineDdimer() {
     }
     if (value < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + value + ' &lt; ' + threshold + '</div><div class="result-text">D-dímero negativo — TEP excluído</div>';
+        res.innerHTML = '<div class="result-score">' + value + ' &lt; ' + threshold + '</div><div class="result-text">D-dímero negativo — TEP improvável</div>';
         ddimerDirect('neg');
     } else {
         res.className = 'calc-result result-red';
@@ -2212,7 +2254,7 @@ function calcInlineYears() {
     }
     if (dd < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + '</div><div class="result-text">YEARS negativo — TEP excluído</div>';
+        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + '</div><div class="result-text">YEARS negativo — TEP improvável</div>';
         ddimerDirect('neg');
     } else {
         res.className = 'calc-result result-red';
@@ -2233,7 +2275,7 @@ function calcInlineYearsPreg() {
     }
     if (dd < threshold) {
         res.className = 'calc-result result-green';
-        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + '</div><div class="result-text">TEP excluído</div>';
+        res.innerHTML = '<div class="result-score">' + dd + ' &lt; ' + threshold + '</div><div class="result-text">TEP improvável</div>';
         yearsPregDirect('neg');
     } else {
         res.className = 'calc-result result-red';
