@@ -24863,27 +24863,41 @@ a{color:var(--info);text-decoration:none}
             </div>
         </div>
         <div class="info-card">
+            <strong>Orientação prática</strong>
+            Considere oferecer água, suco de frutas, chá, água de coco. Evitar bebidas com cafeína. Distribuir ao longo do dia (não forçar grandes volumes de uma vez).
+        </div>
+        <div class="info-card">
             <strong>Antieméticos (se necessário)</strong>
             Metoclopramida 10 mg IV/VO 8/8h (ampola 10 mg/2 mL) ou ondansetrona 4-8 mg IV/VO 8/8h (ampola 4 mg/2 mL). Evitar AINEs e AAS.
         </div>
+        <div class="alert alert-warning"><strong>Orientar retorno imediato se:</strong>Dor abdominal intensa, vômitos persistentes, sangramento, tontura ao levantar, pele fria/pálida, dispneia, sonolência ou agitação.</div>
     </div>
 
     <!-- Grupo B -->
     <div id="trilha-grupoB" style="display:none">
-        <div class="alert alert-warning"><strong>Conduta</strong>Hidratação oral supervisionada em unidade de saúde. Hemograma com Ht antes e após (4-6h).</div>
+        <div class="alert alert-warning"><strong>Conduta</strong>Hidratação oral supervisionada em unidade de saúde por pelo menos 6 horas. Solicitar hemograma com hematócrito.</div>
         <div class="calc-card">
             <label>Hidratação oral: 60 mL/kg/dia</label>
             <div class="calc-result">
                 <div class="big-number" id="trilha-B-vol">—</div>
                 <div class="unit">mL/dia</div>
+                <div class="secondary">1/3 SRO (<span id="trilha-B-sro">—</span> mL) + 2/3 líquidos (<span id="trilha-B-liq">—</span> mL)</div>
             </div>
         </div>
-        <div class="alert alert-danger"><strong>Reclassificar para C se:</strong>Sinal de alarme ou hematócrito em ascensão (aumento ≥20% do valor basal) na reavaliação. Referência: homem ~45%, mulher ~40%. Repetir Ht a cada 2-4h durante expansão.</div>
+        <div class="info-card">
+            <strong>Condições de risco</strong>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">Gestante, <2 anos ou >65 anos, HAS, DM, DPOC, doença hematológica, renal crônica, doença péptica, hepatopatia, doença autoimune, uso de anticoagulantes, risco social.</div>
+        </div>
+        <div class="info-card">
+            <strong>Acompanhamento</strong>
+            Hemograma com hematócrito antes da hidratação e após (em 4-6h). Se Ht estável e sem sinais de alarme, considere alta com orientações. Se Ht subindo, considere reclassificar para Grupo C.
+        </div>
+        <div class="alert alert-danger"><strong>Reclassificar para C se:</strong>Surgimento de qualquer sinal de alarme ou hematócrito em ascensão (aumento ≥20% do valor basal). Referência: homem ~45%, mulher ~40%. Repetir Ht a cada 2-4h durante expansão.</div>
     </div>
 
     <!-- Grupo C -->
     <div id="trilha-grupoC" style="display:none">
-        <div class="alert alert-danger"><strong>Conduta imediata</strong>Hidratação IV: SF 0,9% ou RL — 10 mL/kg/h por 2 horas.</div>
+        <div class="alert alert-danger"><strong>Conduta imediata</strong>Hidratação IV: SF 0,9% ou RL — 10 mL/kg/h por 2 horas. Solicitar hemograma, função renal, hepática, tipagem sanguínea.</div>
         <div class="calc-card">
             <label>Fase de expansão (2h)</label>
             <div class="calc-row">
@@ -24903,7 +24917,11 @@ a{color:var(--info);text-decoration:none}
 
     <!-- Grupo D -->
     <div id="trilha-grupoD" style="display:none">
-        <div class="alert alert-danger"><strong>Emergência</strong>SF 0,9% — 20 mL/kg em até 20 min. Repetir até 3x. Dois acessos calibrosos.</div>
+        <div class="alert alert-danger"><strong>Emergência</strong>SF 0,9% — 20 mL/kg em até 20 min. Repetir até 3x. Dois acessos calibrosos. Considere UTI.</div>
+        <div class="info-card">
+            <strong>Critérios de dengue grave</strong>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">Choque (pulso fino, TEC >2s, PA convergente ou hipotensão), hemorragia grave (hematêmese, melena, SNC), disfunção orgânica (AST/ALT >1.000, encefalite, miocardite, IRA).</div>
+        </div>
         <div class="calc-card">
             <label>Bolus rápido — 20 mL/kg</label>
             <div class="calc-result">
@@ -24916,12 +24934,12 @@ a{color:var(--info);text-decoration:none}
             Albumina 20%: 0,5-1 g/kg (<span id="trilha-D-alb05">—</span> a <span id="trilha-D-alb1">—</span> mL). Se Ht em queda + choque → hemotransfusão. Se refratário a volume → noradrenalina.
         </div>
         <div class="info-card">
-            <strong>Metas</strong>
-            <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- PAS >90 mmHg</div>
-            <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- FC <100</div>
+            <strong>Metas de ressuscitação</strong>
+            <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- PAS >90 mmHg (ou PAM >65 mmHg)</div>
+            <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- FC <100 bpm</div>
             <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- TEC <2s</div>
             <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Diurese >0,5 mL/kg/h</div>
-            <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Ht estável</div>
+            <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Ht estável ou em queda</div>
             <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Melhora do nível de consciência</div>
         </div>
     </div>
@@ -25174,7 +25192,7 @@ a{color:var(--info);text-decoration:none}
                     <div style="font-size:13px;color:var(--text-secondary);padding:3px 0;padding-left:12px">- Sonolência excessiva ou agitação</div>
                 </div>
                 <div style="margin-top:12px">
-                    <button class="btn btn-outline btn-sm" onclick="window.print()">Imprimir orientações de alta</button>
+                    <button class="btn btn-outline btn-sm" onclick="goTo('altasegura')">Gerar orientações para WhatsApp →</button>
                 </div>
             </div>
         </div>
@@ -25239,7 +25257,7 @@ a{color:var(--info);text-decoration:none}
         </div>
     </div>
 
-    <div class="alert alert-danger" style="margin-top:12px"><strong>Reclassificar para Grupo C se:</strong>Surgimento de qualquer sinal de alarme ou aumento do hematócrito na reavaliação.</div>
+    <div class="alert alert-danger" style="margin-top:12px"><strong>Reclassificar para Grupo C se:</strong>Surgimento de qualquer sinal de alarme ou hematócrito em ascensão (aumento ≥20% do valor basal). Referência: homem ~45%, mulher ~40%. Repetir Ht a cada 2-4h durante expansão.</div>
     <button class="btn btn-primary" onclick="goTo('altasegura')" style="margin-top:12px">Orientações de alta completas →</button>
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Reclassificar</div><button class="btn btn-success btn-sm" onclick="goTo('grupoA')" style="margin-top:8px">Sem critérios de risco → Grupo A</button> <button class="btn btn-warning btn-sm" onclick="goTo('grupoC')" style="margin-top:8px;color:#000">Sinais de alarme → Grupo C</button></div>
 </div>
@@ -26468,6 +26486,8 @@ function updateCalculations() {
     s('trilha-A-sro', voTotal ? voTotal / 3 : null);
     s('trilha-A-liq', voTotal ? voTotal * 2 / 3 : null);
     s('trilha-B-vol', voTotal);
+    s('trilha-B-sro', voTotal ? voTotal / 3 : null);
+    s('trilha-B-liq', voTotal ? voTotal * 2 / 3 : null);
     s('trilha-C-hora', ivHora);
     s('trilha-C-2h', ivHora ? ivHora * 2 : null);
     const man6t = p ? p * 25 : null;
