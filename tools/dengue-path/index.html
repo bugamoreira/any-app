@@ -448,7 +448,7 @@ a{color:var(--info);text-decoration:none}
 
     <div class="step-nav">
         <button class="step-nav-btn" onclick="goTo('step3')">← Voltar</button>
-        <button class="step-nav-btn step-nav-next" onclick="goTo('step5')">Próximo →</button>
+        <button class="step-nav-btn step-nav-next" id="btnStep5" onclick="goTo('step5')">Próximo →</button>
     </div>
 </div>
 
@@ -1914,6 +1914,9 @@ function openTrilhaGrupo(g) {
     var title = document.getElementById('stepGrupoTitle');
     if (badge) badge.style.background = colors[g] || '#4CAF50';
     if (title) title.textContent = labels[g] || 'Manejo';
+    // Hide "Próximo" (step5) for groups C and D — no discharge flow
+    var btnStep5 = document.getElementById('btnStep5');
+    if (btnStep5) btnStep5.style.display = (g === 'C' || g === 'D') ? 'none' : '';
     // Navigate to stepGrupo screen
     goTo('stepGrupo');
     updateCalculations();
