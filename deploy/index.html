@@ -1094,6 +1094,90 @@
         .fab-options.open { display: block; }
         .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
         .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
+
+        /* HACOR Score */
+        .hacor-screen { display: none; }
+        .hacor-screen.active { display: block; }
+
+        .hacor-gate-grid { display: flex; flex-direction: column; gap: 12px; }
+        .hacor-gate-card {
+            background: var(--bg-card-hover);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px 16px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            text-align: center;
+        }
+        .hacor-gate-card:active { background: #2A2A2A; border-color: var(--accent); }
+        .hacor-gate-card .gate-title { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+        .hacor-gate-card .gate-desc { font-size: 13px; color: var(--text-secondary); }
+
+        .hacor-toggle { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 16px; }
+        .hacor-toggle button {
+            flex: 1;
+            min-width: 60px;
+            padding: 10px 6px;
+            background: var(--bg-input);
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            min-height: 44px;
+        }
+        .hacor-toggle button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #FFF;
+            font-weight: 700;
+        }
+
+        .hacor-var-label { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-top: 12px; }
+        .hacor-var-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+
+        .hacor-result-box {
+            display: none;
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+        .hacor-result-box .score-value { font-size: 28px; font-weight: 700; }
+        .hacor-result-box .score-text { font-size: 14px; margin-top: 6px; line-height: 1.4; }
+
+        .hacor-t0-badge {
+            display: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid #333;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .hacor-timeline { margin-top: 16px; }
+
+        .hacor-back-btn {
+            background: none;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            padding: 8px 14px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            min-height: 44px;
+        }
+        .hacor-back-btn:active { background: var(--bg-card-hover); }
+
+        .hacor-ref { font-size: 11px; color: var(--text-secondary); margin-top: 16px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -1717,7 +1801,141 @@
             </div>
         </div>
         
-        <!-- SEÇÃO 7: REFERÊNCIAS -->
+        <!-- SEÇÃO 7: HACOR SCORE -->
+        <div class="section" id="section-hacor">
+            <div class="section-header" onclick="toggleSection('hacor')">
+                <h2>HACOR score (falha de VNI)</h2>
+                <svg class="arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="section-content" id="content-hacor">
+                <div class="concept-desc">
+                    O <strong>HACOR score</strong> prediz falha de ventilação não invasiva (VNI). Combina frequência cardíaca, acidose, consciência, oxigenação e frequência respiratória. Score &gt;= 5 em 1-2h de VNI indica alto risco de falha. <em>Duan et al. Crit Care 2017.</em>
+                </div>
+
+                <!-- Screen 0: Entry gate -->
+                <div class="hacor-screen active" id="hacor-home">
+                    <div class="hacor-gate-grid">
+                        <div class="hacor-gate-card" onclick="showHacorScreen('hacor-inicio')">
+                            <div class="gate-title">Iniciar VNI</div>
+                            <div class="gate-desc">Avaliar risco antes de iniciar</div>
+                        </div>
+                        <div class="hacor-gate-card" onclick="showHacorScreen('hacor-reaval')">
+                            <div class="gate-title">Reavaliar VNI</div>
+                            <div class="gate-desc">Paciente já em VNI — verificar resposta</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Screen 1: Initial assessment -->
+                <div class="hacor-screen" id="hacor-inicio">
+                    <button class="hacor-back-btn" onclick="showHacorScreen('hacor-home')">Voltar</button>
+
+                    <div class="hacor-var-label">FC &gt;= 120 bpm</div>
+                    <div class="hacor-toggle" id="hacorInicioFc">
+                        <button onclick="selectHacorInicio('fc', 0, this)">Não: 0</button>
+                        <button onclick="selectHacorInicio('fc', 1, this)">Sim: 1</button>
+                    </div>
+
+                    <div class="hacor-var-label">pH</div>
+                    <div class="hacor-toggle" id="hacorInicioPh">
+                        <button onclick="selectHacorInicio('ph', 0, this)">&gt;= 7,35: 0</button>
+                        <button onclick="selectHacorInicio('ph', 2, this)">7,30-7,34: 2</button>
+                        <button onclick="selectHacorInicio('ph', 3, this)">7,25-7,29: 3</button>
+                        <button onclick="selectHacorInicio('ph', 4, this)">&lt; 7,25: 4</button>
+                    </div>
+
+                    <div class="hacor-var-label">Glasgow (GCS)</div>
+                    <div class="hacor-toggle" id="hacorInicioGcs">
+                        <button onclick="selectHacorInicio('gcs', 0, this)">15: 0</button>
+                        <button onclick="selectHacorInicio('gcs', 2, this)">13-14: 2</button>
+                        <button onclick="selectHacorInicio('gcs', 5, this)">11-12: 5</button>
+                        <button onclick="selectHacorInicio('gcs', 15, this)">&lt;= 10: 15</button>
+                    </div>
+
+                    <div class="hacor-var-label">PaO2/FiO2</div>
+                    <div class="hacor-toggle" id="hacorInicioPf">
+                        <button onclick="selectHacorInicio('pf', 0, this)">&gt; 200: 0</button>
+                        <button onclick="selectHacorInicio('pf', 2, this)">175-200: 2</button>
+                        <button onclick="selectHacorInicio('pf', 3, this)">150-174: 3</button>
+                        <button onclick="selectHacorInicio('pf', 4, this)">125-149: 4</button>
+                        <button onclick="selectHacorInicio('pf', 5, this)">&lt; 125: 5</button>
+                    </div>
+
+                    <div class="hacor-var-label">FR &gt;= 30 irpm</div>
+                    <div class="hacor-toggle" id="hacorInicioFr">
+                        <button onclick="selectHacorInicio('fr', 0, this)">Não: 0</button>
+                        <button onclick="selectHacorInicio('fr', 1, this)">Sim: 1</button>
+                    </div>
+
+                    <div class="hacor-result-box" id="hacorInicioResult">
+                        <div class="score-value" id="hacorInicioScoreValue"></div>
+                        <div class="score-text" id="hacorInicioScoreText"></div>
+                    </div>
+
+                    <button class="btn-calc" id="hacorInicioVniBtn" style="display:none;margin-top:12px" onclick="salvarHacorT0()">Iniciar VNI e registrar T0</button>
+
+                    <div class="hacor-ref">Duan J, et al. An updated HACOR score for predicting the failure of noninvasive ventilation. Crit Care. 2017;21(1):300.</div>
+                </div>
+
+                <!-- Screen 2: Reassessment -->
+                <div class="hacor-screen" id="hacor-reaval">
+                    <button class="hacor-back-btn" onclick="showHacorScreen('hacor-home')">Voltar</button>
+
+                    <div class="hacor-t0-badge" id="hacorT0Badge"></div>
+
+                    <div class="hacor-var-label">FC &gt;= 120 bpm</div>
+                    <div class="hacor-toggle" id="hacorReavalFc">
+                        <button onclick="selectHacorReaval('fc', 0, this)">Não: 0</button>
+                        <button onclick="selectHacorReaval('fc', 1, this)">Sim: 1</button>
+                    </div>
+
+                    <div class="hacor-var-label">pH</div>
+                    <div class="hacor-toggle" id="hacorReavalPh">
+                        <button onclick="selectHacorReaval('ph', 0, this)">&gt;= 7,35: 0</button>
+                        <button onclick="selectHacorReaval('ph', 2, this)">7,30-7,34: 2</button>
+                        <button onclick="selectHacorReaval('ph', 3, this)">7,25-7,29: 3</button>
+                        <button onclick="selectHacorReaval('ph', 4, this)">&lt; 7,25: 4</button>
+                    </div>
+
+                    <div class="hacor-var-label">Glasgow (GCS)</div>
+                    <div class="hacor-toggle" id="hacorReavalGcs">
+                        <button onclick="selectHacorReaval('gcs', 0, this)">15: 0</button>
+                        <button onclick="selectHacorReaval('gcs', 2, this)">13-14: 2</button>
+                        <button onclick="selectHacorReaval('gcs', 5, this)">11-12: 5</button>
+                        <button onclick="selectHacorReaval('gcs', 15, this)">&lt;= 10: 15</button>
+                    </div>
+
+                    <div class="hacor-var-label">PaO2/FiO2</div>
+                    <div class="hacor-toggle" id="hacorReavalPf">
+                        <button onclick="selectHacorReaval('pf', 0, this)">&gt; 200: 0</button>
+                        <button onclick="selectHacorReaval('pf', 2, this)">175-200: 2</button>
+                        <button onclick="selectHacorReaval('pf', 3, this)">150-174: 3</button>
+                        <button onclick="selectHacorReaval('pf', 4, this)">125-149: 4</button>
+                        <button onclick="selectHacorReaval('pf', 5, this)">&lt; 125: 5</button>
+                    </div>
+
+                    <div class="hacor-var-label">FR &gt;= 30 irpm</div>
+                    <div class="hacor-toggle" id="hacorReavalFr">
+                        <button onclick="selectHacorReaval('fr', 0, this)">Não: 0</button>
+                        <button onclick="selectHacorReaval('fr', 1, this)">Sim: 1</button>
+                    </div>
+
+                    <div class="hacor-result-box" id="hacorReavalResult">
+                        <div class="score-value" id="hacorReavalScoreValue"></div>
+                        <div class="score-text" id="hacorReavalScoreText"></div>
+                    </div>
+
+                    <button class="btn-calc" id="hacorSaveReavalBtn" style="display:none;margin-top:12px" onclick="salvarHacorReaval()">Salvar e reavaliar depois</button>
+                    <button class="hacor-back-btn" id="hacorNovaBtn" style="display:none;margin-top:8px;width:100%;text-align:center" onclick="novaAvaliacaoHacor()">Nova avaliação inicial</button>
+
+                    <div class="hacor-timeline" id="hacorTimeline"></div>
+
+                    <div class="hacor-ref">Duan J, et al. An updated HACOR score for predicting the failure of noninvasive ventilation. Crit Care. 2017;21(1):300.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 8: REFERÊNCIAS -->
         <div class="section" id="section-ref">
             <div class="section-header" onclick="toggleSection('ref')">
                 <h2>Referências</h2>
@@ -1732,6 +1950,7 @@
                     <li>Gattinoni L, et al. Ventilator-related causes of lung injury: the mechanical power. Intensive Care Med. 2016;42(10):1567-75.</li>
                     <li>Bertoni M, et al. A novel non-invasive method to detect excessively high respiratory effort and dynamic transpulmonary driving pressure during mechanical ventilation. Crit Care. 2019;23(1):346.</li>
                     <li>Thille AW, et al. Patient-ventilator asynchrony during assisted mechanical ventilation. Intensive Care Med. 2006;32(10):1515-22.</li>
+                    <li>Duan J, et al. An updated HACOR score for predicting the failure of noninvasive ventilation: a multicenter prospective observational study. Crit Care. 2017;21(1):300.</li>
                 </ul>
             </div>
         </div>
@@ -1759,7 +1978,8 @@
             { id: 'tau', nome: 'Constante de tempo (τ)', secao: 'Outros parâmetros', sectionId: 'outros' },
             { id: 'pmus', nome: 'Pressão muscular (Pmus)', secao: 'Outros parâmetros', sectionId: 'outros' },
             { id: 'mp', nome: 'Mechanical power', secao: 'Outros parâmetros', sectionId: 'outros' },
-            { id: 'ia', nome: 'Índice de assincronia', secao: 'Outros parâmetros', sectionId: 'outros' }
+            { id: 'ia', nome: 'Índice de assincronia', secao: 'Outros parâmetros', sectionId: 'outros' },
+            { id: 'hacor', nome: 'HACOR score (falha de VNI)', secao: 'HACOR score', sectionId: 'hacor' }
         ];
         
         // Busca
@@ -1794,7 +2014,7 @@
             // Fecha busca
             document.getElementById('searchInput').value = '';
             document.getElementById('searchResults').classList.remove('active');
-            
+
             // Abre seção
             const sectionHeader = document.querySelector(\`#section-\${sectionId} .section-header\`);
             const sectionContent = document.getElementById(\`content-\${sectionId}\`);
@@ -1802,21 +2022,23 @@
                 sectionHeader.classList.add('open');
                 sectionContent.classList.add('open');
             }
-            
-            // Abre subseção
+
+            // Abre subseção (se existir)
             const subsectionHeader = document.querySelector(\`#subsection-\${subsectionId} .subsection-header\`);
             const subsectionContent = document.getElementById(\`subcontent-\${subsectionId}\`);
-            if (!subsectionContent.classList.contains('open')) {
+            if (subsectionHeader && subsectionContent && !subsectionContent.classList.contains('open')) {
                 subsectionHeader.classList.add('open');
                 subsectionContent.classList.add('open');
             }
-            
+
             // Scroll e highlight
             setTimeout(() => {
-                const element = document.getElementById(\`subsection-\${subsectionId}\`);
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                element.classList.add('highlight');
-                setTimeout(() => element.classList.remove('highlight'), 1500);
+                const element = document.getElementById(\`subsection-\${subsectionId}\`) || document.getElementById(\`section-\${sectionId}\`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    element.classList.add('highlight');
+                    setTimeout(() => element.classList.remove('highlight'), 1500);
+                }
             }, 100);
         }
         
@@ -2469,6 +2691,214 @@
             }
         });
 
+        // ========== HACOR SCORE ==========
+        var hacorHistory = [];
+        var hacorInicioScores = { fc: null, ph: null, gcs: null, pf: null, fr: null };
+        var hacorReavalScores = { fc: null, ph: null, gcs: null, pf: null, fr: null };
+
+        function showHacorScreen(screenId) {
+            ['hacor-home', 'hacor-inicio', 'hacor-reaval'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) {
+                    if (id === screenId) { el.classList.add('active'); }
+                    else { el.classList.remove('active'); }
+                }
+            });
+            // On reaval screen, render history if exists
+            if (screenId === 'hacor-reaval') {
+                renderHacorHistory();
+            }
+        }
+
+        function selectHacorInicio(variable, value, btn) {
+            hacorInicioScores[variable] = value;
+            btn.parentElement.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            updateHacorInicioScore();
+        }
+
+        function selectHacorReaval(variable, value, btn) {
+            hacorReavalScores[variable] = value;
+            btn.parentElement.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            updateHacorReavalScore();
+        }
+
+        function hacorTotal(scores) {
+            var total = 0;
+            for (var k in scores) {
+                if (scores[k] === null) return null;
+                total += scores[k];
+            }
+            return total;
+        }
+
+        function updateHacorInicioScore() {
+            var total = hacorTotal(hacorInicioScores);
+            var resultEl = document.getElementById('hacorInicioResult');
+            var vniBtn = document.getElementById('hacorInicioVniBtn');
+            if (total === null) {
+                resultEl.style.display = 'none';
+                vniBtn.style.display = 'none';
+                return;
+            }
+            resultEl.style.display = 'block';
+            vniBtn.style.display = 'block';
+            var scoreEl = document.getElementById('hacorInicioScoreValue');
+            var textEl = document.getElementById('hacorInicioScoreText');
+            scoreEl.textContent = 'HACOR: ' + total;
+            if (total < 5) {
+                scoreEl.style.color = '#4CAF50';
+                resultEl.style.borderColor = '#4CAF50';
+                resultEl.style.background = 'rgba(76,175,80,0.08)';
+                textEl.innerHTML = '<strong>Baixo risco de falha</strong><br>VNI com reavaliação padrão';
+            } else {
+                scoreEl.style.color = '#F44336';
+                resultEl.style.borderColor = '#F44336';
+                resultEl.style.background = 'rgba(244,67,54,0.08)';
+                textEl.innerHTML = '<strong>Alto risco de falha</strong><br>Prepare material de IOT. Reavalie em 1h.';
+            }
+        }
+
+        function updateHacorReavalScore() {
+            var total = hacorTotal(hacorReavalScores);
+            var resultEl = document.getElementById('hacorReavalResult');
+            var saveBtn = document.getElementById('hacorSaveReavalBtn');
+            var novaBtn = document.getElementById('hacorNovaBtn');
+            if (total === null) {
+                resultEl.style.display = 'none';
+                saveBtn.style.display = 'none';
+                novaBtn.style.display = 'none';
+                return;
+            }
+            resultEl.style.display = 'block';
+            saveBtn.style.display = 'block';
+            novaBtn.style.display = 'block';
+            var scoreEl = document.getElementById('hacorReavalScoreValue');
+            var textEl = document.getElementById('hacorReavalScoreText');
+            scoreEl.textContent = 'HACOR: ' + total;
+
+            // Build trend text if history exists
+            var trendHtml = '';
+            if (hacorHistory.length > 0) {
+                var last = hacorHistory[hacorHistory.length - 1].score;
+                var arrow = total < last ? 'melhora' : (total > last ? 'piora' : 'estável');
+                trendHtml = '<br><span style="font-size:12px;color:var(--text-secondary)">Anterior: ' + last + ' → Atual: ' + total + ' (' + arrow + ')</span>';
+            }
+
+            if (total < 5) {
+                scoreEl.style.color = '#4CAF50';
+                resultEl.style.borderColor = '#4CAF50';
+                resultEl.style.background = 'rgba(76,175,80,0.08)';
+                textEl.innerHTML = '<strong>Baixo risco de falha</strong><br>Manter VNI com reavaliação padrão' + trendHtml;
+            } else {
+                scoreEl.style.color = '#F44336';
+                resultEl.style.borderColor = '#F44336';
+                resultEl.style.background = 'rgba(244,67,54,0.08)';
+                textEl.innerHTML = '<strong>Alto risco de falha</strong><br>Considere intubação orotraqueal' + trendHtml;
+            }
+        }
+
+        function salvarHacorT0() {
+            var total = hacorTotal(hacorInicioScores);
+            if (total === null) return;
+            var now = new Date();
+            var timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+            hacorHistory = [{time: timeStr, score: total, label: 'T0'}];
+            hacorReavalScores = { fc: null, ph: null, gcs: null, pf: null, fr: null };
+            clearHacorToggles('hacor-reaval');
+            document.getElementById('hacorReavalResult').style.display = 'none';
+            document.getElementById('hacorSaveReavalBtn').style.display = 'none';
+            document.getElementById('hacorNovaBtn').style.display = 'none';
+            showHacorScreen('hacor-reaval');
+        }
+
+        function salvarHacorReaval() {
+            var total = hacorTotal(hacorReavalScores);
+            if (total === null) return;
+            var now = new Date();
+            var timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+            var idx = hacorHistory.length;
+            var label = 'T' + idx + 'h';
+            hacorHistory.push({time: timeStr, score: total, label: label});
+            hacorReavalScores = { fc: null, ph: null, gcs: null, pf: null, fr: null };
+            clearHacorToggles('hacor-reaval');
+            document.getElementById('hacorReavalResult').style.display = 'none';
+            document.getElementById('hacorSaveReavalBtn').style.display = 'none';
+            renderHacorHistory();
+        }
+
+        function clearHacorToggles(screenId) {
+            var screen = document.getElementById(screenId);
+            if (!screen) return;
+            screen.querySelectorAll('.hacor-toggle button').forEach(function(b) { b.classList.remove('active'); });
+        }
+
+        function renderHacorHistory() {
+            var container = document.getElementById('hacorTimeline');
+            if (!container) return;
+            var html = '';
+            if (hacorHistory.length > 0) {
+                html += '<div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:8px">Histórico de avaliações</div>';
+            }
+            for (var i = 0; i < hacorHistory.length; i++) {
+                var h = hacorHistory[i];
+                var color = h.score < 5 ? '#4CAF50' : '#F44336';
+                var risk = h.score < 5 ? 'baixo risco' : 'alto risco';
+                html += '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #222">';
+                html += '<div style="width:8px;height:8px;border-radius:50%;background:' + color + ';flex-shrink:0"></div>';
+                html += '<span style="font-size:13px;color:var(--text-secondary)">' + h.label + ' (' + h.time + ')</span>';
+                html += '<span style="font-size:15px;font-weight:700;color:' + color + '">HACOR ' + h.score + '</span>';
+                html += '<span style="font-size:12px;color:#666"> — ' + risk + '</span>';
+                html += '</div>';
+            }
+            // Trend summary
+            if (hacorHistory.length >= 2) {
+                var first = hacorHistory[0].score;
+                var last = hacorHistory[hacorHistory.length - 1].score;
+                var trend = last < first ? 'melhora' : (last > first ? 'piora' : 'estável');
+                var trendColor = last < first ? '#4CAF50' : (last > first ? '#F44336' : '#FFC107');
+                html += '<div style="margin-top:8px;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:8px;font-size:13px;color:var(--text-secondary)">';
+                html += 'Tendência: <strong style="color:' + trendColor + '">' + first + ' → ' + last + ' (' + trend + ')</strong>';
+                html += '</div>';
+            }
+            container.innerHTML = html;
+
+            // Update T0 badge
+            if (hacorHistory.length > 0) {
+                var t0 = hacorHistory[0];
+                var badge = document.getElementById('hacorT0Badge');
+                if (badge) {
+                    badge.style.display = 'block';
+                    var badgeColor = t0.score < 5 ? '#4CAF50' : '#F44336';
+                    var badgeRisk = t0.score < 5 ? 'baixo risco' : 'alto risco';
+                    badge.innerHTML = 'T0 (' + t0.time + '): HACOR ' + t0.score + ' — ' + badgeRisk;
+                    badge.style.color = badgeColor;
+                    badge.style.borderColor = badgeColor;
+                }
+            } else {
+                var badge = document.getElementById('hacorT0Badge');
+                if (badge) { badge.style.display = 'none'; }
+            }
+        }
+
+        function novaAvaliacaoHacor() {
+            hacorHistory = [];
+            hacorInicioScores = { fc: null, ph: null, gcs: null, pf: null, fr: null };
+            hacorReavalScores = { fc: null, ph: null, gcs: null, pf: null, fr: null };
+            clearHacorToggles('hacor-inicio');
+            clearHacorToggles('hacor-reaval');
+            document.getElementById('hacorInicioResult').style.display = 'none';
+            document.getElementById('hacorInicioVniBtn').style.display = 'none';
+            document.getElementById('hacorReavalResult').style.display = 'none';
+            document.getElementById('hacorSaveReavalBtn').style.display = 'none';
+            document.getElementById('hacorNovaBtn').style.display = 'none';
+            document.getElementById('hacorTimeline').innerHTML = '';
+            var badge = document.getElementById('hacorT0Badge');
+            if (badge) { badge.style.display = 'none'; }
+            showHacorScreen('hacor-inicio');
+        }
+
     <\/script>
 <div class="fab-menu">
     <div class="fab-options" id="fabOptions">
@@ -2476,6 +2906,7 @@
         <a href="#" onclick="event.preventDefault(); toggleFab(); document.getElementById('section-mecanica').scrollIntoView({behavior:'smooth'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Mecânica</a>
         <a href="#" onclick="event.preventDefault(); toggleFab(); document.getElementById('section-troca').scrollIntoView({behavior:'smooth'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Troca Gasosa</a>
         <a href="#" onclick="event.preventDefault(); toggleFab(); document.getElementById('section-desmame').scrollIntoView({behavior:'smooth'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> Desmame</a>
+        <a href="#" onclick="event.preventDefault(); toggleFab(); document.getElementById('section-hacor').scrollIntoView({behavior:'smooth'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FF5252"><circle cx="12" cy="12" r="4"/></svg> HACOR</a>
     </div>
     <button class="fab-btn" id="fabBtn" onclick="toggleFab()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="fabIcon">
@@ -3906,7 +4337,8 @@
         .resultado-item.caution .resultado-valor { color: var(--warning); }
         .resultado-item.critical .resultado-valor { color: var(--danger); }
         .resultado-unidade { font-size: 12px; color: var(--text-secondary); }
-        
+        #vneriBody input:focus { outline: none; border-color: var(--accent); }
+
         /* Inputs */
         .input-row { display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
         .input-group { flex: 1; }
@@ -4036,9 +4468,50 @@
                             <div class="resultado-item therapeutic" id="nora-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="nora-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
                             <div class="resultado-item therapeutic" id="nora-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="nora-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
+                        <!-- VNERi -->
+                        <div style="margin-top:16px">
+                          <div class="section-header" onclick="toggleVneri()" style="background:var(--bg-elevated);border:1px solid var(--border-color);border-radius:8px;padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+                            <span style="font-weight:600;font-size:14px">VNERi — Responsividade vascular</span>
+                            <span id="vneriChevron" style="transition:transform 0.3s;font-size:12px;color:var(--text-secondary)">&#9658;</span>
+                          </div>
+                          <div id="vneriBody" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease">
+                            <div style="padding:16px;background:var(--bg-card);border:1px solid var(--border-color);border-top:none;border-radius:0 0 8px 8px">
+                              <div style="display:flex;gap:12px;margin-bottom:16px">
+                                <div style="flex:1">
+                                  <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:4px">PAD (mmHg)</label>
+                                  <input type="number" inputmode="decimal" id="vneriPad" placeholder="50" min="20" max="120" style="width:100%;background:var(--bg-elevated);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);padding:10px;font-size:18px;font-weight:700;text-align:center" oninput="calcularVNERi()">
+                                </div>
+                                <div style="flex:1">
+                                  <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:4px">FC (bpm)</label>
+                                  <input type="number" inputmode="decimal" id="vneriFc" placeholder="100" min="30" max="200" style="width:100%;background:var(--bg-elevated);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);padding:10px;font-size:18px;font-weight:700;text-align:center" oninput="calcularVNERi()">
+                                </div>
+                              </div>
+                              <div style="display:flex;gap:8px;margin-bottom:12px;font-size:12px;color:var(--text-muted)">
+                                <span>Dose NE: <strong id="vneriDoseDisplay" style="color:var(--text-primary)">--</strong> mcg/kg/min</span>
+                                <span>|</span>
+                                <span>Peso: <strong id="vneriPesoDisplay" style="color:var(--text-primary)">--</strong> kg</span>
+                              </div>
+                              <div id="vneriResult" style="display:none">
+                                <div style="text-align:center;margin-bottom:12px">
+                                  <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">VNERi</div>
+                                  <div id="vneriValue" style="font-size:36px;font-weight:700">--</div>
+                                </div>
+                                <div style="position:relative;height:24px;background:linear-gradient(to right, #F44336 0%, #F44336 15%, #FFC107 15%, #FFC107 40%, #4CAF50 40%, #4CAF50 65%, #FFC107 65%, #FFC107 100%);border-radius:12px;margin-bottom:8px">
+                                  <div id="vneriIndicator" style="position:absolute;top:-4px;width:16px;height:32px;background:#FFF;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:left 0.3s;left:0%"></div>
+                                  <div style="position:absolute;bottom:-18px;left:15%;transform:translateX(-50%);font-size:10px;color:var(--text-muted)">2,6</div>
+                                  <div style="position:absolute;bottom:-18px;left:40%;transform:translateX(-50%);font-size:10px;color:var(--text-muted)">6,7</div>
+                                  <div style="position:absolute;bottom:-18px;left:65%;transform:translateX(-50%);font-size:10px;color:var(--text-muted)">10,8</div>
+                                </div>
+                                <div id="vneriConduta" style="margin-top:28px;padding:12px;border-radius:8px;font-size:13px;line-height:1.5"></div>
+                                <div style="margin-top:12px;font-size:11px;color:var(--text-muted);font-style:italic">Goury et al. Ann Intensive Care 2025 — Curva J invertida, nadir mortalidade em VNERi 6,7</div>
+                              </div>
+                              <div id="vneriPlaceholder" style="text-align:center;padding:16px;color:var(--text-muted);font-size:13px">Insira PAD e FC para calcular</div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
                 </div>
-                
+
                 <!-- ADRENALINA -->
                 <div class="droga-card" data-droga="adrenalina epinefrina">
                     <div class="droga-header" onclick="toggleDroga(this)"><span class="droga-name">Adrenalina</span><span class="droga-chevron">›</span></div>
@@ -4852,6 +5325,80 @@
             if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
             if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / noraConc);
             setStatus(document.getElementById('nora-res-ml'), document.getElementById('nora-res-dose'), d, 0.01, 1, 2);
+            calcularVNERi();
+        }
+
+        function toggleVneri() {
+            var body = document.getElementById('vneriBody');
+            var chev = document.getElementById('vneriChevron');
+            if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+                body.style.maxHeight = '0px';
+                chev.style.transform = 'rotate(0deg)';
+            } else {
+                body.style.maxHeight = body.scrollHeight + 'px';
+                chev.style.transform = 'rotate(90deg)';
+            }
+        }
+
+        function calcularVNERi() {
+            var pad = parseFloat(document.getElementById('vneriPad').value);
+            var fc = parseFloat(document.getElementById('vneriFc').value);
+            var doseNE = parseFloat(document.getElementById('nora-dose').value);
+            var pesoDisplay = document.getElementById('vneriPesoDisplay');
+            var doseDisplay = document.getElementById('vneriDoseDisplay');
+
+            doseDisplay.textContent = doseNE ? fmt(doseNE, 2) : '--';
+            pesoDisplay.textContent = peso ? peso : '--';
+
+            var result = document.getElementById('vneriResult');
+            var placeholder = document.getElementById('vneriPlaceholder');
+
+            if (!pad || !fc || !doseNE || doseNE <= 0 || fc <= 0) {
+                result.style.display = 'none';
+                placeholder.style.display = 'block';
+                placeholder.textContent = 'Insira PAD e FC para calcular';
+                return;
+            }
+
+            var vneri = pad / (doseNE * fc);
+
+            result.style.display = 'block';
+            placeholder.style.display = 'none';
+
+            var valueEl = document.getElementById('vneriValue');
+            valueEl.textContent = fmt(vneri, 1);
+
+            var condutaEl = document.getElementById('vneriConduta');
+            var color, text, bg;
+
+            if (vneri < 2.6) {
+                color = '#F44336';
+                bg = 'rgba(244,67,54,0.1)';
+                text = '<strong>Hiporresponsividade vascular grave</strong><br>Considere associar vasopressina (0,01-0,04 UI/min) ou hidrocortisona (200 mg/dia). Escalar dose de NE isoladamente pode ser insuficiente.';
+            } else if (vneri < 6.7) {
+                color = '#FFC107';
+                bg = 'rgba(255,193,7,0.1)';
+                text = '<strong>Resposta parcial</strong><br>Titular noradrenalina conforme PAM alvo. Monitorizar tendência do VNERi. Se VNERi cair apesar de aumento de dose, considere terapia adjuvante.';
+            } else if (vneri <= 10.8) {
+                color = '#4CAF50';
+                bg = 'rgba(76,175,80,0.1)';
+                text = '<strong>Resposta vascular adequada</strong><br>Zona de menor mortalidade (nadir 6,7). Manter conduta atual. Reavaliar se piora clínica.';
+            } else {
+                color = '#FFC107';
+                bg = 'rgba(255,193,7,0.1)';
+                text = '<strong>Tônus vascular preservado, mas mortalidade em ascensão</strong><br>Investigar outras causas de hipotensão: hipovolemia, disfunção miocárdica, obstrução. Considere ecocardiograma à beira-leito.';
+            }
+
+            valueEl.style.color = color;
+            condutaEl.style.background = bg;
+            condutaEl.style.borderLeft = '3px solid ' + color;
+            condutaEl.style.color = '#E0E0E0';
+            condutaEl.innerHTML = text;
+
+            // Position indicator on bar (0-100%), range 0 to ~15
+            var maxBar = 15;
+            var pct = Math.min(100, Math.max(0, (vneri / maxBar) * 100));
+            document.getElementById('vneriIndicator').style.left = 'calc(' + pct + '% - 8px)';
         }
 
         function calcularAdrenalina() {

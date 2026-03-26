@@ -182,7 +182,8 @@
         .resultado-item.caution .resultado-valor { color: var(--warning); }
         .resultado-item.critical .resultado-valor { color: var(--danger); }
         .resultado-unidade { font-size: 12px; color: var(--text-secondary); }
-        
+        #vneriBody input:focus { outline: none; border-color: var(--accent); }
+
         /* Inputs */
         .input-row { display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
         .input-group { flex: 1; }
@@ -314,9 +315,50 @@
                             <div class="resultado-item therapeutic" id="nora-res-ml"><div class="resultado-label">Velocidade</div><input class="resultado-valor" id="nora-ml" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mL/h</div></div>
                             <div class="resultado-item therapeutic" id="nora-res-dose"><div class="resultado-label">Dose</div><input class="resultado-valor" id="nora-dose-val" type="text" inputmode="decimal" placeholder="--" readonly><div class="resultado-unidade">mcg/kg/min</div></div>
                         </div>
+                        <!-- VNERi -->
+                        <div style="margin-top:16px">
+                          <div class="section-header" onclick="toggleVneri()" style="background:var(--bg-elevated);border:1px solid var(--border-color);border-radius:8px;padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+                            <span style="font-weight:600;font-size:14px">VNERi — Responsividade vascular</span>
+                            <span id="vneriChevron" style="transition:transform 0.3s;font-size:12px;color:var(--text-secondary)">&#9658;</span>
+                          </div>
+                          <div id="vneriBody" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease">
+                            <div style="padding:16px;background:var(--bg-card);border:1px solid var(--border-color);border-top:none;border-radius:0 0 8px 8px">
+                              <div style="display:flex;gap:12px;margin-bottom:16px">
+                                <div style="flex:1">
+                                  <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:4px">PAD (mmHg)</label>
+                                  <input type="number" inputmode="decimal" id="vneriPad" placeholder="50" min="20" max="120" style="width:100%;background:var(--bg-elevated);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);padding:10px;font-size:18px;font-weight:700;text-align:center" oninput="calcularVNERi()">
+                                </div>
+                                <div style="flex:1">
+                                  <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:4px">FC (bpm)</label>
+                                  <input type="number" inputmode="decimal" id="vneriFc" placeholder="100" min="30" max="200" style="width:100%;background:var(--bg-elevated);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);padding:10px;font-size:18px;font-weight:700;text-align:center" oninput="calcularVNERi()">
+                                </div>
+                              </div>
+                              <div style="display:flex;gap:8px;margin-bottom:12px;font-size:12px;color:var(--text-muted)">
+                                <span>Dose NE: <strong id="vneriDoseDisplay" style="color:var(--text-primary)">--</strong> mcg/kg/min</span>
+                                <span>|</span>
+                                <span>Peso: <strong id="vneriPesoDisplay" style="color:var(--text-primary)">--</strong> kg</span>
+                              </div>
+                              <div id="vneriResult" style="display:none">
+                                <div style="text-align:center;margin-bottom:12px">
+                                  <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">VNERi</div>
+                                  <div id="vneriValue" style="font-size:36px;font-weight:700">--</div>
+                                </div>
+                                <div style="position:relative;height:24px;background:linear-gradient(to right, #F44336 0%, #F44336 15%, #FFC107 15%, #FFC107 40%, #4CAF50 40%, #4CAF50 65%, #FFC107 65%, #FFC107 100%);border-radius:12px;margin-bottom:8px">
+                                  <div id="vneriIndicator" style="position:absolute;top:-4px;width:16px;height:32px;background:#FFF;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:left 0.3s;left:0%"></div>
+                                  <div style="position:absolute;bottom:-18px;left:15%;transform:translateX(-50%);font-size:10px;color:var(--text-muted)">2,6</div>
+                                  <div style="position:absolute;bottom:-18px;left:40%;transform:translateX(-50%);font-size:10px;color:var(--text-muted)">6,7</div>
+                                  <div style="position:absolute;bottom:-18px;left:65%;transform:translateX(-50%);font-size:10px;color:var(--text-muted)">10,8</div>
+                                </div>
+                                <div id="vneriConduta" style="margin-top:28px;padding:12px;border-radius:8px;font-size:13px;line-height:1.5"></div>
+                                <div style="margin-top:12px;font-size:11px;color:var(--text-muted);font-style:italic">Goury et al. Ann Intensive Care 2025 — Curva J invertida, nadir mortalidade em VNERi 6,7</div>
+                              </div>
+                              <div id="vneriPlaceholder" style="text-align:center;padding:16px;color:var(--text-muted);font-size:13px">Insira PAD e FC para calcular</div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
                 </div>
-                
+
                 <!-- ADRENALINA -->
                 <div class="droga-card" data-droga="adrenalina epinefrina">
                     <div class="droga-header" onclick="toggleDroga(this)"><span class="droga-name">Adrenalina</span><span class="droga-chevron">›</span></div>
@@ -1130,6 +1172,80 @@
             if (!peso) { mlEl.value = ''; mlEl.placeholder = '--'; return; }
             if (document.activeElement !== mlEl) mlEl.value = fmt((d * peso * 60) / noraConc);
             setStatus(document.getElementById('nora-res-ml'), document.getElementById('nora-res-dose'), d, 0.01, 1, 2);
+            calcularVNERi();
+        }
+
+        function toggleVneri() {
+            var body = document.getElementById('vneriBody');
+            var chev = document.getElementById('vneriChevron');
+            if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+                body.style.maxHeight = '0px';
+                chev.style.transform = 'rotate(0deg)';
+            } else {
+                body.style.maxHeight = body.scrollHeight + 'px';
+                chev.style.transform = 'rotate(90deg)';
+            }
+        }
+
+        function calcularVNERi() {
+            var pad = parseFloat(document.getElementById('vneriPad').value);
+            var fc = parseFloat(document.getElementById('vneriFc').value);
+            var doseNE = parseFloat(document.getElementById('nora-dose').value);
+            var pesoDisplay = document.getElementById('vneriPesoDisplay');
+            var doseDisplay = document.getElementById('vneriDoseDisplay');
+
+            doseDisplay.textContent = doseNE ? fmt(doseNE, 2) : '--';
+            pesoDisplay.textContent = peso ? peso : '--';
+
+            var result = document.getElementById('vneriResult');
+            var placeholder = document.getElementById('vneriPlaceholder');
+
+            if (!pad || !fc || !doseNE || doseNE <= 0 || fc <= 0) {
+                result.style.display = 'none';
+                placeholder.style.display = 'block';
+                placeholder.textContent = 'Insira PAD e FC para calcular';
+                return;
+            }
+
+            var vneri = pad / (doseNE * fc);
+
+            result.style.display = 'block';
+            placeholder.style.display = 'none';
+
+            var valueEl = document.getElementById('vneriValue');
+            valueEl.textContent = fmt(vneri, 1);
+
+            var condutaEl = document.getElementById('vneriConduta');
+            var color, text, bg;
+
+            if (vneri < 2.6) {
+                color = '#F44336';
+                bg = 'rgba(244,67,54,0.1)';
+                text = '<strong>Hiporresponsividade vascular grave</strong><br>Considere associar vasopressina (0,01-0,04 UI/min) ou hidrocortisona (200 mg/dia). Escalar dose de NE isoladamente pode ser insuficiente.';
+            } else if (vneri < 6.7) {
+                color = '#FFC107';
+                bg = 'rgba(255,193,7,0.1)';
+                text = '<strong>Resposta parcial</strong><br>Titular noradrenalina conforme PAM alvo. Monitorizar tendência do VNERi. Se VNERi cair apesar de aumento de dose, considere terapia adjuvante.';
+            } else if (vneri <= 10.8) {
+                color = '#4CAF50';
+                bg = 'rgba(76,175,80,0.1)';
+                text = '<strong>Resposta vascular adequada</strong><br>Zona de menor mortalidade (nadir 6,7). Manter conduta atual. Reavaliar se piora clínica.';
+            } else {
+                color = '#FFC107';
+                bg = 'rgba(255,193,7,0.1)';
+                text = '<strong>Tônus vascular preservado, mas mortalidade em ascensão</strong><br>Investigar outras causas de hipotensão: hipovolemia, disfunção miocárdica, obstrução. Considere ecocardiograma à beira-leito.';
+            }
+
+            valueEl.style.color = color;
+            condutaEl.style.background = bg;
+            condutaEl.style.borderLeft = '3px solid ' + color;
+            condutaEl.style.color = '#E0E0E0';
+            condutaEl.innerHTML = text;
+
+            // Position indicator on bar (0-100%), range 0 to ~15
+            var maxBar = 15;
+            var pct = Math.min(100, Math.max(0, (vneri / maxBar) * 100));
+            document.getElementById('vneriIndicator').style.left = 'calc(' + pct + '% - 8px)';
         }
 
         function calcularAdrenalina() {
