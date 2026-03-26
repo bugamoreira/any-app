@@ -4499,6 +4499,7 @@
                                 <div style="text-align:center;margin-bottom:12px">
                                   <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">VNERi</div>
                                   <div id="vneriValue" style="font-size:36px;font-weight:700">--</div>
+                                  <div id="vneriLabel" style="font-size:14px;font-weight:600;margin-top:2px">--</div>
                                 </div>
                                 <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-bottom:4px;padding:0 2px">
                                   <span style="width:15%;text-align:center;color:#F44336">Hipo grave</span>
@@ -5387,25 +5388,33 @@
             valueEl.textContent = fmt(vneri, 1);
 
             var condutaEl = document.getElementById('vneriConduta');
-            var color, text, bg;
+            var labelEl = document.getElementById('vneriLabel');
+            var color, label, text, bg;
 
             if (vneri < 2.6) {
                 color = '#F44336';
                 bg = 'rgba(244,67,54,0.1)';
-                text = '<strong>Hiporresponsividade vascular grave</strong><br>Considere associar vasopressina (0,01-0,04 UI/min) ou hidrocortisona (200 mg/dia). Escalar dose de NE isoladamente pode ser insuficiente.';
+                label = 'Hiporresponsividade grave';
+                text = 'Considere associar <strong>vasopressina</strong> (0,01-0,04 UI/min) ou <strong>hidrocortisona</strong> (200 mg/dia). Escalar dose de NE isoladamente pode ser insuficiente.';
             } else if (vneri < 6.7) {
                 color = '#FFC107';
                 bg = 'rgba(255,193,7,0.1)';
-                text = '<strong>Resposta parcial</strong><br>Titular noradrenalina conforme PAM alvo. Monitorizar tendência do VNERi. Se VNERi cair apesar de aumento de dose, considere terapia adjuvante.';
+                label = 'Resposta parcial';
+                text = 'Titular noradrenalina conforme PAM alvo. Monitorizar tendência do VNERi. Se VNERi cair apesar de aumento de dose, considere <strong>vasopressina</strong> ou <strong>corticoides</strong>.';
             } else if (vneri <= 10.8) {
                 color = '#4CAF50';
                 bg = 'rgba(76,175,80,0.1)';
-                text = '<strong>Resposta vascular adequada</strong><br>Zona de menor mortalidade (nadir 6,7). Manter conduta atual. Reavaliar se piora clínica.';
+                label = 'Resposta adequada';
+                text = 'Zona de menor mortalidade (nadir 6,7). Manter conduta atual. Reavaliar se piora clínica.';
             } else {
                 color = '#FFC107';
                 bg = 'rgba(255,193,7,0.1)';
-                text = '<strong>Tônus vascular preservado, mas mortalidade em ascensão</strong><br>Investigar outras causas de hipotensão: hipovolemia, disfunção miocárdica, obstrução. Considere ecocardiograma à beira-leito.';
+                label = 'Tônus preservado';
+                text = 'Mortalidade em ascensão apesar de tônus preservado. Investigar: <strong>hipovolemia</strong>, <strong>disfunção miocárdica</strong>, obstrução. Considere ecocardiograma à beira-leito.';
             }
+
+            labelEl.textContent = label;
+            labelEl.style.color = color;
 
             valueEl.style.color = color;
             condutaEl.style.background = bg;
