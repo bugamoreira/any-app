@@ -49,6 +49,7 @@ Deploy automático via Netlify (git push → auto-deploy).
 | `block` | `tools/block-path/` | Block Path | Bloqueios regionais (14 técnicas) |
 | `acls` | `tools/acls/` | ACLS Guide | Gestão de PCR com metrônomo |
 | `dengue` | `tools/dengue-path/` | Dengue Path | Manejo de dengue na emergência |
+| `shock` | `tools/shock-path/` | Shock Path | Choque séptico (ANDROMEDA-SHOCK 2) |
 
 ### 2.2 Para adicionar um novo app
 
@@ -624,6 +625,7 @@ ANY APP/
 │   ├── palia-path/index.html   <- Palia Path
 │   ├── ped-guide/index.html    <- Ped Guide
 │   ├── seda-path/index.html    <- Seda Path
+│   ├── shock-path/index.html   <- Shock Path
 │   ├── tep-guide/index.html    <- TEP Guide
 │   ├── tox-path/index.html     <- Tox Path
 │   └── vm-guide/index.html     <- VM Guide

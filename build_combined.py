@@ -82,8 +82,9 @@ palia_html = read_file('tools/palia-path/index.html')
 block_html = read_file('tools/block-path/index.html')
 acls_html = read_file('tools/acls/index.html')
 dengue_html = read_file('tools/dengue-path/index.html')
+shock_html = read_file('tools/shock-path/index.html')
 
-print("Read 12 HTML files: Hub, VM, Airway, Infusion, TEP, SedaPath, ToxPath, PedGuide, PaliaPath, BlockPath, ACLS, DenguePath")
+print("Read 13 HTML files: Hub, VM, Airway, Infusion, TEP, SedaPath, ToxPath, PedGuide, PaliaPath, BlockPath, ACLS, DenguePath, ShockPath")
 
 # ══════════════════════════════════════════════════════════
 # 2. Load splash logo (JPEG square) — stored once in parent
@@ -110,10 +111,12 @@ if header_logo:
     block_html = block_html.replace(header_logo, '__LOGO__')
     acls_html = acls_html.replace(header_logo, '__LOGO__')
     dengue_html = dengue_html.replace(header_logo, '__LOGO__')
+    shock_html = shock_html.replace(header_logo, '__LOGO__')
     # TEP may have a different PNG logo — also replace any remaining PNG base64
     tep_html = re.sub(r'data:image/png;base64,[A-Za-z0-9+/=]+', '__LOGO__', tep_html)
     acls_html = re.sub(r'data:image/png;base64,[A-Za-z0-9+/=]+', '__LOGO__', acls_html)
     dengue_html = re.sub(r'data:image/png;base64,[A-Za-z0-9+/=]+', '__LOGO__', dengue_html)
+    shock_html = re.sub(r'data:image/png;base64,[A-Za-z0-9+/=]+', '__LOGO__', shock_html)
 else:
     print("WARNING: No header logo found in hub!")
     header_logo = ''
@@ -190,6 +193,7 @@ palia_html = make_logo_clickable_to_hub(palia_html)
 block_html = make_logo_clickable_to_hub(block_html)
 acls_html = make_logo_clickable_to_hub(acls_html)
 dengue_html = make_logo_clickable_to_hub(dengue_html)
+shock_html = make_logo_clickable_to_hub(shock_html)
 print("Logo click → hub applied to all sub-apps (no separate back button)")
 
 # ══════════════════════════════════════════════════════════
@@ -222,6 +226,7 @@ palia_escaped = escape_for_template(palia_html)
 block_escaped = escape_for_template(block_html)
 acls_escaped = escape_for_template(acls_html)
 dengue_escaped = escape_for_template(dengue_html)
+shock_escaped = escape_for_template(shock_html)
 header_logo_escaped = escape_for_template(header_logo)
 
 # ══════════════════════════════════════════════════════════
@@ -460,7 +465,8 @@ combined = '''<!DOCTYPE html>
             palia: `''' + palia_escaped + '''`,
             block: `''' + block_escaped + '''`,
             acls: `''' + acls_escaped + '''`,
-            dengue: `''' + dengue_escaped + '''`
+            dengue: `''' + dengue_escaped + '''`,
+            shock: `''' + shock_escaped + '''`
         };
 
         function loadApp(name, target) {
@@ -514,4 +520,4 @@ logo_count = combined.count('data:image/png;base64,')
 splash_count = combined.count('data:image/jpeg;base64,')
 print("   PNG logos: %d (should be 1)" % logo_count)
 print("   JPEG splash: %d (should be 1)" % splash_count)
-print("   Apps included: hub, vm, airway, infusion, tep, seda, tox, ped, palia, block, acls, dengue")
+print("   Apps included: hub, vm, airway, infusion, tep, seda, tox, ped, palia, block, acls, dengue, shock")

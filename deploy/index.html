@@ -533,6 +533,15 @@
                 </div>
                 <div class="name">Dengue Path</div>
             </a>
+            <a href="#" onclick="event.preventDefault(); parent.loadApp('shock')" class="main-card new-badge-wrap">
+                <div class="new-badge">NOVO</div>
+                <div class="icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <div class="name">Shock Path</div>
+            </a>
         </div>
         
         <div class="dev-section">
@@ -27472,7 +27481,1991 @@ function calcHtVariation() {
 </div>
 </body>
 </html>
-`
+`,
+            shock: `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Shock Path — ANY App</title>
+<meta name="description" content="Ressuscitacao hemodinamica no choque septico — protocolo CRT-PHR">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+--bg:#000000;--bg-card:#0A0A0A;--bg-elevated:#111111;--bg-hover:#1A1A1A;
+--border:#222222;--border-card:#333333;
+--text:#FFFFFF;--text-secondary:#A0A0A0;--text-muted:#666666;
+--accent:#FF5252;--accent-hover:#FF6B6B;--accent-dark:#CC4040;--accent-muted:rgba(255,82,82,0.2);
+--success:#4CAF50;--warning:#FFC107;--danger:#F44336;--info:#2196F3;
+--radius:12px;--radius-sm:8px;
+--transition:300ms ease;
+--max-width:500px;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;font-size:15px;display:flex;flex-direction:column;padding-bottom:100px}
+a{color:var(--info);text-decoration:none}
+
+/* DISCLAIMER */
+.disclaimer{position:sticky;top:0;z-index:100;background:var(--warning);color:#000;text-align:center;padding:10px 16px;font-size:12px;font-weight:600}
+
+/* HEADER */
+.header{padding:20px 16px 12px;text-align:center;border-bottom:1px solid var(--border)}
+.header a{display:inline-block}
+.header img{max-width:280px;width:100%;height:auto}
+.header .tool-title{font-size:20px;font-weight:700;margin-top:8px;color:var(--text)}
+.header .tool-subtitle{font-size:12px;color:var(--text-secondary);margin-top:2px}
+
+/* CONTAINER */
+.container{flex:1;max-width:var(--max-width);margin:0 auto;padding:16px;width:100%}
+
+/* SCREENS */
+.screen{display:none}
+.screen.active{display:block;animation:slideIn 0.3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+
+/* STEP HEADER */
+.step-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.step-number{width:36px;height:36px;min-width:36px;border-radius:50%;background:var(--accent);color:#FFF;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700}
+.step-info{flex:1}
+.step-title{font-size:18px;font-weight:700}
+.step-sub{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+/* DATA BADGES */
+.data-badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.data-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:20px;font-size:12px;font-weight:500}
+.data-badge .badge-label{color:var(--text-muted)}
+.data-badge .badge-value{color:var(--text);font-weight:700}
+
+/* HOME GRID */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.grid-btn{background:var(--bg-card);border:1px solid var(--border-card);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;transition:var(--transition);min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.grid-btn:active{background:var(--bg-hover);transform:scale(0.97)}
+.grid-btn .grid-label{font-size:13px;font-weight:600;color:var(--text);line-height:1.3}
+.grid-btn .grid-desc{font-size:10px;color:var(--text-muted);line-height:1.2}
+.grid-btn.highlight{border-color:var(--accent);background:rgba(255,82,82,0.05)}
+
+/* BUTTONS */
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:var(--transition);min-height:44px}
+.btn-primary{background:var(--accent);color:#FFF}
+.btn-primary:active{background:var(--accent-dark)}
+.btn-secondary{background:var(--bg-elevated);color:var(--text);border:1px solid var(--border-card)}
+.btn-secondary:active{background:var(--bg-hover)}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:active{background:rgba(255,82,82,0.1)}
+.btn-success{background:var(--success);color:#FFF}
+.btn-success:active{background:#388E3C}
+.btn-danger{background:var(--danger);color:#FFF}
+.btn-danger:active{background:#C62828}
+.btn+.btn{margin-top:8px}
+.btn-group{display:flex;gap:8px;margin-top:8px}
+.btn-group .btn{flex:1}
+.btn-sm{padding:10px;font-size:13px;min-height:38px}
+
+/* ALERTS */
+.alert{padding:12px 16px;border-radius:var(--radius-sm);margin-bottom:12px;font-size:13px;line-height:1.5}
+.alert-danger{background:rgba(244,67,54,0.1);border:1px solid rgba(244,67,54,0.25);color:#FF6B6B}
+.alert-warning{background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.25);color:#FFD740}
+.alert-success{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.25);color:#66BB6A}
+.alert-info{background:rgba(33,150,243,0.1);border:1px solid rgba(33,150,243,0.25);color:#64B5F6}
+.alert strong{display:block;margin-bottom:4px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px}
+
+/* INPUT FIELDS */
+.input-group{margin-bottom:16px}
+.input-group label{font-size:12px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px}
+.input-field{width:100%;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:var(--radius-sm);color:var(--text);padding:12px;font-size:16px;font-weight:600;text-align:center}
+.input-field:focus{outline:none;border-color:var(--accent)}
+.input-field::placeholder{color:var(--text-muted);font-weight:400}
+.input-row{display:flex;gap:10px}
+.input-row .input-group{flex:1}
+
+/* TOGGLE BUTTONS */
+.toggle-group{display:flex;gap:0;border:1px solid var(--border-card);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:12px}
+.toggle-btn{flex:1;padding:10px 8px;background:var(--bg-elevated);color:var(--text-secondary);border:none;font-size:13px;font-weight:500;cursor:pointer;text-align:center;min-height:44px;transition:var(--transition)}
+.toggle-btn.active{background:var(--accent);color:#FFF;font-weight:700}
+.toggle-btn:not(:last-child){border-right:1px solid var(--border-card)}
+
+/* COLLAPSIBLE */
+.collapsible{background:var(--bg-card);border:1px solid var(--border-card);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
+.collapsible-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;min-height:44px}
+.collapsible-header:active{background:var(--bg-hover)}
+.collapsible-header .ch-title{font-size:14px;font-weight:600;flex:1}
+.chevron{color:var(--text-muted);font-size:12px;transition:transform var(--transition)}
+.collapsible.open .chevron{transform:rotate(180deg)}
+.collapsible-body{max-height:0;overflow:hidden;transition:max-height 400ms ease}
+.collapsible.open .collapsible-body{max-height:none}
+.collapsible-content{padding:0 16px 16px}
+
+/* CHECKLIST */
+.criteria-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;font-size:14px;cursor:pointer;min-height:44px}
+.criteria-dot{width:10px;height:10px;min-width:10px;border-radius:50%;border:2px solid var(--border-card);transition:var(--transition)}
+.criteria-item.checked .criteria-dot{background:var(--success);border-color:var(--success)}
+
+/* RESULT CARD */
+.result-card{padding:16px;border-radius:var(--radius);margin:16px 0}
+.result-card.green{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3)}
+.result-card.red{background:rgba(244,67,54,0.1);border:1px solid rgba(244,67,54,0.3)}
+.result-card.yellow{background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3)}
+.result-card.blue{background:rgba(33,150,243,0.1);border:1px solid rgba(33,150,243,0.3)}
+.result-card .rc-title{font-size:14px;font-weight:700;margin-bottom:6px}
+.result-card .rc-text{font-size:13px;line-height:1.6;color:var(--text-secondary)}
+
+/* BOLUS COUNTER */
+.bolus-counter{display:flex;align-items:center;gap:12px;padding:16px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:var(--radius);margin:12px 0}
+.bolus-counter .bc-total{font-size:28px;font-weight:700;color:var(--accent)}
+.bolus-counter .bc-label{font-size:12px;color:var(--text-secondary)}
+
+/* VNERi BAR */
+.vneri-result{text-align:center;margin:16px 0}
+.vneri-value{font-size:40px;font-weight:700;line-height:1}
+.vneri-label{font-size:14px;font-weight:600;margin-top:4px}
+.vneri-bar-wrap{position:relative;margin:8px 0 28px}
+.vneri-bar{height:24px;background:linear-gradient(to right,#F44336 0%,#F44336 17%,#FFC107 17%,#FFC107 45%,#4CAF50 45%,#4CAF50 72%,#FFC107 72%,#FFC107 100%);border-radius:12px}
+.vneri-indicator{position:absolute;top:-4px;width:16px;height:32px;background:#FFF;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:left 0.3s;left:0%}
+.vneri-zone-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-bottom:4px;padding:0 2px}
+.vneri-zone-labels span{text-align:center}
+.vneri-marks{position:absolute;bottom:-18px;width:100%}
+.vneri-marks span{position:absolute;transform:translateX(-50%);font-size:10px;color:var(--text-muted)}
+.vneri-conduta{margin-top:28px;padding:12px;border-radius:var(--radius-sm);font-size:13px;line-height:1.5}
+
+/* QUADRANT GRID */
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+.quad-cell{padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border-card);font-size:12px;line-height:1.5}
+.quad-cell .qc-title{font-weight:700;margin-bottom:4px;font-size:13px}
+.quad-cell .qc-text{color:var(--text-secondary)}
+.quad-cell.active{border-width:2px}
+
+/* SUMMARY LIST */
+.summary-section{margin-bottom:20px}
+.summary-section .ss-title{font-size:14px;font-weight:700;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.summary-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:13px;color:var(--text-secondary);line-height:1.5}
+.summary-item .si-dot{width:6px;height:6px;min-width:6px;border-radius:50%;margin-top:7px}
+.summary-numbered{counter-reset:sc}
+.summary-numbered .summary-item{counter-increment:sc}
+.summary-numbered .summary-item::before{content:counter(sc) ".";font-weight:700;color:var(--accent);min-width:20px}
+
+/* TIMELINE */
+.timeline{margin:16px 0}
+.timeline-item{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.timeline-item .ti-time{color:var(--text-muted);min-width:50px;font-size:12px;font-weight:600}
+.timeline-item .ti-text{color:var(--text-secondary);flex:1}
+
+/* TEC HISTORY */
+.tec-history{margin-top:12px}
+.tec-entry{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px}
+.tec-dot{width:10px;height:10px;min-width:10px;border-radius:50%}
+.tec-dot.green{background:var(--success)}
+.tec-dot.red{background:var(--danger)}
+.tec-dot.yellow{background:var(--warning)}
+
+/* TEASER */
+.teaser{border:2px dashed var(--border-card);border-radius:var(--radius);padding:20px;text-align:center;margin-top:16px;opacity:0.5}
+.teaser .t-badge{display:inline-block;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;background:rgba(255,255,255,0.1);color:var(--text-muted);margin-bottom:8px;letter-spacing:1px}
+.teaser .t-title{font-size:14px;font-weight:600;color:var(--text-muted)}
+
+/* INFO CARD */
+.info-card{background:var(--bg-card);border-left:3px solid var(--info);padding:12px 16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:12px 0;font-size:13px;color:var(--text-secondary);line-height:1.5}
+.info-card strong{color:var(--text);display:block;margin-bottom:4px}
+
+/* DEEP LINK BUTTONS */
+.deep-links{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.deep-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:20px;font-size:12px;font-weight:500;color:var(--info);cursor:pointer;min-height:38px}
+.deep-link:active{background:var(--bg-hover)}
+
+/* SECTION TITLE */
+.section-title{font-size:16px;font-weight:700;margin:20px 0 12px;color:var(--text)}
+.section-subtitle{font-size:13px;color:var(--text-secondary);margin-bottom:16px}
+
+/* STEP NAV */
+.step-nav{display:flex;gap:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--border)}
+.step-nav .btn{flex:1}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* SLIDER */
+.dose-slider{width:100%;margin:8px 0;accent-color:var(--accent)}
+
+/* REF LIST */
+.ref-item{padding:12px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:var(--radius-sm);margin-bottom:8px;font-size:13px;line-height:1.5;color:var(--text-secondary)}
+.ref-item strong{color:var(--text);display:block;margin-bottom:2px}
+
+/* PROFILE CARD */
+.profile-card{padding:16px;border-radius:var(--radius);border:2px solid;margin-bottom:16px}
+.profile-card .pc-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.profile-card .pc-title{font-size:18px;font-weight:700}
+
+/* RESPONSIVE */
+@media(max-width:380px){
+.home-grid{gap:8px}
+.grid-btn{padding:12px 8px}
+.grid-btn .grid-label{font-size:12px}
+.input-row{flex-direction:column;gap:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer"><strong>Ferramenta de apoio em teste</strong> — nao substitui o julgamento clinico. Confirme antes de usar.</div>
+
+<!-- HEADER -->
+<div class="header">
+  <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
+  <div class="tool-title">Shock Path</div>
+  <div class="tool-subtitle">Ressuscitacao hemodinamica no choque septico</div>
+</div>
+
+<div class="container">
+
+<!-- ============================================ -->
+<!-- SCREEN: HOME -->
+<!-- ============================================ -->
+<div class="screen active" id="screen-home">
+
+    <div style="text-align:center;margin:20px 0 8px">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="1.5">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+    </div>
+
+    <div style="text-align:center;margin-bottom:24px">
+        <div style="font-size:22px;font-weight:700;margin-bottom:4px">Shock Path</div>
+        <div style="font-size:13px;color:var(--text-secondary)">Ressuscitacao hemodinamica no choque septico</div>
+    </div>
+
+    <button class="btn btn-primary" onclick="goTo('step1')" style="font-size:16px;padding:16px">
+        Iniciar algoritmo
+    </button>
+    <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:8px">
+        Protocolo CRT-PHR (ANDROMEDA-SHOCK 2)
+    </div>
+
+    <div class="home-grid" style="margin-top:24px">
+        <div class="grid-btn" onclick="goTo('vneri')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <div class="grid-label">VNERi</div>
+            <div class="grid-desc">Responsividade vascular</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('gapco2')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <div class="grid-label">Gap CO2</div>
+            <div class="grid-desc">Quadrante perfusional</div>
+        </div>
+        <div class="grid-btn" onclick="event.preventDefault();parent.loadApp('infusion')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+            <div class="grid-label">Calculadoras</div>
+            <div class="grid-desc">Infusao continua</div>
+        </div>
+        <div class="grid-btn" onclick="goTo('referencias')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <div class="grid-label">Referencias</div>
+            <div class="grid-desc">Fontes e bibliografia</div>
+        </div>
+    </div>
+
+    <div class="teaser">
+        <div class="t-badge">EM BREVE</div>
+        <div class="t-title">RUSH Protocol</div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: STEP 1 — RECONHECIMENTO -->
+<!-- ============================================ -->
+<div class="screen" id="screen-step1">
+
+    <div class="step-header">
+        <div class="step-number">1</div>
+        <div class="step-info">
+            <div class="step-title">Reconhecimento do choque septico</div>
+            <div class="step-sub">Passo 1 de 5</div>
+        </div>
+    </div>
+
+    <!-- Criterios -->
+    <div class="section-title">Criterios de reconhecimento</div>
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">Marcacao visual — nao bloqueia navegacao</div>
+
+    <div class="criteria-item" onclick="this.classList.toggle('checked')">
+        <div class="criteria-dot"></div>
+        <div>Infeccao suspeita ou confirmada</div>
+    </div>
+    <div class="criteria-item" onclick="this.classList.toggle('checked')">
+        <div class="criteria-dot"></div>
+        <div>Lactato &ge; 2 mmol/L (ou &ge; 18 mg/dL)</div>
+    </div>
+    <div class="criteria-item" onclick="this.classList.toggle('checked')">
+        <div class="criteria-dot"></div>
+        <div>Noradrenalina necessaria para PAM &ge; 65 mmHg</div>
+    </div>
+    <div class="criteria-item" onclick="this.classList.toggle('checked')">
+        <div class="criteria-dot"></div>
+        <div>Fluidos &ge; 1000 mL ja administrados</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Peso -->
+    <div class="input-group">
+        <label>Peso estimado (kg)</label>
+        <input type="number" id="shockPeso" class="input-field" inputmode="decimal" placeholder="70" min="40" max="200" oninput="onPesoChange()">
+    </div>
+
+    <!-- Lactato -->
+    <div class="input-group">
+        <label>Lactato</label>
+        <div style="display:flex;gap:8px;align-items:stretch">
+            <input type="number" id="lactatoInput" class="input-field" inputmode="decimal" placeholder="2.0" min="0" max="30" step="0.1" oninput="onLactatoChange()" style="flex:1">
+            <div class="toggle-group" style="flex:0 0 auto;margin-bottom:0;width:160px">
+                <button class="toggle-btn active" id="lacUnitMmol" onclick="setLactatoUnit('mmol')">mmol/L</button>
+                <button class="toggle-btn" id="lacUnitMg" onclick="setLactatoUnit('mg')">mg/dL</button>
+            </div>
+        </div>
+        <div id="lactatoConversion" style="font-size:12px;color:var(--text-muted);margin-top:6px;display:none"></div>
+    </div>
+
+    <!-- TEC -->
+    <div class="section-title">Tempo de enchimento capilar (TEC)</div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">
+        Pressione o leito ungueal por 10 segundos, solte e cronometre (Hernandez et al. JAMA 2025)
+    </div>
+
+    <div class="toggle-group" id="tecToggle">
+        <button class="toggle-btn" onclick="setTecRapido('normal')">Normal &le; 3s</button>
+        <button class="toggle-btn" onclick="setTecRapido('anormal')">Anormal &gt; 3s</button>
+    </div>
+
+    <div style="text-align:center;font-size:12px;color:var(--text-muted);margin:8px 0">ou valor preciso</div>
+
+    <div class="input-group">
+        <input type="number" id="tecInput" class="input-field" inputmode="decimal" placeholder="Segundos" min="0" max="20" step="0.1" oninput="onTecInput()">
+    </div>
+
+    <!-- TEC Result -->
+    <div id="tecResultNormal" class="result-card green" style="display:none">
+        <div class="rc-title" style="color:#66BB6A">TEC normal</div>
+        <div class="rc-text">
+            Monitorizacao periodica recomendada. Reavaliar TEC a cada 1 hora por 6 horas (Hernandez et al. JAMA 2025).
+        </div>
+        <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="reavaliarTecInline()">Reavaliar TEC</button>
+    </div>
+
+    <div id="tecResultAnormal" class="result-card red" style="display:none">
+        <div class="rc-title" style="color:#FF6B6B">Hipoperfusao presente</div>
+        <div class="rc-text">
+            TEC prolongado indica hipoperfusao tecidual. Considere iniciar ressuscitacao guiada por TEC (protocolo CRT-PHR).
+        </div>
+        <button class="btn btn-primary" style="margin-top:12px" onclick="saveStep1();goTo('step2')">Iniciar Tier 1</button>
+    </div>
+
+    <!-- TEC Reaval inline -->
+    <div id="tecReavalSection" style="display:none;margin-top:16px">
+        <div class="input-group">
+            <label>Novo TEC (segundos)</label>
+            <div style="display:flex;gap:8px">
+                <input type="number" id="tecReavalInput" class="input-field" inputmode="decimal" placeholder="Segundos" min="0" max="20" step="0.1" style="flex:1">
+                <button class="btn btn-primary btn-sm" style="width:80px" onclick="salvarTecReaval()">Salvar</button>
+            </div>
+        </div>
+        <div id="tecReavalHistory" class="tec-history"></div>
+    </div>
+
+    <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo('home')">Inicio</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: STEP 2 — FLUIDOS (Tier 1a) -->
+<!-- ============================================ -->
+<div class="screen" id="screen-step2">
+
+    <div class="step-header">
+        <div class="step-number">2</div>
+        <div class="step-info">
+            <div class="step-title">Avaliacao de fluidos</div>
+            <div class="step-sub">Passo 2 de 5 — Tier 1</div>
+        </div>
+    </div>
+
+    <div class="data-badges" id="step2Badges">
+        <div class="data-badge"><span class="badge-label">TEC</span> <span class="badge-value" id="badge-tec2">--</span></div>
+        <div class="data-badge"><span class="badge-label">Lactato</span> <span class="badge-value" id="badge-lac2">--</span></div>
+    </div>
+
+    <!-- PP -->
+    <div class="section-title">Pressao de pulso (PP)</div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">
+        PP = PAS - PAD. Reflete volume sistolico (Hernandez et al. JAMA 2025).
+    </div>
+
+    <div class="toggle-group" id="ppModeToggle" style="margin-bottom:12px">
+        <button class="toggle-btn active" onclick="setPpMode('direto')">Valor direto</button>
+        <button class="toggle-btn" onclick="setPpMode('calculado')">Calcular PAS - PAD</button>
+    </div>
+
+    <div id="ppDireto">
+        <div class="input-group">
+            <label>PP (mmHg)</label>
+            <input type="number" id="ppInput" class="input-field" inputmode="decimal" placeholder="40" min="0" max="200" oninput="onPpChange()">
+        </div>
+    </div>
+
+    <div id="ppCalculado" style="display:none">
+        <div class="input-row">
+            <div class="input-group">
+                <label>PAS (mmHg)</label>
+                <input type="number" id="pasInput" class="input-field" inputmode="decimal" placeholder="90" min="0" max="300" oninput="calcPp()">
+            </div>
+            <div class="input-group">
+                <label>PAD (mmHg)</label>
+                <input type="number" id="padCalcInput" class="input-field" inputmode="decimal" placeholder="50" min="0" max="200" oninput="calcPp()">
+            </div>
+        </div>
+        <div id="ppCalcResult" style="text-align:center;font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:12px"></div>
+    </div>
+
+    <!-- PP Result -->
+    <div id="ppResultBaixo" style="display:none">
+        <div class="result-card yellow">
+            <div class="rc-title" style="color:#FFD740">PP &lt; 40 mmHg — baixo volume sistolico provavel</div>
+            <div class="rc-text">Avaliar responsividade a fluidos antes de administrar volume (Hernandez et al. JAMA 2025).</div>
+        </div>
+
+        <div class="section-title" style="font-size:14px">Metodo de avaliacao de responsividade</div>
+        <div class="toggle-group" id="fluidMethodToggle" style="flex-wrap:wrap">
+            <button class="toggle-btn" onclick="setFluidMethod('leg')" style="flex:1 0 45%">Elevacao de MMII</button>
+            <button class="toggle-btn" onclick="setFluidMethod('deltapp')" style="flex:1 0 45%">Delta PP</button>
+            <button class="toggle-btn" onclick="setFluidMethod('pocus')" style="flex:1 0 45%">POCUS</button>
+            <button class="toggle-btn" onclick="setFluidMethod('challenge')" style="flex:1 0 45%">Fluid challenge</button>
+        </div>
+
+        <!-- Method info collapsibles -->
+        <div id="methodInfo-leg" class="info-card" style="display:none">
+            <strong>Elevacao passiva de MMII</strong>
+            Elevar membros inferiores a 45 graus por 60-90 segundos. Considere responsivo se aumento &ge; 10% no volume sistolico ou debito cardiaco.
+        </div>
+        <div id="methodInfo-deltapp" class="info-card" style="display:none">
+            <strong>Delta PP</strong>
+            Em ventilacao mecanica com Vt &ge; 8 mL/kg. Considere responsivo se variacao de PP &gt; 13%.
+        </div>
+        <div id="methodInfo-pocus" class="info-card" style="display:none">
+            <strong>POCUS</strong>
+            Avalie variacao da veia cava inferior com ventilacao. Considere responsivo se variacao &gt; 18% (ventilacao mecanica).
+        </div>
+        <div id="methodInfo-challenge" class="info-card" style="display:none">
+            <strong>Fluid challenge</strong>
+            Administrar 250-500 mL em 10-15 min e avaliar resposta hemodinamica. Preferir quando outros metodos nao estao disponiveis.
+        </div>
+
+        <!-- Fluid responsiveness -->
+        <div class="section-title" style="font-size:14px;margin-top:16px">Responsivo a fluidos?</div>
+        <div class="toggle-group" id="fluidRespToggle">
+            <button class="toggle-btn" onclick="setFluidResp('sim')">Sim</button>
+            <button class="toggle-btn" onclick="setFluidResp('nao')">Nao</button>
+        </div>
+
+        <!-- Bolus section -->
+        <div id="bolusSection" style="display:none">
+            <div class="result-card blue">
+                <div class="rc-title" style="color:#64B5F6">Bolus de cristaloide</div>
+                <div class="rc-text">500 mL de cristaloide balanceado em 30 minutos (Hernandez et al. JAMA 2025). Maximo recomendado neste passo: 1000 mL.</div>
+            </div>
+
+            <div class="bolus-counter">
+                <div>
+                    <div class="bc-total" id="bolusTotalDisplay">0 mL</div>
+                    <div class="bc-label">Total administrado</div>
+                </div>
+                <div style="flex:1"></div>
+                <button class="btn btn-primary btn-sm" id="bolusAddBtn" style="width:auto;padding:10px 20px" onclick="addBolus()">+ 500 mL</button>
+            </div>
+
+            <div class="section-title" style="font-size:14px">TEC normalizou apos fluidos?</div>
+            <div class="btn-group">
+                <button class="btn btn-success btn-sm" onclick="addIntervention('TEC normalizado apos fluidos');goTo('step5')">Sim</button>
+                <button class="btn btn-danger btn-sm" id="bolusNaoBtn" onclick="onBolusNao()">Nao</button>
+            </div>
+        </div>
+
+        <!-- Nao responsivo -->
+        <div id="naoResponsivoSection" style="display:none">
+            <div class="result-card red">
+                <div class="rc-title" style="color:#FF6B6B">Nao responsivo a volume</div>
+                <div class="rc-text">Considere otimizar vasopressor antes de mais fluidos. Proseguir para avaliacao de vasopressor.</div>
+            </div>
+            <button class="btn btn-primary" onclick="goTo('step3')">Vasopressor — Tier 1b</button>
+        </div>
+    </div>
+
+    <div id="ppResultAdequado" style="display:none">
+        <div class="result-card green">
+            <div class="rc-title" style="color:#66BB6A">PP &ge; 40 mmHg — volume sistolico provavelmente adequado</div>
+            <div class="rc-text">Considere proseguir para otimizacao de vasopressor sem bolus adicionais.</div>
+        </div>
+        <button class="btn btn-primary" onclick="goTo('step3')">Vasopressor — Tier 1b</button>
+    </div>
+
+    <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo('step1')">Passo 1</button>
+        <button class="btn btn-primary" onclick="saveStep2();goTo('step3')">Passo 3</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: STEP 3 — VASOPRESSOR (Tier 1b) -->
+<!-- ============================================ -->
+<div class="screen" id="screen-step3">
+
+    <div class="step-header">
+        <div class="step-number">3</div>
+        <div class="step-info">
+            <div class="step-title">Vasopressor — titulacao</div>
+            <div class="step-sub">Passo 3 de 5 — Tier 1</div>
+        </div>
+    </div>
+
+    <div class="data-badges" id="step3Badges">
+        <div class="data-badge"><span class="badge-label">TEC</span> <span class="badge-value" id="badge-tec3">--</span></div>
+        <div class="data-badge"><span class="badge-label">PP</span> <span class="badge-value" id="badge-pp3">--</span></div>
+        <div class="data-badge"><span class="badge-label">Fluidos</span> <span class="badge-value" id="badge-fluid3">--</span></div>
+    </div>
+
+    <!-- PAD + FC -->
+    <div class="input-row">
+        <div class="input-group">
+            <label>PAD (mmHg)</label>
+            <input type="number" id="padInput" class="input-field" inputmode="decimal" placeholder="50" min="0" max="200" oninput="onVasoChange()">
+        </div>
+        <div class="input-group">
+            <label>FC (bpm)</label>
+            <input type="number" id="fcInput" class="input-field" inputmode="decimal" placeholder="100" min="0" max="250" oninput="onVasoChange()">
+        </div>
+    </div>
+
+    <!-- PAD alert -->
+    <div id="padAlert" class="alert alert-warning" style="display:none">
+        <strong>Vasopledia provavel</strong>
+        PAD &lt; 50 mmHg sugere tono vascular reduzido. Titular noradrenalina para PAD &ge; 50 mmHg (Bertrand et al. Ann Intensive Care 2025).
+    </div>
+
+    <!-- Dose NE -->
+    <div class="input-group">
+        <label>Dose de noradrenalina (mcg/kg/min)</label>
+        <input type="number" id="doseNeInput" class="input-field" inputmode="decimal" placeholder="0.10" min="0.01" max="3.0" step="0.01" oninput="onVasoChange()">
+        <input type="range" class="dose-slider" id="doseNeSlider" min="0.01" max="3.0" step="0.01" value="0.10" oninput="document.getElementById('doseNeInput').value=this.value;onVasoChange()">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-top:-4px">
+            <span>0,01</span><span>0,5</span><span>1,0</span><span>2,0</span><span>3,0</span>
+        </div>
+    </div>
+
+    <!-- Peso display -->
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">
+        Peso: <strong id="pesoDisplay3" style="color:var(--text)">--</strong> kg
+    </div>
+
+    <!-- VNERi inline -->
+    <div class="section-title">VNERi — Responsividade vascular</div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">Formula: PAD / (dose NE x FC)</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Goury et al. Ann Intensive Care 2025</div>
+
+    <div id="vneriInlineResult" style="display:none">
+        <div class="vneri-result">
+            <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">VNERi</div>
+            <div class="vneri-value" id="vneriInlineValue">--</div>
+            <div class="vneri-label" id="vneriInlineLabel">--</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:4px">
+            Mortalidade: <strong id="vneriInlineMort" style="color:var(--text)">--</strong>
+        </div>
+        <div class="vneri-bar-wrap">
+            <div class="vneri-zone-labels">
+                <span style="width:17%;color:#F44336">Hipo grave</span>
+                <span style="width:28%;color:#FFC107">Parcial</span>
+                <span style="width:27%;color:#4CAF50">Adequada</span>
+                <span style="width:28%;color:#FFC107">Preservado</span>
+            </div>
+            <div class="vneri-bar">
+                <div class="vneri-indicator" id="vneriInlineIndicator"></div>
+                <div class="vneri-marks">
+                    <span style="left:17%">2,6</span>
+                    <span style="left:45%">6,7</span>
+                    <span style="left:72%">10,8</span>
+                </div>
+            </div>
+        </div>
+        <div class="vneri-conduta" id="vneriInlineConduta"></div>
+    </div>
+    <div id="vneriInlinePlaceholder" style="text-align:center;padding:16px;color:var(--text-muted);font-size:13px">
+        Insira PAD, FC e dose de NE para calcular
+    </div>
+
+    <!-- Deep links -->
+    <div class="deep-links" style="margin-top:16px">
+        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','noradrenalina')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
+            Calculadora NE
+        </div>
+        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','vasopressina')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
+            Calculadora vasopressina
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-title" style="font-size:14px">TEC normalizou?</div>
+    <div class="btn-group">
+        <button class="btn btn-success btn-sm" onclick="saveStep3();addIntervention('TEC normalizado apos vasopressor');goTo('step5')">Sim</button>
+        <button class="btn btn-danger btn-sm" onclick="saveStep3();goTo('step4')">Nao</button>
+    </div>
+
+    <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo('step2')">Passo 2</button>
+        <button class="btn btn-primary" onclick="saveStep3();goTo('step4')">Passo 4</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: STEP 4 — PERFUSAO (Tier 2) -->
+<!-- ============================================ -->
+<div class="screen" id="screen-step4">
+
+    <div class="step-header">
+        <div class="step-number">4</div>
+        <div class="step-info">
+            <div class="step-title">Avaliacao de perfusao</div>
+            <div class="step-sub">Passo 4 de 5 — Tier 2</div>
+        </div>
+    </div>
+
+    <div class="data-badges" id="step4Badges">
+        <div class="data-badge"><span class="badge-label">PAD</span> <span class="badge-value" id="badge-pad4">--</span></div>
+        <div class="data-badge"><span class="badge-label">FC</span> <span class="badge-value" id="badge-fc4">--</span></div>
+        <div class="data-badge"><span class="badge-label">VNERi</span> <span class="badge-value" id="badge-vneri4">--</span></div>
+        <div class="data-badge"><span class="badge-label">PP</span> <span class="badge-value" id="badge-pp4">--</span></div>
+    </div>
+
+    <!-- Eco -->
+    <div class="section-title">Ecocardiograma a beira-leito</div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">Considere avaliacao ecocardiografica quando disponivel</div>
+
+    <div class="criteria-item" id="ecoVE" onclick="toggleEco('ecoVE')">
+        <div class="criteria-dot"></div>
+        <div>VE hipocinetico</div>
+    </div>
+    <div class="criteria-item" id="ecoVD" onclick="toggleEco('ecoVD')">
+        <div class="criteria-dot"></div>
+        <div>VD dilatado</div>
+    </div>
+    <div class="criteria-item" id="ecoOutra" onclick="toggleEco('ecoOutra')">
+        <div class="criteria-dot"></div>
+        <div>Outra disfuncao (valvar, tamponamento)</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ScvO2 + Gap CO2 -->
+    <div class="section-title">Marcadores de perfusao</div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">
+        ScvO2 e Gap CO2 guiam a interpretacao do mecanismo de hipoperfusao (Ltaief et al. Critical Care 2021)
+    </div>
+
+    <div class="input-row">
+        <div class="input-group">
+            <label>ScvO2 (%)</label>
+            <input type="number" id="scvo2Input" class="input-field" inputmode="decimal" placeholder="65" min="0" max="100" step="1">
+        </div>
+        <div class="input-group">
+            <label>Gap CO2 (mmHg)</label>
+            <input type="number" id="gapco2Input" class="input-field" inputmode="decimal" placeholder="6" min="0" max="30" step="0.1">
+        </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="interpretarQuadrante()">Interpretar</button>
+
+    <div id="quadranteResult" style="display:none;margin-top:16px">
+        <div id="quadranteCard" class="result-card">
+            <div class="rc-title" id="quadranteTitle">--</div>
+            <div class="rc-text" id="quadranteText">--</div>
+        </div>
+
+        <!-- 2x2 Grid -->
+        <div class="quad-grid" id="quadGrid">
+            <div class="quad-cell" id="qc-tl" style="border-color:#F44336">
+                <div class="qc-title" style="color:#FF6B6B">Baixo debito / estase</div>
+                <div class="qc-text">ScvO2 &lt; 70% + Gap &gt; 6<br>Considere inotropico</div>
+            </div>
+            <div class="quad-cell" id="qc-tr" style="border-color:#FFC107">
+                <div class="qc-title" style="color:#FFD740">Disoxia anemica/hipoxica</div>
+                <div class="qc-text">ScvO2 &lt; 70% + Gap &le; 6<br>Checar Hb, SaO2</div>
+            </div>
+            <div class="quad-cell" id="qc-bl" style="border-color:#FFC107">
+                <div class="qc-title" style="color:#FFD740">Microcirculacao inadequada</div>
+                <div class="qc-text">ScvO2 &ge; 70% + Gap &gt; 6<br>Otimizar perfusao</div>
+            </div>
+            <div class="quad-cell" id="qc-br" style="border-color:var(--text-muted)">
+                <div class="qc-title" style="color:var(--text-secondary)">Hipoxia citopatica</div>
+                <div class="qc-text">ScvO2 &ge; 70% + Gap &le; 6<br>Suporte</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Testes adicionais (collapsible) -->
+    <div class="collapsible" id="testesAdicionais">
+        <div class="collapsible-header" onclick="toggleCollapsible('testesAdicionais')">
+            <span class="ch-title">Testes adicionais</span>
+            <span class="chevron">&#9660;</span>
+        </div>
+        <div class="collapsible-body">
+            <div class="collapsible-content">
+                <!-- HTA cronica -->
+                <div style="margin-bottom:16px">
+                    <div style="font-size:14px;font-weight:600;margin-bottom:8px">Hipertensao arterial cronica?</div>
+                    <div class="toggle-group" id="htaToggle">
+                        <button class="toggle-btn" onclick="setHta('sim')">Sim</button>
+                        <button class="toggle-btn" onclick="setHta('nao')">Nao</button>
+                    </div>
+                </div>
+
+                <div id="htaTestSection" style="display:none">
+                    <div class="info-card" style="border-left-color:var(--warning)">
+                        <strong style="color:#FFD740">Teste de PAM elevada</strong>
+                        Titular PAM para 80-85 mmHg por 1 hora. Reavaliar TEC apos o periodo. Indicado em hipertensos cronicos que podem ter autorregulacao deslocada (Hernandez et al. JAMA 2025).
+                    </div>
+                    <div style="font-size:13px;font-weight:600;margin:12px 0 8px">TEC normalizou com PAM 80-85?</div>
+                    <div class="toggle-group" id="testePamToggle">
+                        <button class="toggle-btn" onclick="setTestePam('sim')">Sim</button>
+                        <button class="toggle-btn" onclick="setTestePam('nao')">Nao</button>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Dobutamina -->
+                <div style="margin-top:16px">
+                    <div class="info-card" style="border-left-color:var(--info)">
+                        <strong style="color:#64B5F6">Teste de dobutamina</strong>
+                        Iniciar dobutamina 5 mcg/kg/min por 1 hora. Reavaliar TEC. Considere em pacientes com suspeita de disfuncao miocardica ou baixo debito (Hernandez et al. JAMA 2025).
+                    </div>
+                    <div style="font-size:13px;font-weight:600;margin:12px 0 8px">TEC normalizou com dobutamina?</div>
+                    <div class="toggle-group" id="testeDobuToggle">
+                        <button class="toggle-btn" onclick="setTesteDobu('sim')">Sim</button>
+                        <button class="toggle-btn" onclick="setTesteDobu('nao')">Nao</button>
+                    </div>
+                    <div class="deep-links" style="margin-top:12px">
+                        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','dobutamina')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
+                            Calculadora dobutamina
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo('step3')">Passo 3</button>
+        <button class="btn btn-primary" onclick="saveStep4();goTo('step5')">Resumo</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: STEP 5 — RESUMO -->
+<!-- ============================================ -->
+<div class="screen" id="screen-step5">
+
+    <div class="step-header">
+        <div class="step-number">5</div>
+        <div class="step-info">
+            <div class="step-title">Perfil hemodinamico</div>
+            <div class="step-sub">Passo 5 de 5</div>
+        </div>
+    </div>
+
+    <!-- Profile card -->
+    <div id="perfilCard" class="profile-card" style="border-color:var(--accent)">
+        <div class="pc-label" style="color:var(--text-muted)">MECANISMO PREDOMINANTE</div>
+        <div class="pc-title" id="perfilTitle" style="color:var(--accent)">--</div>
+    </div>
+
+    <!-- Achados -->
+    <div class="summary-section" id="achadosSection">
+        <div class="ss-title">Achados</div>
+        <div id="achadosList"></div>
+    </div>
+
+    <!-- Condutas -->
+    <div class="summary-section" id="condutasSection">
+        <div class="ss-title">Condutas sugeridas</div>
+        <div id="condutasList" class="summary-numbered"></div>
+    </div>
+
+    <!-- Nao fazer -->
+    <div id="naoFazerSection" style="display:none">
+        <div class="alert alert-danger">
+            <strong>Nao recomendado</strong>
+            <div id="naoFazerList"></div>
+        </div>
+    </div>
+
+    <!-- Meta -->
+    <div class="result-card green" style="margin:16px 0">
+        <div class="rc-title" style="color:#66BB6A">Meta</div>
+        <div class="rc-text">TEC &le; 3 segundos. Reavaliar em 1 hora (Hernandez et al. JAMA 2025).</div>
+    </div>
+
+    <!-- Deep links -->
+    <div class="deep-links">
+        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','noradrenalina')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
+            NE
+        </div>
+        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','vasopressina')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
+            Vasopressina
+        </div>
+        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','dobutamina')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
+            Dobutamina
+        </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="section-title">Linha do tempo</div>
+    <div id="timelineList" class="timeline">
+        <div style="text-align:center;color:var(--text-muted);font-size:13px;padding:8px">Nenhuma intervencao registrada</div>
+    </div>
+
+    <!-- Reavaliar TEC -->
+    <div class="divider"></div>
+    <div class="section-title">Reavaliacao de TEC</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+        <input type="number" id="tecReavalStep5" class="input-field" inputmode="decimal" placeholder="Segundos" min="0" max="20" step="0.1" style="flex:1">
+        <button class="btn btn-primary btn-sm" style="width:80px" onclick="salvarTecReavalStep5()">Salvar</button>
+    </div>
+    <div id="tecHistoryStep5" class="tec-history"></div>
+
+    <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo('step4')">Passo 4</button>
+        <button class="btn btn-outline" onclick="resetShock()">Inicio</button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: VNERi STANDALONE -->
+<!-- ============================================ -->
+<div class="screen" id="screen-vneri">
+
+    <button style="background:none;border:none;color:var(--text-secondary);font-size:13px;padding:8px 0;cursor:pointer;display:flex;align-items:center;gap:4px;margin-bottom:12px" onclick="goTo('home')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        Inicio
+    </button>
+
+    <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:20px;font-weight:700">VNERi</div>
+        <div style="font-size:13px;color:var(--text-secondary)">Vascular Norepinephrine Responsiveness index</div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:16px">
+        <strong style="color:#64B5F6">O que mede?</strong>
+        Avalia a responsividade vascular a noradrenalina no choque septico. Valores baixos indicam que o vaso nao responde bem a NE — considere terapia adjuvante. A curva de mortalidade tem formato J invertido: mortalidade minima em VNERi ~ 6,7.<br>
+        <span style="font-size:12px;color:var(--text-muted)">Formula: PAD / (dose NE x FC)</span>
+    </div>
+
+    <div class="input-row">
+        <div class="input-group">
+            <label>PAD (mmHg)</label>
+            <input type="number" id="vneriPadS" class="input-field" inputmode="decimal" placeholder="50" min="20" max="200" oninput="calcVneriStandalone()">
+        </div>
+        <div class="input-group">
+            <label>FC (bpm)</label>
+            <input type="number" id="vneriFcS" class="input-field" inputmode="decimal" placeholder="100" min="30" max="250" oninput="calcVneriStandalone()">
+        </div>
+    </div>
+    <div class="input-row">
+        <div class="input-group">
+            <label>Dose NE (mcg/kg/min)</label>
+            <input type="number" id="vneriDoseS" class="input-field" inputmode="decimal" placeholder="0.10" min="0.01" max="3.0" step="0.01" oninput="calcVneriStandalone()">
+        </div>
+        <div class="input-group">
+            <label>Peso (kg)</label>
+            <input type="number" id="vneriPesoS" class="input-field" inputmode="decimal" placeholder="70" min="20" max="200" oninput="calcVneriStandalone()">
+        </div>
+    </div>
+
+    <div id="vneriStandaloneResult" style="display:none">
+        <div class="vneri-result">
+            <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">VNERi</div>
+            <div class="vneri-value" id="vneriValueS">--</div>
+            <div class="vneri-label" id="vneriLabelS">--</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:4px">
+            Mortalidade: <strong id="vneriMortS" style="color:var(--text)">--</strong>
+        </div>
+        <div class="vneri-bar-wrap">
+            <div class="vneri-zone-labels">
+                <span style="width:17%;color:#F44336">Hipo grave</span>
+                <span style="width:28%;color:#FFC107">Parcial</span>
+                <span style="width:27%;color:#4CAF50">Adequada</span>
+                <span style="width:28%;color:#FFC107">Preservado</span>
+            </div>
+            <div class="vneri-bar">
+                <div class="vneri-indicator" id="vneriIndicatorS"></div>
+                <div class="vneri-marks">
+                    <span style="left:17%">2,6</span>
+                    <span style="left:45%">6,7</span>
+                    <span style="left:72%">10,8</span>
+                </div>
+            </div>
+        </div>
+        <div class="vneri-conduta" id="vneriCondutaS"></div>
+        <div style="margin-top:12px;font-size:11px;color:var(--text-muted);font-style:italic">
+            Goury et al. Ann Intensive Care 2025 — Curva J invertida, nadir mortalidade em VNERi 6,7
+        </div>
+    </div>
+    <div id="vneriPlaceholderS" style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">
+        Insira PAD, FC e dose de NE para calcular
+    </div>
+
+    <div style="margin-top:16px;font-size:11px;color:var(--text-muted)">
+        Validado para choque septico (Goury et al. Ann Intensive Care 2025).
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: GAP CO2 STANDALONE -->
+<!-- ============================================ -->
+<div class="screen" id="screen-gapco2">
+
+    <button style="background:none;border:none;color:var(--text-secondary);font-size:13px;padding:8px 0;cursor:pointer;display:flex;align-items:center;gap:4px;margin-bottom:12px" onclick="goTo('home')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        Inicio
+    </button>
+
+    <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:20px;font-weight:700">Gap CO2 / ScvO2</div>
+        <div style="font-size:13px;color:var(--text-secondary)">Quadrante perfusional</div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:16px">
+        <strong style="color:#64B5F6">Interpretacao</strong>
+        A combinacao de ScvO2 e Gap CO2 (diferenca entre PCO2 venoso central e arterial) permite identificar o mecanismo predominante de hipoperfusao (Ltaief et al. Critical Care 2021).
+    </div>
+
+    <div class="input-row">
+        <div class="input-group">
+            <label>ScvO2 (%)</label>
+            <input type="number" id="scvo2InputS" class="input-field" inputmode="decimal" placeholder="65" min="0" max="100" step="1">
+        </div>
+        <div class="input-group">
+            <label>Gap CO2 (mmHg)</label>
+            <input type="number" id="gapco2InputS" class="input-field" inputmode="decimal" placeholder="6" min="0" max="30" step="0.1">
+        </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="interpretarQuadranteStandalone()">Interpretar</button>
+
+    <!-- Grid sempre visivel -->
+    <div class="quad-grid" id="quadGridS" style="margin-top:16px">
+        <div class="quad-cell" id="qcS-tl" style="border-color:#F44336">
+            <div class="qc-title" style="color:#FF6B6B">Baixo debito / estase</div>
+            <div class="qc-text">ScvO2 &lt; 70% + Gap &gt; 6<br>Considere inotropico</div>
+        </div>
+        <div class="quad-cell" id="qcS-tr" style="border-color:#FFC107">
+            <div class="qc-title" style="color:#FFD740">Disoxia anemica/hipoxica</div>
+            <div class="qc-text">ScvO2 &lt; 70% + Gap &le; 6<br>Checar Hb, SaO2</div>
+        </div>
+        <div class="quad-cell" id="qcS-bl" style="border-color:#FFC107">
+            <div class="qc-title" style="color:#FFD740">Microcirculacao inadequada</div>
+            <div class="qc-text">ScvO2 &ge; 70% + Gap &gt; 6<br>Otimizar perfusao</div>
+        </div>
+        <div class="quad-cell" id="qcS-br" style="border-color:var(--text-muted)">
+            <div class="qc-title" style="color:var(--text-secondary)">Hipoxia citopatica</div>
+            <div class="qc-text">ScvO2 &ge; 70% + Gap &le; 6<br>Suporte</div>
+        </div>
+    </div>
+
+    <div id="quadResultS" style="display:none;margin-top:12px">
+        <div id="quadCardS" class="result-card">
+            <div class="rc-title" id="quadTitleS">--</div>
+            <div class="rc-text" id="quadTextS">--</div>
+        </div>
+    </div>
+
+    <div style="margin-top:16px;font-size:11px;color:var(--text-muted)">
+        Ltaief et al. Critical Care 2021.
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCREEN: REFERENCIAS -->
+<!-- ============================================ -->
+<div class="screen" id="screen-referencias">
+
+    <button style="background:none;border:none;color:var(--text-secondary);font-size:13px;padding:8px 0;cursor:pointer;display:flex;align-items:center;gap:4px;margin-bottom:12px" onclick="goTo('home')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        Inicio
+    </button>
+
+    <div class="section-title" style="margin-top:0">Referencias</div>
+
+    <div class="ref-item">
+        <strong>Hernandez G, et al.</strong>
+        Effect of a Resuscitation Strategy Targeting Peripheral Perfusion Status vs Serum Lactate Levels on 28-Day Mortality Among Patients With Septic Shock: The ANDROMEDA-SHOCK 2 Randomized Clinical Trial. JAMA. 2025.<br>
+        <span style="font-size:11px;color:var(--text-muted)">Protocolo CRT-PHR: ressuscitacao guiada por TEC</span>
+    </div>
+
+    <div class="ref-item">
+        <strong>Goury A, et al.</strong>
+        Vascular Norepinephrine Responsiveness index (VNERi) and mortality in septic shock: a J-shaped relationship. Ann Intensive Care. 2025;15:23.<br>
+        <span style="font-size:11px;color:var(--text-muted)">VNERi = PAD / (dose NE x FC). Nadir mortalidade em 6,7.</span>
+    </div>
+
+    <div class="ref-item">
+        <strong>Bertrand A, et al.</strong>
+        Diastolic arterial pressure monitoring in septic shock: clinical implications. Ann Intensive Care. 2025;15:18.<br>
+        <span style="font-size:11px;color:var(--text-muted)">PAD &lt; 50 mmHg como marcador de vasopledia</span>
+    </div>
+
+    <div class="ref-item">
+        <strong>Ltaief Z, et al.</strong>
+        Venous-to-arterial carbon dioxide difference and central venous oxygen saturation in the assessment of tissue perfusion in septic shock: a prospective study. Critical Care. 2021;25:266.<br>
+        <span style="font-size:11px;color:var(--text-muted)">Gap CO2 / ScvO2: quadrantes perfusionais</span>
+    </div>
+
+    <div class="ref-item">
+        <strong>Evans L, et al.</strong>
+        Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Intensive Care Med. 2021;47:1181-1247.<br>
+        <span style="font-size:11px;color:var(--text-muted)">Diretrizes gerais de manejo do choque septico</span>
+    </div>
+
+    <div class="ref-item">
+        <strong>Hernandez G, et al.</strong>
+        Effect of a Resuscitation Strategy Targeting Peripheral Perfusion Status vs Serum Lactate Levels on 28-Day Mortality Among Patients With Septic Shock: The ANDROMEDA-SHOCK Randomized Clinical Trial. JAMA. 2019;321(7):654-664.<br>
+        <span style="font-size:11px;color:var(--text-muted)">ANDROMEDA-SHOCK original: TEC vs lactato</span>
+    </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:var(--bg);border-top:1px solid var(--border);z-index:50">
+<div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:2px">Gustavo Moreira &#8226; Gabriela Feltrin &#8226; Joao Pedro Moreira</div>
+<div style="font-size:0.65rem;color:var(--text-muted)">Shock Path v1.0.0 — ANY App</div>
+</footer>
+
+<!-- FAB MENU -->
+<div class="fab-menu" style="position:fixed;bottom:20px;right:20px;z-index:1000">
+<div class="fab-options" id="fabOptions" style="position:absolute;bottom:70px;right:0;background:#111;border:1px solid #333;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);padding:8px;display:none;min-width:200px">
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('home')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Inicio</a>
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('step1')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Algoritmo</a>
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('vneri')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">VNERi</a>
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('gapco2')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Gap CO2</a>
+<a href="#" onclick="event.preventDefault();toggleFab();goTo('referencias')" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;text-decoration:none;color:#F5F5F5;font-size:14px;font-weight:500">Referencias</a>
+</div>
+<button id="fabBtn" onclick="toggleFab()" style="width:56px;height:56px;border-radius:50%;background:#FF5252;border:none;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(255,82,82,0.4);display:flex;align-items:center;justify-content:center">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+</button>
+</div>
+
+<script>
+// ==========================================
+// NAVIGATION
+// ==========================================
+var screens = {
+    home:'screen-home',
+    step1:'screen-step1', step2:'screen-step2', step3:'screen-step3',
+    step4:'screen-step4', step5:'screen-step5',
+    vneri:'screen-vneri', gapco2:'screen-gapco2',
+    referencias:'screen-referencias'
+};
+
+function goTo(id) {
+    Object.values(screens).forEach(function(s) {
+        document.getElementById(s).classList.remove('active');
+    });
+    document.getElementById(screens[id]).classList.add('active');
+    window.scrollTo(0, 0);
+
+    // Update badges when entering steps
+    if (id === 'step2') updateStep2Badges();
+    if (id === 'step3') updateStep3Badges();
+    if (id === 'step4') updateStep4Badges();
+    if (id === 'step5') renderStep5();
+}
+
+// ==========================================
+// CENTRAL DATA MODEL
+// ==========================================
+var shockState = {
+    tec: null,
+    lactato: null,
+    lactatoUnit: 'mmol',
+    pp: null,
+    fluidResp: null,
+    fluidMethod: null,
+    bolusTotal: 0,
+    pad: null,
+    fc: null,
+    doseNE: null,
+    vneri: null,
+    peso: null,
+    ecoVE: false,
+    ecoVD: false,
+    ecoOutra: false,
+    scvo2: null,
+    gapCO2: null,
+    quadrante: null,
+    htaCronica: null,
+    testePAM: null,
+    testeDobu: null,
+    tecHistory: [],
+    interventions: []
+};
+
+// ==========================================
+// UTILITY
+// ==========================================
+function fmt(n, d) {
+    if (n === null || n === undefined || isNaN(n)) return '--';
+    return Number(n).toFixed(d !== undefined ? d : 1);
+}
+
+function now() {
+    var d = new Date();
+    return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+}
+
+// ==========================================
+// FAB
+// ==========================================
+function toggleFab() {
+    var opt = document.getElementById('fabOptions');
+    var btn = document.getElementById('fabBtn');
+    if (opt.style.display === 'block') {
+        opt.style.display = 'none';
+        btn.style.background = '#FF5252';
+    } else {
+        opt.style.display = 'block';
+        btn.style.background = '#D32F2F';
+    }
+}
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.fab-menu')) {
+        document.getElementById('fabOptions').style.display = 'none';
+        document.getElementById('fabBtn').style.background = '#FF5252';
+    }
+});
+
+// ==========================================
+// STEP 1 — RECONHECIMENTO
+// ==========================================
+function onPesoChange() {
+    var v = parseFloat(document.getElementById('shockPeso').value);
+    if (v && v >= 40 && v <= 200) {
+        shockState.peso = v;
+    } else {
+        shockState.peso = null;
+    }
+}
+
+function setLactatoUnit(unit) {
+    shockState.lactatoUnit = unit;
+    document.getElementById('lacUnitMmol').classList.toggle('active', unit === 'mmol');
+    document.getElementById('lacUnitMg').classList.toggle('active', unit === 'mg');
+    onLactatoChange();
+}
+
+function onLactatoChange() {
+    var raw = parseFloat(document.getElementById('lactatoInput').value);
+    var conv = document.getElementById('lactatoConversion');
+    if (!raw || raw <= 0) {
+        shockState.lactato = null;
+        conv.style.display = 'none';
+        return;
+    }
+    if (shockState.lactatoUnit === 'mmol') {
+        shockState.lactato = raw;
+        conv.style.display = 'block';
+        conv.textContent = fmt(raw, 1) + ' mmol/L = ' + fmt(raw * 9, 1) + ' mg/dL';
+    } else {
+        shockState.lactato = raw / 9;
+        conv.style.display = 'block';
+        conv.textContent = fmt(raw, 1) + ' mg/dL = ' + fmt(raw / 9, 1) + ' mmol/L';
+    }
+}
+
+function setTecRapido(tipo) {
+    var btns = document.querySelectorAll('#tecToggle .toggle-btn');
+    btns[0].classList.toggle('active', tipo === 'normal');
+    btns[1].classList.toggle('active', tipo === 'anormal');
+    document.getElementById('tecInput').value = '';
+
+    if (tipo === 'normal') {
+        shockState.tec = 3;
+        showTecResult(false);
+    } else {
+        shockState.tec = 4;
+        showTecResult(true);
+    }
+}
+
+function onTecInput() {
+    var v = parseFloat(document.getElementById('tecInput').value);
+    var btns = document.querySelectorAll('#tecToggle .toggle-btn');
+    btns[0].classList.remove('active');
+    btns[1].classList.remove('active');
+
+    if (!v || v < 0) {
+        shockState.tec = null;
+        document.getElementById('tecResultNormal').style.display = 'none';
+        document.getElementById('tecResultAnormal').style.display = 'none';
+        return;
+    }
+    shockState.tec = v;
+    showTecResult(v > 3);
+}
+
+function showTecResult(anormal) {
+    document.getElementById('tecResultNormal').style.display = anormal ? 'none' : 'block';
+    document.getElementById('tecResultAnormal').style.display = anormal ? 'block' : 'none';
+    document.getElementById('tecReavalSection').style.display = 'none';
+}
+
+function reavaliarTecInline() {
+    document.getElementById('tecReavalSection').style.display = 'block';
+    document.getElementById('tecReavalInput').focus();
+}
+
+function salvarTecReaval() {
+    var v = parseFloat(document.getElementById('tecReavalInput').value);
+    if (!v || v < 0) return;
+    addTecReeval(v);
+    shockState.tec = v;
+    document.getElementById('tecReavalInput').value = '';
+    renderTecHistory('tecReavalHistory');
+    showTecResult(v > 3);
+}
+
+function saveStep1() {
+    addIntervention('Reconhecimento: TEC ' + fmt(shockState.tec) + 's, Lactato ' + fmt(shockState.lactato) + ' mmol/L');
+}
+
+// ==========================================
+// STEP 2 — FLUIDOS
+// ==========================================
+function updateStep2Badges() {
+    document.getElementById('badge-tec2').textContent = shockState.tec ? fmt(shockState.tec) + 's' : '--';
+    document.getElementById('badge-lac2').textContent = shockState.lactato ? fmt(shockState.lactato) + ' mmol/L' : '--';
+}
+
+function setPpMode(mode) {
+    var btns = document.querySelectorAll('#ppModeToggle .toggle-btn');
+    btns[0].classList.toggle('active', mode === 'direto');
+    btns[1].classList.toggle('active', mode === 'calculado');
+    document.getElementById('ppDireto').style.display = mode === 'direto' ? 'block' : 'none';
+    document.getElementById('ppCalculado').style.display = mode === 'calculado' ? 'block' : 'none';
+}
+
+function onPpChange() {
+    var v = parseFloat(document.getElementById('ppInput').value);
+    if (!v || v < 0) {
+        shockState.pp = null;
+        hidePpResults();
+        return;
+    }
+    shockState.pp = v;
+    showPpResult();
+}
+
+function calcPp() {
+    var pas = parseFloat(document.getElementById('pasInput').value);
+    var pad = parseFloat(document.getElementById('padCalcInput').value);
+    var res = document.getElementById('ppCalcResult');
+    if (!pas || !pad) {
+        res.textContent = '';
+        shockState.pp = null;
+        hidePpResults();
+        return;
+    }
+    var pp = pas - pad;
+    shockState.pp = pp;
+    res.textContent = 'PP = ' + fmt(pp, 0) + ' mmHg';
+    showPpResult();
+}
+
+function hidePpResults() {
+    document.getElementById('ppResultBaixo').style.display = 'none';
+    document.getElementById('ppResultAdequado').style.display = 'none';
+}
+
+function showPpResult() {
+    var baixo = shockState.pp < 40;
+    document.getElementById('ppResultBaixo').style.display = baixo ? 'block' : 'none';
+    document.getElementById('ppResultAdequado').style.display = baixo ? 'none' : 'block';
+    // Reset fluid sections
+    if (baixo) {
+        document.getElementById('bolusSection').style.display = 'none';
+        document.getElementById('naoResponsivoSection').style.display = 'none';
+        resetFluidToggles();
+    }
+}
+
+function resetFluidToggles() {
+    document.querySelectorAll('#fluidMethodToggle .toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('#fluidRespToggle .toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    hideAllMethodInfo();
+}
+
+function setFluidMethod(method) {
+    shockState.fluidMethod = method;
+    document.querySelectorAll('#fluidMethodToggle .toggle-btn').forEach(function(b) {
+        b.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    hideAllMethodInfo();
+    var info = document.getElementById('methodInfo-' + method);
+    if (info) info.style.display = 'block';
+}
+
+function hideAllMethodInfo() {
+    ['leg','deltapp','pocus','challenge'].forEach(function(m) {
+        document.getElementById('methodInfo-' + m).style.display = 'none';
+    });
+}
+
+function setFluidResp(resp) {
+    shockState.fluidResp = resp;
+    document.querySelectorAll('#fluidRespToggle .toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (resp === 'sim') {
+        document.querySelectorAll('#fluidRespToggle .toggle-btn')[0].classList.add('active');
+        document.getElementById('bolusSection').style.display = 'block';
+        document.getElementById('naoResponsivoSection').style.display = 'none';
+    } else {
+        document.querySelectorAll('#fluidRespToggle .toggle-btn')[1].classList.add('active');
+        document.getElementById('bolusSection').style.display = 'none';
+        document.getElementById('naoResponsivoSection').style.display = 'block';
+    }
+}
+
+function addBolus() {
+    if (shockState.bolusTotal >= 1000) return;
+    shockState.bolusTotal += 500;
+    document.getElementById('bolusTotalDisplay').textContent = shockState.bolusTotal + ' mL';
+    addIntervention('Bolus cristaloide 500 mL (total: ' + shockState.bolusTotal + ' mL)');
+    if (shockState.bolusTotal >= 1000) {
+        document.getElementById('bolusAddBtn').disabled = true;
+        document.getElementById('bolusAddBtn').style.opacity = '0.4';
+        document.getElementById('bolusAddBtn').textContent = 'Limite';
+    }
+}
+
+function onBolusNao() {
+    if (shockState.bolusTotal < 1000) {
+        // Pode fazer mais um bolus
+        addBolus();
+    } else {
+        // Ja atingiu limite, segue para step 3
+        goTo('step3');
+    }
+}
+
+function saveStep2() {
+    if (shockState.pp !== null) {
+        addIntervention('PP: ' + fmt(shockState.pp, 0) + ' mmHg. Fluidos: ' + shockState.bolusTotal + ' mL');
+    }
+}
+
+// ==========================================
+// STEP 3 — VASOPRESSOR
+// ==========================================
+function updateStep3Badges() {
+    document.getElementById('badge-tec3').textContent = shockState.tec ? fmt(shockState.tec) + 's' : '--';
+    document.getElementById('badge-pp3').textContent = shockState.pp ? fmt(shockState.pp, 0) + ' mmHg' : '--';
+    document.getElementById('badge-fluid3').textContent = shockState.bolusTotal + ' mL';
+    document.getElementById('pesoDisplay3').textContent = shockState.peso ? shockState.peso : '--';
+
+    // Pre-fill peso if available
+    if (shockState.pad) document.getElementById('padInput').value = shockState.pad;
+    if (shockState.fc) document.getElementById('fcInput').value = shockState.fc;
+    if (shockState.doseNE) {
+        document.getElementById('doseNeInput').value = shockState.doseNE;
+        document.getElementById('doseNeSlider').value = shockState.doseNE;
+    }
+}
+
+function onVasoChange() {
+    var pad = parseFloat(document.getElementById('padInput').value);
+    var fc = parseFloat(document.getElementById('fcInput').value);
+    var dose = parseFloat(document.getElementById('doseNeInput').value);
+
+    shockState.pad = pad || null;
+    shockState.fc = fc || null;
+    shockState.doseNE = dose || null;
+
+    // Sync slider
+    if (dose) document.getElementById('doseNeSlider').value = dose;
+
+    // PAD alert
+    document.getElementById('padAlert').style.display = (pad && pad < 50) ? 'block' : 'none';
+
+    // Calculate VNERi inline
+    calcVneriInline();
+}
+
+function calcVneriInline() {
+    var pad = shockState.pad;
+    var fc = shockState.fc;
+    var dose = shockState.doseNE;
+
+    var result = document.getElementById('vneriInlineResult');
+    var placeholder = document.getElementById('vneriInlinePlaceholder');
+
+    if (!pad || !fc || !dose || dose <= 0 || fc <= 0) {
+        result.style.display = 'none';
+        placeholder.style.display = 'block';
+        shockState.vneri = null;
+        return;
+    }
+
+    var vneri = pad / (dose * fc);
+    shockState.vneri = vneri;
+
+    result.style.display = 'block';
+    placeholder.style.display = 'none';
+
+    var data = getVneriData(vneri);
+    document.getElementById('vneriInlineValue').textContent = fmt(vneri, 1);
+    document.getElementById('vneriInlineValue').style.color = data.color;
+    document.getElementById('vneriInlineLabel').textContent = data.label;
+    document.getElementById('vneriInlineLabel').style.color = data.color;
+    document.getElementById('vneriInlineMort').textContent = data.mort;
+
+    var condEl = document.getElementById('vneriInlineConduta');
+    condEl.style.background = data.bg;
+    condEl.style.borderLeft = '3px solid ' + data.color;
+    condEl.style.color = '#E0E0E0';
+    condEl.innerHTML = data.text;
+
+    // Position indicator
+    var maxBar = 15;
+    var pct = Math.min(100, Math.max(0, (vneri / maxBar) * 100));
+    document.getElementById('vneriInlineIndicator').style.left = 'calc(' + pct + '% - 8px)';
+}
+
+function getVneriData(vneri) {
+    if (vneri < 2.6) {
+        return {
+            color: '#F44336', bg: 'rgba(244,67,54,0.1)',
+            label: 'Hiporresponsividade grave',
+            mort: '~56%',
+            text: 'Considere associar <strong>vasopressina</strong> (0,01-0,04 UI/min) ou <strong>hidrocortisona</strong> (200 mg/dia). Escalar dose de NE isoladamente pode ser insuficiente (Goury et al. 2025).'
+        };
+    } else if (vneri < 6.7) {
+        return {
+            color: '#FFC107', bg: 'rgba(255,193,7,0.1)',
+            label: 'Resposta parcial',
+            mort: '~28-40%',
+            text: 'Titular noradrenalina conforme PAM alvo. Monitorizar tendencia do VNERi. Se VNERi cair apesar de aumento de dose, considere <strong>vasopressina</strong> ou <strong>corticoides</strong> (Goury et al. 2025).'
+        };
+    } else if (vneri <= 10.8) {
+        return {
+            color: '#4CAF50', bg: 'rgba(76,175,80,0.1)',
+            label: 'Resposta adequada',
+            mort: '~28%',
+            text: 'Zona de menor mortalidade (nadir 6,7). Manter conduta atual. Reavaliar se piora clinica (Goury et al. 2025).'
+        };
+    } else {
+        return {
+            color: '#FFC107', bg: 'rgba(255,193,7,0.1)',
+            label: 'Tonus preservado',
+            mort: '~39%',
+            text: 'Mortalidade em ascensao apesar de tonus preservado. Investigar: <strong>hipovolemia</strong>, <strong>disfuncao miocardica</strong>, obstrucao. Considere ecocardiograma a beira-leito (Goury et al. 2025).'
+        };
+    }
+}
+
+function saveStep3() {
+    if (shockState.pad !== null) {
+        var msg = 'Vasopressor: NE ' + fmt(shockState.doseNE, 2) + ' mcg/kg/min, PAD ' + fmt(shockState.pad, 0) + ', FC ' + fmt(shockState.fc, 0);
+        if (shockState.vneri !== null) msg += ', VNERi ' + fmt(shockState.vneri, 1);
+        addIntervention(msg);
+    }
+}
+
+// ==========================================
+// STEP 4 — PERFUSAO
+// ==========================================
+function updateStep4Badges() {
+    document.getElementById('badge-pad4').textContent = shockState.pad ? fmt(shockState.pad, 0) + ' mmHg' : '--';
+    document.getElementById('badge-fc4').textContent = shockState.fc ? fmt(shockState.fc, 0) + ' bpm' : '--';
+    document.getElementById('badge-vneri4').textContent = shockState.vneri ? fmt(shockState.vneri, 1) : '--';
+    document.getElementById('badge-pp4').textContent = shockState.pp ? fmt(shockState.pp, 0) + ' mmHg' : '--';
+}
+
+function toggleEco(id) {
+    var el = document.getElementById(id);
+    el.classList.toggle('checked');
+    if (id === 'ecoVE') shockState.ecoVE = el.classList.contains('checked');
+    if (id === 'ecoVD') shockState.ecoVD = el.classList.contains('checked');
+    if (id === 'ecoOutra') shockState.ecoOutra = el.classList.contains('checked');
+}
+
+function getQuadrante(scvo2, gap) {
+    if (scvo2 < 70 && gap > 6) {
+        return {
+            name: 'Baixo debito cardiaco / estase',
+            color: '#F44336', bg: 'rgba(244,67,54,0.1)',
+            conduct: 'Considere inotropico (dobutamina 5-20 mcg/kg/min). Avaliar ecocardiograma para guiar terapia. Checar volemia (Ltaief et al. Critical Care 2021).',
+            cellId: 'tl'
+        };
+    } else if (scvo2 < 70 && gap <= 6) {
+        return {
+            name: 'Disoxia anemica ou hipoxica',
+            color: '#FFC107', bg: 'rgba(255,193,7,0.1)',
+            conduct: 'Checar hemoglobina (considere transfusao se Hb < 7 g/dL) e SaO2. Otimizar oferta de oxigenio (Ltaief et al. Critical Care 2021).',
+            cellId: 'tr'
+        };
+    } else if (scvo2 >= 70 && gap > 6) {
+        return {
+            name: 'Microcirculacao inadequada',
+            color: '#FFC107', bg: 'rgba(255,193,7,0.1)',
+            conduct: 'Otimizar perfusao periferica. Considere vasodilatadores se PAM adequada. Avaliar microcirculacao (Ltaief et al. Critical Care 2021).',
+            cellId: 'bl'
+        };
+    } else {
+        return {
+            name: 'Hipoxia citopatica',
+            color: '#999999', bg: 'rgba(255,255,255,0.05)',
+            conduct: 'Dano mitocondrial provavel. Suporte clinico. Considere limitacao terapeutica conforme contexto (Ltaief et al. Critical Care 2021).',
+            cellId: 'br'
+        };
+    }
+}
+
+function interpretarQuadrante() {
+    var scvo2 = parseFloat(document.getElementById('scvo2Input').value);
+    var gap = parseFloat(document.getElementById('gapco2Input').value);
+    if (isNaN(scvo2) || isNaN(gap)) return;
+
+    shockState.scvo2 = scvo2;
+    shockState.gapCO2 = gap;
+
+    var q = getQuadrante(scvo2, gap);
+    shockState.quadrante = q;
+
+    document.getElementById('quadranteResult').style.display = 'block';
+    document.getElementById('quadranteTitle').textContent = q.name;
+    document.getElementById('quadranteTitle').style.color = q.color;
+    document.getElementById('quadranteCard').style.background = q.bg;
+    document.getElementById('quadranteCard').style.borderColor = q.color;
+    document.getElementById('quadranteText').textContent = q.conduct;
+
+    // Highlight active cell
+    ['tl','tr','bl','br'].forEach(function(c) {
+        var el = document.getElementById('qc-' + c);
+        el.classList.remove('active');
+        el.style.background = 'transparent';
+    });
+    var active = document.getElementById('qc-' + q.cellId);
+    active.classList.add('active');
+    active.style.background = q.bg;
+}
+
+function setHta(val) {
+    shockState.htaCronica = val === 'sim';
+    document.querySelectorAll('#htaToggle .toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (val === 'sim') {
+        document.querySelectorAll('#htaToggle .toggle-btn')[0].classList.add('active');
+    } else {
+        document.querySelectorAll('#htaToggle .toggle-btn')[1].classList.add('active');
+    }
+    document.getElementById('htaTestSection').style.display = val === 'sim' ? 'block' : 'none';
+}
+
+function setTestePam(val) {
+    shockState.testePAM = val;
+    document.querySelectorAll('#testePamToggle .toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (val === 'sim') {
+        document.querySelectorAll('#testePamToggle .toggle-btn')[0].classList.add('active');
+        addIntervention('Teste PAM 80-85: TEC normalizado');
+    } else {
+        document.querySelectorAll('#testePamToggle .toggle-btn')[1].classList.add('active');
+        addIntervention('Teste PAM 80-85: TEC nao normalizado');
+    }
+}
+
+function setTesteDobu(val) {
+    shockState.testeDobu = val;
+    document.querySelectorAll('#testeDobuToggle .toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (val === 'sim') {
+        document.querySelectorAll('#testeDobuToggle .toggle-btn')[0].classList.add('active');
+        addIntervention('Teste dobutamina 5 mcg/kg/min: TEC normalizado');
+    } else {
+        document.querySelectorAll('#testeDobuToggle .toggle-btn')[1].classList.add('active');
+        addIntervention('Teste dobutamina 5 mcg/kg/min: TEC nao normalizado');
+    }
+}
+
+function toggleCollapsible(id) {
+    var el = document.getElementById(id);
+    el.classList.toggle('open');
+}
+
+function saveStep4() {
+    var msg = 'Perfusao: ';
+    if (shockState.scvo2 !== null) msg += 'ScvO2 ' + fmt(shockState.scvo2, 0) + '%, ';
+    if (shockState.gapCO2 !== null) msg += 'Gap CO2 ' + fmt(shockState.gapCO2, 1) + ' mmHg';
+    if (shockState.quadrante) msg += ' (' + shockState.quadrante.name + ')';
+    addIntervention(msg);
+}
+
+// ==========================================
+// STEP 5 — RESUMO
+// ==========================================
+function gerarPerfil() {
+    var achados = [];
+    var condutas = [];
+    var naoFazer = [];
+    var labels = [];
+
+    // TEC
+    if (shockState.tec !== null) {
+        achados.push({ text: 'TEC: ' + fmt(shockState.tec) + ' segundos', color: shockState.tec > 3 ? '#FF6B6B' : '#66BB6A' });
+    }
+    // Lactato
+    if (shockState.lactato !== null) {
+        achados.push({ text: 'Lactato: ' + fmt(shockState.lactato) + ' mmol/L', color: shockState.lactato >= 4 ? '#FF6B6B' : shockState.lactato >= 2 ? '#FFD740' : '#66BB6A' });
+    }
+    // PP
+    if (shockState.pp !== null) {
+        achados.push({ text: 'Pressao de pulso: ' + fmt(shockState.pp, 0) + ' mmHg', color: shockState.pp < 40 ? '#FFD740' : '#66BB6A' });
+    }
+    // Fluid
+    if (shockState.bolusTotal > 0) {
+        achados.push({ text: 'Fluidos administrados: ' + shockState.bolusTotal + ' mL', color: 'var(--text-secondary)' });
+    }
+    if (shockState.fluidResp !== null) {
+        achados.push({ text: 'Responsivo a fluidos: ' + (shockState.fluidResp === 'sim' ? 'Sim' : 'Nao'), color: 'var(--text-secondary)' });
+    }
+    // PAD
+    if (shockState.pad !== null) {
+        achados.push({ text: 'PAD: ' + fmt(shockState.pad, 0) + ' mmHg', color: shockState.pad < 50 ? '#FFD740' : '#66BB6A' });
+        if (shockState.pad < 50) labels.push('vasoplegico');
+    }
+    // VNERi
+    if (shockState.vneri !== null) {
+        var vdata = getVneriData(shockState.vneri);
+        achados.push({ text: 'VNERi: ' + fmt(shockState.vneri, 1) + ' (' + vdata.label + ')', color: vdata.color });
+        if (shockState.vneri < 2.6) labels.push('vasoplegico');
+    }
+    // Eco
+    if (shockState.ecoVE) {
+        achados.push({ text: 'Ecocardiograma: VE hipocinetico', color: '#FF6B6B' });
+        labels.push('cardiogenico');
+    }
+    if (shockState.ecoVD) {
+        achados.push({ text: 'Ecocardiograma: VD dilatado', color: '#FFD740' });
+        labels.push('obstrutivo');
+    }
+    // ScvO2 / Gap
+    if (shockState.scvo2 !== null) {
+        achados.push({ text: 'ScvO2: ' + fmt(shockState.scvo2, 0) + '%', color: shockState.scvo2 < 70 ? '#FFD740' : '#66BB6A' });
+    }
+    if (shockState.gapCO2 !== null) {
+        achados.push({ text: 'Gap CO2: ' + fmt(shockState.gapCO2, 1) + ' mmHg', color: shockState.gapCO2 > 6 ? '#FFD740' : '#66BB6A' });
+    }
+    if (shockState.quadrante) {
+        achados.push({ text: 'Quadrante: ' + shockState.quadrante.name, color: shockState.quadrante.color });
+    }
+
+    // Generate condutas
+    if (shockState.tec > 3) {
+        condutas.push('Reavaliar TEC a cada 1 hora por 6 horas');
+    }
+    if (shockState.pad !== null && shockState.pad < 50) {
+        condutas.push('Titular noradrenalina para PAD >= 50 mmHg (Bertrand et al. 2025)');
+    }
+    if (shockState.vneri !== null && shockState.vneri < 2.6) {
+        condutas.push('Considere vasopressina 0,01-0,04 UI/min ou hidrocortisona 200 mg/dia (Goury et al. 2025)');
+    }
+    if (shockState.ecoVE) {
+        condutas.push('Considere dobutamina 5-20 mcg/kg/min para disfuncao de VE');
+    }
+    if (shockState.quadrante && shockState.quadrante.cellId === 'tl') {
+        condutas.push('Considere inotropico para baixo debito cardiaco (Ltaief et al. 2021)');
+    }
+    if (shockState.quadrante && shockState.quadrante.cellId === 'tr') {
+        condutas.push('Checar hemoglobina e SaO2. Considere transfusao se Hb < 7 g/dL');
+    }
+    if (shockState.htaCronica && shockState.testePAM === null) {
+        condutas.push('Considere teste de PAM 80-85 mmHg por 1 hora (hipertenso cronico)');
+    }
+    if (shockState.testePAM === 'sim') {
+        condutas.push('Manter PAM alvo 80-85 mmHg (teste positivo)');
+    }
+    if (shockState.testeDobu === 'sim') {
+        condutas.push('Manter dobutamina (teste positivo)');
+    }
+    if (condutas.length === 0) {
+        condutas.push('Monitorizacao clinica. Reavaliar TEC a cada 1 hora.');
+    }
+
+    // Nao fazer
+    naoFazer.push('Evitar fluidos liberais sem avaliacao de responsividade (Hernandez et al. 2025)');
+    if (shockState.fluidResp === 'nao') {
+        naoFazer.push('Nao administrar mais fluidos em paciente nao responsivo a volume');
+    }
+    if (shockState.vneri !== null && shockState.vneri < 2.6) {
+        naoFazer.push('Nao escalar NE isoladamente em hiporresponsividade grave (Goury et al. 2025)');
+    }
+
+    // Profile label
+    var uniqueLabels = labels.filter(function(v, i, a) { return a.indexOf(v) === i; });
+    var profileLabel = 'Choque septico';
+    if (uniqueLabels.length > 1) {
+        profileLabel = 'Choque misto — ' + uniqueLabels.join(' + ');
+    } else if (uniqueLabels.length === 1) {
+        profileLabel = 'Choque septico — componente ' + uniqueLabels[0];
+    }
+
+    return { label: profileLabel, achados: achados, condutas: condutas, naoFazer: naoFazer };
+}
+
+function renderStep5() {
+    var perfil = gerarPerfil();
+
+    // Profile card
+    document.getElementById('perfilTitle').textContent = perfil.label;
+
+    // Achados
+    var achadosHtml = '';
+    perfil.achados.forEach(function(a) {
+        achadosHtml += '<div class="summary-item"><div class="si-dot" style="background:' + a.color + '"></div><div>' + a.text + '</div></div>';
+    });
+    document.getElementById('achadosList').innerHTML = achadosHtml || '<div style="color:var(--text-muted);font-size:13px">Nenhum dado registrado</div>';
+
+    // Condutas
+    var condutasHtml = '';
+    perfil.condutas.forEach(function(c) {
+        condutasHtml += '<div class="summary-item"><div>' + c + '</div></div>';
+    });
+    document.getElementById('condutasList').innerHTML = condutasHtml;
+
+    // Nao fazer
+    if (perfil.naoFazer.length > 0) {
+        document.getElementById('naoFazerSection').style.display = 'block';
+        var nfHtml = '';
+        perfil.naoFazer.forEach(function(n) {
+            nfHtml += '<div style="margin-bottom:4px;font-size:13px">' + n + '</div>';
+        });
+        document.getElementById('naoFazerList').innerHTML = nfHtml;
+    }
+
+    // Timeline
+    renderTimeline();
+
+    // TEC history
+    renderTecHistory('tecHistoryStep5');
+}
+
+// ==========================================
+// TIMELINE & TEC HISTORY
+// ==========================================
+function addIntervention(action) {
+    shockState.interventions.push({ time: now(), text: action });
+}
+
+function renderTimeline() {
+    var el = document.getElementById('timelineList');
+    if (shockState.interventions.length === 0) {
+        el.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:8px">Nenhuma intervencao registrada</div>';
+        return;
+    }
+    var html = '';
+    shockState.interventions.forEach(function(item) {
+        html += '<div class="timeline-item"><div class="ti-time">' + item.time + '</div><div class="ti-text">' + item.text + '</div></div>';
+    });
+    el.innerHTML = html;
+}
+
+function addTecReeval(value) {
+    shockState.tecHistory.push({ time: now(), value: value });
+}
+
+function renderTecHistory(containerId) {
+    var el = document.getElementById(containerId);
+    if (!el) return;
+    if (shockState.tecHistory.length === 0) {
+        el.innerHTML = '';
+        return;
+    }
+    var html = '';
+    shockState.tecHistory.forEach(function(entry) {
+        var color = entry.value <= 3 ? 'green' : entry.value <= 4.5 ? 'yellow' : 'red';
+        html += '<div class="tec-entry"><div class="tec-dot ' + color + '"></div><div style="color:var(--text-secondary)">' + entry.time + ' — ' + fmt(entry.value, 1) + 's</div></div>';
+    });
+    el.innerHTML = html;
+}
+
+function salvarTecReavalStep5() {
+    var v = parseFloat(document.getElementById('tecReavalStep5').value);
+    if (!v || v < 0) return;
+    addTecReeval(v);
+    shockState.tec = v;
+    document.getElementById('tecReavalStep5').value = '';
+    addIntervention('Reavaliacao TEC: ' + fmt(v, 1) + 's');
+    renderTecHistory('tecHistoryStep5');
+    renderTimeline();
+}
+
+// ==========================================
+// VNERi STANDALONE
+// ==========================================
+function calcVneriStandalone() {
+    var pad = parseFloat(document.getElementById('vneriPadS').value);
+    var fc = parseFloat(document.getElementById('vneriFcS').value);
+    var dose = parseFloat(document.getElementById('vneriDoseS').value);
+
+    var result = document.getElementById('vneriStandaloneResult');
+    var placeholder = document.getElementById('vneriPlaceholderS');
+
+    if (!pad || !fc || !dose || dose <= 0 || fc <= 0) {
+        result.style.display = 'none';
+        placeholder.style.display = 'block';
+        return;
+    }
+
+    var vneri = pad / (dose * fc);
+
+    result.style.display = 'block';
+    placeholder.style.display = 'none';
+
+    var data = getVneriData(vneri);
+
+    document.getElementById('vneriValueS').textContent = fmt(vneri, 1);
+    document.getElementById('vneriValueS').style.color = data.color;
+    document.getElementById('vneriLabelS').textContent = data.label;
+    document.getElementById('vneriLabelS').style.color = data.color;
+    document.getElementById('vneriMortS').textContent = data.mort;
+
+    var condEl = document.getElementById('vneriCondutaS');
+    condEl.style.background = data.bg;
+    condEl.style.borderLeft = '3px solid ' + data.color;
+    condEl.style.color = '#E0E0E0';
+    condEl.innerHTML = data.text;
+
+    var maxBar = 15;
+    var pct = Math.min(100, Math.max(0, (vneri / maxBar) * 100));
+    document.getElementById('vneriIndicatorS').style.left = 'calc(' + pct + '% - 8px)';
+}
+
+// ==========================================
+// GAP CO2 STANDALONE
+// ==========================================
+function interpretarQuadranteStandalone() {
+    var scvo2 = parseFloat(document.getElementById('scvo2InputS').value);
+    var gap = parseFloat(document.getElementById('gapco2InputS').value);
+    if (isNaN(scvo2) || isNaN(gap)) return;
+
+    var q = getQuadrante(scvo2, gap);
+
+    document.getElementById('quadResultS').style.display = 'block';
+    document.getElementById('quadTitleS').textContent = q.name;
+    document.getElementById('quadTitleS').style.color = q.color;
+    document.getElementById('quadCardS').style.background = q.bg;
+    document.getElementById('quadCardS').style.borderColor = q.color;
+    document.getElementById('quadTextS').textContent = q.conduct;
+
+    // Highlight active cell
+    ['tl','tr','bl','br'].forEach(function(c) {
+        var el = document.getElementById('qcS-' + c);
+        el.classList.remove('active');
+        el.style.background = 'transparent';
+        el.style.borderWidth = '1px';
+    });
+    var active = document.getElementById('qcS-' + q.cellId);
+    active.classList.add('active');
+    active.style.background = q.bg;
+    active.style.borderWidth = '2px';
+}
+
+// ==========================================
+// RESET
+// ==========================================
+function resetShock() {
+    shockState = {
+        tec: null, lactato: null, lactatoUnit: 'mmol',
+        pp: null, fluidResp: null, fluidMethod: null, bolusTotal: 0,
+        pad: null, fc: null, doseNE: null, vneri: null, peso: null,
+        ecoVE: false, ecoVD: false, ecoOutra: false,
+        scvo2: null, gapCO2: null, quadrante: null,
+        htaCronica: null, testePAM: null, testeDobu: null,
+        tecHistory: [], interventions: []
+    };
+
+    // Reset step 1
+    document.getElementById('shockPeso').value = '';
+    document.getElementById('lactatoInput').value = '';
+    document.getElementById('lactatoConversion').style.display = 'none';
+    document.getElementById('tecInput').value = '';
+    document.getElementById('tecResultNormal').style.display = 'none';
+    document.getElementById('tecResultAnormal').style.display = 'none';
+    document.getElementById('tecReavalSection').style.display = 'none';
+    document.getElementById('tecReavalHistory').innerHTML = '';
+    setLactatoUnit('mmol');
+    document.querySelectorAll('#tecToggle .toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.criteria-item').forEach(function(c) { c.classList.remove('checked'); });
+
+    // Reset step 2
+    document.getElementById('ppInput').value = '';
+    document.getElementById('pasInput').value = '';
+    document.getElementById('padCalcInput').value = '';
+    document.getElementById('ppCalcResult').textContent = '';
+    hidePpResults();
+    setPpMode('direto');
+    document.getElementById('bolusTotalDisplay').textContent = '0 mL';
+    document.getElementById('bolusAddBtn').disabled = false;
+    document.getElementById('bolusAddBtn').style.opacity = '1';
+    document.getElementById('bolusAddBtn').textContent = '+ 500 mL';
+
+    // Reset step 3
+    document.getElementById('padInput').value = '';
+    document.getElementById('fcInput').value = '';
+    document.getElementById('doseNeInput').value = '';
+    document.getElementById('doseNeSlider').value = '0.10';
+    document.getElementById('vneriInlineResult').style.display = 'none';
+    document.getElementById('vneriInlinePlaceholder').style.display = 'block';
+    document.getElementById('padAlert').style.display = 'none';
+
+    // Reset step 4
+    document.getElementById('scvo2Input').value = '';
+    document.getElementById('gapco2Input').value = '';
+    document.getElementById('quadranteResult').style.display = 'none';
+    document.querySelectorAll('#screen-step4 .criteria-item').forEach(function(c) { c.classList.remove('checked'); });
+    document.getElementById('htaTestSection').style.display = 'none';
+    document.querySelectorAll('#htaToggle .toggle-btn, #testePamToggle .toggle-btn, #testeDobuToggle .toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    if (document.getElementById('testesAdicionais').classList.contains('open')) {
+        document.getElementById('testesAdicionais').classList.remove('open');
+    }
+
+    goTo('home');
+}
+
+// ==========================================
+// DEEP LINK HANDLER
+// ==========================================
+function handleDeepLink(target) {
+    if (target && screens[target]) {
+        goTo(target);
+    }
+}
+<\/script>
+</body>
+</html>`
         };
 
         function loadApp(name, target) {
