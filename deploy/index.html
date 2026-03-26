@@ -4384,10 +4384,9 @@
         .peso-gate-recover { width: 100%; padding: 12px; background: #1A1A1A; border: 1px solid #333; border-radius: 8px; color: #888; font-size: 14px; cursor: pointer; margin-bottom: 8px; }
         .peso-gate-recover:active { background: #252525; }
         .peso-gate-range { text-align: center; font-size: 12px; color: #555; margin: 8px 0 16px; }
-        .peso-gate-btn { width: 100%; padding: 14px; background: #FF5252; border: none; border-radius: 10px; color: #FFF; font-size: 16px; font-weight: 600; cursor: pointer; opacity: 0.4; transition: opacity 0.2s; }
-        .peso-gate-btn:not([disabled]) { opacity: 1; }
-        .peso-gate-btn:not([disabled]):active { background: #D32F2F; }
-        .peso-gate-btn[disabled] { cursor: not-allowed; }
+        .peso-gate-btn { width: 100%; padding: 14px; background: #FF5252; border: none; border-radius: 10px; color: #FFF; font-size: 16px; font-weight: 600; cursor: pointer; opacity: 1; transition: opacity 0.2s; min-height: 48px; }
+        .peso-gate-btn.inactive { opacity: 0.4; }
+        .peso-gate-btn:active:not(.inactive) { background: #D32F2F; }
         #mainContent { display: none; }
         #mainContent.visible { display: block; }
         .peso-card-sticky { position: sticky; top: 54px; z-index: 90; background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
@@ -4418,7 +4417,7 @@
                 </div>
                 <button class="peso-gate-recover" id="pesoGateRecover" onclick="recoverLastWeight()" style="display:none">Recuperar último peso</button>
                 <div class="peso-gate-range">Adultos: 40-200 kg</div>
-                <button class="peso-gate-btn" id="pesoGateBtn" onclick="confirmWeight()" disabled>Confirmar peso</button>
+                <button class="peso-gate-btn inactive" id="pesoGateBtn" onclick="confirmWeight()">Confirmar peso</button>
             </div>
         </div>
 
@@ -5033,21 +5032,29 @@
             var gateInput = document.getElementById('pesoGateInput');
             var gateBtn = document.getElementById('pesoGateBtn');
 
-            gateInput.addEventListener('input', function() {
-                var p = parseFloat(this.value);
+            function validarPesoGate() {
+                var p = parseFloat(gateInput.value);
                 var valid = p && p >= 40 && p <= 200;
-                gateBtn.disabled = !valid;
-                if (p && !valid) {
-                    this.style.borderColor = '#F44336';
-                } else if (valid) {
-                    this.style.borderColor = '#4CAF50';
+                if (valid) {
+                    gateBtn.classList.remove('inactive');
                 } else {
-                    this.style.borderColor = '#333';
+                    gateBtn.classList.add('inactive');
                 }
+                if (p && !valid) {
+                    gateInput.style.borderColor = '#F44336';
+                } else if (valid) {
+                    gateInput.style.borderColor = '#4CAF50';
+                } else {
+                    gateInput.style.borderColor = '#333';
+                }
+            }
+
+            ['input', 'change', 'keyup', 'paste'].forEach(function(evt) {
+                gateInput.addEventListener(evt, validarPesoGate);
             });
 
             gateInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' && !gateBtn.disabled) confirmWeight();
+                if (e.key === 'Enter') confirmWeight();
             });
 
             var lastWeight = localStorage.getItem('anyapp-peso');
