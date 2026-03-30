@@ -29603,7 +29603,10 @@ function handleDeepLink(target) {
             }
         }
 
+        var _authenticated = false;
+
         function loadApp(name, target) {
+            if (!_authenticated) return; // guarda: não carrega nada sem sessão ativa
             var html = apps[name].replace(/__LOGO__/g, LOGO_BASE64);
             var frame = document.getElementById('appFrame');
             var doc = frame.contentDocument || frame.contentWindow.document;
@@ -29639,18 +29642,28 @@ function handleDeepLink(target) {
             var sbOk = initSupabase();
 
             if (!sbOk) {
-                // Supabase not loaded (CDN fail) — proceed without auth
-                loadApp('hub');
-                fadeSplashAndShow();
+                // Supabase CDN falhou — mostrar erro, nunca bypassar auth
+                setTimeout(function() {
+                    var credits = document.getElementById('splashCredits');
+                    if (credits) credits.style.opacity = '0';
+                    var login = document.getElementById('splashLogin');
+                    if (login) {
+                        setTimeout(function() {
+                            login.innerHTML = '<div style="text-align:center;color:#A0A0A0;font-size:14px;padding:0 24px;">Falha ao conectar. Verifique sua conexão e recarregue a página.</div>';
+                            login.classList.add('visible');
+                        }, 400);
+                    }
+                }, 3000);
                 return;
             }
 
             // Listen for auth callback (redirect from Google)
             _sb.auth.onAuthStateChange(function(event, session) {
                 if (event === 'SIGNED_IN' && session) {
+                    _authenticated = true;
                     loadApp('hub');
                     logPageview('hub', 'login');
-                    hideLoginScreen(); // fades out splash (which contains login)
+                    hideLoginScreen();
                     var frame = document.getElementById('appFrame');
                     if (frame) frame.classList.add('visible');
                 }
@@ -29658,12 +29671,13 @@ function handleDeepLink(target) {
 
             var session = await checkAuth();
             if (session) {
-                // Authenticated — load app after splash
+                // Sessão ativa — abrir app após splash
+                _authenticated = true;
                 loadApp('hub');
                 logPageview('hub', 'session_resume');
                 fadeSplashAndShow();
             } else {
-                // Not authenticated — evolve splash into login screen
+                // Sem sessão — mostrar tela de login dentro do splash
                 setTimeout(function() {
                     showLoginScreen();
                 }, 3000);
