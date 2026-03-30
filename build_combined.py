@@ -312,51 +312,49 @@ combined = '''<!DOCTYPE html>
             opacity: 1;
         }
 
-        /* ── Login Screen ── */
-        #loginScreen {
-            position: fixed;
-            inset: 0;
-            z-index: 9500;
-            background: #000;
-            display: none;
+        /* ── Login Elements (inside splash) ── */
+        #splashLogin {
+            display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 32px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            pointer-events: none;
         }
-        #loginScreen.visible { display: flex; }
-        #loginScreen img { max-width: 180px; width: 45%; border-radius: 18px; }
-        #loginScreen .login-subtitle { color: #A0A0A0; font-size: 14px; text-align: center; max-width: 280px; line-height: 1.5; }
-        #loginScreen .login-btn {
+        #splashLogin.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        #splashLogin .login-subtitle { color: #A0A0A0; font-size: 13px; text-align: center; max-width: 260px; line-height: 1.5; }
+        #splashLogin .login-btn {
             display: flex; align-items: center; gap: 12px;
             background: #FFF; color: #333; border: none; border-radius: 12px;
             padding: 14px 28px; font-size: 15px; font-weight: 600;
             cursor: pointer; min-height: 48px; transition: transform 0.15s;
         }
-        #loginScreen .login-btn:active { transform: scale(0.97); }
-        #loginScreen .login-btn svg { width: 20px; height: 20px; }
-        #loginScreen .login-disclaimer { color: #555; font-size: 11px; text-align: center; max-width: 260px; }
+        #splashLogin .login-btn:active { transform: scale(0.97); }
+        #splashLogin .login-btn svg { width: 20px; height: 20px; }
+        #splashLogin .login-disclaimer { color: #444; font-size: 11px; text-align: center; max-width: 240px; line-height: 1.4; }
     </style>
 </head>
 <body>
-    <!-- Splash Screen (square logo, border cropped) -->
+    <!-- Splash Screen (evolves into login if needed) -->
     <div id="splash">
         <div id="splashLogo">
             <img src="''' + splash_logo_b64 + '''" alt="ANY App — Medicina de Emergência">
         </div>
         <div id="splashCredits">Gustavo Moreira &bull; Gabriela Feltrin &bull; Jo&atilde;o Pedro Moreira</div>
-    </div>
-
-    <!-- Login Screen -->
-    <div id="loginScreen">
-        <img src="''' + splash_logo_b64 + '''" alt="ANY App">
-        <div class="login-subtitle">Plataforma de apoio &agrave; decis&atilde;o cl&iacute;nica para medicina de emerg&ecirc;ncia</div>
-        <button class="login-btn" onclick="loginWithGoogle()">
-            <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-            Entrar com Google
-        </button>
-        <div class="login-disclaimer">Nenhum dado de paciente &eacute; armazenado. Apenas registro de acesso para melhoria da plataforma.</div>
+        <div id="splashLogin">
+            <div class="login-subtitle">Plataforma de apoio &agrave; decis&atilde;o cl&iacute;nica</div>
+            <button class="login-btn" onclick="loginWithGoogle()">
+                <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Entrar com Google
+            </button>
+            <div class="login-disclaimer">Nenhum dado de paciente &eacute; armazenado.</div>
+        </div>
     </div>
 
     <!-- Persistent Metronome Banner -->
@@ -557,13 +555,19 @@ combined = '''<!DOCTYPE html>
         }
 
         function showLoginScreen() {
-            var ls = document.getElementById('loginScreen');
-            if (ls) ls.classList.add('visible');
+            // Fade out credits, fade in login elements inside splash
+            var credits = document.getElementById('splashCredits');
+            if (credits) { credits.style.opacity = '0'; credits.style.transition = 'opacity 0.5s ease'; }
+            var login = document.getElementById('splashLogin');
+            if (login) setTimeout(function() { login.classList.add('visible'); }, 400);
         }
 
         function hideLoginScreen() {
-            var ls = document.getElementById('loginScreen');
-            if (ls) ls.classList.remove('visible');
+            var splash = document.getElementById('splash');
+            if (splash) {
+                splash.classList.add('fade-out');
+                setTimeout(function() { splash.remove(); }, 900);
+            }
         }
 
         function loadApp(name, target) {
@@ -611,9 +615,9 @@ combined = '''<!DOCTYPE html>
             // Listen for auth callback (redirect from Google)
             _sb.auth.onAuthStateChange(function(event, session) {
                 if (event === 'SIGNED_IN' && session) {
-                    hideLoginScreen();
                     loadApp('hub');
                     logPageview('hub', 'login');
+                    hideLoginScreen(); // fades out splash (which contains login)
                     var frame = document.getElementById('appFrame');
                     if (frame) frame.classList.add('visible');
                 }
@@ -626,13 +630,8 @@ combined = '''<!DOCTYPE html>
                 logPageview('hub', 'session_resume');
                 fadeSplashAndShow();
             } else {
-                // Not authenticated — show login after splash fades
+                // Not authenticated — evolve splash into login screen
                 setTimeout(function() {
-                    var splash = document.getElementById('splash');
-                    if (splash) {
-                        splash.classList.add('fade-out');
-                        setTimeout(function() { splash.remove(); }, 900);
-                    }
                     showLoginScreen();
                 }, 3000);
             }
