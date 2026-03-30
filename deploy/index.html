@@ -29619,50 +29619,56 @@ function handleDeepLink(target) {
         }
 
         // ===== BOOT SEQUENCE =====
-        async function boot() {
-            var sbOk = initSupabase();
-
-            if (sbOk) {
-                var session = await checkAuth();
-                if (session) {
-                    // Authenticated — load app
-                    hideLoginScreen();
-                    loadApp('hub');
-                    logPageview('hub', 'session_start');
-                } else {
-                    // Not authenticated — show login after splash
-                    setTimeout(function() {
-                        var splash = document.getElementById('splash');
-                        if (splash) { splash.classList.add('fade-out'); setTimeout(function(){ splash.remove(); }, 900); }
-                        showLoginScreen();
-                    }, 3000);
-                    // Listen for auth callback (redirect from Google)
-                    _sb.auth.onAuthStateChange(function(event, session) {
-                        if (event === 'SIGNED_IN' && session) {
-                            hideLoginScreen();
-                            loadApp('hub');
-                            logPageview('hub', 'first_login');
-                            var frame = document.getElementById('appFrame');
-                            frame.classList.add('visible');
-                        }
-                    });
-                    return; // Don't auto-load hub
-                }
-            } else {
-                // Supabase not loaded (CDN fail) — proceed without auth
-                loadApp('hub');
-            }
-
-            // Normal splash → app transition
+        function fadeSplashAndShow() {
             setTimeout(function() {
                 var splash = document.getElementById('splash');
                 var frame = document.getElementById('appFrame');
                 if (splash) {
                     splash.classList.add('fade-out');
-                    frame.classList.add('visible');
+                    if (frame) frame.classList.add('visible');
                     setTimeout(function() { splash.remove(); }, 900);
                 }
             }, 3000);
+        }
+
+        async function boot() {
+            var sbOk = initSupabase();
+
+            if (!sbOk) {
+                // Supabase not loaded (CDN fail) — proceed without auth
+                loadApp('hub');
+                fadeSplashAndShow();
+                return;
+            }
+
+            // Listen for auth callback (redirect from Google)
+            _sb.auth.onAuthStateChange(function(event, session) {
+                if (event === 'SIGNED_IN' && session) {
+                    hideLoginScreen();
+                    loadApp('hub');
+                    logPageview('hub', 'login');
+                    var frame = document.getElementById('appFrame');
+                    if (frame) frame.classList.add('visible');
+                }
+            });
+
+            var session = await checkAuth();
+            if (session) {
+                // Authenticated — load app after splash
+                loadApp('hub');
+                logPageview('hub', 'session_resume');
+                fadeSplashAndShow();
+            } else {
+                // Not authenticated — show login after splash fades
+                setTimeout(function() {
+                    var splash = document.getElementById('splash');
+                    if (splash) {
+                        splash.classList.add('fade-out');
+                        setTimeout(function() { splash.remove(); }, 900);
+                    }
+                    showLoginScreen();
+                }, 3000);
+            }
         }
 
         boot();
