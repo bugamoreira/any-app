@@ -531,7 +531,7 @@ combined = '''<!DOCTYPE html>
             if (!_sb) return;
             await _sb.auth.signInWithOAuth({
                 provider: 'google',
-                options: { redirectTo: window.location.origin + window.location.pathname }
+                options: { redirectTo: 'https://anyapp.netlify.app' }
             });
         }
 
