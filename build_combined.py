@@ -241,6 +241,7 @@ combined = '''<!DOCTYPE html>
     <meta name="description" content="ANY App — Ferramentas de apoio à decisão clínica para medicina de emergência">
     <meta property="og:title" content="ANY App — Medicina de Emergência">
     <meta property="og:description" content="Ferramentas de apoio à decisão clínica para medicina de emergência">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
@@ -310,6 +311,32 @@ combined = '''<!DOCTYPE html>
         #appFrame.visible {
             opacity: 1;
         }
+
+        /* ── Login Screen ── */
+        #loginScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9500;
+            background: #000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        #loginScreen.visible { display: flex; }
+        #loginScreen img { max-width: 180px; width: 45%; border-radius: 18px; }
+        #loginScreen .login-subtitle { color: #A0A0A0; font-size: 14px; text-align: center; max-width: 280px; line-height: 1.5; }
+        #loginScreen .login-btn {
+            display: flex; align-items: center; gap: 12px;
+            background: #FFF; color: #333; border: none; border-radius: 12px;
+            padding: 14px 28px; font-size: 15px; font-weight: 600;
+            cursor: pointer; min-height: 48px; transition: transform 0.15s;
+        }
+        #loginScreen .login-btn:active { transform: scale(0.97); }
+        #loginScreen .login-btn svg { width: 20px; height: 20px; }
+        #loginScreen .login-disclaimer { color: #555; font-size: 11px; text-align: center; max-width: 260px; }
     </style>
 </head>
 <body>
@@ -319,6 +346,17 @@ combined = '''<!DOCTYPE html>
             <img src="''' + splash_logo_b64 + '''" alt="ANY App — Medicina de Emergência">
         </div>
         <div id="splashCredits">Gustavo Moreira &bull; Gabriela Feltrin &bull; Jo&atilde;o Pedro Moreira</div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <img src="''' + splash_logo_b64 + '''" alt="ANY App">
+        <div class="login-subtitle">Plataforma de apoio &agrave; decis&atilde;o cl&iacute;nica para medicina de emerg&ecirc;ncia</div>
+        <button class="login-btn" onclick="loginWithGoogle()">
+            <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Entrar com Google
+        </button>
+        <div class="login-disclaimer">Nenhum dado de paciente &eacute; armazenado. Apenas registro de acesso para melhoria da plataforma.</div>
     </div>
 
     <!-- Persistent Metronome Banner -->
@@ -469,6 +507,65 @@ combined = '''<!DOCTYPE html>
             shock: `''' + shock_escaped + '''`
         };
 
+        // ===== SUPABASE AUTH + ANALYTICS =====
+        var SUPABASE_URL = 'https://meatbfomblpicftrzcsy.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lYXRiZm9tYmxwaWNmdHJ6Y3N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4ODE3MDAsImV4cCI6MjA5MDQ1NzcwMH0.QU5AuqMOp-V5QZWdLzfPME1ppBFLJRaB2qgjcivaEoI';
+        var _sb = null;
+        var _authReady = false;
+
+        function initSupabase() {
+            if (typeof supabase !== 'undefined' && supabase.createClient) {
+                _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                return true;
+            }
+            return false;
+        }
+
+        async function checkAuth() {
+            if (!_sb) return null;
+            try {
+                var result = await _sb.auth.getSession();
+                return result.data.session;
+            } catch(e) { return null; }
+        }
+
+        async function loginWithGoogle() {
+            if (!_sb) return;
+            await _sb.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: window.location.origin + window.location.pathname }
+            });
+        }
+
+        async function logPageview(tool, action, metadata) {
+            if (!_sb) return;
+            try {
+                var result = await _sb.auth.getUser();
+                var user = result.data.user;
+                if (!user) return;
+                _sb.from('pageviews').insert({
+                    user_id: user.id,
+                    tool: tool,
+                    action: action || 'open',
+                    metadata: metadata || null,
+                    device: window.innerWidth < 768 ? 'mobile' : 'desktop'
+                }).then(function(){});
+                // Update last_seen
+                _sb.from('profiles').update({ last_seen_at: new Date().toISOString() })
+                    .eq('id', user.id).then(function(){});
+            } catch(e) {}
+        }
+
+        function showLoginScreen() {
+            var ls = document.getElementById('loginScreen');
+            if (ls) ls.classList.add('visible');
+        }
+
+        function hideLoginScreen() {
+            var ls = document.getElementById('loginScreen');
+            if (ls) ls.classList.remove('visible');
+        }
+
         function loadApp(name, target) {
             var html = apps[name].replace(/__LOGO__/g, LOGO_BASE64);
             var frame = document.getElementById('appFrame');
@@ -484,21 +581,58 @@ combined = '''<!DOCTYPE html>
                     }
                 }, 400);
             }
+            // Track navigation
+            logPageview(name, 'open');
         }
 
-        // Load hub behind the splash
-        loadApp('hub');
+        // ===== BOOT SEQUENCE =====
+        async function boot() {
+            var sbOk = initSupabase();
 
-        // After logo animation (~3s), fade out splash and reveal app
-        setTimeout(function() {
-            var splash = document.getElementById('splash');
-            var frame = document.getElementById('appFrame');
-            splash.classList.add('fade-out');
-            frame.classList.add('visible');
+            if (sbOk) {
+                var session = await checkAuth();
+                if (session) {
+                    // Authenticated — load app
+                    hideLoginScreen();
+                    loadApp('hub');
+                    logPageview('hub', 'session_start');
+                } else {
+                    // Not authenticated — show login after splash
+                    setTimeout(function() {
+                        var splash = document.getElementById('splash');
+                        if (splash) { splash.classList.add('fade-out'); setTimeout(function(){ splash.remove(); }, 900); }
+                        showLoginScreen();
+                    }, 3000);
+                    // Listen for auth callback (redirect from Google)
+                    _sb.auth.onAuthStateChange(function(event, session) {
+                        if (event === 'SIGNED_IN' && session) {
+                            hideLoginScreen();
+                            loadApp('hub');
+                            logPageview('hub', 'first_login');
+                            var frame = document.getElementById('appFrame');
+                            frame.classList.add('visible');
+                        }
+                    });
+                    return; // Don't auto-load hub
+                }
+            } else {
+                // Supabase not loaded (CDN fail) — proceed without auth
+                loadApp('hub');
+            }
+
+            // Normal splash → app transition
             setTimeout(function() {
-                splash.remove();
-            }, 900);
-        }, 3000);
+                var splash = document.getElementById('splash');
+                var frame = document.getElementById('appFrame');
+                if (splash) {
+                    splash.classList.add('fade-out');
+                    frame.classList.add('visible');
+                    setTimeout(function() { splash.remove(); }, 900);
+                }
+            }, 3000);
+        }
+
+        boot();
     </script>
 </body>
 </html>'''
