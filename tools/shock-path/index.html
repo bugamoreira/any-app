@@ -75,7 +75,7 @@ a{color:var(--info);text-decoration:none}
 .btn+.btn{margin-top:8px}
 .btn-group{display:flex;gap:8px;margin-top:8px}
 .btn-group .btn{flex:1}
-.btn-sm{padding:10px;font-size:13px;min-height:38px}
+.btn-sm{padding:10px;font-size:13px;min-height:44px}
 
 /* ALERTS */
 .alert{padding:12px 16px;border-radius:var(--radius-sm);margin-bottom:12px;font-size:13px;line-height:1.5}
@@ -186,7 +186,7 @@ a{color:var(--info);text-decoration:none}
 
 /* DEEP LINK BUTTONS */
 .deep-links{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.deep-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:20px;font-size:12px;font-weight:500;color:var(--info);cursor:pointer;min-height:38px}
+.deep-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:20px;font-size:12px;font-weight:500;color:var(--info);cursor:pointer;min-height:44px}
 .deep-link:active{background:var(--bg-hover)}
 
 /* SECTION TITLE */
@@ -455,10 +455,10 @@ a{color:var(--info);text-decoration:none}
 
         <div class="section-title" style="font-size:14px">Método de avaliação de responsividade</div>
         <div class="toggle-group" id="fluidMethodToggle" style="flex-wrap:wrap">
-            <button class="toggle-btn" onclick="setFluidMethod('leg')" style="flex:1 0 45%">Elevação de MMII</button>
-            <button class="toggle-btn" onclick="setFluidMethod('deltapp')" style="flex:1 0 45%">Delta PP</button>
-            <button class="toggle-btn" onclick="setFluidMethod('pocus')" style="flex:1 0 45%">POCUS</button>
-            <button class="toggle-btn" onclick="setFluidMethod('challenge')" style="flex:1 0 45%">Fluid challenge</button>
+            <button class="toggle-btn" onclick="setFluidMethod('leg', this)" style="flex:1 0 45%">Elevação de MMII</button>
+            <button class="toggle-btn" onclick="setFluidMethod('deltapp', this)" style="flex:1 0 45%">Delta PP</button>
+            <button class="toggle-btn" onclick="setFluidMethod('pocus', this)" style="flex:1 0 45%">POCUS</button>
+            <button class="toggle-btn" onclick="setFluidMethod('challenge', this)" style="flex:1 0 45%">Fluid challenge</button>
         </div>
 
         <!-- Method info collapsibles -->
@@ -669,7 +669,7 @@ a{color:var(--info);text-decoration:none}
 
     <!-- Eco -->
     <div class="section-title">Ecocardiograma à beira-leito</div>
-    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">Considere avaliação ecocardiográfica quando disponivel</div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">Considere avaliação ecocardiográfica quando disponível</div>
 
     <div class="criteria-item" id="ecoVE" onclick="toggleEco('ecoVE')">
         <div class="criteria-dot"></div>
@@ -1353,12 +1353,12 @@ function resetFluidToggles() {
     hideAllMethodInfo();
 }
 
-function setFluidMethod(method) {
+function setFluidMethod(method, btn) {
     shockState.fluidMethod = method;
     document.querySelectorAll('#fluidMethodToggle .toggle-btn').forEach(function(b) {
         b.classList.remove('active');
     });
-    event.target.classList.add('active');
+    if (btn) btn.classList.add('active');
     hideAllMethodInfo();
     var info = document.getElementById('methodInfo-' + method);
     if (info) info.style.display = 'block';

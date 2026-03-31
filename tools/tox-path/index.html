@@ -4746,7 +4746,7 @@
             </a>
         </div>
 
-        <button class="reset-btn" onclick="resetAll()">↻ Limpar todas as marcações</button>
+        <button class="reset-btn" onclick="resetCriteria()">↻ Limpar todas as marcações</button>
 
         
     </div>
@@ -5508,13 +5508,13 @@
                         <div class="section-count"><span class="checked-count">0</span> / 6 itens</div>
                     </div>
                 </div>
-                <div class="section-chevron open">
+                <div class="section-chevron">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
                     </svg>
                 </div>
             </div>
-            <div class="section-body">
+            <div class="section-body" style="display:none">
                 <div class="checklist-item" onclick="toggleItem(this)">
                     <div class="checklist-checkbox">
                         <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
@@ -5911,7 +5911,7 @@
             <a href="#" onclick="event.preventDefault(); showView('Toxindromes')" class="action-btn primary">
                 Identificar toxíndrome
             </a>
-            <button class="action-btn secondary" onclick="resetAll()">
+            <button class="action-btn secondary" onclick="resetCriteria()">
                 Limpar
             </button>
         </div>
@@ -7346,7 +7346,7 @@ function toggleCriteria(header) {
             count.textContent = `${totalChecked} critério${totalChecked !== 1 ? 's' : ''} marcado${totalChecked !== 1 ? 's' : ''}`;
         }
 
-        function resetAll() {
+        function resetCriteria() {
             document.querySelectorAll('.criteria-checkbox.checked').forEach(cb => {
                 cb.classList.remove('checked');
             });

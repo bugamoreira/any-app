@@ -1313,6 +1313,7 @@ function resetAndRestart() {
   };
   if (cycleTimer) clearInterval(cycleTimer);
   if (mainTickInterval) clearInterval(mainTickInterval);
+  if (epiTimerInterval) { clearInterval(epiTimerInterval); epiTimerInterval = null; }
   stopMetronome();
   document.getElementById('footerBar').style.display = 'none';
   document.getElementById('staticFooter').style.display = '';

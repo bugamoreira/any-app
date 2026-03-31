@@ -571,6 +571,7 @@ combined = '''<!DOCTYPE html>
         }
 
         var _authenticated = false;
+        var _booted = false;
 
         function loadApp(name, target) {
             if (!_authenticated) return; // guarda: não carrega nada sem sessão ativa
@@ -626,7 +627,8 @@ combined = '''<!DOCTYPE html>
 
             // Listen for auth callback (redirect from Google)
             _sb.auth.onAuthStateChange(function(event, session) {
-                if (event === 'SIGNED_IN' && session) {
+                if (event === 'SIGNED_IN' && session && !_booted) {
+                    _booted = true;
                     _authenticated = true;
                     loadApp('hub');
                     logPageview('hub', 'login');
@@ -637,8 +639,9 @@ combined = '''<!DOCTYPE html>
             });
 
             var session = await checkAuth();
-            if (session) {
+            if (session && !_booted) {
                 // Sessão ativa — abrir app após splash
+                _booted = true;
                 _authenticated = true;
                 loadApp('hub');
                 logPageview('hub', 'session_resume');

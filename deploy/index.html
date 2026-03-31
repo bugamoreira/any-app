@@ -8491,7 +8491,7 @@ function showHome() {
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SedaPath — Sedação Procedimental</title>
     <style>
         :root {
@@ -15036,7 +15036,7 @@ function showHome() {
             </a>
         </div>
 
-        <button class="reset-btn" onclick="resetAll()">↻ Limpar todas as marcações</button>
+        <button class="reset-btn" onclick="resetCriteria()">↻ Limpar todas as marcações</button>
 
         
     </div>
@@ -15798,13 +15798,13 @@ function showHome() {
                         <div class="section-count"><span class="checked-count">0</span> / 6 itens</div>
                     </div>
                 </div>
-                <div class="section-chevron open">
+                <div class="section-chevron">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
                     </svg>
                 </div>
             </div>
-            <div class="section-body">
+            <div class="section-body" style="display:none">
                 <div class="checklist-item" onclick="toggleItem(this)">
                     <div class="checklist-checkbox">
                         <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
@@ -16201,7 +16201,7 @@ function showHome() {
             <a href="#" onclick="event.preventDefault(); showView('Toxindromes')" class="action-btn primary">
                 Identificar toxíndrome
             </a>
-            <button class="action-btn secondary" onclick="resetAll()">
+            <button class="action-btn secondary" onclick="resetCriteria()">
                 Limpar
             </button>
         </div>
@@ -17636,7 +17636,7 @@ function toggleCriteria(header) {
             count.textContent = \`\${totalChecked} critério\${totalChecked !== 1 ? 's' : ''} marcado\${totalChecked !== 1 ? 's' : ''}\`;
         }
 
-        function resetAll() {
+        function resetCriteria() {
             document.querySelectorAll('.criteria-checkbox.checked').forEach(cb => {
                 cb.classList.remove('checked');
             });
@@ -18545,6 +18545,9 @@ function showTab(tabName) {
     </style>
 </head>
 <body>
+    <div class="disclaimer" style="background:#FFC107;color:#000;text-align:center;padding:10px 16px;font-size:12px;font-weight:600;position:sticky;top:0;z-index:100">
+        <strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.
+    </div>
     <header class="header">
         <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App" onclick="event.preventDefault(); parent.loadApp('hub')"></a>
         <h1>PedGuide</h1>
@@ -18557,7 +18560,7 @@ function showTab(tabName) {
                 <div class="input-group" id="input-peso">
                     <div class="input-label"><span>Peso</span><span class="source-badge">FONTE</span></div>
                     <div class="input-row">
-                        <input type="number" id="peso" class="input-field" placeholder="--" min="1" max="80" step="0.1">
+                        <input type="number" id="peso" class="input-field" placeholder="--" min="0.5" max="50" step="0.1" inputmode="decimal">
                         <span class="input-unit">kg</span>
                     </div>
                 </div>
@@ -18600,26 +18603,26 @@ function showTab(tabName) {
             <div class="cpr-box">
                 <div class="cpr-header">
                     <div class="cpr-title">Parâmetros de RCP pediátrica</div>
-                    <div class="cpr-ratio-fixed" style="font-size:.75rem;font-weight:700;color:var(--gray-400);">Compressao:Ventilacao — 15:2</div>
+                    <div class="cpr-ratio-fixed" style="font-size:.75rem;font-weight:700;color:var(--gray-400);">Compressão:Ventilação — 15:2</div>
                 </div>
                 <div class="cpr-grid">
-                    <div class="cpr-item"><div class="cpr-label">Frequencia</div><div class="cpr-value">100-120/min</div></div>
-                    <div class="cpr-item"><div class="cpr-label">Relacao C:V</div><div class="cpr-value" id="cpr-ratio">15:2</div></div>
+                    <div class="cpr-item"><div class="cpr-label">Frequência</div><div class="cpr-value">100-120/min</div></div>
+                    <div class="cpr-item"><div class="cpr-label">Relação C:V</div><div class="cpr-value" id="cpr-ratio">15:2</div></div>
                     <div class="cpr-item"><div class="cpr-label">Profundidade</div><div class="cpr-value" id="cpr-depth">1/3 AP (~5cm)</div></div>
                     <div class="cpr-item"><div class="cpr-label">Com TOT</div><div class="cpr-value">1 a cada 2-3s</div></div>
                 </div>
             </div>
 
             <div class="defib-grid">
-                <div class="defib-card shock"><div class="defib-label">1a Desfibrilacao (2 J/kg)</div><div class="defib-value"><span id="defib1">--</span></div><div class="defib-unit">Joules</div></div>
-                <div class="defib-card shock"><div class="defib-label">2a Desfibrilacao (4 J/kg)</div><div class="defib-value"><span id="defib2">--</span></div><div class="defib-unit">Joules</div></div>
-                <div class="defib-card"><div class="defib-label">Cardioversao (0,5-1 J/kg)</div><div class="defib-value"><span id="cardioversao">--</span></div><div class="defib-unit">Joules</div></div>
+                <div class="defib-card shock"><div class="defib-label">1a Desfibrilação (2 J/kg)</div><div class="defib-value"><span id="defib1">--</span></div><div class="defib-unit">Joules</div></div>
+                <div class="defib-card shock"><div class="defib-label">2a Desfibrilação (4 J/kg)</div><div class="defib-value"><span id="defib2">--</span></div><div class="defib-unit">Joules</div></div>
+                <div class="defib-card"><div class="defib-label">Cardioversão (0,5-1 J/kg)</div><div class="defib-value"><span id="cardioversao">--</span></div><div class="defib-unit">Joules</div></div>
             </div>
 
             <div class="section collapsed" id="section-pcr">
                 <div class="section-header" onclick="toggleSection('section-pcr')">
                     <div class="section-icon critical"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg></div>
-                    <span class="section-title">Drogas de Parada Cardiorrespiratoria</span>
+                    <span class="section-title">Drogas de parada cardiorrespiratória</span>
                 </div>
                 <div class="section-body" id="pcr-drugs"></div>
             </div>
@@ -18627,16 +18630,16 @@ function showTab(tabName) {
             <div class="section collapsed" id="section-causas">
                 <div class="section-header" onclick="toggleSection('section-causas')">
                     <div class="section-icon warning"><svg viewBox="0 0 24 24"><path d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/></svg></div>
-                    <span class="section-title">Causas Reversiveis (6H e 6T)</span>
+                    <span class="section-title">Causas reversíveis (6H e 6T)</span>
                 </div>
                 <div class="section-body">
                     <div class="causes-grid">
                         <div class="causes-column">
                             <div class="causes-title hs">6 H</div>
                             <ul class="causes-list">
-                                <li><span class="cause-letter">H</span> Hipoxia</li>
+                                <li><span class="cause-letter">H</span> Hipóxia</li>
                                 <li><span class="cause-letter">H</span> Hipovolemia</li>
-                                <li><span class="cause-letter">H</span> Hidrogenio (Acidose)</li>
+                                <li><span class="cause-letter">H</span> Hidrogênio (Acidose)</li>
                                 <li><span class="cause-letter">H</span> Hipoglicemia</li>
                                 <li><span class="cause-letter">H</span> Hipo/Hipercalemia</li>
                                 <li><span class="cause-letter">H</span> Hipotermia</li>
@@ -18645,8 +18648,8 @@ function showTab(tabName) {
                         <div class="causes-column">
                             <div class="causes-title ts">6 T</div>
                             <ul class="causes-list">
-                                <li><span class="cause-letter">T</span> Tensao (Pneumotorax)</li>
-                                <li><span class="cause-letter">T</span> Tamponamento cardiaco</li>
+                                <li><span class="cause-letter">T</span> Tensão (Pneumotórax)</li>
+                                <li><span class="cause-letter">T</span> Tamponamento cardíaco</li>
                                 <li><span class="cause-letter">T</span> Toxinas</li>
                                 <li><span class="cause-letter">T</span> Trombose pulmonar (TEP)</li>
                                 <li><span class="cause-letter">T</span> Trombose coronariana</li>
@@ -18660,7 +18663,7 @@ function showTab(tabName) {
             <div class="section collapsed" id="section-via-aerea">
                 <div class="section-header" onclick="toggleSection('section-via-aerea')">
                     <div class="section-icon info"><svg viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/></svg></div>
-                    <span class="section-title">Via Aerea e Equipamentos</span>
+                    <span class="section-title">Via aérea e equipamentos</span>
                 </div>
                 <div class="section-body"><div class="equipment-grid" id="equipment-grid"></div></div>
             </div>
@@ -18708,7 +18711,7 @@ function showTab(tabName) {
             <div class="section collapsed" id="section-iot">
                 <div class="section-header" onclick="toggleSection('section-iot')">
                     <div class="section-icon success"><svg viewBox="0 0 24 24"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg></div>
-                    <span class="section-title">Checklist de Intubacao Orotraqueal</span>
+                    <span class="section-title">Checklist de intubação orotraqueal</span>
                 </div>
                 <div class="section-body"><div class="checklist" id="iot-checklist"></div></div>
             </div>
@@ -18716,7 +18719,7 @@ function showTab(tabName) {
             <div class="section collapsed" id="section-drogas-iot">
                 <div class="section-header" onclick="toggleSection('section-drogas-iot')">
                     <div class="section-icon purple"><svg viewBox="0 0 24 24"><path d="M6,3H8V5H6V3M10,3H12V5H10V3M14,3H16V5H14V3M18,3H20V5H18V3M20,7V9H18V7H20M6,7H8V9H6V7M6,11H8V13H6V11M6,15H8V17H6V15M6,19H8V21H6V19M10,19H12V21H10V19M14,19H16V21H14V19M18,19H20V21H18V19Z"/></svg></div>
-                    <span class="section-title">Drogas de Intubacao (ISR)</span>
+                    <span class="section-title">Drogas de intubação (ISR)</span>
                 </div>
                 <div class="section-body" id="iot-drugs"></div>
             </div>
@@ -18724,7 +18727,7 @@ function showTab(tabName) {
             <div class="section collapsed" id="section-emergencias">
                 <div class="section-header" onclick="toggleSection('section-emergencias')">
                     <div class="section-icon critical"><svg viewBox="0 0 24 24"><path d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/></svg></div>
-                    <span class="section-title">Outras Drogas de Emergencia</span>
+                    <span class="section-title">Outras drogas de emergência</span>
                 </div>
                 <div class="section-body" id="emergency-drugs"></div>
             </div>
@@ -22153,7 +22156,7 @@ function showTab(tabName) {
 
                         <div class="calc-row">
                             <label>Dose em 24h</label>
-                            <input type="number" id="opioid-dose" placeholder="Ex: 30" onchange="calculateOpioid()">
+                            <input type="number" id="opioid-dose" placeholder="Ex: 30" inputmode="decimal" onchange="calculateOpioid()">
                         </div>
 
                         <div class="calc-row">
@@ -23238,7 +23241,7 @@ function showTab(tabName) {
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BlockPath — Bloqueios Regionais no DE</title>
     <style>
         :root{--verde-hugo:#00A651;--azul-hugo:#FF5252;--verde-status:#10B981;--amarelo-status:#F59E0B;--vermelho-status:#EF4444;--cinza-claro:#1A1A1A;--cinza-medio:#999;--cinza-escuro:#F5F5F5;--branco:#111}
@@ -23481,7 +23484,7 @@ function showTab(tabName) {
             <button class="back-btn" onclick="showSection('home')">← Início</button>
             <div class="section-header"><h2> Calculadora de dose máxima</h2><p>Dose máxima de anestésico local por peso</p></div>
             <div class="calc-container">
-                <div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="calc-weight" min="40" max="150" value="70" oninput="updateCalc()"><input type="number" id="calc-weight-input" min="40" max="200" value="70" oninput="syncWeight(this.value)"><span class="input-unit">kg</span></div></div>
+                <div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="calc-weight" min="40" max="150" value="70" oninput="updateCalc()"><input type="number" id="calc-weight-input" min="40" max="200" value="70" inputmode="decimal" oninput="syncWeight(this.value)"><span class="input-unit">kg</span></div></div>
                 <div class="result-card"><div class="result-card-title"> Lidocaína</div><div class="result-grid"><div class="result-item"><div class="result-label">Sem epi (4,5 mg/kg)</div><div class="result-value" id="lido-sem">315 mg</div></div><div class="result-item"><div class="result-label">Com epi (7 mg/kg)</div><div class="result-value" id="lido-com">490 mg</div></div></div><table class="al-table mt-16"><thead><tr><th>Conc.</th><th>Sem epi</th><th>Com epi</th></tr></thead><tbody><tr><td>1%</td><td id="lido-1-sem">31,5 mL</td><td id="lido-1-com">49 mL</td></tr><tr><td>2%</td><td id="lido-2-sem">15,7 mL</td><td id="lido-2-com">24,5 mL</td></tr></tbody></table></div>
                 <div class="result-card"><div class="result-card-title"> Bupivacaína</div><div class="result-grid"><div class="result-item"><div class="result-label">Sem epi (2,5 mg/kg)</div><div class="result-value" id="bupi-sem">175 mg</div></div><div class="result-item"><div class="result-label">Com epi (3 mg/kg)</div><div class="result-value" id="bupi-com">210 mg</div></div></div><table class="al-table mt-16"><thead><tr><th>Conc.</th><th>Sem epi</th><th>Com epi</th></tr></thead><tbody><tr><td>0,25%</td><td id="bupi-025-sem">70 mL</td><td id="bupi-025-com">84 mL</td></tr><tr><td>0,5%</td><td id="bupi-05-sem">35 mL</td><td id="bupi-05-com">42 mL</td></tr></tbody></table></div>
                 <div class="result-card"><div class="result-card-title"> Ropivacaína</div><div class="result-grid"><div class="result-item"><div class="result-label">Sem epi (3 mg/kg)</div><div class="result-value" id="ropi-sem">210 mg</div></div><div class="result-item"><div class="result-label">Com epi (3,5 mg/kg)</div><div class="result-value" id="ropi-com">245 mg</div></div></div><table class="al-table mt-16"><thead><tr><th>Conc.</th><th>Sem epi</th><th>Com epi</th></tr></thead><tbody><tr><td>0,2%</td><td id="ropi-02-sem">105 mL</td><td id="ropi-02-com">122 mL</td></tr><tr><td>0,5%</td><td id="ropi-05-sem">42 mL</td><td id="ropi-05-com">49 mL</td></tr></tbody></table></div>
@@ -23499,7 +23502,7 @@ function showTab(tabName) {
             <div class="last-step"><div class="last-step-number">3</div><h4>Via aérea e O2 100%</h4><p>Considere IOT precoce. Evitar hipóxia e acidose</p></div>
             <div class="last-step"><div class="last-step-number">4</div><h4>Tratar convulsões</h4><p>Benzodiazepínicos (midazolam 1-2 mg IV)</p></div>
             <div class="last-step"><div class="last-step-number">5</div><h4>ACLS modificado se PCR</h4><p>Evitar vasopressina, reduzir epinefrina (≤1 mcg/kg)</p></div>
-            <div class="lipid-calc"><div class="lipid-calc-title"> Emulsão lipídica 20%</div><div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="lipid-weight" min="40" max="150" value="70" oninput="updateLipid()"><input type="number" id="lipid-weight-input" min="40" max="200" value="70" oninput="syncLipidWeight(this.value)"><span class="input-unit">kg</span></div></div><div class="lipid-result"><div class="lipid-result-row"><span class="lipid-result-label">BOLUS (1,5 mL/kg)</span><span class="lipid-result-value" id="lipid-bolus">105 mL</span></div><div class="lipid-result-row"><span class="lipid-result-label">INFUSÃO (0,25 mL/kg/min)</span><span class="lipid-result-value" id="lipid-infusion">17,5 mL/min</span></div><div class="lipid-result-row"><span class="lipid-result-label">DOSE MÁX (12 mL/kg)</span><span class="lipid-result-value" id="lipid-max">840 mL</span></div></div></div>
+            <div class="lipid-calc"><div class="lipid-calc-title"> Emulsão lipídica 20%</div><div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="lipid-weight" min="40" max="150" value="70" oninput="updateLipid()"><input type="number" id="lipid-weight-input" min="40" max="200" value="70" inputmode="decimal" oninput="syncLipidWeight(this.value)"><span class="input-unit">kg</span></div></div><div class="lipid-result"><div class="lipid-result-row"><span class="lipid-result-label">BOLUS (1,5 mL/kg)</span><span class="lipid-result-value" id="lipid-bolus">105 mL</span></div><div class="lipid-result-row"><span class="lipid-result-label">INFUSÃO (0,25 mL/kg/min)</span><span class="lipid-result-value" id="lipid-infusion">17,5 mL/min</span></div><div class="lipid-result-row"><span class="lipid-result-label">DOSE MÁX (12 mL/kg)</span><span class="lipid-result-value" id="lipid-max">840 mL</span></div></div></div>
         </section>
 
         <!-- EVOLUTION -->
@@ -23583,11 +23586,11 @@ function showTab(tabName) {
                         <div class="evo-row">
                             <div class="evo-group half">
                                 <label>Volume (mL)</label>
-                                <input type="number" id="evo-volume" placeholder="20" min="1" max="50">
+                                <input type="number" id="evo-volume" placeholder="20" min="1" max="50" inputmode="decimal">
                             </div>
                             <div class="evo-group half">
                                 <label>Dose total (mg)</label>
-                                <input type="number" id="evo-dose" placeholder="100" min="1" max="500">
+                                <input type="number" id="evo-dose" placeholder="100" min="1" max="500" inputmode="decimal">
                             </div>
                         </div>
                         <div class="evo-group">
@@ -25228,6 +25231,7 @@ function resetAndRestart() {
   };
   if (cycleTimer) clearInterval(cycleTimer);
   if (mainTickInterval) clearInterval(mainTickInterval);
+  if (epiTimerInterval) { clearInterval(epiTimerInterval); epiTimerInterval = null; }
   stopMetronome();
   document.getElementById('footerBar').style.display = 'none';
   document.getElementById('staticFooter').style.display = '';
@@ -25424,7 +25428,7 @@ a{color:var(--info);text-decoration:none}
 .btn-warning{background:var(--warning);color:#000}
 .btn-danger{background:var(--danger);color:#FFF}
 .btn+.btn{margin-top:8px}
-.btn-sm{padding:10px;font-size:13px;min-height:38px}
+.btn-sm{padding:10px;font-size:13px;min-height:44px}
 .btn-group{display:flex;gap:8px;margin-top:8px}
 .btn-group .btn{flex:1}
 
@@ -27595,7 +27599,7 @@ a{color:var(--info);text-decoration:none}
 .btn+.btn{margin-top:8px}
 .btn-group{display:flex;gap:8px;margin-top:8px}
 .btn-group .btn{flex:1}
-.btn-sm{padding:10px;font-size:13px;min-height:38px}
+.btn-sm{padding:10px;font-size:13px;min-height:44px}
 
 /* ALERTS */
 .alert{padding:12px 16px;border-radius:var(--radius-sm);margin-bottom:12px;font-size:13px;line-height:1.5}
@@ -27706,7 +27710,7 @@ a{color:var(--info);text-decoration:none}
 
 /* DEEP LINK BUTTONS */
 .deep-links{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.deep-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:20px;font-size:12px;font-weight:500;color:var(--info);cursor:pointer;min-height:38px}
+.deep-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:20px;font-size:12px;font-weight:500;color:var(--info);cursor:pointer;min-height:44px}
 .deep-link:active{background:var(--bg-hover)}
 
 /* SECTION TITLE */
@@ -27973,10 +27977,10 @@ a{color:var(--info);text-decoration:none}
 
         <div class="section-title" style="font-size:14px">Método de avaliação de responsividade</div>
         <div class="toggle-group" id="fluidMethodToggle" style="flex-wrap:wrap">
-            <button class="toggle-btn" onclick="setFluidMethod('leg')" style="flex:1 0 45%">Elevação de MMII</button>
-            <button class="toggle-btn" onclick="setFluidMethod('deltapp')" style="flex:1 0 45%">Delta PP</button>
-            <button class="toggle-btn" onclick="setFluidMethod('pocus')" style="flex:1 0 45%">POCUS</button>
-            <button class="toggle-btn" onclick="setFluidMethod('challenge')" style="flex:1 0 45%">Fluid challenge</button>
+            <button class="toggle-btn" onclick="setFluidMethod('leg', this)" style="flex:1 0 45%">Elevação de MMII</button>
+            <button class="toggle-btn" onclick="setFluidMethod('deltapp', this)" style="flex:1 0 45%">Delta PP</button>
+            <button class="toggle-btn" onclick="setFluidMethod('pocus', this)" style="flex:1 0 45%">POCUS</button>
+            <button class="toggle-btn" onclick="setFluidMethod('challenge', this)" style="flex:1 0 45%">Fluid challenge</button>
         </div>
 
         <!-- Method info collapsibles -->
@@ -28187,7 +28191,7 @@ a{color:var(--info);text-decoration:none}
 
     <!-- Eco -->
     <div class="section-title">Ecocardiograma à beira-leito</div>
-    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">Considere avaliação ecocardiográfica quando disponivel</div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">Considere avaliação ecocardiográfica quando disponível</div>
 
     <div class="criteria-item" id="ecoVE" onclick="toggleEco('ecoVE')">
         <div class="criteria-dot"></div>
@@ -28871,12 +28875,12 @@ function resetFluidToggles() {
     hideAllMethodInfo();
 }
 
-function setFluidMethod(method) {
+function setFluidMethod(method, btn) {
     shockState.fluidMethod = method;
     document.querySelectorAll('#fluidMethodToggle .toggle-btn').forEach(function(b) {
         b.classList.remove('active');
     });
-    event.target.classList.add('active');
+    if (btn) btn.classList.add('active');
     hideAllMethodInfo();
     var info = document.getElementById('methodInfo-' + method);
     if (info) info.style.display = 'block';
@@ -29604,6 +29608,7 @@ function handleDeepLink(target) {
         }
 
         var _authenticated = false;
+        var _booted = false;
 
         function loadApp(name, target) {
             if (!_authenticated) return; // guarda: não carrega nada sem sessão ativa
@@ -29659,7 +29664,8 @@ function handleDeepLink(target) {
 
             // Listen for auth callback (redirect from Google)
             _sb.auth.onAuthStateChange(function(event, session) {
-                if (event === 'SIGNED_IN' && session) {
+                if (event === 'SIGNED_IN' && session && !_booted) {
+                    _booted = true;
                     _authenticated = true;
                     loadApp('hub');
                     logPageview('hub', 'login');
@@ -29670,8 +29676,9 @@ function handleDeepLink(target) {
             });
 
             var session = await checkAuth();
-            if (session) {
+            if (session && !_booted) {
                 // Sessão ativa — abrir app após splash
+                _booted = true;
                 _authenticated = true;
                 loadApp('hub');
                 logPageview('hub', 'session_resume');

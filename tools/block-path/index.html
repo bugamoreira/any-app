@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BlockPath — Bloqueios Regionais no DE</title>
     <style>
         :root{--verde-hugo:#00A651;--azul-hugo:#FF5252;--verde-status:#10B981;--amarelo-status:#F59E0B;--vermelho-status:#EF4444;--cinza-claro:#1A1A1A;--cinza-medio:#999;--cinza-escuro:#F5F5F5;--branco:#111}
@@ -247,7 +247,7 @@
             <button class="back-btn" onclick="showSection('home')">← Início</button>
             <div class="section-header"><h2> Calculadora de dose máxima</h2><p>Dose máxima de anestésico local por peso</p></div>
             <div class="calc-container">
-                <div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="calc-weight" min="40" max="150" value="70" oninput="updateCalc()"><input type="number" id="calc-weight-input" min="40" max="200" value="70" oninput="syncWeight(this.value)"><span class="input-unit">kg</span></div></div>
+                <div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="calc-weight" min="40" max="150" value="70" oninput="updateCalc()"><input type="number" id="calc-weight-input" min="40" max="200" value="70" inputmode="decimal" oninput="syncWeight(this.value)"><span class="input-unit">kg</span></div></div>
                 <div class="result-card"><div class="result-card-title"> Lidocaína</div><div class="result-grid"><div class="result-item"><div class="result-label">Sem epi (4,5 mg/kg)</div><div class="result-value" id="lido-sem">315 mg</div></div><div class="result-item"><div class="result-label">Com epi (7 mg/kg)</div><div class="result-value" id="lido-com">490 mg</div></div></div><table class="al-table mt-16"><thead><tr><th>Conc.</th><th>Sem epi</th><th>Com epi</th></tr></thead><tbody><tr><td>1%</td><td id="lido-1-sem">31,5 mL</td><td id="lido-1-com">49 mL</td></tr><tr><td>2%</td><td id="lido-2-sem">15,7 mL</td><td id="lido-2-com">24,5 mL</td></tr></tbody></table></div>
                 <div class="result-card"><div class="result-card-title"> Bupivacaína</div><div class="result-grid"><div class="result-item"><div class="result-label">Sem epi (2,5 mg/kg)</div><div class="result-value" id="bupi-sem">175 mg</div></div><div class="result-item"><div class="result-label">Com epi (3 mg/kg)</div><div class="result-value" id="bupi-com">210 mg</div></div></div><table class="al-table mt-16"><thead><tr><th>Conc.</th><th>Sem epi</th><th>Com epi</th></tr></thead><tbody><tr><td>0,25%</td><td id="bupi-025-sem">70 mL</td><td id="bupi-025-com">84 mL</td></tr><tr><td>0,5%</td><td id="bupi-05-sem">35 mL</td><td id="bupi-05-com">42 mL</td></tr></tbody></table></div>
                 <div class="result-card"><div class="result-card-title"> Ropivacaína</div><div class="result-grid"><div class="result-item"><div class="result-label">Sem epi (3 mg/kg)</div><div class="result-value" id="ropi-sem">210 mg</div></div><div class="result-item"><div class="result-label">Com epi (3,5 mg/kg)</div><div class="result-value" id="ropi-com">245 mg</div></div></div><table class="al-table mt-16"><thead><tr><th>Conc.</th><th>Sem epi</th><th>Com epi</th></tr></thead><tbody><tr><td>0,2%</td><td id="ropi-02-sem">105 mL</td><td id="ropi-02-com">122 mL</td></tr><tr><td>0,5%</td><td id="ropi-05-sem">42 mL</td><td id="ropi-05-com">49 mL</td></tr></tbody></table></div>
@@ -265,7 +265,7 @@
             <div class="last-step"><div class="last-step-number">3</div><h4>Via aérea e O2 100%</h4><p>Considere IOT precoce. Evitar hipóxia e acidose</p></div>
             <div class="last-step"><div class="last-step-number">4</div><h4>Tratar convulsões</h4><p>Benzodiazepínicos (midazolam 1-2 mg IV)</p></div>
             <div class="last-step"><div class="last-step-number">5</div><h4>ACLS modificado se PCR</h4><p>Evitar vasopressina, reduzir epinefrina (≤1 mcg/kg)</p></div>
-            <div class="lipid-calc"><div class="lipid-calc-title"> Emulsão lipídica 20%</div><div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="lipid-weight" min="40" max="150" value="70" oninput="updateLipid()"><input type="number" id="lipid-weight-input" min="40" max="200" value="70" oninput="syncLipidWeight(this.value)"><span class="input-unit">kg</span></div></div><div class="lipid-result"><div class="lipid-result-row"><span class="lipid-result-label">BOLUS (1,5 mL/kg)</span><span class="lipid-result-value" id="lipid-bolus">105 mL</span></div><div class="lipid-result-row"><span class="lipid-result-label">INFUSÃO (0,25 mL/kg/min)</span><span class="lipid-result-value" id="lipid-infusion">17,5 mL/min</span></div><div class="lipid-result-row"><span class="lipid-result-label">DOSE MÁX (12 mL/kg)</span><span class="lipid-result-value" id="lipid-max">840 mL</span></div></div></div>
+            <div class="lipid-calc"><div class="lipid-calc-title"> Emulsão lipídica 20%</div><div class="input-group"><label>Peso do paciente</label><div class="input-row"><input type="range" id="lipid-weight" min="40" max="150" value="70" oninput="updateLipid()"><input type="number" id="lipid-weight-input" min="40" max="200" value="70" inputmode="decimal" oninput="syncLipidWeight(this.value)"><span class="input-unit">kg</span></div></div><div class="lipid-result"><div class="lipid-result-row"><span class="lipid-result-label">BOLUS (1,5 mL/kg)</span><span class="lipid-result-value" id="lipid-bolus">105 mL</span></div><div class="lipid-result-row"><span class="lipid-result-label">INFUSÃO (0,25 mL/kg/min)</span><span class="lipid-result-value" id="lipid-infusion">17,5 mL/min</span></div><div class="lipid-result-row"><span class="lipid-result-label">DOSE MÁX (12 mL/kg)</span><span class="lipid-result-value" id="lipid-max">840 mL</span></div></div></div>
         </section>
 
         <!-- EVOLUTION -->
@@ -349,11 +349,11 @@
                         <div class="evo-row">
                             <div class="evo-group half">
                                 <label>Volume (mL)</label>
-                                <input type="number" id="evo-volume" placeholder="20" min="1" max="50">
+                                <input type="number" id="evo-volume" placeholder="20" min="1" max="50" inputmode="decimal">
                             </div>
                             <div class="evo-group half">
                                 <label>Dose total (mg)</label>
-                                <input type="number" id="evo-dose" placeholder="100" min="1" max="500">
+                                <input type="number" id="evo-dose" placeholder="100" min="1" max="500" inputmode="decimal">
                             </div>
                         </div>
                         <div class="evo-group">
