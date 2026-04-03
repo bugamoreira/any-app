@@ -633,7 +633,7 @@
     
     <footer>
         <div class="footer-text">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div class="version">v1.1.0 — Março 2026</div>
+        <div class="version">Hub v1.1.1 — ANY App — Abril 2026</div>
     </footer>
 </body>
 </html>`,
@@ -1229,7 +1229,9 @@
     <div class="disclaimer"><strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.</div>
     
     <header class="header">
-        <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
+        <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')">
+            <img src="__LOGO__" alt="ANY App">
+        </a>
         <h1>VM Guide</h1>
         <p>Parâmetros de ventilação mecânica</p>
     </header>
@@ -2004,7 +2006,7 @@
     
     <footer>
         <div class="footer-text">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div class="version">v1.1.0 — Fevereiro 2026</div>
+        <div class="version">VM Guide v1.1.1 — ANY App — Abril 2026</div>
     </footer>
     
     <script>
@@ -3637,7 +3639,7 @@
 
     <footer class="footer">
         <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div class="footer-version">AirwayGuide v2.1.0 — ANY App</div>
+        <div class="footer-version">Airway Guide v2.1.1 — ANY App — Abril 2026</div>
     </footer>
 
     
@@ -4035,7 +4037,7 @@
             const titles = ['INDICAÇÃO', 'AVALIAÇÃO DE VAD', 'PACIENTE', 'MEDICAÇÕES', 'PROCEDIMENTO', 'CONFIRMAÇÃO'];
             let report = 'RELATÓRIO DE IOT - AirwayGuide\\n' + new Date().toLocaleString('pt-BR') + '\\n\\n';
             sections.forEach((id, i) => report += titles[i] + ':\\n' + document.getElementById(id).textContent + '\\n\\n');
-            report += '---\\nGerado por AirwayGuide - ANY App v2.1.0';
+            report += '---\\nGerado por Airway Guide - ANY App v2.1.1';
             navigator.clipboard.writeText(report).then(() => alert('Relatório copiado!'));
         }
 
@@ -4448,7 +4450,9 @@
     <div class="disclaimer"><strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.</div>
     <div class="container">
         <header class="header">
-            <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
+            <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')">
+                <img src="__LOGO__" alt="ANY App">
+            </a>
         </header>
         
         <!-- GATE DE PESO -->
@@ -5005,7 +5009,7 @@
         <!-- FOOTER -->
         <footer class="footer">
             <div class="footer-credits">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-            <div class="footer-version">v2.3.1 — Fevereiro 2026</div>
+            <div class="footer-version">Infusion Guide v2.3.2 — ANY App — Abril 2026</div>
         </footer>
 
         </div><!-- /mainContent -->
@@ -7352,7 +7356,7 @@
 
     <div class="footer">
         <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div class="footer-version">v1.0.7 — Março 2026</div>
+        <div class="footer-version">TEP Guide v1.0.8 — ANY App — Abril 2026</div>
     </div>
 
     <script>
@@ -7527,6 +7531,12 @@ function togglePregnant(isPregnant) {
         var el = document.getElementById(id);
         if (el) el.classList.add('hidden');
     });
+    var ypr = document.getElementById('yearsPregResultArea');
+    if (ypr) { ypr.classList.add('hidden'); ypr.innerHTML = ''; }
+    var ddr2 = document.getElementById('ddimerResultArea');
+    if (ddr2) { ddr2.classList.add('hidden'); ddr2.innerHTML = ''; }
+    var pra2 = document.getElementById('percResultArea');
+    if (pra2) { pra2.classList.add('hidden'); pra2.innerHTML = ''; }
     if (isPregnant) {
         if (wellsSection) wellsSection.style.display = 'none';
         if (subPregnant) { subPregnant.classList.remove('hidden'); subPregnant.style.display = 'block'; }
@@ -7557,22 +7567,19 @@ function classAnswer(answer) {
     switch(answer) {
         case 'asymptomatic':
             classState.symptomatic = false;
-            hideAll('classQ1');
-            show('classQ2b');
+            hideAll(); show('classQ2b');
             break;
         case 'symptomatic':
             classState.symptomatic = true;
-            hideAll('classQ1');
-            show('classQ2');
+            hideAll(); show('classQ2');
             break;
         case 'lowRisk':
             classState.risk = 'low';
-            hideAll('classQ2h');
+            hideAll(); show('classQ2h');
             break;
         case 'highRisk':
             classState.risk = 'high';
-            hideAll('classQ2');
-            show('classQ3');
+            hideAll(); show('classQ3');
             break;
         case 'subseg':
             classState.location = 'subseg';
@@ -7584,28 +7591,24 @@ function classAnswer(answer) {
             break;
         case 'c1':
             categoryResult = 'C1';
-            hideAll('classQ3');
-            show('classQ4');
+            hideAll(); show('classQ4');
             break;
         case 'c2':
             categoryResult = 'C2';
-            hideAll('classQ3');
-            show('classQ4');
+            hideAll(); show('classQ4');
             break;
         case 'c3':
             categoryResult = 'C3';
-            hideAll('classQ3');
+            hideAll();
             checkPreFailure();
             break;
         case 'd1':
             categoryResult = 'D1';
-            hideAll('classQ3b');
-            show('classQ4');
+            hideAll(); show('classQ4');
             break;
         case 'd2':
             categoryResult = 'D2';
-            hideAll('classQ3b');
-            show('classQ4');
+            hideAll(); show('classQ4');
             break;
         case 'noR':
             hasModR = false;
@@ -7619,24 +7622,20 @@ function classAnswer(answer) {
 }
 
 function handleLocationResult() {
-    hideAll('classQ2b');
+    hideAll();
     if (!classState.symptomatic) {
-        // Asymptomatic
         categoryResult = classState.location === 'subseg' ? 'A1' : 'A2';
         show('classQ4');
     } else if (classState.risk === 'low') {
         categoryResult = classState.location === 'subseg' ? 'B1' : 'B2';
         show('classQ4');
     } else {
-        // high risk - already handled
         show('classQ3');
     }
 }
 
 function checkPreFailure() {
-    // For C3, check if there are signs of pre-failure
-    hideAll('classQ3b');
-    // Also show option to skip if no pre-failure
+    show('classQ3b');
     const q3b = document.getElementById('classQ3b');
     if (!q3b.querySelector('.btn-skip')) {
         const skipBtn = document.createElement('button');
@@ -7644,8 +7643,7 @@ function checkPreFailure() {
         skipBtn.textContent = 'Sem sinais de pré-falência → manter C3';
         skipBtn.onclick = function() {
             categoryResult = 'C3';
-            hideAll('classQ3b');
-            show('classQ4');
+            hideAll(); show('classQ4');
         };
         q3b.appendChild(skipBtn);
     }
@@ -7730,7 +7728,7 @@ function showManagement() {
     document.getElementById('managementContent').innerHTML = html;
 
     // Red flags for C2+
-    const showRF = ['C2','C3','D1','D2','E1','E2'].includes(cat);
+    const showRF = ['C2','C3','D','D1','D2','E1','E2'].includes(cat);
     document.getElementById('redFlagsCard').classList.toggle('hidden', !showRF);
 
     // Disposition card
@@ -7819,6 +7817,14 @@ function getManagement(cat) {
             anticoag: 'HBPM ou DOAC',
             monitor: 'Intensiva 24-72h',
             advanced: 'Considerar se deterioração'
+        },
+        'D': {
+            description: 'Pré-falência cardiopulmonar. Hipotensão transitória ou sinais de hipoperfusão (classificado via instabilidade).',
+            actions: '• UTI<br>• Anticoagulação parenteral (HBPM ou HNF)<br>• Vasopressores se necessário<br>• Considere terapias avançadas conforme evolução<br>• Reavaliar e subclassificar em D1 ou D2 quando estabilizado',
+            destino: 'UTI',
+            anticoag: 'HBPM ou HNF',
+            monitor: 'UTI contínua',
+            advanced: 'Pode ser considerada'
         },
         'D1': {
             description: 'Pré-falência cardiopulmonar. Hipotensão transitória/recorrente sem sinais de hipoperfusão.',
@@ -8242,8 +8248,10 @@ function wellsDirect(level) {
         var el = document.getElementById(id);
         if (el) el.classList.add('hidden');
     });
-    document.getElementById('percResultArea') && (document.getElementById('percResultArea').classList.add('hidden'));
-    document.getElementById('percResultArea') && (document.getElementById('percResultArea').innerHTML = '');
+    var pra = document.getElementById('percResultArea');
+    if (pra) { pra.classList.add('hidden'); pra.innerHTML = ''; }
+    var ddr = document.getElementById('ddimerResultArea');
+    if (ddr) { ddr.classList.add('hidden'); ddr.innerHTML = ''; }
 
     if (level === 'low') {
         document.getElementById('subLow').classList.remove('hidden');
@@ -8300,14 +8308,10 @@ function hestiaDirect(result) {
     area.classList.remove('hidden');
     classState.hestia = result;
     if (result === 'neg') {
-        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">Hestia negativo — tratamento ambulatorial pode ser considerado.<br><span style="font-size:12px;opacity:0.7;">Prescreva anticoagulação e agende seguimento em 1-2 semanas.</span></div></div>';
+        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">Hestia negativo — tratamento ambulatorial pode ser considerado.<br><span style="font-size:12px;opacity:0.7;">Prescreva anticoagulação e agende seguimento em 1-2 semanas.</span></div></div><button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="hideAll();show(\\'classQ2b\\')">Prosseguir — localização do trombo →</button>';
     } else {
-        area.innerHTML = '<div class="calc-result result-yellow" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">Hestia positivo — internação recomendada.</div></div>';
+        area.innerHTML = '<div class="calc-result result-yellow" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">Hestia positivo — internação recomendada.</div></div><button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="hideAll();show(\\'classQ2b\\')">Prosseguir — localização do trombo →</button>';
     }
-    // Proceed to location after a moment
-    setTimeout(function() {
-        hideAll('classQ2b');
-    }, 300);
 }
 
 // ==========================================
@@ -10017,7 +10021,7 @@ function showHome() {
     <!-- Footer -->
     <footer style="position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid #1A1A1A;padding:12px 16px;text-align:center;z-index:100;">
         <div style="font-size:11px;color:#999;">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div style="font-size:10px;color:#555;margin-top:2px;">v1.0.0 — Março 2026</div>
+        <div style="font-size:10px;color:#555;margin-top:2px;">Seda Path v1.0.1 — ANY App — Abril 2026</div>
     </footer>
 
     <!-- Reiniciar movido para header -->
@@ -16925,7 +16929,7 @@ function showHome() {
 
     <footer style="position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid #1A1A1A;padding:12px 16px;text-align:center;z-index:100;">
         <div style="font-size:11px;color:#999;">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div style="font-size:10px;color:#555;margin-top:2px;">v1.0.0 — Março 2026</div>
+        <div style="font-size:10px;color:#555;margin-top:2px;">Tox Path v1.0.1 — ANY App — Abril 2026</div>
     </footer>
 
     <script>
@@ -18549,7 +18553,7 @@ function showTab(tabName) {
         <strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.
     </div>
     <header class="header">
-        <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App" onclick="event.preventDefault(); parent.loadApp('hub')"></a>
+        <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
         <h1>PedGuide</h1>
         <p>Calculadora pediátrica</p>
     </header>
@@ -18778,7 +18782,7 @@ function showTab(tabName) {
     <footer class="footer">
         <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
         <div style="margin-top:4px;font-size:10px;color:#FF5252;">Ambassadors: Ariadne Becker • Daniel Raylander</div>
-        <div class="footer-version">Ped Guide v1.1.0 — ANY App</div>
+        <div class="footer-version">Ped Guide v1.1.1 — ANY App — Abril 2026</div>
     </footer>
 
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
@@ -21097,7 +21101,7 @@ function showTab(tabName) {
 <body>
     <!-- Header -->
     <header class="header">
-        <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App" onclick="showScreen('home')"></a>
+        <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
         <h1>PaliaPath</h1>
         <p class="subtitle">Cuidados Paliativos no DE</p>
     </header>
@@ -22805,7 +22809,7 @@ function showTab(tabName) {
     <!-- Footer -->
     <footer style="position:relative;padding:20px 16px;text-align:center;border-top:1px solid #333;">
         <div style="font-size:11px;color:#999;">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div style="font-size:10px;color:#555;margin-top:4px;">v1.0.0 — Março 2026</div>
+        <div style="font-size:10px;color:#555;margin-top:4px;">Palia Path v1.0.1 — ANY App — Abril 2026</div>
     </footer>
 
     <!-- Modal Mitos -->
@@ -23401,7 +23405,9 @@ function showTab(tabName) {
     <div class="disclaimer"><strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.</div>
     <div class="container">
         <div style="text-align:center;padding:24px 16px 16px;">
-            <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App" style="max-width:200px;margin:0 auto;display:block;"></a>
+            <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;">
+                <img src="__LOGO__" alt="ANY App" style="max-width:200px;margin:0 auto;display:block;">
+            </a>
             <h1 style="font-size:24px;font-weight:700;color:#F5F5F5;margin:16px 0 4px;">BlockPath</h1>
             <p style="color:#999;font-size:14px;">Bloqueios regionais no DE</p>
         </div>
@@ -23798,7 +23804,7 @@ function showTab(tabName) {
 
         <footer style="text-align:center;padding:32px 16px 80px;color:#666;font-size:12px;">
             <p>Gustavo Moreira &bull; Gabriela Feltrin &bull; Jo&atilde;o Pedro Moreira</p>
-            <p>v1.0.0 &mdash; Mar&ccedil;o 2026</p>
+            <p>Block Path v1.0.1 &mdash; ANY App &mdash; Abril 2026</p>
         </footer>
     </div>
 
@@ -24512,7 +24518,7 @@ Configurações
 <!-- ===== STATIC FOOTER ===== -->
 <footer class="app-footer" id="staticFooter">
 <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-<div class="footer-version">ACLS Guide v1.0.0 — ANY App</div>
+<div class="footer-version">ACLS Guide v1.0.1 — ANY App — Abril 2026</div>
 </footer>
 
 <!-- ===== FOOTER BAR ===== -->
@@ -24979,7 +24985,9 @@ function finishROSC() {
   
   stopMetronome();
   if (cycleTimer) clearInterval(cycleTimer);
-  
+  if (mainTickInterval) clearInterval(mainTickInterval);
+  if (epiTimerInterval) { clearInterval(epiTimerInterval); epiTimerInterval = null; }
+
   let t = elapsed();
   let m = Math.floor(t / 60);
   let s = t % 60;
@@ -25005,7 +25013,9 @@ function finishDeath() {
   
   stopMetronome();
   if (cycleTimer) clearInterval(cycleTimer);
-  
+  if (mainTickInterval) clearInterval(mainTickInterval);
+  if (epiTimerInterval) { clearInterval(epiTimerInterval); epiTimerInterval = null; }
+
   let now = new Date();
   let h = String(now.getHours()).padStart(2,'0');
   let min = String(now.getMinutes()).padStart(2,'0');
@@ -25048,7 +25058,7 @@ function showReport() {
     lines.push('Fim: ' + String(end.getHours()).padStart(2,'0') + ':' + String(end.getMinutes()).padStart(2,'0'));
   }
   lines.push('');
-  lines.push('AHA 2025 | ANY App v1.0.0');
+  lines.push('AHA 2025 | ANY App v1.0.1');
 
   var records = [];
   try { records = JSON.parse(localStorage.getItem('acls_records') || '[]'); } catch(e) {}
@@ -25297,6 +25307,18 @@ function syncMetroBtn() {
     }
   } catch(e) {}
 }
+// Interceptar logo durante RCP ativa — confirmar antes de sair
+document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[onclick*="loadApp"]');
+    if (link && state.running) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (confirm('Atendimento em andamento. Deseja encerrar e sair?')) {
+            resetAndRestart();
+            parent.loadApp('hub');
+        }
+    }
+}, true);
 <\/script>
 <div class="fab-menu">
 <div class="fab-options" id="fabOptions">
@@ -25493,7 +25515,9 @@ a{color:var(--info);text-decoration:none}
 
 <!-- HEADER -->
 <div class="header">
-  <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App" style="max-width:260px;width:100%;height:auto"></a>
+  <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer">
+    <img src="__LOGO__" alt="ANY App" style="max-width:260px;width:100%;height:auto">
+  </a>
   <div class="tool-title">Dengue Path</div>
   <div class="tool-subtitle">Manejo de dengue na emergência</div>
 </div>
@@ -27057,7 +27081,7 @@ a{color:var(--info);text-decoration:none}
 <!-- FOOTER -->
 <footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:var(--bg);border-top:1px solid var(--border);z-index:50">
 <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:2px">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-<div style="font-size:0.65rem;color:var(--text-muted)">Dengue Path v1.0.0 — ANY App</div>
+<div style="font-size:0.65rem;color:var(--text-muted)">Dengue Path v1.0.1 — ANY App — Abril 2026</div>
 </footer>
 
 <script>
@@ -27752,7 +27776,9 @@ a{color:var(--info);text-decoration:none}
 
 <!-- HEADER -->
 <div class="header">
-  <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')"  onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer" style="cursor:pointer;"><img src="__LOGO__" alt="ANY App"></a>
+  <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer">
+    <img src="__LOGO__" alt="ANY App">
+  </a>
   <div class="tool-title">Shock Path</div>
   <div class="tool-subtitle">Ressuscitação hemodinâmica no choque séptico</div>
 </div>
@@ -28599,7 +28625,7 @@ a{color:var(--info);text-decoration:none}
 <!-- FOOTER -->
 <footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:var(--bg);border-top:1px solid var(--border);z-index:50">
 <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:2px">Gustavo Moreira &#8226; Gabriela Feltrin &#8226; João Pedro Moreira</div>
-<div style="font-size:0.65rem;color:var(--text-muted)">Shock Path v1.0.0 — ANY App</div>
+<div style="font-size:0.65rem;color:var(--text-muted)">Shock Path v1.0.1 — ANY App — Abril 2026</div>
 </footer>
 
 <!-- FAB MENU -->

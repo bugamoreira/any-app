@@ -594,7 +594,7 @@ Configurações
 <!-- ===== STATIC FOOTER ===== -->
 <footer class="app-footer" id="staticFooter">
 <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-<div class="footer-version">ACLS Guide v1.0.0 — ANY App</div>
+<div class="footer-version">ACLS Guide v1.0.1 — ANY App — Abril 2026</div>
 </footer>
 
 <!-- ===== FOOTER BAR ===== -->
@@ -1061,7 +1061,9 @@ function finishROSC() {
   
   stopMetronome();
   if (cycleTimer) clearInterval(cycleTimer);
-  
+  if (mainTickInterval) clearInterval(mainTickInterval);
+  if (epiTimerInterval) { clearInterval(epiTimerInterval); epiTimerInterval = null; }
+
   let t = elapsed();
   let m = Math.floor(t / 60);
   let s = t % 60;
@@ -1087,7 +1089,9 @@ function finishDeath() {
   
   stopMetronome();
   if (cycleTimer) clearInterval(cycleTimer);
-  
+  if (mainTickInterval) clearInterval(mainTickInterval);
+  if (epiTimerInterval) { clearInterval(epiTimerInterval); epiTimerInterval = null; }
+
   let now = new Date();
   let h = String(now.getHours()).padStart(2,'0');
   let min = String(now.getMinutes()).padStart(2,'0');
@@ -1130,7 +1134,7 @@ function showReport() {
     lines.push('Fim: ' + String(end.getHours()).padStart(2,'0') + ':' + String(end.getMinutes()).padStart(2,'0'));
   }
   lines.push('');
-  lines.push('AHA 2025 | ANY App v1.0.0');
+  lines.push('AHA 2025 | ANY App v1.0.1');
 
   var records = [];
   try { records = JSON.parse(localStorage.getItem('acls_records') || '[]'); } catch(e) {}
@@ -1379,6 +1383,18 @@ function syncMetroBtn() {
     }
   } catch(e) {}
 }
+// Interceptar logo durante RCP ativa — confirmar antes de sair
+document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[onclick*="loadApp"]');
+    if (link && state.running) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (confirm('Atendimento em andamento. Deseja encerrar e sair?')) {
+            resetAndRestart();
+            parent.loadApp('hub');
+        }
+    }
+}, true);
 </script>
 <div class="fab-menu">
 <div class="fab-options" id="fabOptions">

@@ -1246,7 +1246,7 @@
 
     <div class="footer">
         <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div class="footer-version">v1.0.7 — Março 2026</div>
+        <div class="footer-version">TEP Guide v1.0.8 — ANY App — Abril 2026</div>
     </div>
 
     <script>
@@ -1421,6 +1421,12 @@ function togglePregnant(isPregnant) {
         var el = document.getElementById(id);
         if (el) el.classList.add('hidden');
     });
+    var ypr = document.getElementById('yearsPregResultArea');
+    if (ypr) { ypr.classList.add('hidden'); ypr.innerHTML = ''; }
+    var ddr2 = document.getElementById('ddimerResultArea');
+    if (ddr2) { ddr2.classList.add('hidden'); ddr2.innerHTML = ''; }
+    var pra2 = document.getElementById('percResultArea');
+    if (pra2) { pra2.classList.add('hidden'); pra2.innerHTML = ''; }
     if (isPregnant) {
         if (wellsSection) wellsSection.style.display = 'none';
         if (subPregnant) { subPregnant.classList.remove('hidden'); subPregnant.style.display = 'block'; }
@@ -1451,22 +1457,19 @@ function classAnswer(answer) {
     switch(answer) {
         case 'asymptomatic':
             classState.symptomatic = false;
-            hideAll('classQ1');
-            show('classQ2b');
+            hideAll(); show('classQ2b');
             break;
         case 'symptomatic':
             classState.symptomatic = true;
-            hideAll('classQ1');
-            show('classQ2');
+            hideAll(); show('classQ2');
             break;
         case 'lowRisk':
             classState.risk = 'low';
-            hideAll('classQ2h');
+            hideAll(); show('classQ2h');
             break;
         case 'highRisk':
             classState.risk = 'high';
-            hideAll('classQ2');
-            show('classQ3');
+            hideAll(); show('classQ3');
             break;
         case 'subseg':
             classState.location = 'subseg';
@@ -1478,28 +1481,24 @@ function classAnswer(answer) {
             break;
         case 'c1':
             categoryResult = 'C1';
-            hideAll('classQ3');
-            show('classQ4');
+            hideAll(); show('classQ4');
             break;
         case 'c2':
             categoryResult = 'C2';
-            hideAll('classQ3');
-            show('classQ4');
+            hideAll(); show('classQ4');
             break;
         case 'c3':
             categoryResult = 'C3';
-            hideAll('classQ3');
+            hideAll();
             checkPreFailure();
             break;
         case 'd1':
             categoryResult = 'D1';
-            hideAll('classQ3b');
-            show('classQ4');
+            hideAll(); show('classQ4');
             break;
         case 'd2':
             categoryResult = 'D2';
-            hideAll('classQ3b');
-            show('classQ4');
+            hideAll(); show('classQ4');
             break;
         case 'noR':
             hasModR = false;
@@ -1513,24 +1512,20 @@ function classAnswer(answer) {
 }
 
 function handleLocationResult() {
-    hideAll('classQ2b');
+    hideAll();
     if (!classState.symptomatic) {
-        // Asymptomatic
         categoryResult = classState.location === 'subseg' ? 'A1' : 'A2';
         show('classQ4');
     } else if (classState.risk === 'low') {
         categoryResult = classState.location === 'subseg' ? 'B1' : 'B2';
         show('classQ4');
     } else {
-        // high risk - already handled
         show('classQ3');
     }
 }
 
 function checkPreFailure() {
-    // For C3, check if there are signs of pre-failure
-    hideAll('classQ3b');
-    // Also show option to skip if no pre-failure
+    show('classQ3b');
     const q3b = document.getElementById('classQ3b');
     if (!q3b.querySelector('.btn-skip')) {
         const skipBtn = document.createElement('button');
@@ -1538,8 +1533,7 @@ function checkPreFailure() {
         skipBtn.textContent = 'Sem sinais de pré-falência → manter C3';
         skipBtn.onclick = function() {
             categoryResult = 'C3';
-            hideAll('classQ3b');
-            show('classQ4');
+            hideAll(); show('classQ4');
         };
         q3b.appendChild(skipBtn);
     }
@@ -1624,7 +1618,7 @@ function showManagement() {
     document.getElementById('managementContent').innerHTML = html;
 
     // Red flags for C2+
-    const showRF = ['C2','C3','D1','D2','E1','E2'].includes(cat);
+    const showRF = ['C2','C3','D','D1','D2','E1','E2'].includes(cat);
     document.getElementById('redFlagsCard').classList.toggle('hidden', !showRF);
 
     // Disposition card
@@ -1713,6 +1707,14 @@ function getManagement(cat) {
             anticoag: 'HBPM ou DOAC',
             monitor: 'Intensiva 24-72h',
             advanced: 'Considerar se deterioração'
+        },
+        'D': {
+            description: 'Pré-falência cardiopulmonar. Hipotensão transitória ou sinais de hipoperfusão (classificado via instabilidade).',
+            actions: '• UTI<br>• Anticoagulação parenteral (HBPM ou HNF)<br>• Vasopressores se necessário<br>• Considere terapias avançadas conforme evolução<br>• Reavaliar e subclassificar em D1 ou D2 quando estabilizado',
+            destino: 'UTI',
+            anticoag: 'HBPM ou HNF',
+            monitor: 'UTI contínua',
+            advanced: 'Pode ser considerada'
         },
         'D1': {
             description: 'Pré-falência cardiopulmonar. Hipotensão transitória/recorrente sem sinais de hipoperfusão.',
@@ -2136,8 +2138,10 @@ function wellsDirect(level) {
         var el = document.getElementById(id);
         if (el) el.classList.add('hidden');
     });
-    document.getElementById('percResultArea') && (document.getElementById('percResultArea').classList.add('hidden'));
-    document.getElementById('percResultArea') && (document.getElementById('percResultArea').innerHTML = '');
+    var pra = document.getElementById('percResultArea');
+    if (pra) { pra.classList.add('hidden'); pra.innerHTML = ''; }
+    var ddr = document.getElementById('ddimerResultArea');
+    if (ddr) { ddr.classList.add('hidden'); ddr.innerHTML = ''; }
 
     if (level === 'low') {
         document.getElementById('subLow').classList.remove('hidden');
@@ -2194,14 +2198,10 @@ function hestiaDirect(result) {
     area.classList.remove('hidden');
     classState.hestia = result;
     if (result === 'neg') {
-        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">Hestia negativo — tratamento ambulatorial pode ser considerado.<br><span style="font-size:12px;opacity:0.7;">Prescreva anticoagulação e agende seguimento em 1-2 semanas.</span></div></div>';
+        area.innerHTML = '<div class="calc-result result-green" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">Hestia negativo — tratamento ambulatorial pode ser considerado.<br><span style="font-size:12px;opacity:0.7;">Prescreva anticoagulação e agende seguimento em 1-2 semanas.</span></div></div><button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="hideAll();show(\'classQ2b\')">Prosseguir — localização do trombo →</button>';
     } else {
-        area.innerHTML = '<div class="calc-result result-yellow" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">Hestia positivo — internação recomendada.</div></div>';
+        area.innerHTML = '<div class="calc-result result-yellow" style="margin-top:8px;"><div class="result-text" style="font-size:14px;">Hestia positivo — internação recomendada.</div></div><button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="hideAll();show(\'classQ2b\')">Prosseguir — localização do trombo →</button>';
     }
-    // Proceed to location after a moment
-    setTimeout(function() {
-        hideAll('classQ2b');
-    }, 300);
 }
 
 // ==========================================

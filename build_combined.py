@@ -45,15 +45,21 @@ def make_logo_clickable_to_hub(html):
     Handles both: <a href="..."><img __LOGO__></a> and bare <img __LOGO__>."""
     hub_onclick = 'onclick="event.preventDefault(); parent.loadApp(\'hub\')"'
 
-    # Case 1: Logo already wrapped in <a> — replace href
+    # Case 1: Logo already wrapped in <a> with loadApp — skip (already correct)
+    # Case 1b: Logo wrapped in <a> without loadApp — replace href
+    def fix_existing_link(m):
+        full = m.group(0)
+        if "loadApp" in full:
+            return full  # Already has loadApp, don't duplicate
+        return '<a href="#" ' + hub_onclick + ' style="cursor:pointer;">' + m.group(2) + '</a>'
+
     html = re.sub(
-        r'<a\s+href="[^"]*"([^>]*)>\s*(<img\s[^>]*__LOGO__[^>]*>)\s*</a>',
-        r'<a href="#" ' + hub_onclick + r' \1 style="cursor:pointer;">\2</a>',
+        r'(<a\s[^>]*>)\s*(<img\s[^>]*__LOGO__[^>]*>)\s*</a>',
+        fix_existing_link,
         html
     )
 
     # Case 2: Bare <img __LOGO__> not inside <a> — wrap it
-    # Matches <img> with __LOGO__ anywhere in attributes (handles id="..." before src)
     def wrap_bare_logo(m):
         full = m.group(0)
         # Check if already inside an <a> by looking at preceding context
@@ -61,7 +67,9 @@ def make_logo_clickable_to_hub(html):
         preceding = html[max(0, start-200):start]
         if '<a ' in preceding and '</a>' not in preceding:
             return full  # Already inside a link
-        return '<a href="#" ' + hub_onclick + ' style="cursor:pointer;">' + full + '</a>'
+        # Remove any onclick on the img itself (build will provide via <a>)
+        cleaned = re.sub(r'\s*onclick="[^"]*"', '', full)
+        return '<a href="#" ' + hub_onclick + ' style="cursor:pointer;">' + cleaned + '</a>'
 
     html = re.sub(r'<img\s[^>]*__LOGO__[^>]*>', wrap_bare_logo, html)
 

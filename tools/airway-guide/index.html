@@ -673,7 +673,7 @@
 
     <footer class="footer">
         <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div class="footer-version">AirwayGuide v2.1.0 — ANY App</div>
+        <div class="footer-version">Airway Guide v2.1.1 — ANY App — Abril 2026</div>
     </footer>
 
     
@@ -1071,7 +1071,7 @@
             const titles = ['INDICAÇÃO', 'AVALIAÇÃO DE VAD', 'PACIENTE', 'MEDICAÇÕES', 'PROCEDIMENTO', 'CONFIRMAÇÃO'];
             let report = 'RELATÓRIO DE IOT - AirwayGuide\n' + new Date().toLocaleString('pt-BR') + '\n\n';
             sections.forEach((id, i) => report += titles[i] + ':\n' + document.getElementById(id).textContent + '\n\n');
-            report += '---\nGerado por AirwayGuide - ANY App v2.1.0';
+            report += '---\nGerado por Airway Guide - ANY App v2.1.1';
             navigator.clipboard.writeText(report).then(() => alert('Relatório copiado!'));
         }
 
