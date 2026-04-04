@@ -1039,7 +1039,8 @@
         
         function setStatus(mlEl, doseEl, v, min, max, crit) {
             let s = 'therapeutic';
-            if (v > max) s = crit && v <= crit ? 'caution' : 'critical';
+            if (v < min) s = 'critical';
+            else if (v > max) s = crit && v <= crit ? 'caution' : 'critical';
             mlEl.className = 'resultado-item ' + s;
             doseEl.className = 'resultado-item ' + s;
         }
@@ -1749,21 +1750,21 @@
         // ==================== RECALCULAR TODAS ====================
         // ==================== MANUAL INPUT SYSTEM ====================
         const drugConfig = {
-            nora:      { slider: 'nora-dose',      ml: 'nora-ml',      doseVal: 'nora-dose-val',      getConc: () => noraConc,  factor: 60, usePeso: true,  calc: calcularNora,      dp: 2 },
-            adrenalina:{ slider: 'adrenalina-dose', ml: 'adrenalina-ml',doseVal: 'adrenalina-dose-val',getConc: () => 64,        factor: 60, usePeso: true,  calc: calcularAdrenalina, dp: 2 },
-            dobuta:    { slider: 'dobuta-dose',     ml: 'dobuta-ml',    doseVal: 'dobuta-dose-val',    getConc: () => dobutaConc, factor: 60, usePeso: true, calc: calcularDobuta,     dp: 1 },
-            dopamina:  { slider: 'dopamina-dose',   ml: 'dopamina-ml',  doseVal: 'dopamina-dose-val',  getConc: () => 1000,      factor: 60, usePeso: true,  calc: calcularDopamina,   dp: 1 },
-            vaso:      { slider: 'vaso-dose',       ml: 'vaso-ml',      doseVal: 'vaso-dose-val',      getConc: () => 0.4,       factor: 60, usePeso: false, calc: calcularVaso,       dp: 3 },
-            milri:     { slider: 'milri-dose',      ml: 'milri-ml',     doseVal: 'milri-dose-val',     getConc: () => 200,       factor: 60, usePeso: true,  calc: calcularMilri,      dp: 3 },
-            mida:      { slider: 'mida-dose',       ml: 'mida-ml',      doseVal: 'mida-dose-val',      getConc: () => midaConc,  factor: 1,  usePeso: true,  calc: calcularMida,       dp: 2 },
-            fenta:     { slider: 'fenta-dose',      ml: 'fenta-ml',     doseVal: 'fenta-dose-val',     getConc: () => fentaConc, factor: 1,  usePeso: true,  calc: calcularFenta,      dp: 1 },
-            propofol:  { slider: 'propofol-dose',   ml: 'propofol-ml',  doseVal: 'propofol-dose-val',  getConc: () => 10,        factor: 1,  usePeso: true,  calc: calcularPropofol,   dp: 1 },
-            dex:       { slider: 'dex-dose',        ml: 'dex-ml',       doseVal: 'dex-dose-val',       getConc: () => 4,         factor: 1,  usePeso: true,  calc: calcularDex,        dp: 1 },
-            ceta:      { slider: 'ceta-dose',       ml: 'ceta-ml',      doseVal: 'ceta-dose-val',      getConc: () => 5,         factor: 1,  usePeso: true,  calc: calcularCeta,       dp: 1 },
-            cisa:      { slider: 'cisa-dose',       ml: 'cisa-ml',      doseVal: 'cisa-dose-val',      getConc: () => 1000,      factor: 60, usePeso: true,  calc: calcularCisa,       dp: 1 },
-            rocu:      { slider: 'rocu-dose',       ml: 'rocu-ml',      doseVal: 'rocu-dose-val',      getConc: () => 5000,      factor: 60, usePeso: true,  calc: calcularRocu,       dp: 1 },
-            nitro:     { slider: 'nitro-dose',      ml: 'nitro-ml',     doseVal: 'nitro-dose-val',     getConc: () => 200,       factor: 60, usePeso: true,  calc: calcularNitro,      dp: 2 },
-            nipride:   { slider: 'nipride-dose',    ml: 'nipride-ml',   doseVal: 'nipride-dose-val',   getConc: () => 200,       factor: 60, usePeso: true,  calc: calcularNipride,    dp: 1 }
+            nora:      { slider: 'nora-dose',      ml: 'nora-ml',      doseVal: 'nora-dose-val',      getConc: () => noraConc,  factor: 60, usePeso: true,  calc: calcularNora,      dp: 2, resMl: 'nora-res-ml',      resDose: 'nora-res-dose',      rMin: 0.01, rMax: 1, rCrit: 2 },
+            adrenalina:{ slider: 'adrenalina-dose', ml: 'adrenalina-ml',doseVal: 'adrenalina-dose-val',getConc: () => 64,        factor: 60, usePeso: true,  calc: calcularAdrenalina, dp: 2, resMl: 'adrenalina-res-ml',resDose: 'adrenalina-res-dose',rMin: 0.05, rMax: 0.5, rCrit: 1 },
+            dobuta:    { slider: 'dobuta-dose',     ml: 'dobuta-ml',    doseVal: 'dobuta-dose-val',    getConc: () => dobutaConc, factor: 60, usePeso: true, calc: calcularDobuta,     dp: 1, resMl: 'dobuta-res-ml',    resDose: 'dobuta-res-dose',    rMin: 2,    rMax: 20, rCrit: 30 },
+            dopamina:  { slider: 'dopamina-dose',   ml: 'dopamina-ml',  doseVal: 'dopamina-dose-val',  getConc: () => 1000,      factor: 60, usePeso: true,  calc: calcularDopamina,   dp: 1, resMl: 'dopamina-res-ml',  resDose: 'dopamina-res-dose',  rMin: 2,    rMax: 20, rCrit: 40 },
+            vaso:      { slider: 'vaso-dose',       ml: 'vaso-ml',      doseVal: 'vaso-dose-val',      getConc: () => 0.4,       factor: 60, usePeso: false, calc: calcularVaso,       dp: 3, resMl: 'vaso-res-ml',      resDose: 'vaso-res-dose',      rMin: 0.01, rMax: 0.04, rCrit: null },
+            milri:     { slider: 'milri-dose',      ml: 'milri-ml',     doseVal: 'milri-dose-val',     getConc: () => 200,       factor: 60, usePeso: true,  calc: calcularMilri,      dp: 3, resMl: 'milri-res-ml',     resDose: 'milri-res-dose',     rMin: 0.375,rMax: 0.75, rCrit: null },
+            mida:      { slider: 'mida-dose',       ml: 'mida-ml',      doseVal: 'mida-dose-val',      getConc: () => midaConc,  factor: 1,  usePeso: true,  calc: calcularMida,       dp: 2, resMl: 'mida-res-ml',      resDose: 'mida-res-dose',      rMin: 0.04, rMax: 0.2, rCrit: null },
+            fenta:     { slider: 'fenta-dose',      ml: 'fenta-ml',     doseVal: 'fenta-dose-val',     getConc: () => fentaConc, factor: 1,  usePeso: true,  calc: calcularFenta,      dp: 1, resMl: 'fenta-res-ml',     resDose: 'fenta-res-dose',     rMin: 0.3,  rMax: 2, rCrit: null },
+            propofol:  { slider: 'propofol-dose',   ml: 'propofol-ml',  doseVal: 'propofol-dose-val',  getConc: () => 10,        factor: 1,  usePeso: true,  calc: calcularPropofol,   dp: 1, resMl: 'propofol-res-ml',  resDose: 'propofol-res-dose',  rMin: 1,    rMax: 4, rCrit: null },
+            dex:       { slider: 'dex-dose',        ml: 'dex-ml',       doseVal: 'dex-dose-val',       getConc: () => 4,         factor: 1,  usePeso: true,  calc: calcularDex,        dp: 1, resMl: 'dex-res-ml',       resDose: 'dex-res-dose',       rMin: 0.2,  rMax: 0.7, rCrit: 1.4 },
+            ceta:      { slider: 'ceta-dose',       ml: 'ceta-ml',      doseVal: 'ceta-dose-val',      getConc: () => 5,         factor: 1,  usePeso: true,  calc: calcularCeta,       dp: 1, resMl: 'ceta-res-ml',      resDose: 'ceta-res-dose',      rMin: 0.5,  rMax: 2, rCrit: null },
+            cisa:      { slider: 'cisa-dose',       ml: 'cisa-ml',      doseVal: 'cisa-dose-val',      getConc: () => 1000,      factor: 60, usePeso: true,  calc: calcularCisa,       dp: 1, resMl: 'cisa-res-ml',      resDose: 'cisa-res-dose',      rMin: 1,    rMax: 3, rCrit: null },
+            rocu:      { slider: 'rocu-dose',       ml: 'rocu-ml',      doseVal: 'rocu-dose-val',      getConc: () => 5000,      factor: 60, usePeso: true,  calc: calcularRocu,       dp: 1, resMl: 'rocu-res-ml',      resDose: 'rocu-res-dose',      rMin: 5,    rMax: 12, rCrit: null },
+            nitro:     { slider: 'nitro-dose',      ml: 'nitro-ml',     doseVal: 'nitro-dose-val',     getConc: () => 200,       factor: 60, usePeso: true,  calc: calcularNitro,      dp: 2, resMl: 'nitro-res-ml',     resDose: 'nitro-res-dose',     rMin: 0.25, rMax: 2, rCrit: 5 },
+            nipride:   { slider: 'nipride-dose',    ml: 'nipride-ml',   doseVal: 'nipride-dose-val',   getConc: () => 200,       factor: 60, usePeso: true,  calc: calcularNipride,    dp: 1, resMl: 'nipride-res-ml',   resDose: 'nipride-res-dose',   rMin: 0.25, rMax: 5, rCrit: 8 }
         };
 
         function setupBidirectional() {
@@ -1793,15 +1794,13 @@
                     } else {
                         dose = (mlh * conc) / cfg.factor;
                     }
-                    // Atualizar slider (clamped ao range visual)
                     slider.value = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), dose));
-                    // Atualizar dose diretamente (sem clamp — mostra valor real mesmo fora do range do slider)
                     doseValInput.value = dose.toFixed(cfg.dp);
-                    // Recalcular status visual
                     cfg.calc();
-                    // Manter valores digitados
                     mlInput.value = this.value;
                     doseValInput.value = dose.toFixed(cfg.dp);
+                    // Status com valor real (fora do range = vermelho)
+                    if (cfg.resMl) setStatus(document.getElementById(cfg.resMl), document.getElementById(cfg.resDose), dose, cfg.rMin, cfg.rMax, cfg.rCrit);
                 });
 
                 // Dose input -> forward calculate
@@ -1809,7 +1808,6 @@
                     var v = parseFloat(this.value.replace(',', '.'));
                     if (isNaN(v)) return;
                     slider.value = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), v));
-                    // Calcular mL/h diretamente (sem clamp)
                     var mlh;
                     if (cfg.usePeso) {
                         if (!peso) return;
@@ -1819,9 +1817,10 @@
                     }
                     mlInput.value = mlh.toFixed(cfg.dp);
                     cfg.calc();
-                    // Manter valores
                     doseValInput.value = this.value;
                     mlInput.value = mlh.toFixed(cfg.dp);
+                    // Status com valor real (fora do range = vermelho)
+                    if (cfg.resMl) setStatus(document.getElementById(cfg.resMl), document.getElementById(cfg.resDose), v, cfg.rMin, cfg.rMax, cfg.rCrit);
                 });
 
                 // Focus: select all for easy replacement
