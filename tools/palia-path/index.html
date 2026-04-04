@@ -49,7 +49,7 @@
         }
 
         .header img {
-            max-width: 200px;
+            max-width: 280px;
             height: auto;
             cursor: pointer;
         }
@@ -91,27 +91,26 @@
             transition: var(--transition);
         }
 
-        .header-btn:hover {
+        .header-btn:active {
             background: rgba(255,255,255,0.3);
         }
 
         /* Disclaimer */
         .disclaimer {
-            background: #1A1A1A;
-            color: #F59E0B;
-            padding: 10px 20px;
-            font-size: 0.8rem;
+            background: #FFC107;
+            color: #000;
+            padding: 10px 16px;
+            font-size: 12px;
             text-align: center;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         /* Main Content */
         .main-content {
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -160,7 +159,7 @@
             overflow: hidden;
         }
 
-        .module-card:hover {
+        .module-card:active {
             transform: translateY(-2px);
             box-shadow: var(--sombra-hover);
             border-color: var(--accent);
@@ -219,7 +218,7 @@
             text-align: left;
         }
 
-        .extra-btn:hover {
+        .extra-btn:active {
             border-color: var(--accent);
             background: #1A1A1A;
         }
@@ -280,7 +279,7 @@
             margin-bottom: 16px;
         }
 
-        .back-btn:hover {
+        .back-btn:active {
             color: #FF7070;
         }
 
@@ -322,7 +321,7 @@
             user-select: none;
         }
 
-        .collapsible-header:hover {
+        .collapsible-header:active {
             background: #1A1A1A;
         }
 
@@ -455,7 +454,7 @@
             transition: var(--transition);
         }
 
-        .saved-card:hover {
+        .saved-card:active {
             border-color: var(--accent);
             box-shadow: var(--sombra);
         }
@@ -525,7 +524,7 @@
             top: 0;
         }
 
-        .med-table tr:hover {
+        .med-table tr:active {
             background: #1A1A1A;
         }
 
@@ -645,7 +644,7 @@
             border: 2px solid transparent;
         }
 
-        .scale-item:hover {
+        .scale-item:active {
             border-color: var(--accent);
         }
 
@@ -698,7 +697,7 @@
             justify-content: center;
         }
 
-        .myth-card:hover {
+        .myth-card:active {
             border-color: var(--vermelho);
             transform: translateY(-2px);
             box-shadow: var(--sombra);
@@ -789,7 +788,7 @@
             color: var(--cinza-secundario);
         }
 
-        .modal-close:hover {
+        .modal-close:active {
             background: #333;
         }
 
@@ -893,7 +892,7 @@
             transition: var(--transition);
         }
 
-        .ppi-option:hover {
+        .ppi-option:active {
             border-color: var(--accent);
         }
 
@@ -1045,7 +1044,7 @@
             transition: var(--transition);
         }
 
-        .tab:hover {
+        .tab:active {
             color: var(--accent);
         }
 
@@ -1101,7 +1100,7 @@
             transition: var(--transition);
         }
 
-        .hipo-subtab:hover {
+        .hipo-subtab:active {
             border-color: var(--accent);
             color: var(--accent);
         }

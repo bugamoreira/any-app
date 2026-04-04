@@ -57,7 +57,7 @@ a{color:var(--info);text-decoration:none}
 .grid-btn{background:var(--bg-card);border:1px solid var(--border-card);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;transition:var(--transition);min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
 .grid-btn:active{background:var(--bg-hover);transform:scale(0.97)}
 .grid-btn .grid-label{font-size:13px;font-weight:600;color:var(--text);line-height:1.3}
-.grid-btn .grid-desc{font-size:10px;color:var(--text-muted);line-height:1.2}
+.grid-btn .grid-desc{font-size:12px;color:var(--text-muted);line-height:1.2}
 .grid-btn.highlight{border-color:var(--accent);background:rgba(255,82,82,0.05)}
 
 /* BUTTONS */
@@ -137,10 +137,10 @@ a{color:var(--info);text-decoration:none}
 .vneri-bar-wrap{position:relative;margin:8px 0 28px}
 .vneri-bar{height:24px;background:linear-gradient(to right,#F44336 0%,#F44336 17%,#FFC107 17%,#FFC107 45%,#4CAF50 45%,#4CAF50 72%,#FFC107 72%,#FFC107 100%);border-radius:12px}
 .vneri-indicator{position:absolute;top:-4px;width:16px;height:32px;background:#FFF;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:left 0.3s;left:0%}
-.vneri-zone-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-bottom:4px;padding:0 2px}
+.vneri-zone-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px;padding:0 2px}
 .vneri-zone-labels span{text-align:center}
 .vneri-marks{position:absolute;bottom:-18px;width:100%}
-.vneri-marks span{position:absolute;transform:translateX(-50%);font-size:10px;color:var(--text-muted)}
+.vneri-marks span{position:absolute;transform:translateX(-50%);font-size:11px;color:var(--text-muted)}
 .vneri-conduta{margin-top:28px;padding:12px;border-radius:var(--radius-sm);font-size:13px;line-height:1.5}
 
 /* QUADRANT GRID */
@@ -177,7 +177,7 @@ a{color:var(--info);text-decoration:none}
 
 /* TEASER */
 .teaser{border:2px dashed var(--border-card);border-radius:var(--radius);padding:20px;text-align:center;margin-top:16px;opacity:0.5}
-.teaser .t-badge{display:inline-block;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;background:rgba(255,255,255,0.1);color:var(--text-muted);margin-bottom:8px;letter-spacing:1px}
+.teaser .t-badge{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;background:rgba(255,255,255,0.1);color:var(--text-muted);margin-bottom:8px;letter-spacing:1px}
 .teaser .t-title{font-size:14px;font-weight:600;color:var(--text-muted)}
 
 /* INFO CARD */
@@ -271,7 +271,7 @@ a{color:var(--info);text-decoration:none}
             <div class="grid-label">Gap CO2</div>
             <div class="grid-desc">Quadrante perfusional</div>
         </div>
-        <div class="grid-btn" onclick="event.preventDefault();parent.loadApp('infusion')">
+        <div class="grid-btn" onclick="event.preventDefault();goToInfusion('')">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
             <div class="grid-label">Calculadoras</div>
             <div class="grid-desc">Infusão contínua</div>
@@ -575,7 +575,7 @@ a{color:var(--info);text-decoration:none}
         <label>Dose de noradrenalina (mcg/kg/min)</label>
         <input type="number" id="doseNeInput" class="input-field" inputmode="decimal" placeholder="0.10" min="0.01" max="3.0" step="0.01" oninput="onVasoChange()">
         <input type="range" class="dose-slider" id="doseNeSlider" min="0.01" max="3.0" step="0.01" value="0.10" oninput="document.getElementById('doseNeInput').value=this.value;onVasoChange()">
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-top:-4px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:-4px">
             <span>0,01</span><span>0,5</span><span>1,0</span><span>2,0</span><span>3,0</span>
         </div>
     </div>
@@ -623,11 +623,11 @@ a{color:var(--info);text-decoration:none}
 
     <!-- Deep links -->
     <div class="deep-links" style="margin-top:16px">
-        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','noradrenalina')">
+        <div class="deep-link" onclick="event.preventDefault();goToInfusion('noradrenalina')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
             Calculadora NE
         </div>
-        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','vasopressina')">
+        <div class="deep-link" onclick="event.preventDefault();goToInfusion('vasopressina')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
             Calculadora vasopressina
         </div>
@@ -778,7 +778,7 @@ a{color:var(--info);text-decoration:none}
                         <button class="toggle-btn" onclick="setTesteDobu('nao')">Não</button>
                     </div>
                     <div class="deep-links" style="margin-top:12px">
-                        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','dobutamina')">
+                        <div class="deep-link" onclick="event.preventDefault();goToInfusion('dobutamina')">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
                             Calculadora dobutamina
                         </div>
@@ -841,15 +841,15 @@ a{color:var(--info);text-decoration:none}
 
     <!-- Deep links -->
     <div class="deep-links">
-        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','noradrenalina')">
+        <div class="deep-link" onclick="event.preventDefault();goToInfusion('noradrenalina')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
             NE
         </div>
-        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','vasopressina')">
+        <div class="deep-link" onclick="event.preventDefault();goToInfusion('vasopressina')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
             Vasopressina
         </div>
-        <div class="deep-link" onclick="event.preventDefault();parent.loadApp('infusion','dobutamina')">
+        <div class="deep-link" onclick="event.preventDefault();goToInfusion('dobutamina')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
             Dobutamina
         </div>
@@ -1077,7 +1077,7 @@ a{color:var(--info);text-decoration:none}
 <!-- FOOTER -->
 <footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:var(--bg);border-top:1px solid var(--border);z-index:50">
 <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:2px">Gustavo Moreira &#8226; Gabriela Feltrin &#8226; João Pedro Moreira</div>
-<div style="font-size:0.65rem;color:var(--text-muted)">Shock Path v1.0.1 — ANY App — Abril 2026</div>
+<div style="font-size:0.75rem;color:var(--text-muted)">Shock Path v1.0.1 — ANY App — Abril 2026</div>
 </footer>
 
 <!-- FAB MENU -->
@@ -1186,6 +1186,13 @@ document.addEventListener('click', function(e) {
 // ==========================================
 // STEP 1 — RECONHECIMENTO
 // ==========================================
+function goToInfusion(drug) {
+    if (shockState.peso) {
+        try { localStorage.setItem('anyapp-peso', shockState.peso); } catch(e) {}
+    }
+    parent.loadApp('infusion', drug || '');
+}
+
 function onPesoChange() {
     var el = document.getElementById('shockPeso');
     var warn = document.getElementById('pesoWarning');
