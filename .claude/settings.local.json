@@ -46,7 +46,20 @@
       "Bash(cp \"HTML segmentados/Seda Path/index.html\" tools/seda-path/index.html)",
       "Bash(cp \"HTML segmentados/TEP GUIDE/index.html\" tools/tep-guide/index.html)",
       "Bash(cp \"HTML segmentados/Tox Path/index.html\" tools/tox-path/index.html)",
-      "Bash(cp \"HTML segmentados/VM GUIDE/index.html\" tools/vm-guide/index.html)"
+      "Bash(cp \"HTML segmentados/VM GUIDE/index.html\" tools/vm-guide/index.html)",
+      "Bash(brew install:*)",
+      "Bash(rm -rf \"HTML segmentados\")",
+      "Bash(rm index.html)",
+      "Bash(rm anyapp-deploy.zip)",
+      "WebSearch",
+      "Bash(for i:*)",
+      "Bash(grep -n '`' tools/acls/index.html)",
+      "mcp__12c64d56-aec8-439f-8188-0562b9b4e970__get_project",
+      "mcp__12c64d56-aec8-439f-8188-0562b9b4e970__apply_migration",
+      "mcp__12c64d56-aec8-439f-8188-0562b9b4e970__get_project_url",
+      "mcp__12c64d56-aec8-439f-8188-0562b9b4e970__get_publishable_keys",
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "mcp__12c64d56-aec8-439f-8188-0562b9b4e970__execute_sql"
     ]
   }
 }

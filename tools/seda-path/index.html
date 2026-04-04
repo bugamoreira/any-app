@@ -16,6 +16,24 @@
             --borda: #222222;
             --texto-primario: #F5F5F5;
             --texto-secundario: #999999;
+            /* OLED Pure padronizado */
+            --bg-primary: #000000;
+            --bg-card: #0A0A0A;
+            --bg-elevated: #111111;
+            --bg-hover: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-muted: #666666;
+            --accent-hover: #FF6B6B;
+            --accent-muted: #FF525233;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --info: #2196F3;
+            --border: #222222;
+            --border-card: #333333;
+            --radius: 12px;
+            --radius-sm: 8px;
         }
 
         * {
@@ -101,7 +119,7 @@
         }
 
         .breadcrumb-sep {
-            color: #666;
+            color: var(--text-muted);
         }
 
         .screen {
@@ -750,7 +768,7 @@
         .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: #FF5252; border: none; color: white; cursor: pointer; box-shadow: 0 4px 12px rgba(255,82,82,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
         .fab-btn:active { transform: scale(0.95); }
         .fab-btn.open { background: #D32F2F; }
-        .fab-options { position: absolute; bottom: 70px; right: 0; background: #111; border: 1px solid #333; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
+        .fab-options { position: absolute; bottom: 70px; right: 0; background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
         .fab-options.open { display: block; }
         .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
         .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }

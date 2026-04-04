@@ -249,7 +249,7 @@ combined = '''<!DOCTYPE html>
     <meta name="description" content="ANY App — Ferramentas de apoio à decisão clínica para medicina de emergência">
     <meta property="og:title" content="ANY App — Medicina de Emergência">
     <meta property="og:description" content="Ferramentas de apoio à decisão clínica para medicina de emergência">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.101.1/dist/umd/supabase.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {

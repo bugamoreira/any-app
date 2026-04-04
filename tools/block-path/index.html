@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Block Path — ANY App</title>
     <style>
-        :root{--verde-hugo:#00A651;--azul-hugo:#FF5252;--verde-status:#10B981;--amarelo-status:#F59E0B;--vermelho-status:#EF4444;--cinza-claro:#1A1A1A;--cinza-medio:#999;--cinza-escuro:#F5F5F5;--branco:#111}
+        :root{--verde-hugo:#00A651;--azul-hugo:#FF5252;--verde-status:#10B981;--amarelo-status:#F59E0B;--vermelho-status:#EF4444;--cinza-claro:#1A1A1A;--cinza-medio:#999;--cinza-escuro:#F5F5F5;--branco:#111;
+/* OLED Pure padronizado */
+--bg-primary:#000000;--bg-card:#0A0A0A;--bg-elevated:#111111;--bg-hover:#1A1A1A;
+--text-primary:#FFFFFF;--text-secondary:#A0A0A0;--text-muted:#666666;
+--accent:#FF5252;--accent-hover:#FF6B6B;--accent-muted:#FF525233;
+--success:#4CAF50;--warning:#FFC107;--danger:#F44336;--info:#2196F3;
+--border:#222222;--border-card:#333333;--radius:12px;--radius-sm:8px}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#F5F5F5;line-height:1.6}
         .container{max-width:500px;margin:0 auto;padding:0 16px 32px}
@@ -30,7 +36,7 @@
         @keyframes slideLeft{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
         .back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:#1A1A1A;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#F5F5F5;margin-bottom:20px;transition:background .2s}
         .back-btn:hover{background:#333}
-        .section-header{background:#111;border-left:4px solid #FF5252;color:#F5F5F5;padding:20px;border-radius:12px 12px 0 0}
+        .section-header{background:var(--bg-elevated);border-left:4px solid #FF5252;color:#F5F5F5;padding:20px;border-radius:12px 12px 0 0}
         .section-header h2{font-size:20px;font-weight:600;margin-bottom:4px}
         .section-header p{font-size:14px;opacity:.9}
         .topo-category{margin-bottom:16px}
@@ -41,14 +47,14 @@
         .topo-item-block{font-size:13px;color:var(--verde-hugo);font-weight:600}
         .block-list-category{margin-bottom:20px}
         .block-list-title{font-size:13px;font-weight:600;color:var(--cinza-medio);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-left:4px}
-        .block-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#111;border:1px solid #333;border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+        .block-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s}
         .block-item:hover{border-color:var(--verde-hugo);background:rgba(16,185,129,0.1)}
         .block-item-name{font-size:15px;font-weight:500;color:var(--azul-hugo)}
         .block-item-volume{font-size:12px;color:var(--cinza-medio)}
-        .block-detail-header{background:#111;border-left:4px solid #FF5252;color:#F5F5F5;padding:24px 20px;border-radius:12px;margin-bottom:16px}
+        .block-detail-header{background:var(--bg-elevated);border-left:4px solid #FF5252;color:#F5F5F5;padding:24px 20px;border-radius:12px;margin-bottom:16px}
         .block-detail-header h2{font-size:22px;font-weight:700;margin-bottom:8px}
         .block-detail-header .block-info{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;opacity:.95}
-        .collapsible{background:#111;border:1px solid #333;border-radius:10px;margin-bottom:10px;overflow:hidden}
+        .collapsible{background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:10px;margin-bottom:10px;overflow:hidden}
         .collapsible-header{padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
         .collapsible-header:hover{background:#1A1A1A}
         .collapsible-header h4{font-size:15px;font-weight:600;color:var(--azul-hugo);display:flex;align-items:center;gap:8px}
@@ -80,7 +86,7 @@
         .warning-box{background:rgba(244,67,54,0.1);border-left:4px solid var(--vermelho-status);padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0}
         .warning-box-title{font-weight:600;color:var(--vermelho-status);font-size:13px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
         .warning-box p{font-size:13px;color:var(--cinza-escuro)}
-        .calc-container{background:#111;border:1px solid #333;border-radius:12px;padding:20px;margin-bottom:16px}
+        .calc-container{background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:12px;padding:20px;margin-bottom:16px}
         .input-group{margin-bottom:20px}
         .input-group label{display:block;font-size:14px;font-weight:500;color:var(--cinza-escuro);margin-bottom:8px}
         .input-row{display:flex;align-items:center;gap:12px}
@@ -92,24 +98,24 @@
         .result-card{background:#1A1A1A;border-radius:10px;padding:16px;margin-bottom:12px}
         .result-card-title{font-size:14px;font-weight:600;color:var(--azul-hugo);margin-bottom:12px;display:flex;align-items:center;gap:8px}
         .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-        .result-item{background:#111;padding:10px 12px;border-radius:6px}
+        .result-item{background:var(--bg-elevated);padding:10px 12px;border-radius:6px}
         .result-label{font-size:11px;color:var(--cinza-medio);margin-bottom:2px}
         .result-value{font-size:16px;font-weight:700;color:var(--azul-hugo)}
         .last-alert{background:linear-gradient(135deg,#991B1B,#DC2626);color:var(--branco);padding:20px;border-radius:12px;margin-bottom:16px;text-align:center}
         .last-alert h2{font-size:20px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:10px}
         .last-alert p{font-size:14px;opacity:.9}
-        .last-step{background:#111;border:2px solid #333;border-radius:12px;padding:16px;margin-bottom:12px}
+        .last-step{background:var(--bg-elevated);border:2px solid var(--border-card);border-radius:12px;padding:16px;margin-bottom:12px}
         .last-step-number{width:32px;height:32px;background:var(--vermelho-status);color:var(--branco);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:12px}
         .last-step h4{font-size:15px;color:var(--azul-hugo);margin-bottom:8px}
         .last-step p{font-size:14px;color:var(--cinza-escuro)}
         .lipid-calc{background:rgba(244,67,54,0.1);border:2px solid var(--vermelho-status);border-radius:12px;padding:20px;margin-top:16px}
         .lipid-calc-title{font-size:16px;font-weight:700;color:var(--vermelho-status);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-        .lipid-result{background:#111;padding:16px;border-radius:8px;margin-top:16px}
+        .lipid-result{background:var(--bg-elevated);padding:16px;border-radius:8px;margin-top:16px}
         .lipid-result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #333}
         .lipid-result-row:last-child{border-bottom:none}
         .lipid-result-label{font-size:14px;color:var(--cinza-escuro)}
         .lipid-result-value{font-size:16px;font-weight:700;color:var(--vermelho-status)}
-        .evolution-container{background:#111;border:1px solid #333;border-radius:12px;overflow:hidden}
+        .evolution-container{background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:12px;overflow:hidden}
         .evolution-header{background:#1A1A1A;border-left:4px solid #FF5252;color:#F5F5F5;padding:16px 20px}
         .evolution-header h3{font-size:16px;font-weight:600}
         .evolution-content{padding:20px}
@@ -134,7 +140,7 @@
         .evo-result-header h4{color:var(--verde-hugo);font-size:16px}
         .evo-edit-btn{padding:8px 16px;background:#1A1A1A;border:none;border-radius:6px;font-size:13px;cursor:pointer;color:#F5F5F5}
         .evo-edit-btn:hover{background:#333}
-        .card{background:#111;border:1px solid #333;border-radius:12px;margin-bottom:16px;overflow:hidden}
+        .card{background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:12px;margin-bottom:16px;overflow:hidden}
         .card-header{padding:16px;background:#1A1A1A;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
         .card-header:hover{background:#333}
         .card-header h3{font-size:15px;font-weight:600;color:var(--azul-hugo)}
@@ -559,9 +565,9 @@
             <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume/nível</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25-0,5%</td><td>3-5 mL</td></tr><tr><td>Ropivacaína</td><td>0,5%</td><td>3-5 mL</td></tr><tr><td>Lidocaína</td><td>1-2%</td><td>3-5 mL</td></tr></tbody></table><div class="warning-box"><div class="warning-box-title">Dose total</div><p>Maior absorção sistêmica! Calcule a dose se bloquear múltiplos níveis.</p></div></div></div>
         </section>
 
-        <footer style="text-align:center;padding:32px 16px 80px;color:#666;font-size:12px;">
-            <p>Gustavo Moreira &bull; Gabriela Feltrin &bull; Jo&atilde;o Pedro Moreira</p>
-            <p>Block Path v1.0.1 &mdash; ANY App &mdash; Abril 2026</p>
+        <footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:#000;border-top:1px solid #222;z-index:50;">
+            <div style="font-size:0.75rem;color:#A0A0A0;margin-bottom:2px">Gustavo Moreira &bull; Gabriela Feltrin &bull; Jo&atilde;o Pedro Moreira</div>
+            <div style="font-size:0.65rem;color:#666">Block Path v1.0.1 &mdash; ANY App &mdash; Abril 2026</div>
         </footer>
     </div>
 

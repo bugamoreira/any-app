@@ -18,7 +18,31 @@
       "runtimeExecutable": "ruby",
       "runtimeArgs": ["/tmp/toxpath_preview/server.rb"],
       "port": 8082
+    },
+    {
+      "name": "dengue",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["/tmp/dengue_preview/server.rb"],
+      "port": 8083
+    },
+    {
+      "name": "infusion",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["/tmp/infusion_preview/server.rb"],
+      "port": 8084
+    },
+    {
+      "name": "airway",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["/tmp/airway_preview/server.rb"],
+      "port": 8085
+    },
+    {
+      "name": "acls",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["/tmp/acls_preview/server.rb"],
+      "port": 8086
     }
   ],
-  "autoVerify": false
+  "autoVerify": true
 }

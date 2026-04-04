@@ -5,6 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tox Path — ANY App</title>
     <style>
+        /* OLED Pure padronizado */
+        :root {
+            --bg-primary: #000000;
+            --bg-card: #0A0A0A;
+            --bg-elevated: #111111;
+            --bg-hover: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-muted: #666666;
+            --accent: #FF5252;
+            --accent-hover: #FF6B6B;
+            --accent-muted: #FF525233;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --info: #2196F3;
+            --border: #222222;
+            --border-card: #333333;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
         /* === Global view switching === */
         .app-view { display: none; }
         .app-view.active { display: block; }
@@ -585,7 +607,7 @@
         }
 
         .module-arrow {
-            color: #666;
+            color: var(--text-muted);
             flex-shrink: 0;
         }
 

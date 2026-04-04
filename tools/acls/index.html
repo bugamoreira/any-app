@@ -13,6 +13,11 @@
 --accent:#FF5252;--accent-h:#FF6B6B;
 --success:#4CAF50;--warning:#FFC107;--danger:#F44336;--info:#2196F3;
 --radius:12px;--radius-sm:8px;
+/* OLED Pure padronizado */
+--bg-primary:#000000;--bg-card:#0A0A0A;--bg-elevated:#111111;--bg-hover:#1A1A1A;
+--text-primary:#FFFFFF;--text-secondary:#A0A0A0;--text-muted:#666666;
+--accent-hover:#FF6B6B;--accent-muted:#FF525233;
+--border-card:#333333;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;overflow-x:hidden;padding-bottom:70px}
 
@@ -297,7 +302,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="guide-text">Incentive a tosse</div>
 <div class="guide-sub">Continue monitorando sinais de agravamento. Não interfira enquanto a tosse for efetiva.</div>
 </div>
-<button class="ovace-btn ovace-btn-secondary" onclick="ovaceReset()">Voltar</button>
+<button class="ovace-btn ovace-btn-secondary" onclick="ovaceReset()">← Voltar</button>
 </div>
 
 <div id="ovaceStepGrave" style="display:none">
@@ -567,7 +572,7 @@ Configurações
 <h1>Atendimentos salvos</h1>
 </div>
 <div id="historyList"></div>
-<button class="copy-btn mt-16" onclick="showScreen('screenStart')" style="background:var(--card);border:1px solid var(--border);color:var(--text)">Voltar</button>
+<button class="copy-btn mt-16" onclick="showScreen('screenStart')" style="background:var(--card);border:1px solid var(--border);color:var(--text)">← Voltar</button>
 <button class="copy-btn mt-12" onclick="clearHistory()" style="background:rgba(244,67,54,0.1);border:1px solid var(--danger);color:var(--danger)">Limpar histórico</button>
 </div>
 </div>

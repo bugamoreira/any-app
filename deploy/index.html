@@ -7,7 +7,7 @@
     <meta name="description" content="ANY App — Ferramentas de apoio à decisão clínica para medicina de emergência">
     <meta property="og:title" content="ANY App — Medicina de Emergência">
     <meta property="og:description" content="Ferramentas de apoio à decisão clínica para medicina de emergência">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.101.1/dist/umd/supabase.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
@@ -3261,7 +3261,7 @@
         </div>
 
         <div id="pathwayContainer" style="display:none">
-        <button class="btn btn-secondary" onclick="backToHome()" style="margin-bottom:12px;font-size:13px;padding:10px 16px;width:auto">← Menu</button>
+        <button class="btn btn-secondary" onclick="backToHome()" style="margin-bottom:12px;font-size:13px;padding:10px 16px;width:auto">← Voltar</button>
         <div class="progress-container" id="progressDots"></div>
         <!-- STEP 1 -->
         <div class="step" id="step-1">
@@ -8512,6 +8512,24 @@ function showHome() {
             --borda: #222222;
             --texto-primario: #F5F5F5;
             --texto-secundario: #999999;
+            /* OLED Pure padronizado */
+            --bg-primary: #000000;
+            --bg-card: #0A0A0A;
+            --bg-elevated: #111111;
+            --bg-hover: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-muted: #666666;
+            --accent-hover: #FF6B6B;
+            --accent-muted: #FF525233;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --info: #2196F3;
+            --border: #222222;
+            --border-card: #333333;
+            --radius: 12px;
+            --radius-sm: 8px;
         }
 
         * {
@@ -8597,7 +8615,7 @@ function showHome() {
         }
 
         .breadcrumb-sep {
-            color: #666;
+            color: var(--text-muted);
         }
 
         .screen {
@@ -9246,7 +9264,7 @@ function showHome() {
         .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: #FF5252; border: none; color: white; cursor: pointer; box-shadow: 0 4px 12px rgba(255,82,82,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
         .fab-btn:active { transform: scale(0.95); }
         .fab-btn.open { background: #D32F2F; }
-        .fab-options { position: absolute; bottom: 70px; right: 0; background: #111; border: 1px solid #333; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
+        .fab-options { position: absolute; bottom: 70px; right: 0; background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
         .fab-options.open { display: block; }
         .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
         .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
@@ -10305,6 +10323,28 @@ function showHome() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tox Path — ANY App</title>
     <style>
+        /* OLED Pure padronizado */
+        :root {
+            --bg-primary: #000000;
+            --bg-card: #0A0A0A;
+            --bg-elevated: #111111;
+            --bg-hover: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-muted: #666666;
+            --accent: #FF5252;
+            --accent-hover: #FF6B6B;
+            --accent-muted: #FF525233;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --info: #2196F3;
+            --border: #222222;
+            --border-card: #333333;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
         /* === Global view switching === */
         .app-view { display: none; }
         .app-view.active { display: block; }
@@ -10885,7 +10925,7 @@ function showHome() {
         }
 
         .module-arrow {
-            color: #666;
+            color: var(--text-muted);
             flex-shrink: 0;
         }
 
@@ -18355,6 +18395,25 @@ function showTab(tabName) {
             --green: #66BB6A;
             --blue: #42A5F5;
             --purple: #AB47BC;
+            /* OLED Pure padronizado */
+            --bg-primary: #000000;
+            --bg-card: #0A0A0A;
+            --bg-elevated: #111111;
+            --bg-hover: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-muted: #666666;
+            --accent: #FF5252;
+            --accent-hover: #FF6B6B;
+            --accent-muted: #FF525233;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --info: #2196F3;
+            --border: #222222;
+            --border-card: #333333;
+            --radius: 12px;
+            --radius-sm: 8px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #000; color: #F5F5F5; min-height: 100vh; padding-bottom: 90px; }
@@ -18368,7 +18427,7 @@ function showTab(tabName) {
         .input-group { background: #1A1A1A; border-radius: 12px; padding: 14px; border: 2px solid #333; transition: all .2s; }
         .input-group:focus-within { border-color: #FF5252; box-shadow: 0 0 0 4px rgba(255,82,82,0.2); }
         .input-group.source { border-color: #FF5252; background: rgba(255,82,82,0.15); }
-        .input-label { display: flex; align-items: center; justify-content: space-between; font-size: .65rem; font-weight: 700; text-transform: uppercase; color: var(--gray-600); margin-bottom: 8px; }
+        .input-label { display: flex; align-items: center; justify-content: space-between; font-size: .75rem; font-weight: 700; text-transform: uppercase; color: var(--gray-600); margin-bottom: 8px; }
         .source-badge { background: var(--red); color: white; font-size: .5rem; padding: 2px 6px; border-radius: 4px; display: none; }
         .input-group.source .source-badge { display: inline-block; }
         .input-row { display: flex; align-items: center; gap: 6px; }
@@ -18384,7 +18443,7 @@ function showTab(tabName) {
         .broselow-option:hover { background: #333; }
         .broselow-option-color { width: 32px; height: 32px; border-radius: 8px; }
         .broselow-option-name { font-weight: 700; font-size: .9rem; }
-        .broselow-option-details { font-size: .7rem; color: var(--gray-500); }
+        .broselow-option-details { font-size: .8rem; color: var(--gray-500); }
         .bg-gray { background: #6B7280; color: white; }
         .bg-pink { background: #EC4899; color: white; }
         .bg-red { background: #DC2626; color: white; }
@@ -18422,7 +18481,7 @@ function showTab(tabName) {
         .drug-card.highlight .drug-header { background: #FF5252; color: white; }
         .drug-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #333; gap: 12px; flex-wrap: wrap; }
         .drug-name { font-weight: 700; font-size: .95rem; }
-        .drug-presentation { font-size: .7rem; color: var(--gray-500); margin-top: 2px; }
+        .drug-presentation { font-size: .8rem; color: var(--gray-500); margin-top: 2px; }
         .drug-card.highlight .drug-presentation { color: rgba(255,255,255,.8); }
         .drug-dose-badge { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: .75rem; font-weight: 600; padding: 6px 10px; background: #111; color: #F5F5F5; border-radius: 6px; }
         .drug-body { padding: 16px; }
@@ -18433,8 +18492,8 @@ function showTab(tabName) {
         .drug-result-box { display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .drug-result-label { font-size: .6rem; font-weight: 700; text-transform: uppercase; color: var(--gray-500); }
         .drug-result { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 1.3rem; font-weight: 700; color: #FF5252; background: #111; padding: 10px 16px; border-radius: 10px; min-width: 90px; border: 2px solid #333; text-align: center; }
-        .drug-result-unit { font-size: .7rem; color: var(--gray-500); }
-        .btn-prepare { padding: 10px 14px; background: var(--gray-800); color: white; border: none; border-radius: 8px; font-size: .7rem; font-weight: 700; cursor: pointer; margin-top: 12px; }
+        .drug-result-unit { font-size: .8rem; color: var(--gray-500); }
+        .btn-prepare { padding: 10px 14px; background: var(--gray-800); color: white; border: none; border-radius: 8px; font-size: .8rem; font-weight: 700; cursor: pointer; margin-top: 12px; }
         .cpr-box { background: #111; color: var(--white); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
         .cpr-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
         .cpr-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; color: var(--gray-400); }
@@ -18448,7 +18507,7 @@ function showTab(tabName) {
         @media (max-width: 500px) { .defib-grid { grid-template-columns: 1fr; } }
         .defib-card { background: #1A1A1A; color: var(--white); border-radius: 12px; padding: 20px; text-align: center; }
         .defib-card.shock { background: linear-gradient(135deg, #FF5252, #D32F2F); }
-        .defib-label { font-size: .65rem; font-weight: 700; text-transform: uppercase; opacity: .8; margin-bottom: 8px; }
+        .defib-label { font-size: .75rem; font-weight: 700; text-transform: uppercase; opacity: .8; margin-bottom: 8px; }
         .defib-value { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 2rem; font-weight: 700; }
         .defib-unit { font-size: 1rem; opacity: .8; }
         .causes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -18463,7 +18522,7 @@ function showTab(tabName) {
         .equipment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         @media (max-width: 500px) { .equipment-grid { grid-template-columns: repeat(2, 1fr); } }
         .equipment-card { background: #1A1A1A; border-radius: 12px; padding: 16px; text-align: center; border: 2px solid #333; }
-        .equipment-label { font-size: .65rem; font-weight: 700; text-transform: uppercase; color: var(--gray-500); margin-bottom: 8px; }
+        .equipment-label { font-size: .75rem; font-weight: 700; text-transform: uppercase; color: var(--gray-500); margin-bottom: 8px; }
         .equipment-value { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 1.4rem; font-weight: 700; }
         .equipment-unit { font-size: .75rem; color: var(--gray-500); margin-top: 4px; }
         .checklist { background: #1A1A1A; border-radius: 12px; padding: 16px; }
@@ -18481,15 +18540,15 @@ function showTab(tabName) {
         .infusion-card.highlight { border-color: #42A5F5; box-shadow: 0 0 0 3px rgba(66,165,245,0.3); }
         .infusion-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--purple); color: white; flex-wrap: wrap; gap: 8px; }
         .infusion-name { font-weight: 700; font-size: .9rem; }
-        .infusion-range { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: .7rem; background: rgba(255,255,255,.2); padding: 4px 10px; border-radius: 6px; }
+        .infusion-range { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: .8rem; background: rgba(255,255,255,.2); padding: 4px 10px; border-radius: 6px; }
         .infusion-body { padding: 14px; }
         .infusion-prep { background: #111; border: 1px solid #333; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
-        .infusion-prep-title { font-size: .7rem; font-weight: 700; text-transform: uppercase; color: var(--gray-500); margin-bottom: 8px; }
+        .infusion-prep-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; color: var(--gray-500); margin-bottom: 8px; }
         .infusion-prep-details { font-size: .8rem; line-height: 1.6; }
         .prep-label { color: var(--gray-500); }
         .infusion-warning { background: var(--yellow-light); color: var(--yellow); font-size: .75rem; padding: 6px 10px; border-radius: 6px; margin-top: 8px; font-weight: 600; }
         .infusion-dose-control { margin-bottom: 12px; }
-        .infusion-dose-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; color: var(--gray-500); margin-bottom: 8px; }
+        .infusion-dose-label { font-size: .8rem; font-weight: 700; text-transform: uppercase; color: var(--gray-500); margin-bottom: 8px; }
         .infusion-slider-container { display: flex; align-items: center; gap: 12px; }
         .infusion-slider { flex: 1; height: 8px; -webkit-appearance: none; appearance: none; background: #555; border-radius: 4px; outline: none; }
         .infusion-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; background: var(--blue); border-radius: 50%; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
@@ -18499,10 +18558,10 @@ function showTab(tabName) {
         .infusion-dose-input.out-of-range { border-color: #FF5252; color: #FF5252; }
         .infusion-range-warning { font-size: 12px; color: #FF5252; text-align: center; margin-top: 4px; display: none; }
         .infusion-range-warning.visible { display: block; }
-        .infusion-dose-unit { font-size: .7rem; color: var(--gray-500); white-space: nowrap; }
+        .infusion-dose-unit { font-size: .8rem; color: var(--gray-500); white-space: nowrap; }
         .infusion-result { display: flex; justify-content: center; }
         .infusion-result-box { background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; border-radius: 12px; padding: 14px 24px; text-align: center; min-width: 140px; }
-        .infusion-result-label { font-size: .65rem; font-weight: 600; text-transform: uppercase; opacity: .9; margin-bottom: 4px; }
+        .infusion-result-label { font-size: .75rem; font-weight: 600; text-transform: uppercase; opacity: .9; margin-bottom: 4px; }
         .infusion-result-value { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 1.6rem; font-weight: 700; background: transparent; border: none; border-bottom: 2px solid transparent; text-align: center; width: 100%; color: white; outline: none; -moz-appearance: textfield; }
         .infusion-result-value::-webkit-outer-spin-button, .infusion-result-value::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .infusion-result-value:focus { border-bottom-color: rgba(255,255,255,0.6); }
@@ -18607,7 +18666,7 @@ function showTab(tabName) {
 
         <!-- VIEW: PCR -->
         <div class="ped-view" id="view-pcr">
-            <button class="back-btn" onclick="showView('view-home')">Voltar</button>
+            <button class="back-btn" onclick="showView('view-home')">← Voltar</button>
             <h2 style="font-size:20px;font-weight:700;margin-bottom:16px">PCR Pediátrica</h2>
 
             <div class="cpr-box">
@@ -18681,7 +18740,7 @@ function showTab(tabName) {
 
         <!-- VIEW: CENARIOS -->
         <div class="ped-view" id="view-cenarios">
-            <button class="back-btn" onclick="showView('view-home')">Voltar</button>
+            <button class="back-btn" onclick="showView('view-home')">← Voltar</button>
             <h2 style="font-size:20px;font-weight:700;margin-bottom:16px">Cenários</h2>
             <div class="scenario-card" onclick="loadScenarioView('anafilaxia')">
                 <div class="scenario-card-title">Anafilaxia</div>
@@ -18715,7 +18774,7 @@ function showTab(tabName) {
 
         <!-- VIEW: CALCULADORAS -->
         <div class="ped-view" id="view-calculadoras">
-            <button class="back-btn" id="calc-back-btn" onclick="showView('view-home')">Voltar</button>
+            <button class="back-btn" id="calc-back-btn" onclick="showView('view-home')">← Voltar</button>
             <h2 style="font-size:20px;font-weight:700;margin-bottom:16px">Calculadoras</h2>
 
             <div class="section collapsed" id="section-iot">
@@ -19774,6 +19833,24 @@ function showTab(tabName) {
             --sombra-hover: 0 4px 16px rgba(0,0,0,0.6);
             --border-radius: 12px;
             --transition: all 0.3s ease;
+            /* OLED Pure padronizado */
+            --bg-primary: #000000;
+            --bg-card: #0A0A0A;
+            --bg-elevated: #111111;
+            --bg-hover: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-muted: #666666;
+            --accent-hover: #FF6B6B;
+            --accent-muted: #FF525233;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --info: #2196F3;
+            --border: #222222;
+            --border-card: #333333;
+            --radius: 12px;
+            --radius-sm: 8px;
         }
 
         * {
@@ -19873,7 +19950,7 @@ function showTab(tabName) {
             text-align: center;
             margin-bottom: 24px;
             padding: 16px;
-            background: #111;
+            background: var(--bg-elevated);
             border-radius: var(--border-radius);
         }
 
@@ -19897,7 +19974,7 @@ function showTab(tabName) {
         }
 
         .module-card {
-            background: #111;
+            background: var(--bg-elevated);
             border-radius: var(--border-radius);
             padding: 20px 16px;
             text-align: center;
@@ -19958,7 +20035,7 @@ function showTab(tabName) {
             display: flex;
             align-items: center;
             gap: 12px;
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: var(--border-radius);
             padding: 14px 16px;
@@ -20053,7 +20130,7 @@ function showTab(tabName) {
 
         /* Collapsible Sections */
         .collapsible {
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: var(--border-radius);
             margin-bottom: 12px;
@@ -20195,7 +20272,7 @@ function showTab(tabName) {
         }
 
         .saved-card {
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: var(--border-radius);
             padding: 16px;
@@ -20432,7 +20509,7 @@ function showTab(tabName) {
         }
 
         .myth-card {
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: 10px;
             padding: 12px 8px;
@@ -20493,7 +20570,7 @@ function showTab(tabName) {
         }
 
         .modal {
-            background: #111;
+            background: var(--bg-elevated);
             border-radius: var(--border-radius);
             max-width: 500px;
             width: 100%;
@@ -20515,7 +20592,7 @@ function showTab(tabName) {
             justify-content: space-between;
             position: sticky;
             top: 0;
-            background: #111;
+            background: var(--bg-elevated);
         }
 
         .modal-header h3 {
@@ -20605,12 +20682,12 @@ function showTab(tabName) {
 
         .footer-text {
             font-size: 12px;
-            color: #666;
+            color: var(--text-muted);
             line-height: 1.6;
         }
 
         .footer-text strong {
-            color: #999;
+            color: var(--text-secondary);
         }
 
         /* Responsive */
@@ -20633,7 +20710,7 @@ function showTab(tabName) {
             display: flex;
             align-items: center;
             padding: 10px 12px;
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: 8px;
             margin-bottom: 8px;
@@ -20714,8 +20791,8 @@ function showTab(tabName) {
         .technique-step {
             position: relative;
             padding: 16px 16px 16px 50px;
-            background: #111;
-            border: 1px solid #333;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-card);
             border-radius: 8px;
             margin-bottom: 12px;
         }
@@ -20876,8 +20953,8 @@ function showTab(tabName) {
         }
 
         .volume-card {
-            background: #111;
-            border: 1px solid #333;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-card);
             border-radius: 8px;
             padding: 12px;
             text-align: center;
@@ -20952,8 +21029,8 @@ function showTab(tabName) {
         }
 
         .med-detail-card {
-            background: #111;
-            border: 1px solid #333;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-card);
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 10px;
@@ -21003,8 +21080,8 @@ function showTab(tabName) {
         .med-search-container input {
             width: 100%;
             padding: 12px 12px 12px 40px;
-            background: #111;
-            border: 1px solid #333;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-card);
             border-radius: 10px;
             color: #F5F5F5;
             font-size: 15px;
@@ -21062,7 +21139,7 @@ function showTab(tabName) {
         }
 
         .capacity-card {
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: 10px;
             padding: 14px;
@@ -21097,7 +21174,7 @@ function showTab(tabName) {
         .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: #FF5252; border: none; color: white; cursor: pointer; box-shadow: 0 4px 12px rgba(255,82,82,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
         .fab-btn:active { transform: scale(0.95); }
         .fab-btn.open { background: #D32F2F; }
-        .fab-options { position: absolute; bottom: 70px; right: 0; background: #111; border: 1px solid #333; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
+        .fab-options { position: absolute; bottom: 70px; right: 0; background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
         .fab-options.open { display: block; }
         .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
         .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
@@ -22812,9 +22889,9 @@ function showTab(tabName) {
     </main>
 
     <!-- Footer -->
-    <footer style="position:relative;padding:20px 16px;text-align:center;border-top:1px solid #333;">
-        <div style="font-size:11px;color:#999;">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div style="font-size:10px;color:#555;margin-top:4px;">Palia Path v1.0.1 — ANY App — Abril 2026</div>
+    <footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:#000;border-top:1px solid #222;z-index:50;">
+        <div style="font-size:0.75rem;color:#A0A0A0;margin-bottom:2px">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
+        <div style="font-size:0.65rem;color:#666">Palia Path v1.0.1 — ANY App — Abril 2026</div>
     </footer>
 
     <!-- Modal Mitos -->
@@ -23253,7 +23330,13 @@ function showTab(tabName) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Block Path — ANY App</title>
     <style>
-        :root{--verde-hugo:#00A651;--azul-hugo:#FF5252;--verde-status:#10B981;--amarelo-status:#F59E0B;--vermelho-status:#EF4444;--cinza-claro:#1A1A1A;--cinza-medio:#999;--cinza-escuro:#F5F5F5;--branco:#111}
+        :root{--verde-hugo:#00A651;--azul-hugo:#FF5252;--verde-status:#10B981;--amarelo-status:#F59E0B;--vermelho-status:#EF4444;--cinza-claro:#1A1A1A;--cinza-medio:#999;--cinza-escuro:#F5F5F5;--branco:#111;
+/* OLED Pure padronizado */
+--bg-primary:#000000;--bg-card:#0A0A0A;--bg-elevated:#111111;--bg-hover:#1A1A1A;
+--text-primary:#FFFFFF;--text-secondary:#A0A0A0;--text-muted:#666666;
+--accent:#FF5252;--accent-hover:#FF6B6B;--accent-muted:#FF525233;
+--success:#4CAF50;--warning:#FFC107;--danger:#F44336;--info:#2196F3;
+--border:#222222;--border-card:#333333;--radius:12px;--radius-sm:8px}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#F5F5F5;line-height:1.6}
         .container{max-width:500px;margin:0 auto;padding:0 16px 32px}
@@ -23278,7 +23361,7 @@ function showTab(tabName) {
         @keyframes slideLeft{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
         .back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:#1A1A1A;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#F5F5F5;margin-bottom:20px;transition:background .2s}
         .back-btn:hover{background:#333}
-        .section-header{background:#111;border-left:4px solid #FF5252;color:#F5F5F5;padding:20px;border-radius:12px 12px 0 0}
+        .section-header{background:var(--bg-elevated);border-left:4px solid #FF5252;color:#F5F5F5;padding:20px;border-radius:12px 12px 0 0}
         .section-header h2{font-size:20px;font-weight:600;margin-bottom:4px}
         .section-header p{font-size:14px;opacity:.9}
         .topo-category{margin-bottom:16px}
@@ -23289,14 +23372,14 @@ function showTab(tabName) {
         .topo-item-block{font-size:13px;color:var(--verde-hugo);font-weight:600}
         .block-list-category{margin-bottom:20px}
         .block-list-title{font-size:13px;font-weight:600;color:var(--cinza-medio);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-left:4px}
-        .block-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#111;border:1px solid #333;border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+        .block-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s}
         .block-item:hover{border-color:var(--verde-hugo);background:rgba(16,185,129,0.1)}
         .block-item-name{font-size:15px;font-weight:500;color:var(--azul-hugo)}
         .block-item-volume{font-size:12px;color:var(--cinza-medio)}
-        .block-detail-header{background:#111;border-left:4px solid #FF5252;color:#F5F5F5;padding:24px 20px;border-radius:12px;margin-bottom:16px}
+        .block-detail-header{background:var(--bg-elevated);border-left:4px solid #FF5252;color:#F5F5F5;padding:24px 20px;border-radius:12px;margin-bottom:16px}
         .block-detail-header h2{font-size:22px;font-weight:700;margin-bottom:8px}
         .block-detail-header .block-info{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;opacity:.95}
-        .collapsible{background:#111;border:1px solid #333;border-radius:10px;margin-bottom:10px;overflow:hidden}
+        .collapsible{background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:10px;margin-bottom:10px;overflow:hidden}
         .collapsible-header{padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
         .collapsible-header:hover{background:#1A1A1A}
         .collapsible-header h4{font-size:15px;font-weight:600;color:var(--azul-hugo);display:flex;align-items:center;gap:8px}
@@ -23328,7 +23411,7 @@ function showTab(tabName) {
         .warning-box{background:rgba(244,67,54,0.1);border-left:4px solid var(--vermelho-status);padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0}
         .warning-box-title{font-weight:600;color:var(--vermelho-status);font-size:13px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
         .warning-box p{font-size:13px;color:var(--cinza-escuro)}
-        .calc-container{background:#111;border:1px solid #333;border-radius:12px;padding:20px;margin-bottom:16px}
+        .calc-container{background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:12px;padding:20px;margin-bottom:16px}
         .input-group{margin-bottom:20px}
         .input-group label{display:block;font-size:14px;font-weight:500;color:var(--cinza-escuro);margin-bottom:8px}
         .input-row{display:flex;align-items:center;gap:12px}
@@ -23340,24 +23423,24 @@ function showTab(tabName) {
         .result-card{background:#1A1A1A;border-radius:10px;padding:16px;margin-bottom:12px}
         .result-card-title{font-size:14px;font-weight:600;color:var(--azul-hugo);margin-bottom:12px;display:flex;align-items:center;gap:8px}
         .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-        .result-item{background:#111;padding:10px 12px;border-radius:6px}
+        .result-item{background:var(--bg-elevated);padding:10px 12px;border-radius:6px}
         .result-label{font-size:11px;color:var(--cinza-medio);margin-bottom:2px}
         .result-value{font-size:16px;font-weight:700;color:var(--azul-hugo)}
         .last-alert{background:linear-gradient(135deg,#991B1B,#DC2626);color:var(--branco);padding:20px;border-radius:12px;margin-bottom:16px;text-align:center}
         .last-alert h2{font-size:20px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:10px}
         .last-alert p{font-size:14px;opacity:.9}
-        .last-step{background:#111;border:2px solid #333;border-radius:12px;padding:16px;margin-bottom:12px}
+        .last-step{background:var(--bg-elevated);border:2px solid var(--border-card);border-radius:12px;padding:16px;margin-bottom:12px}
         .last-step-number{width:32px;height:32px;background:var(--vermelho-status);color:var(--branco);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin-bottom:12px}
         .last-step h4{font-size:15px;color:var(--azul-hugo);margin-bottom:8px}
         .last-step p{font-size:14px;color:var(--cinza-escuro)}
         .lipid-calc{background:rgba(244,67,54,0.1);border:2px solid var(--vermelho-status);border-radius:12px;padding:20px;margin-top:16px}
         .lipid-calc-title{font-size:16px;font-weight:700;color:var(--vermelho-status);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-        .lipid-result{background:#111;padding:16px;border-radius:8px;margin-top:16px}
+        .lipid-result{background:var(--bg-elevated);padding:16px;border-radius:8px;margin-top:16px}
         .lipid-result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #333}
         .lipid-result-row:last-child{border-bottom:none}
         .lipid-result-label{font-size:14px;color:var(--cinza-escuro)}
         .lipid-result-value{font-size:16px;font-weight:700;color:var(--vermelho-status)}
-        .evolution-container{background:#111;border:1px solid #333;border-radius:12px;overflow:hidden}
+        .evolution-container{background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:12px;overflow:hidden}
         .evolution-header{background:#1A1A1A;border-left:4px solid #FF5252;color:#F5F5F5;padding:16px 20px}
         .evolution-header h3{font-size:16px;font-weight:600}
         .evolution-content{padding:20px}
@@ -23382,7 +23465,7 @@ function showTab(tabName) {
         .evo-result-header h4{color:var(--verde-hugo);font-size:16px}
         .evo-edit-btn{padding:8px 16px;background:#1A1A1A;border:none;border-radius:6px;font-size:13px;cursor:pointer;color:#F5F5F5}
         .evo-edit-btn:hover{background:#333}
-        .card{background:#111;border:1px solid #333;border-radius:12px;margin-bottom:16px;overflow:hidden}
+        .card{background:var(--bg-elevated);border:1px solid var(--border-card);border-radius:12px;margin-bottom:16px;overflow:hidden}
         .card-header{padding:16px;background:#1A1A1A;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
         .card-header:hover{background:#333}
         .card-header h3{font-size:15px;font-weight:600;color:var(--azul-hugo)}
@@ -23807,9 +23890,9 @@ function showTab(tabName) {
             <div class="collapsible"><div class="collapsible-header" onclick="toggleCollapsible(this)"><h4> Anestésico local</h4><span class="chevron">▼</span></div><div class="collapsible-content"><table class="al-table"><thead><tr><th>Droga</th><th>Concentração</th><th>Volume/nível</th></tr></thead><tbody><tr><td>Bupivacaína</td><td>0,25-0,5%</td><td>3-5 mL</td></tr><tr><td>Ropivacaína</td><td>0,5%</td><td>3-5 mL</td></tr><tr><td>Lidocaína</td><td>1-2%</td><td>3-5 mL</td></tr></tbody></table><div class="warning-box"><div class="warning-box-title">Dose total</div><p>Maior absorção sistêmica! Calcule a dose se bloquear múltiplos níveis.</p></div></div></div>
         </section>
 
-        <footer style="text-align:center;padding:32px 16px 80px;color:#666;font-size:12px;">
-            <p>Gustavo Moreira &bull; Gabriela Feltrin &bull; Jo&atilde;o Pedro Moreira</p>
-            <p>Block Path v1.0.1 &mdash; ANY App &mdash; Abril 2026</p>
+        <footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:#000;border-top:1px solid #222;z-index:50;">
+            <div style="font-size:0.75rem;color:#A0A0A0;margin-bottom:2px">Gustavo Moreira &bull; Gabriela Feltrin &bull; Jo&atilde;o Pedro Moreira</div>
+            <div style="font-size:0.65rem;color:#666">Block Path v1.0.1 &mdash; ANY App &mdash; Abril 2026</div>
         </footer>
     </div>
 
@@ -23942,6 +24025,11 @@ CRM: \${crm}\`;
 --accent:#FF5252;--accent-h:#FF6B6B;
 --success:#4CAF50;--warning:#FFC107;--danger:#F44336;--info:#2196F3;
 --radius:12px;--radius-sm:8px;
+/* OLED Pure padronizado */
+--bg-primary:#000000;--bg-card:#0A0A0A;--bg-elevated:#111111;--bg-hover:#1A1A1A;
+--text-primary:#FFFFFF;--text-secondary:#A0A0A0;--text-muted:#666666;
+--accent-hover:#FF6B6B;--accent-muted:#FF525233;
+--border-card:#333333;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;overflow-x:hidden;padding-bottom:70px}
 
@@ -24226,7 +24314,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="guide-text">Incentive a tosse</div>
 <div class="guide-sub">Continue monitorando sinais de agravamento. Não interfira enquanto a tosse for efetiva.</div>
 </div>
-<button class="ovace-btn ovace-btn-secondary" onclick="ovaceReset()">Voltar</button>
+<button class="ovace-btn ovace-btn-secondary" onclick="ovaceReset()">← Voltar</button>
 </div>
 
 <div id="ovaceStepGrave" style="display:none">
@@ -24496,7 +24584,7 @@ Configurações
 <h1>Atendimentos salvos</h1>
 </div>
 <div id="historyList"></div>
-<button class="copy-btn mt-16" onclick="showScreen('screenStart')" style="background:var(--card);border:1px solid var(--border);color:var(--text)">Voltar</button>
+<button class="copy-btn mt-16" onclick="showScreen('screenStart')" style="background:var(--card);border:1px solid var(--border);color:var(--text)">← Voltar</button>
 <button class="copy-btn mt-12" onclick="clearHistory()" style="background:rgba(244,67,54,0.1);border:1px solid var(--danger);color:var(--danger)">Limpar histórico</button>
 </div>
 </div>
@@ -28145,8 +28233,12 @@ a{color:var(--info);text-decoration:none}
     <div class="input-group">
         <label>Dose de noradrenalina (mcg/kg/min)</label>
         <input type="number" id="doseNeInput" class="input-field" inputmode="decimal" placeholder="0.10" min="0.01" max="3.0" step="0.01" oninput="onVasoChange()">
-        <input type="range" class="dose-slider" id="doseNeSlider" min="0.01" max="3.0" step="0.01" value="0.10" oninput="document.getElementById('doseNeInput').value=this.value;onVasoChange()">
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:-4px">
+        <div style="display:flex;align-items:center;gap:8px">
+            <button onclick="adjustDoseNE(-0.05)" style="width:40px;height:40px;border-radius:50%;border:1px solid #333;background:#111;color:#FF5252;font-size:20px;font-weight:700;cursor:pointer;flex-shrink:0">-</button>
+            <input type="range" class="dose-slider" id="doseNeSlider" min="0.01" max="3.0" step="0.01" value="0.10" oninput="document.getElementById('doseNeInput').value=this.value;onVasoChange()" style="flex:1">
+            <button onclick="adjustDoseNE(0.05)" style="width:40px;height:40px;border-radius:50%;border:1px solid #333;background:#111;color:#FF5252;font-size:20px;font-weight:700;cursor:pointer;flex-shrink:0">+</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:2px;padding:0 48px">
             <span>0,01</span><span>0,5</span><span>1,0</span><span>2,0</span><span>3,0</span>
         </div>
     </div>
@@ -28720,6 +28812,15 @@ var shockState = {
     interventions: []
 };
 
+// Restaurar estado se voltando de outra ferramenta
+try {
+    var saved = sessionStorage.getItem('shockState');
+    if (saved) {
+        shockState = JSON.parse(saved);
+        sessionStorage.removeItem('shockState');
+    }
+} catch(e) {}
+
 // ==========================================
 // UTILITY
 // ==========================================
@@ -28761,6 +28862,8 @@ function goToInfusion(drug) {
     if (shockState.peso) {
         try { localStorage.setItem('anyapp-peso', shockState.peso); } catch(e) {}
     }
+    // Salvar estado para restaurar ao voltar
+    try { sessionStorage.setItem('shockState', JSON.stringify(shockState)); } catch(e) {}
     parent.loadApp('infusion', drug || '');
 }
 
@@ -29006,6 +29109,18 @@ function updateStep3Badges() {
         document.getElementById('doseNeInput').value = shockState.doseNE;
         document.getElementById('doseNeSlider').value = shockState.doseNE;
     }
+}
+
+function adjustDoseNE(delta) {
+    var input = document.getElementById('doseNeInput');
+    var slider = document.getElementById('doseNeSlider');
+    var v = parseFloat(input.value) || 0.10;
+    v = Math.round((v + delta) * 100) / 100;
+    if (v < 0.01) v = 0.01;
+    if (v > 3.0) v = 3.0;
+    input.value = v;
+    slider.value = v;
+    onVasoChange();
 }
 
 function onVasoChange() {

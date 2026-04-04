@@ -25,6 +25,24 @@
             --sombra-hover: 0 4px 16px rgba(0,0,0,0.6);
             --border-radius: 12px;
             --transition: all 0.3s ease;
+            /* OLED Pure padronizado */
+            --bg-primary: #000000;
+            --bg-card: #0A0A0A;
+            --bg-elevated: #111111;
+            --bg-hover: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-muted: #666666;
+            --accent-hover: #FF6B6B;
+            --accent-muted: #FF525233;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --info: #2196F3;
+            --border: #222222;
+            --border-card: #333333;
+            --radius: 12px;
+            --radius-sm: 8px;
         }
 
         * {
@@ -124,7 +142,7 @@
             text-align: center;
             margin-bottom: 24px;
             padding: 16px;
-            background: #111;
+            background: var(--bg-elevated);
             border-radius: var(--border-radius);
         }
 
@@ -148,7 +166,7 @@
         }
 
         .module-card {
-            background: #111;
+            background: var(--bg-elevated);
             border-radius: var(--border-radius);
             padding: 20px 16px;
             text-align: center;
@@ -209,7 +227,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: var(--border-radius);
             padding: 14px 16px;
@@ -304,7 +322,7 @@
 
         /* Collapsible Sections */
         .collapsible {
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: var(--border-radius);
             margin-bottom: 12px;
@@ -446,7 +464,7 @@
         }
 
         .saved-card {
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: var(--border-radius);
             padding: 16px;
@@ -683,7 +701,7 @@
         }
 
         .myth-card {
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: 10px;
             padding: 12px 8px;
@@ -744,7 +762,7 @@
         }
 
         .modal {
-            background: #111;
+            background: var(--bg-elevated);
             border-radius: var(--border-radius);
             max-width: 500px;
             width: 100%;
@@ -766,7 +784,7 @@
             justify-content: space-between;
             position: sticky;
             top: 0;
-            background: #111;
+            background: var(--bg-elevated);
         }
 
         .modal-header h3 {
@@ -856,12 +874,12 @@
 
         .footer-text {
             font-size: 12px;
-            color: #666;
+            color: var(--text-muted);
             line-height: 1.6;
         }
 
         .footer-text strong {
-            color: #999;
+            color: var(--text-secondary);
         }
 
         /* Responsive */
@@ -884,7 +902,7 @@
             display: flex;
             align-items: center;
             padding: 10px 12px;
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: 8px;
             margin-bottom: 8px;
@@ -965,8 +983,8 @@
         .technique-step {
             position: relative;
             padding: 16px 16px 16px 50px;
-            background: #111;
-            border: 1px solid #333;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-card);
             border-radius: 8px;
             margin-bottom: 12px;
         }
@@ -1127,8 +1145,8 @@
         }
 
         .volume-card {
-            background: #111;
-            border: 1px solid #333;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-card);
             border-radius: 8px;
             padding: 12px;
             text-align: center;
@@ -1203,8 +1221,8 @@
         }
 
         .med-detail-card {
-            background: #111;
-            border: 1px solid #333;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-card);
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 10px;
@@ -1254,8 +1272,8 @@
         .med-search-container input {
             width: 100%;
             padding: 12px 12px 12px 40px;
-            background: #111;
-            border: 1px solid #333;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-card);
             border-radius: 10px;
             color: #F5F5F5;
             font-size: 15px;
@@ -1313,7 +1331,7 @@
         }
 
         .capacity-card {
-            background: #111;
+            background: var(--bg-elevated);
             border: 2px solid var(--cinza-medio);
             border-radius: 10px;
             padding: 14px;
@@ -1348,7 +1366,7 @@
         .fab-btn { width: 56px; height: 56px; border-radius: 50%; background: #FF5252; border: none; color: white; cursor: pointer; box-shadow: 0 4px 12px rgba(255,82,82,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
         .fab-btn:active { transform: scale(0.95); }
         .fab-btn.open { background: #D32F2F; }
-        .fab-options { position: absolute; bottom: 70px; right: 0; background: #111; border: 1px solid #333; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
+        .fab-options { position: absolute; bottom: 70px; right: 0; background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
         .fab-options.open { display: block; }
         .fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
         .fab-options a:hover, .fab-options a:active { background: #1A1A1A; }
@@ -3063,9 +3081,9 @@
     </main>
 
     <!-- Footer -->
-    <footer style="position:relative;padding:20px 16px;text-align:center;border-top:1px solid #333;">
-        <div style="font-size:11px;color:#999;">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div style="font-size:10px;color:#555;margin-top:4px;">Palia Path v1.0.1 — ANY App — Abril 2026</div>
+    <footer style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 16px;background:#000;border-top:1px solid #222;z-index:50;">
+        <div style="font-size:0.75rem;color:#A0A0A0;margin-bottom:2px">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
+        <div style="font-size:0.65rem;color:#666">Palia Path v1.0.1 — ANY App — Abril 2026</div>
     </footer>
 
     <!-- Modal Mitos -->
