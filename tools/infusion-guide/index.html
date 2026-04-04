@@ -1793,10 +1793,15 @@
                     } else {
                         dose = (mlh * conc) / cfg.factor;
                     }
+                    // Atualizar slider (clamped ao range visual)
                     slider.value = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), dose));
+                    // Atualizar dose diretamente (sem clamp — mostra valor real mesmo fora do range do slider)
+                    doseValInput.value = dose.toFixed(cfg.dp);
+                    // Recalcular status visual
                     cfg.calc();
-                    // Keep user's typed value in mL field
+                    // Manter valores digitados
                     mlInput.value = this.value;
+                    doseValInput.value = dose.toFixed(cfg.dp);
                 });
 
                 // Dose input -> forward calculate
@@ -1804,9 +1809,19 @@
                     var v = parseFloat(this.value.replace(',', '.'));
                     if (isNaN(v)) return;
                     slider.value = Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), v));
+                    // Calcular mL/h diretamente (sem clamp)
+                    var mlh;
+                    if (cfg.usePeso) {
+                        if (!peso) return;
+                        mlh = (v * peso * cfg.factor) / cfg.getConc();
+                    } else {
+                        mlh = (v * cfg.factor) / cfg.getConc();
+                    }
+                    mlInput.value = mlh.toFixed(cfg.dp);
                     cfg.calc();
-                    // Keep user's typed value in dose field
+                    // Manter valores
                     doseValInput.value = this.value;
+                    mlInput.value = mlh.toFixed(cfg.dp);
                 });
 
                 // Focus: select all for easy replacement
