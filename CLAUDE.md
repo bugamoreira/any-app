@@ -951,5 +951,106 @@ Tabelas de referência para diluição de drogas em infusão contínua pediátri
 
 ---
 
+---
+
+## 18. Arquitetura v2 — React/TypeScript (Abril 2026)
+
+### 18.1 Stack
+
+| Tecnologia | Versao | Uso |
+|------------|--------|-----|
+| React | 19 | Framework UI |
+| TypeScript | 5.9 | Tipagem estatica |
+| Vite | 8 | Build tool (471ms) |
+| Tailwind CSS | 4.2 (v4) | Estilizacao utility-first |
+| React Router | 7 | Roteamento SPA |
+| Supabase | 2.101.1 | Auth + Analytics + Edge Functions |
+| Lucide React | 1.7 | Icones |
+
+### 18.2 Estrutura de pastas (v2/)
+
+```
+v2/src/
+├── assets/                  # Logo
+├── components/
+│   ├── layout/              # Disclaimer, Header, Footer, FABMenu, Container, Splash
+│   ├── common/              # Card, Button, Collapsible, Toggle, Slider, Modal, AlertCard, WeightInput, Toast
+│   └── clinical/            # DoseCalculator, StepperNav
+├── contexts/
+│   ├── AuthContext.tsx       # Google OAuth
+│   ├── WeightContext.tsx     # Peso compartilhado + localStorage
+│   ├── ToastContext.tsx      # Notificacoes
+│   └── MetronomeContext.tsx  # Metronomo global persistente
+├── hooks/
+│   ├── useIsMobile.ts        # Breakpoint 768px
+│   ├── usePageview.ts        # Analytics automatico
+│   └── useServerCalc.ts      # Edge Functions (formulas protegidas)
+├── data/
+│   ├── drugConfigs.ts        # 15 drogas tipadas
+│   ├── paliaData.ts          # Dados Palia Path
+│   ├── toxData.ts            # Dados Tox Path
+│   └── vmData.ts             # Dados VM Guide
+├── pages/                    # 13 ferramentas (1 arquivo cada)
+├── types/clinical.ts         # Tipos (DrugConfig, PathwayStep, etc.)
+├── utils/
+│   ├── calculations.ts       # Formulas centralizadas
+│   └── formatters.ts         # fmt(), cores por status
+├── App.tsx                   # Router com lazy loading
+├── main.tsx                  # Entry com providers
+└── index.css                 # Tailwind @theme OLED Pure
+```
+
+### 18.3 Componentes reutilizaveis
+
+| Componente | Props | Substitui |
+|---|---|---|
+| `<Disclaimer />` | — | Disclaimer manual em 13 arquivos |
+| `<Header />` | title, subtitle | Header + logo |
+| `<Footer />` | toolName, version | Footer |
+| `<FABMenu />` | items[] | FAB hamburger |
+| `<Container />` | children | max-width 500px |
+| `<WeightInput />` | range? | Input peso com validacao |
+| `<Card />` | borderColor? | Cards com border-left |
+| `<Collapsible />` | title, badge? | Secoes colapsaveis |
+| `<DoseCalculator />` | drug config | Calculadora bidirecional |
+| `<StepperNav />` | steps[], currentStep | Navegacao pathway |
+
+### 18.4 Code splitting
+
+Cada ferramenta carrega sob demanda via `React.lazy()`:
+- Bundle inicial: ~380KB (React + Router + Auth + Hub)
+- Cada ferramenta: 15-80KB adicional
+
+### 18.5 Seguranca
+
+- **Edge Functions**: formulas de dose no servidor (nunca chegam ao browser)
+- **Obfuscacao**: variáveis renomeadas, strings embaralhadas
+- **CSP**: Content Security Policy via `_headers`
+- **RLS**: Row Level Security no Supabase
+- **Auth**: Google OAuth obrigatorio
+
+### 18.6 Metrônomo global
+
+`MetronomeContext` no root — persiste entre navegacao. Banner vermelho quando ativo. AudioContext + silent audio loop para iOS.
+
+### 18.7 Comandos
+
+```bash
+# Desenvolvimento
+cd v2 && npm run dev
+
+# Build producao
+cd v2 && npm run build
+
+# Deploy (Netlify auto-deploy de v2/dist/)
+git add v2/ && git commit -m "feat: descricao" && git push origin main
+```
+
+### 18.8 Migracao v1 → v2
+
+O monolito HTML (v1) continua em `deploy/index.html` ate o v2 estar 100% validado. Ambos coexistem no mesmo repositorio. O Netlify deve ser configurado para servir `v2/dist/` quando pronto.
+
+---
+
 *Documento preparado para uso com qualquer colaborador (humano ou IA).*
-*Atualizado em Março 2026.*
+*Atualizado em Abril 2026.*
