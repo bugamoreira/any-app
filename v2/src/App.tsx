@@ -74,7 +74,7 @@ function LoginPage() {
       />
       <div className="text-center">
         <h1 className="text-2xl font-bold text-text-primary">ANY App</h1>
-        <p className="text-sm text-text-secondary mt-1">Medicina de Emergencia</p>
+        <p className="text-sm text-text-secondary mt-1">Medicina de Emergência</p>
       </div>
       <button
         onClick={signInWithGoogle}
@@ -84,7 +84,7 @@ function LoginPage() {
         Entrar com Google
       </button>
       <p className="text-xs text-text-muted text-center max-w-[260px]">
-        Ferramenta de apoio a decisao clinica. Nao substitui o julgamento medico.
+        Ferramenta de apoio à decisão clínica. Não substitui o julgamento médico.
       </p>
     </div>
   )

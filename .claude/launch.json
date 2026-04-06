@@ -42,6 +42,12 @@
       "runtimeExecutable": "ruby",
       "runtimeArgs": ["/tmp/acls_preview/server.rb"],
       "port": 8086
+    },
+    {
+      "name": "v2",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && cd v2 && npm run dev -- --host --port 5173"],
+      "port": 5173
     }
   ],
   "autoVerify": true

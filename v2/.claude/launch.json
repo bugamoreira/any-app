@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "any-app-v2",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && npm run dev -- --host"],
+      "port": 5173
+    }
+  ]
+}

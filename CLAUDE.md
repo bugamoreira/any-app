@@ -1050,6 +1050,63 @@ git add v2/ && git commit -m "feat: descricao" && git push origin main
 
 O monolito HTML (v1) continua em `deploy/index.html` ate o v2 estar 100% validado. Ambos coexistem no mesmo repositorio. O Netlify deve ser configurado para servir `v2/dist/` quando pronto.
 
+### 18.9 Pagina Calculadoras
+
+73 scores e ferramentas clinicas organizados em 16 categorias com campo de busca:
+
+| Categoria | Quantidade | Exemplos |
+|-----------|-----------|----------|
+| Cardiologia / SCA | 7 | HEART, TIMI, GRACE, CHA2DS2-VASc |
+| Neurologia / Neurocritico | 11 | Hunt-Hess, Fisher, FOUR, NIHSS, CAM-ICU, RASS |
+| Gastro / Hepato | 7 | Rockall, Glasgow-Blatchford, Child-Pugh, MELD-Na, Alvarado |
+| Trauma | 5 | TASH, mBIG, PECARN, Canadian C-Spine, Parkland |
+| Hemodinamica | 7 | DC por VTI, Gradiente A-a, Delta Gap, Anion Gap, Winters |
+| Respiratorio / Sepse | 7 | CURB-65, qSOFA, SOFA, NEWS2, APACHE II, Light |
+| Via Aerea | 2 | Cormack-Lehane, Mallampati |
+| Toxicologia | 5 | CIWA-AR, PSS, Rumack-Matthew, QTc, Gap osmolar |
+| Farmacologia | 1 | Equivalencia de corticoide |
+| Renal / Metabolico | 7 | Adrogue-Madias, Cockcroft-Gault, CKD-EPI, Correcao Ca/K |
+| Infeccao | 1 | CENTOR/McIsaac |
+| Sedacao / Dor | 3 | RASS, BPS, EVA/NRS |
+| Vascular | 3 | ADD-RS, Caprini, PERC |
+| Obstetricia | 5 | DPP/DUM, IG, HELLP, MgSO4, Bishop |
+| Procedimentos | 1 | Posicionamento CVC |
+| POCUS / Hemodinamica | 1 | Classificacao VTI (Mercadal 2022) |
+
+Cada calculadora inclui:
+- Calculo interativo com resultado interpretado
+- **Why**: por que o score existe
+- **When to use**: quando usar
+- **Pearls & Pitfalls**: dicas e armadilhas clinicas
+- **Referencia**: fonte bibliografica
+
+Scores existentes em pathways (Wells, HACOR, VNERi, etc.) conectam via badge "Disponivel em [Tool]".
+
+Dados em: `src/data/calculatorData.ts`
+Pagina em: `src/pages/Calculators.tsx`
+
+### 18.10 Shock Path — modulo VTI (choque indiferenciado)
+
+Modulo adicional ao Shock Path para classificacao hemodinamica por VTI do LVOT (Mercadal et al. The Ultrasound Journal, 2022).
+
+Home do Shock Path agora tem dois caminhos:
+- **Choque septico** (ANDROMEDA-SHOCK 2) — fluxo existente de 5 steps
+- **Classificacao hemodinamica** (VTI-based) — novo fluxo com branching eco
+
+Fluxo VTI:
+1. VTI < 16 cm → baixo debito → pericardio → VD → VE → valvar → responsividade
+2. VTI 16-20 cm → zona cinzenta → ScvO2/Gap CO2/lactato → direcionar
+3. VTI > 20 cm → distributivo → vasopressores
+
+### 18.11 Edge Functions (Supabase)
+
+| Function | Endpoint | O que protege |
+|----------|----------|---------------|
+| `calculate-dose` | `/functions/v1/calculate-dose` | Formulas de 15 drogas + VNERi |
+| `get-tool-content` | `/functions/v1/get-tool-content` | Scores (Wells, HACOR, PESI) + protocolos |
+
+Chamadas via `useServerCalc()` hook. JWT obrigatorio. Fallback local se servidor indisponivel.
+
 ---
 
 *Documento preparado para uso com qualquer colaborador (humano ou IA).*
