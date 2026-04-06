@@ -1,0 +1,14 @@
+# Produção (main) — serve o monolito v1
+[build]
+  publish = "deploy/"
+
+# Branch v2-preview — serve o React v2
+[context.v2-preview]
+  publish = "v2/dist/"
+  command = "cd v2 && npm install && npm run build"
+
+# Redirects SPA para v2
+[[context.v2-preview.redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
