@@ -249,7 +249,7 @@ combined = '''<!DOCTYPE html>
     <meta name="description" content="ANY App — Ferramentas de apoio à decisão clínica para medicina de emergência">
     <meta property="og:title" content="ANY App — Medicina de Emergência">
     <meta property="og:description" content="Ferramentas de apoio à decisão clínica para medicina de emergência">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.101.1/dist/umd/supabase.min.js" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.101.1/dist/umd/supabase.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
@@ -614,31 +614,22 @@ combined = '''<!DOCTYPE html>
             }, 3000);
         }
 
-        function waitForSupabase(maxAttempts, cb) {
-            var attempts = 0;
-            var check = function() {
-                attempts++;
-                if (initSupabase()) { cb(true); return; }
-                if (attempts >= maxAttempts) { cb(false); return; }
-                setTimeout(check, 300);
-            };
-            check();
-        }
-
         async function boot() {
-            // Esperar CDN async carregar (até 5s = 16 tentativas x 300ms)
-            waitForSupabase(16, async function(sbOk) {
+            var sbOk = initSupabase();
+
             if (!sbOk) {
-                // Supabase CDN falhou após 5s — mostrar erro
-                var credits = document.getElementById('splashCredits');
-                if (credits) credits.style.opacity = '0';
-                var login = document.getElementById('splashLogin');
-                if (login) {
-                    setTimeout(function() {
-                        login.innerHTML = '<div style="text-align:center;color:#A0A0A0;font-size:14px;padding:0 24px;">Falha ao conectar. Verifique sua conexão e recarregue a página.</div>';
-                        login.classList.add('visible');
-                    }, 400);
-                }
+                // Supabase CDN falhou — mostrar erro após splash
+                setTimeout(function() {
+                    var credits = document.getElementById('splashCredits');
+                    if (credits) credits.style.opacity = '0';
+                    var login = document.getElementById('splashLogin');
+                    if (login) {
+                        setTimeout(function() {
+                            login.innerHTML = '<div style="text-align:center;color:#A0A0A0;font-size:14px;padding:0 24px;">Falha ao conectar. Verifique sua conexão e recarregue a página.</div>';
+                            login.classList.add('visible');
+                        }, 400);
+                    }
+                }, 3000);
                 return;
             }
 
@@ -669,7 +660,6 @@ combined = '''<!DOCTYPE html>
                     showLoginScreen();
                 }, 3000);
             }
-            }); // end waitForSupabase callback
         }
 
         boot();
