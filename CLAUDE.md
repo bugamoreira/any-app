@@ -1,13 +1,13 @@
 # CLAUDE.md — ANY App: Diretriz Completa de Desenvolvimento
 
 > **Documento de referência obrigatória.** Leia integralmente antes de produzir qualquer código.
-> Última atualização: Março 2026.
+> Última atualização: Abril 2026.
 
 ---
 
 ## 1. O que é o ANY App
 
-**ANY App** (Anyone, Anything, Anytime) é uma plataforma de ferramentas de apoio à decisão clínica para medicina de emergência. Produz HTMLs interativos com árvores de decisão, pathways clínicos e calculadoras de dose para uso à beira-leito por médicos plantonistas.
+**ANY App** (Anyone, Anything, Anytime) é uma plataforma de ferramentas de apoio à decisão clínica para medicina de emergência. Construída como SPA (Single Page Application) em React/TypeScript, oferece árvores de decisão, pathways clínicos, calculadoras de dose e scores clínicos para uso à beira-leito por médicos plantonistas.
 
 **Classificação regulatória:** SaMD Classe II (ANVISA RDC 657/2022) — exige notificação, não registro completo. Registro de marca "ANY App" em andamento no INPI.
 
@@ -27,36 +27,38 @@ Plantonistas médicos de departamentos de emergência — principalmente emergen
 
 Hub central: `https://anyapp.netlify.app`
 Repositório: `github.com/bugamoreira/any-app.git` (branch `main`)
-Deploy automático via Netlify (git push → auto-deploy).
+Deploy automático via Netlify (git push → auto-deploy de `v2/dist/`).
 
 ---
 
 ## 2. Ferramentas do ecossistema
 
-### 2.1 Ferramentas integradas no monolito
+### 2.1 Ferramentas da plataforma
 
-| Key no `apps` | Pasta | Nome exibido | Descrição |
-|----------------|-------|-------------|-----------|
-| `hub` | `hub/` | Hub central | Tela inicial com grid de ferramentas |
-| `vm` | `tools/vm-guide/` | VM Guide | Ventilação mecânica invasiva |
-| `airway` | `tools/airway-guide/` | Airway Guide | Manejo de via aérea difícil |
-| `infusion` | `tools/infusion-guide/` | Calculadora de Infusões | Drogas vasoativas e sedação |
-| `tep` | `tools/tep-guide/` | TEP Guide | Tromboembolismo pulmonar |
-| `seda` | `tools/seda-path/` | Seda Path | Sedação procedimental |
-| `tox` | `tools/tox-path/` | Tox Path | Intoxicações e antídotos |
-| `ped` | `tools/ped-guide/` | Ped Guide | Emergência pediátrica |
-| `palia` | `tools/palia-path/` | Palia Path | Cuidados paliativos |
-| `block` | `tools/block-path/` | Block Path | Bloqueios regionais (14 técnicas) |
-| `acls` | `tools/acls/` | ACLS Guide | Gestão de PCR com metrônomo |
-| `dengue` | `tools/dengue-path/` | Dengue Path | Manejo de dengue na emergência |
-| `shock` | `tools/shock-path/` | Shock Path | Choque séptico (ANDROMEDA-SHOCK 2) |
+| Rota | Página (`src/pages/`) | Nome exibido | Descrição |
+|------|----------------------|-------------|-----------|
+| `/` | `Hub.tsx` | Hub central | Tela inicial com grid de ferramentas |
+| `/vm` | `VmGuide.tsx` | VM Guide | Ventilação mecânica invasiva |
+| `/airway` | `AirwayGuide.tsx` | Airway Guide | Manejo de via aérea difícil |
+| `/infusion` | `InfusionGuide.tsx` | Calculadora de Infusões | Drogas vasoativas e sedação |
+| `/tep` | `TepGuide.tsx` | TEP Guide | Tromboembolismo pulmonar |
+| `/seda` | `SedaPath.tsx` | Seda Path | Sedação procedimental |
+| `/tox` | `ToxPath.tsx` | Tox Path | Intoxicações e antídotos |
+| `/ped` | `PedGuide.tsx` | Ped Guide | Emergência pediátrica |
+| `/palia` | `PaliaPath.tsx` | Palia Path | Cuidados paliativos |
+| `/block` | `BlockPath.tsx` | Block Path | Bloqueios regionais (14 técnicas) |
+| `/acls` | `AclsGuide.tsx` | ACLS Guide | Gestão de PCR com metrônomo |
+| `/dengue` | `DenguePath.tsx` | Dengue Path | Manejo de dengue na emergência |
+| `/shock` | `ShockPath.tsx` | Shock Path | Choque (ANDROMEDA-SHOCK 2 + VTI) |
+| `/calculadoras` | `Calculators.tsx` | Calculadoras | 73 scores e ferramentas clínicas |
 
-### 2.2 Para adicionar um novo app
+### 2.2 Para adicionar uma nova ferramenta
 
-1. Criar pasta `tools/[nome-kebab]/index.html`
-2. Em `build_combined.py`: adicionar read, logo dedup, link fix, logo clickable, escape, apps object
-3. Em `hub/index.html`: adicionar card na grid principal
-4. Rebuild e testar: `python3 build_combined.py`
+1. Criar arquivo `v2/src/pages/NomeFerramenta.tsx` com `export default`
+2. Em `v2/src/App.tsx`: adicionar `lazy(() => import('./pages/NomeFerramenta'))` e `<Route path="/rota" ...>`
+3. Em `v2/src/pages/Hub.tsx`: adicionar card na grid principal
+4. Se necessário, criar arquivo de dados em `v2/src/data/`
+5. Testar: `cd v2 && npm run dev`
 
 ---
 
@@ -89,10 +91,10 @@ Deploy automático via Netlify (git push → auto-deploy).
 2. Brainstorming e discussão de abordagem
 3. Apresentar esqueleto estrutural para validação
 4. Gustavo aprova estrutura (ou ajusta)
-5. Produzir o HTML completo
+5. Produzir o componente React completo
 6. Gustavo testa no navegador (validação visual)
 7. Iterações de ajuste (se necessário)
-8. Build: python3 build_combined.py
+8. Build: cd v2 && npm run build
 9. Deploy: git add + commit + push origin main
 ```
 
@@ -121,50 +123,52 @@ Deploy automático via Netlify (git push → auto-deploy).
 
 > **Atenção:** PDFs de diretrizes v1.0 (Janeiro 2026) usavam a paleta antiga (#121212/#E53935). O padrão vigente é **OLED Pure** conforme descrito abaixo.
 
-### 5.1 CSS Variables (copiar e colar em toda ferramenta)
+### 5.1 Tailwind v4 @theme (definido em `v2/src/index.css`)
 
 ```css
-:root {
-    /* Fundos */
-    --bg-primary: #000000;       /* Fundo principal OLED puro */
-    --bg-card: #0A0A0A;          /* Cards e seções */
-    --bg-elevated: #111111;      /* Elementos elevados */
-    --bg-hover: #1A1A1A;         /* Estados hover/interativos */
+@import "tailwindcss";
 
-    /* Texto */
-    --text-primary: #FFFFFF;     /* Texto principal */
-    --text-secondary: #A0A0A0;   /* Texto secundário */
-    --text-muted: #666666;       /* Texto desabilitado, hints */
+@theme {
+  /* Fundos OLED Pure */
+  --color-bg-primary: #000000;
+  --color-bg-card: #0A0A0A;
+  --color-bg-elevated: #111111;
+  --color-bg-hover: #1A1A1A;
 
-    /* Accent */
-    --accent: #FF5252;           /* Vermelho ANY — botões, CTAs, destaques */
-    --accent-hover: #FF6B6B;     /* Hover do accent */
-    --accent-muted: #FF525233;   /* Accent translúcido (backgrounds sutis) */
+  /* Texto */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #A0A0A0;
+  --color-text-muted: #666666;
 
-    /* Status clínico */
-    --success: #4CAF50;          /* Verde — dose terapêutica, OK, meta atingida */
-    --warning: #FFC107;          /* Amarelo — atenção, dose limítrofe */
-    --danger: #F44336;           /* Vermelho — crítico, dose tóxica, alerta grave */
-    --info: #2196F3;             /* Azul — informativo, links */
+  /* Accent ANY App */
+  --color-accent: #FF5252;
+  --color-accent-hover: #FF6B6B;
+  --color-accent-muted: #FF525233;
 
-    /* Bordas */
-    --border: #222222;           /* Borda padrão entre seções */
-    --border-card: #333333;      /* Borda de cards (quando necessário) */
-    --radius: 12px;              /* Border-radius padrão */
-    --radius-sm: 8px;            /* Border-radius menor */
+  /* Status clínico */
+  --color-success: #4CAF50;
+  --color-warning: #FFC107;
+  --color-danger: #F44336;
+  --color-info: #2196F3;
 
-    /* Espaçamentos */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
+  /* Bordas */
+  --color-border: #222222;
+  --color-border-card: #333333;
 
-    /* Transições */
-    --transition-fast: 150ms ease;
-    --transition-normal: 300ms ease;
+  /* Radius */
+  --radius-default: 12px;
+  --radius-sm: 8px;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
 }
 ```
+
+**Uso em componentes:** Classes Tailwind referenciam os tokens do @theme diretamente (ex: `bg-bg-primary`, `text-accent`, `border-border-card`, `rounded-[--radius-default]`).
 
 ### 5.2 Cores de alerta (dentro de cards/seções)
 
@@ -177,10 +181,11 @@ Deploy automático via Netlify (git push → auto-deploy).
 
 ### 5.3 Cores de feedback clínico
 
-```css
-.dose-therapeutic { color: var(--success); }  /* #4CAF50 — verde */
-.dose-caution     { color: var(--warning); }  /* #FFC107 — amarelo */
-.dose-critical    { color: var(--danger);  }  /* #F44336 — vermelho */
+```tsx
+// Usar classes Tailwind ou inline styles
+// Verde: text-success (#4CAF50) — dose terapêutica
+// Amarelo: text-warning (#FFC107) — dose limítrofe
+// Vermelho: text-danger (#F44336) — dose crítica
 ```
 
 ### 5.4 Tipografia
@@ -203,150 +208,60 @@ body {
 
 ---
 
-## 6. Estrutura obrigatória do HTML
+## 6. Estrutura de componentes React
 
-### 6.1 Ordem dos elementos (sequencial, sem exceção)
+### 6.1 Ordem dos elementos (hierarquia de layout)
 
-```
-1. Disclaimer (faixa sticky no topo)
-2. Header (logo ANY App clicável → hub)
-3. Campo de peso (quando aplicável — calculadoras)
-4. Conteúdo principal (cards, árvores de decisão, calculadoras)
-5. Footer fixo (créditos da equipe)
-6. FAB menu (hamburger, canto inferior direito)
-```
+Toda página de ferramenta segue esta estrutura:
 
-### 6.2 Template base
-
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NomeDaFerramenta — ANY App</title>
-    <meta name="description" content="Descrição breve da ferramenta">
-    <style>
-        /* Reset + CSS Variables + Estilos */
-    </style>
-</head>
-<body>
-    <!-- 1. DISCLAIMER -->
-    <div class="disclaimer">
-        <strong>Ferramenta de apoio em teste</strong> — não substitui o julgamento clínico. Confirme antes de usar.
-    </div>
-
-    <!-- 2. HEADER (logo clicável → hub) -->
-    <div class="header">
-        <a href="#" onclick="event.preventDefault(); parent.loadApp('hub')" style="cursor:pointer;">
-            <img src="__LOGO__" alt="ANY App" style="max-width:280px;width:100%;height:auto;">
-        </a>
-    </div>
-
-    <!-- 3. CONTAINER -->
-    <div class="container">
-        <!-- Conteúdo principal -->
-    </div>
-
-    <!-- 4. FOOTER FIXO -->
-    <footer class="footer">
-        <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
-        <div class="footer-version">NomeDaFerramenta v1.0.0 — ANY App</div>
-    </footer>
-
-    <!-- 5. FAB MENU -->
-    <div class="fab-menu">
-        <div class="fab-options" id="fabOptions">
-            <a href="#" onclick="event.preventDefault();toggleFab();/* ação -->">Link 1</a>
-        </div>
-        <button class="fab-btn" id="fabBtn" onclick="toggleFab()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
-                <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-            </svg>
-        </button>
-    </div>
-
-    <script>
-        // JavaScript aqui
-    </script>
-</body>
-</html>
+```tsx
+export default function NomeFerramenta() {
+  return (
+    <>
+      <Disclaimer />
+      <Header title="Nome da ferramenta" subtitle="Subtítulo opcional" />
+      <Container>
+        {/* Campo de peso (quando aplicável — calculadoras) */}
+        <WeightInput />
+        {/* Conteúdo principal (cards, árvores de decisão, calculadoras) */}
+      </Container>
+      <Footer toolName="NomeFerramenta" version="1.0.0" />
+      <FABMenu items={[{ label: 'Ação', icon: <Icon />, onClick: handler }]} />
+    </>
+  )
+}
 ```
 
-### 6.3 CSS dos componentes obrigatórios
+### 6.2 Componentes de layout (`src/components/layout/`)
 
-```css
-/* Disclaimer */
-.disclaimer {
-    background: var(--warning);
-    color: #000;
-    text-align: center;
-    padding: 10px 16px;
-    font-size: 12px;
-    font-weight: 600;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
+| Componente | Arquivo | Props | Comportamento |
+|------------|---------|-------|---------------|
+| `<Disclaimer />` | `Disclaimer.tsx` | -- | Faixa amarela sticky no topo. Texto padrão: "Ferramenta de apoio em teste -- não substitui o julgamento clínico." |
+| `<Header />` | `Header.tsx` | `title`, `subtitle` | Logo ANY App clicável (navega para `/`). Centralizado. |
+| `<Footer />` | `Footer.tsx` | `toolName`, `version` | Fixo no bottom. Créditos: Gustavo Moreira, Gabriela Feltrin, João Pedro Moreira. |
+| `<Container />` | `Container.tsx` | `children` | `max-w-[500px] mx-auto px-4 pb-[100px]` |
+| `<FABMenu />` | `FABMenu.tsx` | `items[]` | Botão flutuante hamburger. Click-outside-to-close automático via `useEffect`. |
+| `<Splash />` | `Splash.tsx` | -- | Tela de carregamento com logo. Usado no `Suspense fallback`. |
 
-/* Header */
-.header {
-    text-align: center;
-    padding: 20px 16px;
-    position: relative;
-}
-.header img { max-width: 280px; width: 100%; height: auto; }
+### 6.3 Componentes comuns (`src/components/common/`)
 
-/* Container */
-.container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 0 16px 100px;
-}
+| Componente | Arquivo | Props | Uso |
+|------------|---------|-------|-----|
+| `<Card />` | `Card.tsx` | `borderColor?`, `children` | Card com border-left colorida |
+| `<Button />` | `Button.tsx` | `variant`, `onClick`, `disabled` | Botão com min-height 44px |
+| `<Collapsible />` | `Collapsible.tsx` | `title`, `badge?`, `children` | Seção colapsável (inicia FECHADA) |
+| `<Toggle />` | `Toggle.tsx` | `checked`, `onChange`, `label` | Toggle para populações especiais |
+| `<WeightInput />` | `WeightInput.tsx` | `range?` | Input de peso com validação e localStorage |
+| `<AlertCard />` | `AlertCard.tsx` | `type`, `title`, `children` | Card de alerta (sucesso/atenção/perigo/info) |
+| `<Modal />` | `Modal.tsx` | `open`, `onClose`, `children` | Modal overlay |
+| `<Toast />` | `Toast.tsx` | `message`, `type` | Notificação temporária |
 
-/* Footer fixo */
-.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    padding: 12px 16px;
-    background: var(--bg-primary);
-    border-top: 1px solid var(--border);
-    z-index: 50;
-}
-.footer-names { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 2px; }
-.footer-version { font-size: 0.65rem; color: var(--text-muted); }
+### 6.4 Componentes clínicos (`src/components/clinical/`)
 
-/* FAB */
-.fab-menu { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
-.fab-btn { width: 56px; height: 56px; border-radius: 50%; background: #FF5252; border: none; color: #fff; cursor: pointer; box-shadow: 0 4px 12px rgba(255,82,82,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
-.fab-btn:active { transform: scale(0.95); }
-.fab-btn.open { background: #D32F2F; }
-.fab-options { position: absolute; bottom: 70px; right: 0; background: #111; border: 1px solid #333; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 8px; display: none; min-width: 200px; }
-.fab-options.open { display: block; }
-.fab-options a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: #F5F5F5; font-size: 14px; font-weight: 500; }
-.fab-options a:active { background: #1A1A1A; }
-```
-
-### 6.4 JavaScript do FAB (obrigatório)
-
-```javascript
-function toggleFab() {
-    var options = document.getElementById('fabOptions');
-    var btn = document.getElementById('fabBtn');
-    options.classList.toggle('open');
-    btn.classList.toggle('open');
-}
-// Click-outside-to-close — OBRIGATÓRIO
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.fab-menu')) {
-        document.getElementById('fabOptions').classList.remove('open');
-        document.getElementById('fabBtn').classList.remove('open');
-    }
-});
-```
+| Componente | Arquivo | Props | Uso |
+|------------|---------|-------|-----|
+| `<DoseCalculator />` | `DoseCalculator.tsx` | `drugConfig` | Calculadora bidirecional dose-velocidade |
+| `<StepperNav />` | `StepperNav.tsx` | `steps[]`, `currentStep` | Navegação de pathway passo-a-passo |
 
 ---
 
@@ -355,40 +270,35 @@ document.addEventListener('click', function(e) {
 ### 7.1 Seções colapsáveis
 
 - **Estado inicial:** TODAS fechadas. Sem exceção.
-- **Animação:** Transição suave (300-400ms).
-- **Indicador:** Chevron ou seta rotativa indicando estado.
+- **Animação:** Transição suave (300-400ms) via `max-height` com `overflow-hidden` e `transition-all`.
+- **Indicador:** Ícone Lucide (`ChevronDown`) com rotação animada indicando estado.
 
-```javascript
-function toggleSection(header) {
-    const content = header.nextElementSibling;
-    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
-    if (isOpen) {
-        content.style.maxHeight = '0px';
-        header.classList.remove('active');
-    } else {
-        content.style.maxHeight = content.scrollHeight + 'px';
-        header.classList.add('active');
-    }
-}
+```tsx
+// O componente <Collapsible /> já implementa este comportamento:
+<Collapsible title="Nome da seção" badge="Opcional">
+  {/* Conteúdo da seção */}
+</Collapsible>
 ```
+
+O componente gerencia o estado `isOpen` internamente e anima via `max-height`. Sempre inicia com `isOpen = false`.
 
 ### 7.2 Accordion (seções mutuamente exclusivas)
 
-Quando apenas uma seção deve ficar aberta por vez: fechar todas antes de abrir a clicada.
+Quando apenas uma seção deve ficar aberta por vez, gerenciar estado no componente pai:
 
-```javascript
-function toggleCriteria(header) {
-    var body = header.nextElementSibling;
-    var isOpen = body.classList.contains('open');
-    document.querySelectorAll('.criteria-body.open').forEach(function(b) {
-        b.classList.remove('open');
-        b.parentElement.querySelector('.criteria-chevron').classList.remove('open');
-    });
-    if (!isOpen) {
-        body.classList.add('open');
-        header.querySelector('.criteria-chevron').classList.add('open');
-    }
-}
+```tsx
+const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+{sections.map((section, i) => (
+  <Collapsible
+    key={i}
+    title={section.title}
+    isOpen={openIndex === i}
+    onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+  >
+    {section.content}
+  </Collapsible>
+))}
 ```
 
 ### 7.3 Calculadoras de dose
@@ -396,77 +306,68 @@ function toggleCriteria(header) {
 | Requisito | Detalhe |
 |-----------|---------|
 | Sliders bidirecionais | Dose <-> Velocidade de infusão (tempo real) |
-| Campo de peso | Sempre visível no topo. Adulto: 40-200 kg. Pediátrico: 0,5-50 kg. |
+| Campo de peso | Sempre visível no topo via `<WeightInput />`. Adulto: 40-200 kg. Pediátrico: 0,5-50 kg. |
 | Faixas de cor | Verde (terapêutico), Amarelo (atenção), Vermelho (crítico) |
 | Validação | Impedir valores fora do range clínico seguro |
-| Input numérico | `inputmode="decimal"` para teclado numérico no celular |
+| Input numérico | `inputMode="decimal"` para teclado numérico no celular |
 | Unidades | Sempre explícitas: mg, mcg, mL, mg/kg, mcg/kg/min |
+
+O componente `<DoseCalculator />` recebe uma configuração tipada (`DrugConfig`) definida em `src/types/clinical.ts` e implementa sliders bidirecionais com faixas de cor automáticas.
 
 ### 7.4 Árvores de decisão
 
-```css
-.decision-node {
-    background: var(--bg-hover);
-    border: 2px solid var(--info);
-    border-radius: var(--radius);
-    padding: var(--spacing-md);
-}
-.decision-option.yes {
-    background: rgba(105, 240, 174, 0.1);
-    color: #69F0AE;
-    border: 1px solid rgba(105, 240, 174, 0.3);
-}
-.decision-option.no {
-    background: rgba(255, 82, 82, 0.1);
-    color: #FF5252;
-    border: 1px solid rgba(255, 82, 82, 0.3);
-}
+Usar classes Tailwind para estilizar nós de decisão:
+
+```tsx
+// Nó de decisão
+<div className="bg-bg-hover border-2 border-info rounded-[--radius-default] p-4">
+  {/* Pergunta */}
+</div>
+
+// Opção "sim"
+<button className="bg-[rgba(105,240,174,0.1)] text-[#69F0AE] border border-[rgba(105,240,174,0.3)] rounded-lg p-3">
+  Sim
+</button>
+
+// Opção "não"
+<button className="bg-[rgba(255,82,82,0.1)] text-accent border border-[rgba(255,82,82,0.3)] rounded-lg p-3">
+  Não
+</button>
 ```
 
 ### 7.5 Selection UI — border-left colorida
 
-Padrão SedaPath para cards de seleção/módulos:
+Padrão para cards de seleção/módulos usando `<Card />`:
 
-```css
-.module-card { border-left: 4px solid #FF5252; }
-.bl-green { border-left-color: #10B981 !important; }
-.bl-blue { border-left-color: #60A5FA !important; }
-.bl-red { border-left-color: #FF5252 !important; }
-.bl-yellow { border-left-color: #F59E0B !important; }
-.bl-purple { border-left-color: #8B5CF6 !important; }
+```tsx
+<Card borderColor="#FF5252">Conteúdo</Card>  // Vermelho (padrão)
+<Card borderColor="#10B981">Conteúdo</Card>  // Verde
+<Card borderColor="#60A5FA">Conteúdo</Card>  // Azul
+<Card borderColor="#F59E0B">Conteúdo</Card>  // Amarelo
+<Card borderColor="#8B5CF6">Conteúdo</Card>  // Roxo
 ```
-
-**Cuidado com CSS specificity:** Se houver regra global `border-color: #1A1A1A !important`, trocar por `border-top/right/bottom-color` individuais para não sobrescrever a border-left colorida.
 
 ### 7.6 Slide horizontal (transições entre páginas)
 
-Para fluxos passo-a-passo, usar `translateX()` em vez de fade simples.
+Para fluxos passo-a-passo, usar a animação `slide-left` definida no `index.css`:
 
 ```css
-@keyframes slideLeft {
+/* Definido globalmente em index.css */
+@keyframes slide-left {
     from { opacity: 0; transform: translateX(60px); }
     to { opacity: 1; transform: translateX(0); }
 }
-.section { animation: slideLeft 0.3s ease; }
 ```
+
+Aplicar via classe Tailwind inline: `className="animate-[slide-left_0.3s_ease]"`
 
 ### 7.7 Botões
 
-```css
-.btn-primary {
-    background: var(--accent);
-    color: #FFFFFF;
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: 12px 24px;
-    font-size: 15px;
-    font-weight: 500;
-    min-height: 44px;          /* área de toque mínima */
-    cursor: pointer;
-    transition: background var(--transition-fast);
-}
-.btn-primary:hover { background: var(--accent-hover); }
-```
+Usar o componente `<Button />` que já implementa:
+- Min-height 44px (área de toque mínima)
+- Variantes: `primary` (accent), `secondary` (outlined), `ghost`
+- Transição de hover/active
+- Disabled state com feedback visual
 
 ### 7.8 Árvores de decisão e branching
 
@@ -478,10 +379,10 @@ Regras para fluxos de decisão clínica nas ferramentas:
 - Exemplo: Intubação → "Intubou?" → Sim (confirmar) / Não (Plano B)
 
 #### Sync de estado entre views
-- Dados clínicos (checklists, scores) que aparecem em mais de um screen devem usar **modelo de dados compartilhado**
-- Nunca duplicar estado em DOM separados sem sincronização
-- Usar `data-attributes` para identificar items e array JS para estado
-- Ao toggle em uma view, refletir automaticamente na outra
+- Dados clínicos (checklists, scores) que aparecem em mais de um componente devem usar **estado compartilhado** via Context ou lifting state up
+- Nunca duplicar estado em componentes separados sem sincronização
+- Usar `useState` no componente pai ou Context API para estado global
+- Ao toggle em um componente, refletir automaticamente no outro
 
 #### Feedback explícito em vez de ocultar
 - Botões escondidos devem ter mensagem explicando por quê
@@ -489,13 +390,13 @@ Regras para fluxos de decisão clínica nas ferramentas:
 - Nunca silenciar uma decisão do sistema — o médico precisa saber o que aconteceu
 
 #### Populações especiais visíveis
-- Toggle proeminente para populações especiais (gestante, pediátrico)
+- Toggle proeminente para populações especiais (gestante, pediátrico) via `<Toggle />`
 - Nunca esconder atrás de link de texto pequeno
 - Exemplo: TEP gestante → toggle no topo "Gestante / Não gestante"
 
 #### Informação inline no fluxo
 - Referências e calculadoras acessíveis sem trocar de view
-- Collapsibles inline > links para outras seções
+- `<Collapsible />` inline > links para outras seções
 - O médico não deve perder contexto para consultar uma dose ou esquema
 
 #### Reclassificação bidirecional
@@ -515,13 +416,13 @@ Regras para fluxos de decisão clínica nas ferramentas:
 | Propriedade | Valor | Motivo |
 |-------------|-------|--------|
 | Max-width container | 500px | Otimizado para celular |
-| Padding lateral | Mínimo 16px | Texto não cola nas bordas |
+| Padding lateral | Mínimo 16px (`px-4`) | Texto não cola nas bordas |
 | Área de toque | Min-height 44px | Recomendação Apple/Google |
 | Font-size mínimo | 14px | Legibilidade em tela pequena |
-| Input numérico | `inputmode="decimal"` | Teclado numérico no mobile |
-| Body padding-bottom | 70px | Espaço para o footer fixo |
+| Input numérico | `inputMode="decimal"` | Teclado numérico no mobile |
+| Body padding-bottom | 100px (`pb-[100px]`) | Espaço para o footer fixo |
 
-Meta viewport obrigatória:
+Meta viewport configurada no `v2/index.html`:
 ```html
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 ```
@@ -587,114 +488,176 @@ Meta viewport obrigatória:
 
 ### 10.1 Versões
 
-| Versão | Uso | Largura web |
-|--------|-----|-------------|
-| **Horizontal** (retangular, PNG) | Header das ferramentas | 400px -> max-width 280px no CSS |
-| **Quadrado** (JPEG) | Splash screen | 300px |
+| Versão | Uso | Arquivo |
+|--------|-----|---------|
+| **Horizontal** (retangular, PNG) | Header das ferramentas | `v2/src/assets/logo.png` |
+| **Quadrado** (JPEG) | Splash screen | `v2/public/splash-logo.jpeg` |
 
-### 10.2 Como funciona no monolito
+### 10.2 Como funciona na SPA
 
-- O logo horizontal PNG é extraído do `hub/index.html` pelo `build_combined.py`
-- Armazenado uma única vez como `LOGO_BASE64` no parent
-- Sub-apps usam placeholder `__LOGO__` substituído em runtime
-- O splash logo quadrado JPEG vive em `assets/splash-logo.jpeg`
+- O logo horizontal é importado em `<Header />` via `import logo from '@/assets/logo.png'`
+- Vite processa e otimiza automaticamente (hashing, compressão)
+- O splash logo quadrado vive em `v2/public/` e é referenciado diretamente
 
 ### 10.3 Regras
 
 - Nunca distorcer ou alterar o logo
-- Sempre usar a versão otimizada (não o PNG original de alta resolução)
-- O logo no header é **sempre clicável** -> redireciona para o hub
-- No monolito: `onclick="event.preventDefault(); parent.loadApp('hub')"`
+- Sempre usar a versão otimizada (Vite cuida da otimização no build)
+- O logo no header é **sempre clicável** -> navega para `/` (Hub)
+- Usar `<Link to="/">` ou `navigate('/')` do React Router
 - Sem `target="_blank"` — abrir na mesma aba
 
 ---
 
-## 11. Arquitetura combinada (monolito)
+## 11. Arquitetura — React/TypeScript SPA
 
-### 11.1 Estrutura de pastas
+### 11.1 Stack
+
+| Tecnologia | Versão | Uso |
+|------------|--------|-----|
+| React | 19 | Framework UI |
+| TypeScript | 5.9 | Tipagem estática |
+| Vite | 8 | Build tool |
+| Tailwind CSS | 4.2 (v4) | Estilização utility-first |
+| React Router | 7 | Roteamento SPA |
+| Supabase | 2.101.1 | Auth + Analytics + Edge Functions |
+| Lucide React | 1.7 | Ícones (sem emojis) |
+
+### 11.2 Estrutura de pastas
 
 ```
-ANY APP/
-├── hub/index.html              <- Hub central (tela inicial)
-├── tools/
-│   ├── acls/index.html         <- ACLS Guide
-│   ├── airway-guide/index.html <- Airway Guide
-│   ├── dengue-path/index.html  <- Dengue Path
-│   ├── block-path/index.html   <- Block Path
-│   ├── infusion-guide/index.html <- Calculadora de Infusões
-│   ├── palia-path/index.html   <- Palia Path
-│   ├── ped-guide/index.html    <- Ped Guide
-│   ├── seda-path/index.html    <- Seda Path
-│   ├── shock-path/index.html   <- Shock Path
-│   ├── tep-guide/index.html    <- TEP Guide
-│   ├── tox-path/index.html     <- Tox Path
-│   └── vm-guide/index.html     <- VM Guide
-├── build_combined.py           <- Script de build
-├── deploy/index.html           <- Output do build (deploy)
-├── assets/splash-logo.jpeg     <- Logo quadrado do splash
-├── CLAUDE.md                   <- Este documento
-├── .gitignore
-└── README.md
+v2/
+├── public/                      <- Assets estáticos (splash logo, _headers)
+├── src/
+│   ├── assets/                  <- Logo (processado pelo Vite)
+│   ├── components/
+│   │   ├── layout/              <- Disclaimer, Header, Footer, FABMenu, Container, Splash
+│   │   ├── common/              <- Card, Button, Collapsible, Toggle, WeightInput, AlertCard, Modal, Toast
+│   │   ├── clinical/            <- DoseCalculator, StepperNav
+│   │   └── nav/                 <- Componentes de navegação
+│   ├── contexts/
+│   │   ├── AuthContext.tsx       <- Google OAuth (Supabase Auth)
+│   │   ├── WeightContext.tsx     <- Peso compartilhado + localStorage
+│   │   ├── ToastContext.tsx      <- Notificações globais
+│   │   └── MetronomeContext.tsx  <- Metrônomo global persistente (ACLS)
+│   ├── hooks/
+│   │   ├── useIsMobile.ts       <- Breakpoint 768px
+│   │   ├── usePageview.ts       <- Analytics automático
+│   │   └── useServerCalc.ts     <- Edge Functions (fórmulas protegidas)
+│   ├── data/
+│   │   ├── drugConfigs.ts       <- 15 drogas tipadas (DrugConfig[])
+│   │   ├── calculatorData.ts    <- 73 calculadoras/scores
+│   │   ├── paliaData.ts         <- Dados Palia Path
+│   │   ├── toxData.ts           <- Dados Tox Path
+│   │   └── vmData.ts            <- Dados VM Guide
+│   ├── pages/                   <- 14 ferramentas (1 arquivo cada, lazy loaded)
+│   ├── types/
+│   │   └── clinical.ts          <- Tipos (DrugConfig, PathwayStep, etc.)
+│   ├── utils/
+│   │   ├── calculations.ts      <- Fórmulas centralizadas
+│   │   └── formatters.ts        <- fmt(), cores por status
+│   ├── App.tsx                  <- Router com lazy loading + ProtectedRoute
+│   ├── main.tsx                 <- Entry point com providers
+│   └── index.css                <- Tailwind @theme OLED Pure + reset global
+├── index.html                   <- Template HTML (meta viewport, title)
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── tailwind.config.ts
 ```
 
-### 11.2 Como funciona o build
+### 11.3 Roteamento e code splitting
 
-O script `build_combined.py` combina todos os HTMLs em um único `index.html` com iframe + `document.write()`.
+Cada ferramenta carrega sob demanda via `React.lazy()`. O Hub carrega eager (primeira tela).
 
-**Pipeline:**
-1. Ler todos os HTMLs de `hub/` e `tools/*/`
-2. Carregar splash logo (JPEG quadrado)
-3. Extrair logo PNG do hub, substituir por `__LOGO__` em todos os apps (deduplicação)
-4. Substituir links externos por `parent.loadApp('nome')`
-5. Tornar logo clicável -> hub em todos os sub-apps
-6. Corrigir funções que usam `location.reload()` (quebra iframe)
-7. Escapar tudo para template literals JS (backticks, `${}`, `</script>`)
-8. Montar HTML combinado com objeto `apps = { hub: \`...\`, vm: \`...\` }`
-9. Gerar `deploy/index.html`
+```tsx
+// App.tsx — padrão de rota
+const NomeTool = lazy(() => import('./pages/NomeTool'))
 
-### 11.3 Regras críticas do build
+<Route path="/rota" element={
+  <ProtectedRoute>
+    <LazyPage><NomeTool /></LazyPage>
+  </ProtectedRoute>
+} />
+```
 
-- **Nunca usar `location.reload()`** em sub-apps — quebra a navegação no iframe. Usar reset de estado manual.
-- **Template literals:** Backticks, `${}` e `</script>` devem ser escapados pela função `escape_for_template()`.
-- **Logo deduplicação:** O PNG do logo é armazenado uma única vez como `LOGO_BASE64` no parent. Sub-apps usam placeholder `__LOGO__` substituído em runtime.
-- **Navegação entre apps:** Usar `parent.loadApp('nome')` com `event.preventDefault()`.
-- **Deep links:** `parent.loadApp('infusion', 'noradrenalina')` — o segundo parâmetro é passado para `handleDeepLink()` no app destino.
+- **Bundle inicial:** ~380KB (React + Router + Auth + Hub)
+- **Cada ferramenta:** 15-80KB adicional (carregado sob demanda)
+- **Fallback:** `<Splash />` enquanto carrega
 
-### 11.4 Splash screen
+### 11.4 Contexts (estado global)
 
-- Logo quadrado JPEG com animação de reveal (blur -> nítido, 2.2s)
+| Context | Arquivo | Responsabilidade |
+|---------|---------|-----------------|
+| `AuthContext` | `contexts/AuthContext.tsx` | Google OAuth via Supabase. `useAuth()` retorna `session`, `loading`, `signIn()`, `signOut()`. |
+| `WeightContext` | `contexts/WeightContext.tsx` | Peso do paciente compartilhado entre ferramentas. Persiste no localStorage. |
+| `ToastContext` | `contexts/ToastContext.tsx` | Notificações globais (sucesso, erro, info). `useToast()` retorna `showToast()`. |
+| `MetronomeContext` | `contexts/MetronomeContext.tsx` | Metrônomo global (ACLS). Persiste entre navegação. Banner vermelho quando ativo. AudioContext + silent audio loop para iOS. |
+
+### 11.5 Hooks customizados
+
+| Hook | Arquivo | Uso |
+|------|---------|-----|
+| `useIsMobile()` | `hooks/useIsMobile.ts` | Retorna `true` se viewport < 768px |
+| `usePageview()` | `hooks/usePageview.ts` | Registra pageview no Supabase Analytics |
+| `useServerCalc()` | `hooks/useServerCalc.ts` | Chama Edge Functions para fórmulas protegidas. JWT obrigatório. Fallback local se servidor indisponível. |
+
+### 11.6 Splash screen
+
+- Logo quadrado JPEG com animação de reveal (blur -> nítido)
 - Créditos: "Gustavo Moreira - Gabriela Feltrin - João Pedro Moreira" com fade-in atrasado
-- Splash some após 3s, iframe aparece com fade
+- Usado como fallback de `<Suspense>` e durante verificação de auth
 
-### 11.5 Comandos de build e deploy
+### 11.7 Comandos de build e deploy
 
 ```bash
-# Build
-python3 build_combined.py
+# Desenvolvimento
+cd v2 && npm run dev
 
-# Deploy (auto-deploy via Netlify)
-git add tools/[app]/index.html build_combined.py deploy/index.html
+# Build de produção
+cd v2 && npm run build
+
+# Deploy (auto-deploy via Netlify de v2/dist/)
+git add v2/
 git commit -m "feat: descrição da mudança"
 git push origin main
 ```
+
+### 11.8 Edge Functions (Supabase)
+
+| Function | Endpoint | O que protege |
+|----------|----------|---------------|
+| `calculate-dose` | `/functions/v1/calculate-dose` | Fórmulas de 15 drogas + VNERi |
+| `get-tool-content` | `/functions/v1/get-tool-content` | Scores (Wells, HACOR, PESI) + protocolos |
+
+Chamadas via `useServerCalc()` hook. JWT obrigatório. Fallback local se servidor indisponível.
 
 ---
 
 ## 12. Padrões de código
 
-### 12.1 Arquivo único
+### 12.1 Componentes React/TypeScript
 
-Todo o código (HTML + CSS + JS) em **um só arquivo `.html`**. Sem dependências externas (exceto fontes do sistema). Deve funcionar offline após primeiro carregamento.
+- Um componente por arquivo (`.tsx`)
+- Props tipadas com `interface` (nunca `any`)
+- Hooks no topo do componente (regras dos hooks)
+- `export default` para páginas (compatível com `React.lazy()`)
+- Named exports para componentes reutilizáveis
+- Dados clínicos em arquivos separados (`src/data/`)
 
 ### 12.2 Nomenclatura
 
 | Contexto | Padrão | Exemplo |
 |----------|--------|---------|
-| Variáveis JS | camelCase | `calcularDose`, `pesoAtual` |
-| Classes CSS | kebab-case | `section-header`, `dose-result` |
-| Pastas de tools | kebab-case | `airway-guide/`, `seda-path/` |
-| Arquivo principal | `index.html` | Sempre |
-| IDs HTML | camelCase | `pesoInput`, `resultadoDose` |
+| Componentes | PascalCase | `DoseCalculator.tsx`, `WeightInput.tsx` |
+| Páginas | PascalCase | `InfusionGuide.tsx`, `ShockPath.tsx` |
+| Hooks | camelCase com `use` | `useServerCalc.ts`, `useIsMobile.ts` |
+| Contexts | PascalCase + Context | `AuthContext.tsx`, `WeightContext.tsx` |
+| Tipos/interfaces | PascalCase | `DrugConfig`, `PathwayStep` |
+| Variáveis/funções | camelCase | `calcularDose`, `pesoAtual` |
+| Classes Tailwind | kebab-case (padrão Tailwind) | `bg-bg-card`, `text-accent` |
+| Arquivos de dados | camelCase | `drugConfigs.ts`, `toxData.ts` |
+| Rotas | kebab-case (URL) | `/infusion`, `/calculadoras` |
 
 ### 12.3 Comentários no código
 
@@ -702,12 +665,16 @@ Todo o código (HTML + CSS + JS) em **um só arquivo `.html`**. Sem dependência
 - Documentar fórmulas de cálculos com referência
 - Indicar fonte bibliográfica quando relevante
 
-```javascript
+```typescript
 // Dose de cetamina para ISR: 1,5 mg/kg (Walls Manual, 5th ed)
 // Apresentação: 50 mg/mL (ampola 10 mL)
-const doseCetamina = peso * 1.5;
-const volumeCetamina = doseCetamina / 50;
+const doseCetamina = peso * 1.5
+const volumeCetamina = doseCetamina / 50
 ```
+
+### 12.4 Tipos clínicos (`src/types/clinical.ts`)
+
+Todas as configurações de drogas, steps de pathway e dados de scores devem ser tipados. Usar `DrugConfig` para calculadoras, `PathwayStep` para navegação stepper.
 
 ---
 
@@ -722,6 +689,7 @@ const volumeCetamina = doseCetamina / 50;
 - Sempre validar antes de calcular
 - Exibir mensagens de erro claras
 - Impedir valores fora do range clínico seguro
+- O componente `<WeightInput />` já implementa validação com feedback visual
 
 ### 13.2 Alertas visuais
 
@@ -732,13 +700,22 @@ const volumeCetamina = doseCetamina / 50;
 ### 13.3 Regras de segurança técnica
 
 - HTTPS obrigatório (Netlify fornece SSL gratuito)
-- Sem dados sensíveis no código (sem API keys, tokens ou senhas)
-- localStorage apenas para preferências do usuário (não dados de pacientes)
+- Sem dados sensíveis no código (sem API keys, tokens ou senhas em arquivos commitados)
+- Variáveis de ambiente via `.env` (não commitado) para Supabase URL e anon key
+- localStorage apenas para preferências do usuário (peso, tema — não dados de pacientes)
 - Console limpo: zero erros vermelhos antes do deploy
 
-### 13.4 Regulatório
+### 13.4 Segurança da aplicação
 
-- Disclaimer obrigatório em todas as ferramentas
+- **Edge Functions (Supabase):** Fórmulas de dose executam no servidor. O código das fórmulas nunca chega ao browser.
+- **Ofuscação:** Variáveis renomeadas, strings embaralhadas no build de produção.
+- **CSP:** Content Security Policy via `_headers` no Netlify.
+- **RLS:** Row Level Security ativo no Supabase para todas as tabelas.
+- **Auth:** Google OAuth obrigatório via Supabase Auth. Rotas protegidas com `<ProtectedRoute />`.
+
+### 13.5 Regulatório
+
+- Disclaimer obrigatório em todas as ferramentas (componente `<Disclaimer />`)
 - Linguagem não-taxativa (apoio à decisão, não prescrição)
 - Não armazenar dados de pacientes na fase atual
 
@@ -746,16 +723,17 @@ const volumeCetamina = doseCetamina / 50;
 
 ## 14. Erros comuns e lições aprendidas
 
-### 14.1 Erros de build
+### 14.1 Erros de React/TypeScript
 
 | Erro | Causa | Solução |
 |------|-------|---------|
-| CSS quebrado após merge de seções | Chaves `}` órfãs desbalanceando o CSS | Conferir contagem de `{` vs `}` antes e depois |
-| `showTab()` crash ao chamar programaticamente | `event.target` undefined fora de click event | Usar busca por atributo em vez de `event.target` |
-| Variáveis JS com mesmo nome em seções merged | `var answers = {}` sobrescrevendo `var answers = []` | Prefixar variáveis por contexto (ex: `deconAnswers`) |
-| Logo não aparece no sub-app | Regex de deduplicação não casou com variante do `<img>` | Usar regex flexível: `<img\s[^>]*__LOGO__[^>]*>` |
-| `location.reload()` quebra iframe | Recarrega o parent, não o sub-app | Usar reset de estado manual |
-| FAB chama função errada | Funções renomeadas durante refactor | Sempre verificar nome da função chamada no onclick |
+| Estado não atualiza visualmente | Mutação direta de objeto/array | Sempre criar novo objeto: `setItems([...items, newItem])` |
+| Re-render infinito | `useEffect` sem dependências corretas | Declarar todas as dependências no array. Usar `useCallback`/`useMemo` quando necessário. |
+| Hydration mismatch | Renderização condicional baseada em `window` | Usar `useEffect` para valores client-only, nunca no corpo do componente |
+| Lazy load falha silenciosamente | Export default ausente na página | Toda página deve ter `export default function NomePagina()` |
+| Tipo `any` escondendo bugs | Pressa ao tipar props | Sempre criar interface explícita para props |
+| Context undefined | Componente fora do Provider | Verificar que todos os providers estão em `main.tsx` |
+| Tailwind classe não aplica | Token não definido no @theme | Verificar `index.css` @theme ou usar valor arbitrário `[#hex]` |
 
 ### 14.2 Erros de ortografia
 
@@ -783,7 +761,7 @@ Termos médicos em português que frequentemente aparecem sem acento:
 
 - Seções que iniciam abertas (devem sempre iniciar FECHADAS)
 - Botões com área de toque < 44px
-- Conteúdo cortado por falta de padding-bottom no body
+- Conteúdo cortado por falta de padding-bottom no container
 - Footer inline em vez de fixo
 - FAB sem click-outside-to-close
 
@@ -828,43 +806,43 @@ Fontes aceitas para validação de conteúdo clínico. **Nunca inventar dados.**
 Verificar **todos** os itens antes de considerar uma ferramenta pronta:
 
 ### Estrutura e conteúdo
-- [ ] Disclaimer presente e sticky no topo (texto padrão)
-- [ ] Logo ANY App no header (base64/`__LOGO__`, clicável -> hub)
-- [ ] Seções colapsáveis iniciam **FECHADAS**
-- [ ] Footer fixo com créditos (Gustavo, Gabriela, João Pedro)
-- [ ] FAB menu hamburger com click-outside-to-close
+- [ ] `<Disclaimer />` presente no topo da página
+- [ ] `<Header />` com logo ANY App clicável -> Hub
+- [ ] Seções `<Collapsible />` iniciam **FECHADAS**
+- [ ] `<Footer />` fixo com créditos (Gustavo, Gabriela, João Pedro)
+- [ ] `<FABMenu />` com click-outside-to-close
 - [ ] Conteúdo clínico validado (não inventado)
 - [ ] Linguagem **sugestiva** (não imperativa)
 - [ ] Medicamentos com nome **genérico** e apresentação da ampola
 - [ ] Sentence case em títulos
 - [ ] Ortografia portuguesa rigorosa (acentuação correta)
-- [ ] Zero emojis
+- [ ] Zero emojis (usar Lucide icons)
 
 ### Visual e UX
-- [ ] Fundo OLED puro (`#000000`)
-- [ ] Cores conforme paleta OLED Pure
+- [ ] Fundo OLED puro (`#000000`) via `bg-bg-primary`
+- [ ] Cores conforme paleta OLED Pure (@theme)
 - [ ] Contraste adequado para leitura
 - [ ] Botões com min-height 44px
-- [ ] Padding lateral mínimo 16px
-- [ ] Body com padding-bottom 70px
+- [ ] `<Container />` com padding lateral 16px
+- [ ] Padding-bottom suficiente para footer fixo
 - [ ] Testado em tela mobile (< 400px de largura)
 - [ ] Animações suaves (300-400ms)
 
 ### Técnico
-- [ ] Arquivo único (HTML + CSS + JS)
-- [ ] Meta viewport configurada
-- [ ] Encoding UTF-8
-- [ ] Inputs numéricos com `inputmode="decimal"`
-- [ ] Validação de peso (quando aplicável)
+- [ ] TypeScript sem erros (`npm run build` passa)
+- [ ] Props tipadas (sem `any`)
+- [ ] `export default` na página (para `React.lazy()`)
+- [ ] Rota adicionada em `App.tsx`
+- [ ] Card adicionado no Hub
+- [ ] Inputs numéricos com `inputMode="decimal"`
+- [ ] Validação de peso via `<WeightInput />` (quando aplicável)
 - [ ] Calculadoras com faixas de cor
 - [ ] Console sem erros
-- [ ] Funciona offline após primeiro carregamento
-- [ ] `location.reload()` não utilizado (usar reset manual)
+- [ ] Sem dados sensíveis no código
 
 ### Deploy
-- [ ] Build executado: `python3 build_combined.py`
-- [ ] Output verificado: `deploy/index.html` existe e não está truncado
-- [ ] HTML completo (termina com `</html>`)
+- [ ] Build executado: `cd v2 && npm run build`
+- [ ] Output verificado: `v2/dist/` gerado corretamente
 - [ ] Commit com prefixo correto (feat/fix/style/etc.)
 - [ ] Push para main: `git push origin main`
 - [ ] URL acessível após auto-deploy Netlify
@@ -951,161 +929,59 @@ Tabelas de referência para diluição de drogas em infusão contínua pediátri
 
 ---
 
----
+## 18. Calculadoras e scores clínicos
 
-## 18. Arquitetura v2 — React/TypeScript (Abril 2026)
+73 scores e ferramentas clínicas organizados em 16 categorias com campo de busca.
 
-### 18.1 Stack
+Dados em: `v2/src/data/calculatorData.ts`
+Página em: `v2/src/pages/Calculators.tsx`
 
-| Tecnologia | Versao | Uso |
-|------------|--------|-----|
-| React | 19 | Framework UI |
-| TypeScript | 5.9 | Tipagem estatica |
-| Vite | 8 | Build tool (471ms) |
-| Tailwind CSS | 4.2 (v4) | Estilizacao utility-first |
-| React Router | 7 | Roteamento SPA |
-| Supabase | 2.101.1 | Auth + Analytics + Edge Functions |
-| Lucide React | 1.7 | Icones |
-
-### 18.2 Estrutura de pastas (v2/)
-
-```
-v2/src/
-├── assets/                  # Logo
-├── components/
-│   ├── layout/              # Disclaimer, Header, Footer, FABMenu, Container, Splash
-│   ├── common/              # Card, Button, Collapsible, Toggle, Slider, Modal, AlertCard, WeightInput, Toast
-│   └── clinical/            # DoseCalculator, StepperNav
-├── contexts/
-│   ├── AuthContext.tsx       # Google OAuth
-│   ├── WeightContext.tsx     # Peso compartilhado + localStorage
-│   ├── ToastContext.tsx      # Notificacoes
-│   └── MetronomeContext.tsx  # Metronomo global persistente
-├── hooks/
-│   ├── useIsMobile.ts        # Breakpoint 768px
-│   ├── usePageview.ts        # Analytics automatico
-│   └── useServerCalc.ts      # Edge Functions (formulas protegidas)
-├── data/
-│   ├── drugConfigs.ts        # 15 drogas tipadas
-│   ├── paliaData.ts          # Dados Palia Path
-│   ├── toxData.ts            # Dados Tox Path
-│   └── vmData.ts             # Dados VM Guide
-├── pages/                    # 13 ferramentas (1 arquivo cada)
-├── types/clinical.ts         # Tipos (DrugConfig, PathwayStep, etc.)
-├── utils/
-│   ├── calculations.ts       # Formulas centralizadas
-│   └── formatters.ts         # fmt(), cores por status
-├── App.tsx                   # Router com lazy loading
-├── main.tsx                  # Entry com providers
-└── index.css                 # Tailwind @theme OLED Pure
-```
-
-### 18.3 Componentes reutilizaveis
-
-| Componente | Props | Substitui |
-|---|---|---|
-| `<Disclaimer />` | — | Disclaimer manual em 13 arquivos |
-| `<Header />` | title, subtitle | Header + logo |
-| `<Footer />` | toolName, version | Footer |
-| `<FABMenu />` | items[] | FAB hamburger |
-| `<Container />` | children | max-width 500px |
-| `<WeightInput />` | range? | Input peso com validacao |
-| `<Card />` | borderColor? | Cards com border-left |
-| `<Collapsible />` | title, badge? | Secoes colapsaveis |
-| `<DoseCalculator />` | drug config | Calculadora bidirecional |
-| `<StepperNav />` | steps[], currentStep | Navegacao pathway |
-
-### 18.4 Code splitting
-
-Cada ferramenta carrega sob demanda via `React.lazy()`:
-- Bundle inicial: ~380KB (React + Router + Auth + Hub)
-- Cada ferramenta: 15-80KB adicional
-
-### 18.5 Seguranca
-
-- **Edge Functions**: formulas de dose no servidor (nunca chegam ao browser)
-- **Obfuscacao**: variáveis renomeadas, strings embaralhadas
-- **CSP**: Content Security Policy via `_headers`
-- **RLS**: Row Level Security no Supabase
-- **Auth**: Google OAuth obrigatorio
-
-### 18.6 Metrônomo global
-
-`MetronomeContext` no root — persiste entre navegacao. Banner vermelho quando ativo. AudioContext + silent audio loop para iOS.
-
-### 18.7 Comandos
-
-```bash
-# Desenvolvimento
-cd v2 && npm run dev
-
-# Build producao
-cd v2 && npm run build
-
-# Deploy (Netlify auto-deploy de v2/dist/)
-git add v2/ && git commit -m "feat: descricao" && git push origin main
-```
-
-### 18.8 Migracao v1 → v2
-
-O monolito HTML (v1) continua em `deploy/index.html` ate o v2 estar 100% validado. Ambos coexistem no mesmo repositorio. O Netlify deve ser configurado para servir `v2/dist/` quando pronto.
-
-### 18.9 Pagina Calculadoras
-
-73 scores e ferramentas clinicas organizados em 16 categorias com campo de busca:
+### 18.1 Categorias
 
 | Categoria | Quantidade | Exemplos |
 |-----------|-----------|----------|
 | Cardiologia / SCA | 7 | HEART, TIMI, GRACE, CHA2DS2-VASc |
-| Neurologia / Neurocritico | 11 | Hunt-Hess, Fisher, FOUR, NIHSS, CAM-ICU, RASS |
+| Neurologia / Neurocrítico | 11 | Hunt-Hess, Fisher, FOUR, NIHSS, CAM-ICU, RASS, ICH Score, ABC/2 |
 | Gastro / Hepato | 7 | Rockall, Glasgow-Blatchford, Child-Pugh, MELD-Na, Alvarado |
 | Trauma | 5 | TASH, mBIG, PECARN, Canadian C-Spine, Parkland |
-| Hemodinamica | 7 | DC por VTI, Gradiente A-a, Delta Gap, Anion Gap, Winters |
-| Respiratorio / Sepse | 7 | CURB-65, qSOFA, SOFA, NEWS2, APACHE II, Light |
-| Via Aerea | 2 | Cormack-Lehane, Mallampati |
+| Hemodinâmica | 7 | DC por VTI, Gradiente A-a, Delta Gap, Anion Gap, Winters |
+| Respiratório / Sepse | 7 | CURB-65, qSOFA, SOFA, NEWS2, APACHE II, Light |
+| Via Aérea | 2 | Cormack-Lehane, Mallampati |
 | Toxicologia | 5 | CIWA-AR, PSS, Rumack-Matthew, QTc, Gap osmolar |
-| Farmacologia | 1 | Equivalencia de corticoide |
-| Renal / Metabolico | 7 | Adrogue-Madias, Cockcroft-Gault, CKD-EPI, Correcao Ca/K |
-| Infeccao | 1 | CENTOR/McIsaac |
-| Sedacao / Dor | 3 | RASS, BPS, EVA/NRS |
+| Farmacologia | 1 | Equivalência de corticoide |
+| Renal / Metabólico | 7 | Adrogue-Madias, Cockcroft-Gault, CKD-EPI, Correção Ca/K |
+| Infecção | 1 | CENTOR/McIsaac |
+| Sedação / Dor | 3 | RASS, BPS, EVA/NRS |
 | Vascular | 3 | ADD-RS, Caprini, PERC |
-| Obstetricia | 5 | DPP/DUM, IG, HELLP, MgSO4, Bishop |
+| Obstetrícia | 5 | DPP/DUM, IG, HELLP, MgSO4, Bishop |
 | Procedimentos | 1 | Posicionamento CVC |
-| POCUS / Hemodinamica | 1 | Classificacao VTI (Mercadal 2022) |
+| POCUS / Hemodinâmica | 1 | Classificação VTI (Mercadal 2022) |
+
+### 18.2 Estrutura de cada calculadora
 
 Cada calculadora inclui:
-- Calculo interativo com resultado interpretado
+- Cálculo interativo com resultado interpretado
 - **Why**: por que o score existe
 - **When to use**: quando usar
-- **Pearls & Pitfalls**: dicas e armadilhas clinicas
-- **Referencia**: fonte bibliografica
+- **Pearls & Pitfalls**: dicas e armadilhas clínicas
+- **Referência**: fonte bibliográfica
 
-Scores existentes em pathways (Wells, HACOR, VNERi, etc.) conectam via badge "Disponivel em [Tool]".
+Scores existentes em pathways (Wells, HACOR, VNERi, etc.) conectam via badge "Disponível em [Tool]".
 
-Dados em: `src/data/calculatorData.ts`
-Pagina em: `src/pages/Calculators.tsx`
+---
 
-### 18.10 Shock Path — modulo VTI (choque indiferenciado)
+## 19. Shock Path — módulo VTI (choque indiferenciado)
 
-Modulo adicional ao Shock Path para classificacao hemodinamica por VTI do LVOT (Mercadal et al. The Ultrasound Journal, 2022).
+Módulo adicional ao Shock Path para classificação hemodinâmica por VTI do LVOT (Mercadal et al. The Ultrasound Journal, 2022).
 
 Home do Shock Path agora tem dois caminhos:
-- **Choque septico** (ANDROMEDA-SHOCK 2) — fluxo existente de 5 steps
-- **Classificacao hemodinamica** (VTI-based) — novo fluxo com branching eco
+- **Choque séptico** (ANDROMEDA-SHOCK 2) — fluxo existente de 5 steps
+- **Classificação hemodinâmica** (VTI-based) — novo fluxo com branching eco
 
 Fluxo VTI:
-1. VTI < 16 cm → baixo debito → pericardio → VD → VE → valvar → responsividade
+1. VTI < 16 cm → baixo débito → pericárdio → VD → VE → valvar → responsividade
 2. VTI 16-20 cm → zona cinzenta → ScvO2/Gap CO2/lactato → direcionar
 3. VTI > 20 cm → distributivo → vasopressores
-
-### 18.11 Edge Functions (Supabase)
-
-| Function | Endpoint | O que protege |
-|----------|----------|---------------|
-| `calculate-dose` | `/functions/v1/calculate-dose` | Formulas de 15 drogas + VNERi |
-| `get-tool-content` | `/functions/v1/get-tool-content` | Scores (Wells, HACOR, PESI) + protocolos |
-
-Chamadas via `useServerCalc()` hook. JWT obrigatorio. Fallback local se servidor indisponivel.
 
 ---
 
