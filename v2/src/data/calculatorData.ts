@@ -810,6 +810,88 @@ const abcd2: Calculator = {
   }
 }
 
+const ichScore: Calculator = {
+  id: 'ich-score',
+  name: 'ICH Score',
+  aliases: ['ich', 'avch', 'hemorragia intracerebral', 'hematoma cerebral', 'avc hemorragico', 'hemphill'],
+  category: 'Neurologia',
+  type: 'score',
+  description: 'Predição de mortalidade em 30 dias no AVCh espontâneo.',
+  why: 'Score mais validado para prognóstico de AVCh. Simples, rápido e reprodutível. Auxilia na comunicação com familiares e na tomada de decisão sobre nível de cuidado.',
+  whenToUse: 'Pacientes com hemorragia intracerebral espontânea confirmada por TC. Não usar para trauma ou hemorragia subaracnóidea (usar Hunt-Hess/Fisher).',
+  pearlsPitfalls: [
+    'NÃO usar isoladamente para limitar cuidados — viés de profecia autorrealizável (retirada precoce de suporte).',
+    'Volume do hematoma: usar fórmula ABC/2 (disponível nesta página).',
+    'Infratentorial (cerebelo/tronco) tem pior prognóstico independentemente do volume.',
+    'Recalcular após expansão do hematoma (TC de controle em 6h).',
+    'Score 0 não significa ausência de risco — mortalidade ainda pode ser significativa.',
+  ],
+  reference: 'Hemphill JC et al. The ICH Score: a simple, reliable grading scale for intracerebral hemorrhage. Stroke. 2001;32(4):891-7.',
+  items: [
+    { id: 'gcs_ich', label: 'Glasgow (GCS)', options: [
+      { label: '13-15', value: 0 }, { label: '5-12', value: 1 }, { label: '3-4', value: 2 }
+    ]},
+    { id: 'volume', label: 'Volume do hematoma', options: [
+      { label: '< 30 mL', value: 0 }, { label: '≥ 30 mL', value: 1 }
+    ]},
+    { id: 'hiv', label: 'Hemorragia intraventricular', options: [
+      { label: 'Não', value: 0 }, { label: 'Sim', value: 1 }
+    ]},
+    { id: 'infratentorial', label: 'Origem infratentorial', options: [
+      { label: 'Não (supratentorial)', value: 0 }, { label: 'Sim (cerebelo ou tronco)', value: 1 }
+    ]},
+    { id: 'age80', label: 'Idade ≥ 80 anos', options: [
+      { label: 'Não', value: 0 }, { label: 'Sim', value: 1 }
+    ]},
+  ],
+  interpret: (score: number) => {
+    if (score === 0) return interp('ICH Score 0 — mortalidade ~0%', '#4CAF50', 'Bom prognóstico. Manter suporte agressivo e monitorização em UTI.')
+    if (score === 1) return interp('ICH Score 1 — mortalidade ~13%', '#4CAF50', 'Prognóstico favorável. Controle pressórico rigoroso, reversão de anticoagulação se aplicável.')
+    if (score === 2) return interp('ICH Score 2 — mortalidade ~26%', '#FFC107', 'Prognóstico intermediário. Considere UTI, neurocirurgia se hematoma cerebelar > 3 cm.')
+    if (score === 3) return interp('ICH Score 3 — mortalidade ~72%', '#FF9800', 'Prognóstico reservado. Discussão com família sobre objetivos de cuidado.')
+    if (score === 4) return interp('ICH Score 4 — mortalidade ~97%', '#F44336', 'Prognóstico muito reservado. Considere cuidados de conforto conforme valores do paciente.')
+    if (score === 5) return interp('ICH Score 5 — mortalidade ~100%', '#F44336', 'Prognóstico extremamente reservado.')
+    return interp('ICH Score 6 — mortalidade ~100%', '#F44336', 'Prognóstico incompatível com sobrevida na maioria dos casos.')
+  }
+}
+
+const abc2: Calculator = {
+  id: 'abc2',
+  name: 'Volume do hematoma (ABC/2)',
+  aliases: ['abc', 'volume hematoma', 'avch volume', 'calculo hematoma', 'abc/2'],
+  category: 'Neurologia',
+  type: 'formula',
+  description: 'Estimativa rápida do volume de hematoma intracerebral pela TC.',
+  why: 'Método padrão para estimar volume de hematoma sem software de volumetria. Necessário para calcular o ICH Score (limiar de 30 mL). Amplamente validado e aceito nas diretrizes AHA/ASA.',
+  whenToUse: 'Qualquer hemorragia intracerebral na TC. Medir nos cortes axiais.',
+  pearlsPitfalls: [
+    'A = maior diâmetro do hematoma no corte com maior área (cm).',
+    'B = maior diâmetro perpendicular a A, no mesmo corte (cm).',
+    'C = número de cortes com hematoma × espessura do corte (cm). Alternativa: contar cortes onde o hematoma ocupa > 75% da área (conta como 1) e > 25% (conta como 0,5).',
+    'Tende a superestimar hematomas irregulares e subestimar os regulares.',
+    'Repetir em TC de controle (6-24h) para avaliar expansão (aumento > 33% ou > 6 mL é significativo).',
+    'Para hematomas subdurais ou epidurais, usar fórmulas específicas.',
+  ],
+  reference: 'Kothari RU et al. The ABCs of measuring intracerebral hemorrhage volumes. Stroke. 1996;27(8):1304-5.',
+  inputs: [
+    { id: 'a_cm', label: 'A — maior diâmetro (cm)', unit: 'cm', min: 0.1, max: 15, step: 0.1, inputMode: 'decimal' as const },
+    { id: 'b_cm', label: 'B — perpendicular a A (cm)', unit: 'cm', min: 0.1, max: 15, step: 0.1, inputMode: 'decimal' as const },
+    { id: 'c_cm', label: 'C — profundidade (cm)', unit: 'cm', min: 0.1, max: 15, step: 0.1, inputMode: 'decimal' as const },
+  ],
+  interpret: (score: number) => {
+    if (score < 10) return interp(`Volume: ${score.toFixed(1)} mL — pequeno`, '#4CAF50', 'Hematoma pequeno (< 10 mL). ICH Score: usar "< 30 mL". Monitorização e controle pressórico.')
+    if (score < 30) return interp(`Volume: ${score.toFixed(1)} mL — moderado`, '#FFC107', 'Hematoma moderado (10-29 mL). ICH Score: usar "< 30 mL". Considere TC de controle em 6h para avaliar expansão.')
+    if (score < 60) return interp(`Volume: ${score.toFixed(1)} mL — grande`, '#FF9800', 'Hematoma grande (≥ 30 mL). ICH Score: usar "≥ 30 mL". Considere neurocirurgia se cerebelar > 3 cm ou deterioração neurológica.')
+    return interp(`Volume: ${score.toFixed(1)} mL — muito grande`, '#F44336', 'Hematoma muito grande (≥ 60 mL). Prognóstico reservado. Discussão sobre objetivos de cuidado.')
+  },
+  formula: (inputs: Record<string, number>) => {
+    const a = inputs['a_cm'] || 0
+    const b = inputs['b_cm'] || 0
+    const c = inputs['c_cm'] || 0
+    return (a * b * c) / 2
+  }
+}
+
 // ==========================================
 // GASTRO / HEPATO
 // ==========================================
@@ -3228,7 +3310,7 @@ export const CALCULATOR_CATEGORIES: CalculatorCategory[] = [
     id: 'neuro',
     name: 'Neurologia',
     color: '#60A5FA',
-    calculators: [huntHess, fisherModificado, fourScore, ottawaHsa, hintsPlus, camIcu, nihss, gcs, abcd2]
+    calculators: [huntHess, fisherModificado, fourScore, ottawaHsa, hintsPlus, camIcu, nihss, gcs, abcd2, ichScore, abc2]
   },
   {
     id: 'gastro',
