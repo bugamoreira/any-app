@@ -20,6 +20,9 @@ import type { FABItem } from '../types/clinical'
 // ==========================================
 
 type Screen = 'home' | 'step1' | 'step2' | 'step3' | 'step4' | 'step5' | 'vneri' | 'gapco2' | 'referencias'
+  | 'vti-entry' | 'vti-measure' | 'vti-low' | 'vti-grey' | 'vti-distributive' | 'vti-result'
+
+type VtiShockType = 'tamponamento' | 'obstrutivo' | 'cardiogenico' | 'cardiogenico-valvar' | 'hipovolemico' | 'distributivo' | null
 
 interface TecEntry {
   value: number
@@ -75,6 +78,18 @@ interface ShockState {
   scvo2S: number | null
   gapCO2S: number | null
   quadranteS: QuadranteData | null
+  // VTI module
+  vtiValue: number | null
+  vtiPericardio: 'sim' | 'nao' | null
+  vtiVD: 'sim' | 'nao' | null
+  vtiVE: 'sim' | 'nao' | null
+  vtiValvar: 'sim' | 'nao' | null
+  vtiFluidResp: 'sim' | 'nao' | null
+  vtiVentMode: 'espontanea' | 'mecanica' | null
+  vtiShockType: VtiShockType
+  vtiGreyScvo2: number | null
+  vtiGreyLactato: number | null
+  vtiGreyGapCO2: number | null
 }
 
 type ShockAction =
@@ -110,6 +125,18 @@ type ShockAction =
   | { type: 'SET_SCVO2_S'; value: number | null }
   | { type: 'SET_GAPCO2_S'; value: number | null }
   | { type: 'SET_QUADRANTE_S'; value: QuadranteData | null }
+  | { type: 'SET_VTI_VALUE'; value: number | null }
+  | { type: 'SET_VTI_PERICARDIO'; value: 'sim' | 'nao' | null }
+  | { type: 'SET_VTI_VD'; value: 'sim' | 'nao' | null }
+  | { type: 'SET_VTI_VE'; value: 'sim' | 'nao' | null }
+  | { type: 'SET_VTI_VALVAR'; value: 'sim' | 'nao' | null }
+  | { type: 'SET_VTI_FLUID_RESP'; value: 'sim' | 'nao' | null }
+  | { type: 'SET_VTI_VENT_MODE'; value: 'espontanea' | 'mecanica' | null }
+  | { type: 'SET_VTI_SHOCK_TYPE'; value: VtiShockType }
+  | { type: 'SET_VTI_GREY_SCVO2'; value: number | null }
+  | { type: 'SET_VTI_GREY_LACTATO'; value: number | null }
+  | { type: 'SET_VTI_GREY_GAPCO2'; value: number | null }
+  | { type: 'RESET_VTI' }
   | { type: 'RESET' }
 
 const initialState: ShockState = {
@@ -147,6 +174,17 @@ const initialState: ShockState = {
   scvo2S: null,
   gapCO2S: null,
   quadranteS: null,
+  vtiValue: null,
+  vtiPericardio: null,
+  vtiVD: null,
+  vtiVE: null,
+  vtiValvar: null,
+  vtiFluidResp: null,
+  vtiVentMode: null,
+  vtiShockType: null,
+  vtiGreyScvo2: null,
+  vtiGreyLactato: null,
+  vtiGreyGapCO2: null,
 }
 
 function shockReducer(state: ShockState, action: ShockAction): ShockState {
@@ -190,6 +228,24 @@ function shockReducer(state: ShockState, action: ShockAction): ShockState {
     case 'SET_SCVO2_S': return { ...state, scvo2S: action.value }
     case 'SET_GAPCO2_S': return { ...state, gapCO2S: action.value }
     case 'SET_QUADRANTE_S': return { ...state, quadranteS: action.value }
+    case 'SET_VTI_VALUE': return { ...state, vtiValue: action.value }
+    case 'SET_VTI_PERICARDIO': return { ...state, vtiPericardio: action.value }
+    case 'SET_VTI_VD': return { ...state, vtiVD: action.value }
+    case 'SET_VTI_VE': return { ...state, vtiVE: action.value }
+    case 'SET_VTI_VALVAR': return { ...state, vtiValvar: action.value }
+    case 'SET_VTI_FLUID_RESP': return { ...state, vtiFluidResp: action.value }
+    case 'SET_VTI_VENT_MODE': return { ...state, vtiVentMode: action.value }
+    case 'SET_VTI_SHOCK_TYPE': return { ...state, vtiShockType: action.value }
+    case 'SET_VTI_GREY_SCVO2': return { ...state, vtiGreyScvo2: action.value }
+    case 'SET_VTI_GREY_LACTATO': return { ...state, vtiGreyLactato: action.value }
+    case 'SET_VTI_GREY_GAPCO2': return { ...state, vtiGreyGapCO2: action.value }
+    case 'RESET_VTI': return {
+      ...state,
+      screen: 'vti-entry' as Screen,
+      vtiValue: null, vtiPericardio: null, vtiVD: null, vtiVE: null,
+      vtiValvar: null, vtiFluidResp: null, vtiVentMode: null, vtiShockType: null,
+      vtiGreyScvo2: null, vtiGreyLactato: null, vtiGreyGapCO2: null,
+    }
     case 'RESET': return { ...initialState }
     default: return state
   }
@@ -572,7 +628,7 @@ export default function ShockPath() {
 
     // Profile label
     const uniqueLabels = [...new Set(labels)]
-    let profileLabel = 'Choque s��ptico'
+    let profileLabel = 'Choque séptico'
     if (uniqueLabels.length > 1) {
       profileLabel = `Choque misto — ${uniqueLabels.join(' + ')}`
     } else if (uniqueLabels.length === 1) {
@@ -624,7 +680,8 @@ export default function ShockPath() {
 
   const fabItems: FABItem[] = useMemo(() => [
     { label: 'Início', onClick: () => goTo('home') },
-    { label: 'Algoritmo', onClick: () => goTo('step1') },
+    { label: 'Choque séptico', onClick: () => goTo('step1') },
+    { label: 'Classificação VTI', onClick: () => goTo('vti-entry') },
     { label: 'VNERi', onClick: () => goTo('vneri') },
     { label: 'Gap CO2', onClick: () => goTo('gapco2') },
     { label: 'Referências', onClick: () => goTo('referencias') },
@@ -730,7 +787,7 @@ export default function ShockPath() {
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col pb-24">
       <Disclaimer />
-      <Header title="Shock Path" subtitle="Ressuscitação hemodinâmica no choque séptico" />
+      <Header title="Shock Path" subtitle="Avaliação hemodinâmica no choque" />
 
       <Container>
         {/* SCREEN: HOME */}
@@ -744,17 +801,51 @@ export default function ShockPath() {
 
             <div className="text-center mb-6">
               <div className="text-[22px] font-bold mb-1">Shock Path</div>
-              <div className="text-sm text-text-secondary">Ressuscitação hemodin��mica no choque séptico</div>
+              <div className="text-sm text-text-secondary">Avaliação hemodinâmica no choque</div>
             </div>
 
-            <Button variant="primary" fullWidth size="lg" onClick={() => goTo('step1')}>
-              Iniciar algoritmo
-            </Button>
-            <div className="text-center text-[11px] text-text-muted mt-2">
-              Protocolo CRT-PHR (ANDROMEDA-SHOCK 2)
-            </div>
+            {/* Module selector */}
+            <div className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">Selecione o contexto</div>
 
-            <div className="grid grid-cols-2 gap-2.5 mt-6">
+            {/* Choque séptico card */}
+            <button
+              onClick={() => goTo('step1')}
+              className="w-full bg-bg-card border border-border-card rounded-xl p-4 text-left cursor-pointer transition-all mb-3 active:bg-bg-hover active:scale-[0.98]"
+              style={{ borderLeft: '4px solid #FF5252' }}
+            >
+              <div className="flex items-center gap-3">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+                <div className="flex-1">
+                  <div className="text-base font-bold text-text-primary">Choque séptico</div>
+                  <div className="text-xs text-text-muted mt-0.5">ANDROMEDA-SHOCK 2 — Protocolo CRT-PHR</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
+              </div>
+            </button>
+
+            {/* Classificação hemodinâmica card */}
+            <button
+              onClick={() => goTo('vti-entry')}
+              className="w-full bg-bg-card border border-border-card rounded-xl p-4 text-left cursor-pointer transition-all mb-3 active:bg-bg-hover active:scale-[0.98]"
+              style={{ borderLeft: '4px solid #2196F3' }}
+            >
+              <div className="flex items-center gap-3">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M8 12l3 3 5-5" />
+                </svg>
+                <div className="flex-1">
+                  <div className="text-base font-bold text-text-primary">Classificação hemodinâmica</div>
+                  <div className="text-xs text-text-muted mt-0.5">VTI-based — Mercadal et al. 2022</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
+              </div>
+            </button>
+
+            {/* Shortcuts grid */}
+            <div className="grid grid-cols-2 gap-2.5 mt-5">
               {[
                 { screen: 'vneri' as Screen, label: 'VNERi', desc: 'Responsividade vascular', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg> },
                 { screen: 'gapco2' as Screen, label: 'Gap CO2', desc: 'Quadrante perfusional', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg> },
@@ -771,11 +862,6 @@ export default function ShockPath() {
                   <div className="text-xs text-text-muted leading-tight">{item.desc}</div>
                 </button>
               ))}
-            </div>
-
-            <div className="border-2 border-dashed border-border-card rounded-xl p-5 text-center mt-4 opacity-50">
-              <div className="inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-white/10 text-text-muted mb-2 tracking-wider">EM BREVE</div>
-              <div className="text-sm font-semibold text-text-muted">RUSH Protocol</div>
             </div>
           </div>
         )}
@@ -1658,6 +1744,740 @@ export default function ShockPath() {
           </div>
         )}
 
+        {/* ============================================ */}
+        {/* VTI MODULE SCREENS                          */}
+        {/* ============================================ */}
+
+        {/* SCREEN: VTI-ENTRY — Reconhecimento */}
+        {state.screen === 'vti-entry' && (
+          <div className="animate-slide-in">
+            <BackButton onClick={() => goTo('home')} />
+
+            <div className="text-center mb-5">
+              <div className="text-xl font-bold">Classificação hemodinâmica</div>
+              <div className="text-sm text-text-secondary">Algoritmo VTI-based — Mercadal et al. 2022</div>
+            </div>
+
+            <InfoCard title="Sinais clínicos de choque" borderColor="#F44336">
+              <ul className="list-disc pl-4 space-y-1 mt-1">
+                <li>Hipotensão (PAS &lt; 90 mmHg ou PAM &lt; 65 mmHg)</li>
+                <li>Sinais de hipoperfusão (livedo, oligúria, alteração do sensório)</li>
+                <li>Taquicardia</li>
+                <li>Lactato elevado (&ge; 2 mmol/L)</li>
+              </ul>
+            </InfoCard>
+
+            <AlertCard type="info" title="Pré-requisito">
+              Ecocardiograma transtorácico disponível à beira-leito. A medida do VTI no LVOT é o ponto de partida deste algoritmo.
+            </AlertCard>
+
+            <Button variant="primary" fullWidth size="lg" className="mt-4" onClick={() => goTo('vti-measure')}>
+              Iniciar ecocardiografia básica
+            </Button>
+
+            <div className="mt-4 text-[11px] text-text-muted text-center">
+              Mercadal J et al. The Ultrasound Journal, 2022
+            </div>
+          </div>
+        )}
+
+        {/* SCREEN: VTI-MEASURE — Medida do LVOT VTI */}
+        {state.screen === 'vti-measure' && (
+          <div className="animate-slide-in">
+            <BackButton onClick={() => goTo('vti-entry')} />
+
+            <div className="text-center mb-5">
+              <div className="text-xl font-bold">Medida do LVOT VTI</div>
+              <div className="text-sm text-text-secondary">Velocity-Time Integral no trato de saída do VE</div>
+            </div>
+
+            <Collapsible title="Como medir o VTI">
+              <div className="text-sm text-text-secondary leading-relaxed space-y-2">
+                <p><strong className="text-text-primary">1.</strong> Janela apical 5 câmaras</p>
+                <p><strong className="text-text-primary">2.</strong> Posicione o volume-amostra do Doppler pulsado no LVOT (anel aórtico)</p>
+                <p><strong className="text-text-primary">3.</strong> Alinhe o feixe paralelo ao fluxo (ângulo &lt; 20 graus)</p>
+                <p><strong className="text-text-primary">4.</strong> Trace a envoltória do espectro Doppler (integral velocidade-tempo)</p>
+                <p><strong className="text-text-primary">5.</strong> Considere a média de 3-5 ciclos cardíacos</p>
+              </div>
+            </Collapsible>
+
+            <SectionTitle>Valor do VTI (cm)</SectionTitle>
+            <input
+              type="number"
+              inputMode="decimal"
+              placeholder="Ex: 18"
+              min={1}
+              max={40}
+              step={0.1}
+              value={state.vtiValue ?? ''}
+              onChange={(e) => dispatch({ type: 'SET_VTI_VALUE', value: e.target.value ? parseFloat(e.target.value) : null })}
+              className="w-full bg-bg-elevated border border-border-card rounded-lg text-text-primary p-3 text-lg font-semibold text-center outline-none focus:border-accent"
+            />
+
+            {state.vtiValue !== null && state.vtiValue > 0 && (
+              <div className="mt-4">
+                {state.vtiValue < 16 && (
+                  <ResultCard color="red" title="VTI < 16 cm — Baixo débito cardíaco" titleColor="#FF6B6B">
+                    O débito cardíaco está provavelmente reduzido. Considere investigar a causa da disfunção.
+                    <Button variant="primary" fullWidth className="mt-3" onClick={() => {
+                      dispatch({ type: 'SET_VTI_PERICARDIO', value: null })
+                      dispatch({ type: 'SET_VTI_VD', value: null })
+                      dispatch({ type: 'SET_VTI_VE', value: null })
+                      dispatch({ type: 'SET_VTI_VALVAR', value: null })
+                      dispatch({ type: 'SET_VTI_FLUID_RESP', value: null })
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: null })
+                      goTo('vti-low')
+                    }}>
+                      Investigar causa
+                    </Button>
+                  </ResultCard>
+                )}
+
+                {state.vtiValue >= 16 && state.vtiValue <= 20 && (
+                  <ResultCard color="yellow" title="VTI 16-20 cm — Zona cinzenta" titleColor="#FFD740">
+                    Débito cardíaco limítrofe. Considere avaliar variáveis de perfusão e congestão para direcionar a abordagem.
+                    <Button variant="primary" fullWidth className="mt-3" onClick={() => {
+                      dispatch({ type: 'SET_VTI_GREY_SCVO2', value: null })
+                      dispatch({ type: 'SET_VTI_GREY_LACTATO', value: null })
+                      dispatch({ type: 'SET_VTI_GREY_GAPCO2', value: null })
+                      goTo('vti-grey')
+                    }}>
+                      Avaliar perfusão
+                    </Button>
+                  </ResultCard>
+                )}
+
+                {state.vtiValue > 20 && (
+                  <ResultCard color="green" title="VTI > 20 cm — Débito cardíaco adequado" titleColor="#66BB6A">
+                    O débito cardíaco está provavelmente preservado. O problema predominante é a resistência vascular periférica.
+                    <Button variant="primary" fullWidth className="mt-3" onClick={() => {
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'distributivo' })
+                      goTo('vti-distributive')
+                    }}>
+                      Choque distributivo
+                    </Button>
+                  </ResultCard>
+                )}
+
+                {/* VTI reference bar */}
+                <div className="mt-4">
+                  <div className="text-xs text-text-muted mb-1">Referência do VTI</div>
+                  <div className="relative h-6 rounded-xl overflow-hidden" style={{
+                    background: 'linear-gradient(to right, #F44336 0%, #F44336 40%, #FFC107 40%, #FFC107 50%, #4CAF50 50%, #4CAF50 100%)'
+                  }}>
+                    <div
+                      className="absolute -top-1 w-3 h-8 bg-white rounded-md transition-all duration-300"
+                      style={{
+                        left: `calc(${Math.min(100, Math.max(0, (state.vtiValue / 40) * 100))}% - 6px)`,
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.4)'
+                      }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-[11px] text-text-muted mt-1 px-0.5">
+                    <span>0</span><span>16</span><span>20</span><span>40</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* SCREEN: VTI-LOW — Baixo débito (VTI < 16) */}
+        {state.screen === 'vti-low' && (
+          <div className="animate-slide-in">
+            <BackButton onClick={() => goTo('vti-measure')} />
+
+            <div className="text-center mb-5">
+              <div className="text-xl font-bold">Baixo débito cardíaco</div>
+              <div className="text-sm text-text-secondary">VTI &lt; 16 cm — Investigação etiológica</div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-4">
+              <DataBadge label="VTI" value={`${fmt(state.vtiValue, 1)} cm`} />
+            </div>
+
+            {/* Question a: Pericárdio */}
+            <Card borderColor="#F44336" className="mb-3">
+              <div className="text-sm font-bold mb-2">Função pericárdica comprometida?</div>
+              <div className="text-xs text-text-muted mb-3">
+                Derrame pericárdico moderado a grave, sinais de tamponamento
+              </div>
+              <Toggle
+                options={[
+                  { value: 'sim', label: 'Sim' },
+                  { value: 'nao', label: 'Não' },
+                ]}
+                value={state.vtiPericardio ?? ''}
+                onChange={(v) => dispatch({ type: 'SET_VTI_PERICARDIO', value: v as 'sim' | 'nao' })}
+              />
+              {state.vtiPericardio === 'sim' && (
+                <div className="mt-3">
+                  <ResultCard color="red" title="Tamponamento cardíaco" titleColor="#FF6B6B">
+                    <div className="space-y-1.5">
+                      <div><strong>Achados ecocardiográficos:</strong></div>
+                      <ul className="list-disc pl-4 space-y-0.5">
+                        <li>Derrame pericárdico moderado-grave</li>
+                        <li>Colapso diastólico de AD e/ou VD</li>
+                        <li>VCI dilatada sem variação respiratória</li>
+                      </ul>
+                      <div className="mt-2"><strong>Conduta sugerida:</strong></div>
+                      <ul className="list-disc pl-4 space-y-0.5">
+                        <li>Considere expansão volêmica cautelosa</li>
+                        <li>Considere pericardiocentese ou drenagem pericárdica</li>
+                        <li>Avaliação cirúrgica conforme etiologia</li>
+                      </ul>
+                    </div>
+                  </ResultCard>
+                  <Button variant="primary" fullWidth onClick={() => {
+                    dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'tamponamento' })
+                    goTo('vti-result')
+                  }}>
+                    Ver resumo
+                  </Button>
+                </div>
+              )}
+            </Card>
+
+            {/* Question b: VD */}
+            {state.vtiPericardio === 'nao' && (
+              <Card borderColor="#FFC107" className="mb-3">
+                <div className="text-sm font-bold mb-2">Função do VD comprometida?</div>
+                <div className="text-xs text-text-muted mb-3">
+                  Dilatação de VD, TAPSE reduzido, septo paradoxal
+                </div>
+                <Toggle
+                  options={[
+                    { value: 'sim', label: 'Sim' },
+                    { value: 'nao', label: 'Não' },
+                  ]}
+                  value={state.vtiVD ?? ''}
+                  onChange={(v) => dispatch({ type: 'SET_VTI_VD', value: v as 'sim' | 'nao' })}
+                />
+                {state.vtiVD === 'sim' && (
+                  <div className="mt-3">
+                    <ResultCard color="yellow" title="Choque obstrutivo" titleColor="#FFD740">
+                      <div className="space-y-1.5">
+                        <div><strong>Achados ecocardiográficos:</strong></div>
+                        <ul className="list-disc pl-4 space-y-0.5">
+                          <li>Relação área VD/VE &gt; 1</li>
+                          <li>TAPSE &lt; 14 mm</li>
+                          <li>VCI dilatada sem variação respiratória</li>
+                          <li>Movimento paradoxal do septo interventricular</li>
+                        </ul>
+                        <div className="mt-2"><strong>Causas a considerar:</strong></div>
+                        <ul className="list-disc pl-4 space-y-0.5">
+                          <li>TEP maciço</li>
+                          <li>Pneumotórax hipertensivo</li>
+                          <li>Hipertensão pulmonar crônica</li>
+                          <li>Cor pulmonale agudo</li>
+                        </ul>
+                      </div>
+                    </ResultCard>
+                    <Button variant="primary" fullWidth onClick={() => {
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'obstrutivo' })
+                      goTo('vti-result')
+                    }}>
+                      Ver resumo
+                    </Button>
+                  </div>
+                )}
+              </Card>
+            )}
+
+            {/* Question c: VE */}
+            {state.vtiPericardio === 'nao' && state.vtiVD === 'nao' && (
+              <Card borderColor="#2196F3" className="mb-3">
+                <div className="text-sm font-bold mb-2">Função do VE comprometida?</div>
+                <div className="text-xs text-text-muted mb-3">
+                  VE dilatado, hipocinesia global, FEVE visualmente reduzida
+                </div>
+                <Toggle
+                  options={[
+                    { value: 'sim', label: 'Sim' },
+                    { value: 'nao', label: 'Não' },
+                  ]}
+                  value={state.vtiVE ?? ''}
+                  onChange={(v) => dispatch({ type: 'SET_VTI_VE', value: v as 'sim' | 'nao' })}
+                />
+                {state.vtiVE === 'sim' && (
+                  <div className="mt-3">
+                    <ResultCard color="blue" title="Choque cardiogênico" titleColor="#64B5F6">
+                      <div className="space-y-1.5">
+                        <div><strong>Achados ecocardiográficos:</strong></div>
+                        <ul className="list-disc pl-4 space-y-0.5">
+                          <li>VE dilatado (avaliação visual)</li>
+                          <li>FEVE &lt; 40%</li>
+                          <li>Hipocinesia difusa ou segmentar</li>
+                        </ul>
+                        <div className="mt-2"><strong>Causas a considerar:</strong></div>
+                        <ul className="list-disc pl-4 space-y-0.5">
+                          <li>Cardiomiopatia séptica</li>
+                          <li>Cardiomiopatia de estresse (Takotsubo)</li>
+                          <li>IAM / síndrome coronária aguda</li>
+                          <li>Cardiomiopatia prévia descompensada</li>
+                          <li>Miocardite aguda</li>
+                        </ul>
+                        <div className="mt-2"><strong>Conduta sugerida:</strong></div>
+                        <ul className="list-disc pl-4 space-y-0.5">
+                          <li>Considere inotrópico (dobutamina 5-20 mcg/kg/min)</li>
+                          <li>Considere vasopressor conforme PAM</li>
+                          <li>Avaliação de suporte mecânico circulatório em casos refratários</li>
+                        </ul>
+                      </div>
+                    </ResultCard>
+                    <div className="flex flex-wrap gap-2 mt-2 mb-3">
+                      <button
+                        onClick={() => goToInfusion('dobutamina')}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-bg-elevated border border-border-card rounded-full text-xs font-medium text-info cursor-pointer min-h-[44px] active:bg-bg-hover"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2" /><line x1="8" y1="6" x2="16" y2="6" /></svg>
+                        Calculadora dobutamina
+                      </button>
+                    </div>
+                    <Button variant="primary" fullWidth onClick={() => {
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'cardiogenico' })
+                      goTo('vti-result')
+                    }}>
+                      Ver resumo
+                    </Button>
+                  </div>
+                )}
+              </Card>
+            )}
+
+            {/* Question d: Valvar */}
+            {state.vtiPericardio === 'nao' && state.vtiVD === 'nao' && state.vtiVE === 'nao' && (
+              <Card borderColor="#8B5CF6" className="mb-3">
+                <div className="text-sm font-bold mb-2">Função valvar comprometida?</div>
+                <div className="text-xs text-text-muted mb-3">
+                  Insuficiência mitral ou aórtica aguda maciça, estenose aórtica ou mitral crítica
+                </div>
+                <Toggle
+                  options={[
+                    { value: 'sim', label: 'Sim' },
+                    { value: 'nao', label: 'Não' },
+                  ]}
+                  value={state.vtiValvar ?? ''}
+                  onChange={(v) => dispatch({ type: 'SET_VTI_VALVAR', value: v as 'sim' | 'nao' })}
+                />
+                {state.vtiValvar === 'sim' && (
+                  <div className="mt-3">
+                    <ResultCard color="yellow" title="Choque cardiogênico valvar" titleColor="#C084FC">
+                      <div className="space-y-1.5">
+                        <div><strong>Achados ecocardiográficos:</strong></div>
+                        <ul className="list-disc pl-4 space-y-0.5">
+                          <li>IM ou IA aguda maciça (avaliação 2D e color-flow Doppler)</li>
+                          <li>EA ou EM crítica</li>
+                        </ul>
+                        <div className="mt-2"><strong>Conduta sugerida:</strong></div>
+                        <ul className="list-disc pl-4 space-y-0.5">
+                          <li>Considere inotrópico</li>
+                          <li>Considere vasopressor ou vasodilatador conforme perfil</li>
+                          <li>Avaliação de BIA (balão intra-aórtico)</li>
+                          <li>Avaliação cirúrgica de urgência</li>
+                        </ul>
+                      </div>
+                    </ResultCard>
+                    <Button variant="primary" fullWidth onClick={() => {
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'cardiogenico-valvar' })
+                      goTo('vti-result')
+                    }}>
+                      Ver resumo
+                    </Button>
+                  </div>
+                )}
+              </Card>
+            )}
+
+            {/* Question e: Responsividade a fluidos */}
+            {state.vtiPericardio === 'nao' && state.vtiVD === 'nao' && state.vtiVE === 'nao' && state.vtiValvar === 'nao' && (
+              <Card borderColor="#10B981" className="mb-3">
+                <div className="text-sm font-bold mb-2">Responsividade a fluidos?</div>
+                <div className="text-xs text-text-muted mb-3">
+                  Avalie conforme o modo ventilatório
+                </div>
+
+                <Toggle
+                  options={[
+                    { value: 'espontanea', label: 'Respiração espontânea' },
+                    { value: 'mecanica', label: 'Ventilação mecânica' },
+                  ]}
+                  value={state.vtiVentMode ?? ''}
+                  onChange={(v) => dispatch({ type: 'SET_VTI_VENT_MODE', value: v as 'espontanea' | 'mecanica' })}
+                  className="mb-3"
+                />
+
+                {state.vtiVentMode === 'espontanea' && (
+                  <InfoCard title="Passive Leg Raising (PLR)" borderColor="#10B981">
+                    Elevar membros inferiores a 45 graus. Considere responsivo se <strong>aumento do VTI &gt; 12%</strong> após a manobra. Alternativa: mini-fluid challenge (100 mL em 1 minuto).
+                  </InfoCard>
+                )}
+
+                {state.vtiVentMode === 'mecanica' && (
+                  <InfoCard title="Variação dinâmica" borderColor="#10B981">
+                    Considere responsivo se:
+                    <ul className="list-disc pl-4 mt-1 space-y-0.5">
+                      <li>Distensibilidade da VCI &gt; 13%</li>
+                      <li>Variação do VTI ou pico de velocidade aórtica &gt; 10%</li>
+                    </ul>
+                    Alternativa: mini-fluid challenge (100 mL em 1 minuto).
+                  </InfoCard>
+                )}
+
+                {state.vtiVentMode && (
+                  <div className="mt-3">
+                    <div className="text-sm font-semibold mb-2">Responsivo a fluidos?</div>
+                    <Toggle
+                      options={[
+                        { value: 'sim', label: 'Sim' },
+                        { value: 'nao', label: 'Não' },
+                      ]}
+                      value={state.vtiFluidResp ?? ''}
+                      onChange={(v) => dispatch({ type: 'SET_VTI_FLUID_RESP', value: v as 'sim' | 'nao' })}
+                    />
+                  </div>
+                )}
+
+                {state.vtiFluidResp === 'sim' && (
+                  <div className="mt-3">
+                    <ResultCard color="green" title="Choque hipovolêmico" titleColor="#66BB6A">
+                      <div className="space-y-1.5">
+                        <div><strong>Conduta sugerida:</strong></div>
+                        <ul className="list-disc pl-4 space-y-0.5">
+                          <li>Considere reposição volêmica com cristaloides balanceados</li>
+                          <li>Considere concentrado de hemácias se sangramento ativo</li>
+                        </ul>
+                        <div className="mt-2"><strong>Causas a considerar:</strong></div>
+                        <ul className="list-disc pl-4 space-y-0.5">
+                          <li>Sangramento (trauma, GI, pós-operatório)</li>
+                          <li>Terceiro espaço (TSFR)</li>
+                          <li>Perdas GI (vômitos, diarreia)</li>
+                          <li>Desidratação grave</li>
+                        </ul>
+                      </div>
+                    </ResultCard>
+                    <Button variant="primary" fullWidth onClick={() => {
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'hipovolemico' })
+                      goTo('vti-result')
+                    }}>
+                      Ver resumo
+                    </Button>
+                  </div>
+                )}
+
+                {state.vtiFluidResp === 'nao' && (
+                  <div className="mt-3">
+                    <AlertCard type="warning" title="Não responsivo a fluidos">
+                      Baixo débito sem causa estrutural evidente e sem responsividade a volume. Considere reavaliar ecocardiograma com mais detalhes ou avaliação hemodinâmica invasiva.
+                    </AlertCard>
+                  </div>
+                )}
+              </Card>
+            )}
+          </div>
+        )}
+
+        {/* SCREEN: VTI-GREY — Zona cinzenta (VTI 16-20) */}
+        {state.screen === 'vti-grey' && (
+          <div className="animate-slide-in">
+            <BackButton onClick={() => goTo('vti-measure')} />
+
+            <div className="text-center mb-5">
+              <div className="text-xl font-bold">Zona cinzenta</div>
+              <div className="text-sm text-text-secondary">VTI 16-20 cm — Avaliação de perfusão</div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-4">
+              <DataBadge label="VTI" value={`${fmt(state.vtiValue, 1)} cm`} />
+            </div>
+
+            <InfoCard title="Interpretação" borderColor="#FFC107">
+              Na zona cinzenta, variáveis de perfusão ajudam a definir se o padrão se assemelha mais a baixo débito ou a choque distributivo.
+            </InfoCard>
+
+            <div className="flex gap-2.5 mb-4">
+              <div className="flex-1">
+                <label className="text-xs text-text-secondary font-semibold uppercase tracking-wider block mb-1.5">ScvO2 (%)</label>
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  placeholder="65"
+                  value={state.vtiGreyScvo2 ?? ''}
+                  onChange={(e) => dispatch({ type: 'SET_VTI_GREY_SCVO2', value: e.target.value ? parseFloat(e.target.value) : null })}
+                  className="w-full bg-bg-elevated border border-border-card rounded-lg text-text-primary p-3 text-base font-semibold text-center outline-none focus:border-accent"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="text-xs text-text-secondary font-semibold uppercase tracking-wider block mb-1.5">pCO2 gap (mmHg)</label>
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  placeholder="6"
+                  value={state.vtiGreyGapCO2 ?? ''}
+                  onChange={(e) => dispatch({ type: 'SET_VTI_GREY_GAPCO2', value: e.target.value ? parseFloat(e.target.value) : null })}
+                  className="w-full bg-bg-elevated border border-border-card rounded-lg text-text-primary p-3 text-base font-semibold text-center outline-none focus:border-accent"
+                />
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label className="text-xs text-text-secondary font-semibold uppercase tracking-wider block mb-1.5">Tendência do lactato</label>
+              <Toggle
+                options={[
+                  { value: 'crescente', label: 'Crescente' },
+                  { value: 'estavel', label: 'Estável/Decrescente' },
+                ]}
+                value={state.vtiGreyLactato !== null ? (state.vtiGreyLactato > 0 ? 'crescente' : 'estavel') : ''}
+                onChange={(v) => dispatch({ type: 'SET_VTI_GREY_LACTATO', value: v === 'crescente' ? 1 : 0 })}
+              />
+            </div>
+
+            {/* Interpretation */}
+            {state.vtiGreyScvo2 !== null && state.vtiGreyGapCO2 !== null && state.vtiGreyLactato !== null && (
+              <div className="mt-4">
+                {(state.vtiGreyScvo2 < 70 && state.vtiGreyLactato > 0 && state.vtiGreyGapCO2 > 6) ? (
+                  <div>
+                    <ResultCard color="red" title="Padrão compatível com baixo débito" titleColor="#FF6B6B">
+                      ScvO2 &lt; 70% + lactato crescente + pCO2 gap &gt; 6 mmHg sugerem inadequação do débito cardíaco. Considere abordar como baixo débito.
+                    </ResultCard>
+                    <Button variant="primary" fullWidth onClick={() => {
+                      dispatch({ type: 'SET_VTI_PERICARDIO', value: null })
+                      dispatch({ type: 'SET_VTI_VD', value: null })
+                      dispatch({ type: 'SET_VTI_VE', value: null })
+                      dispatch({ type: 'SET_VTI_VALVAR', value: null })
+                      dispatch({ type: 'SET_VTI_FLUID_RESP', value: null })
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: null })
+                      goTo('vti-low')
+                    }}>
+                      Investigar causa de baixo débito
+                    </Button>
+                  </div>
+                ) : (state.vtiGreyScvo2 >= 70 && state.vtiGreyLactato === 0 && state.vtiGreyGapCO2 <= 6) ? (
+                  <div>
+                    <ResultCard color="green" title="Padrão compatível com choque distributivo" titleColor="#66BB6A">
+                      ScvO2 &ge; 70% + lactato estável/decrescente + pCO2 gap &le; 6 mmHg sugerem que o débito cardíaco é suficiente. Considere tratar como choque distributivo.
+                    </ResultCard>
+                    <Button variant="primary" fullWidth onClick={() => {
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'distributivo' })
+                      goTo('vti-distributive')
+                    }}>
+                      Choque distributivo
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <ResultCard color="yellow" title="Padrão misto ou inconclusivo" titleColor="#FFD740">
+                      Os marcadores de perfusão não convergem claramente para um perfil. Considere reavaliação clínica e ecocardiográfica mais detalhada.
+                    </ResultCard>
+                    <div className="flex gap-2 mt-2">
+                      <Button variant="secondary" fullWidth onClick={() => {
+                        dispatch({ type: 'SET_VTI_PERICARDIO', value: null })
+                        dispatch({ type: 'SET_VTI_VD', value: null })
+                        dispatch({ type: 'SET_VTI_VE', value: null })
+                        dispatch({ type: 'SET_VTI_VALVAR', value: null })
+                        dispatch({ type: 'SET_VTI_FLUID_RESP', value: null })
+                        dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: null })
+                        goTo('vti-low')
+                      }}>Baixo débito</Button>
+                      <Button variant="primary" fullWidth onClick={() => {
+                        dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'distributivo' })
+                        goTo('vti-distributive')
+                      }}>Distributivo</Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* SCREEN: VTI-DISTRIBUTIVE — Choque distributivo (VTI > 20) */}
+        {state.screen === 'vti-distributive' && (
+          <div className="animate-slide-in">
+            <BackButton onClick={() => goTo('vti-measure')} />
+
+            <div className="text-center mb-5">
+              <div className="text-xl font-bold">Choque distributivo</div>
+              <div className="text-sm text-text-secondary">Débito cardíaco adequado — RVP reduzida</div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-4">
+              <DataBadge label="VTI" value={`${fmt(state.vtiValue, 1)} cm`} />
+            </div>
+
+            <InfoCard title="Interpretação" borderColor="#4CAF50">
+              O débito cardíaco está preservado. O mecanismo predominante é a redução da resistência vascular periférica. Considere vasopressores e reavaliação conforme evolução clínica.
+            </InfoCard>
+
+            <SectionTitle>Causas a considerar</SectionTitle>
+            <div className="space-y-2 mb-4">
+              {[
+                'Sepse',
+                'Anafilaxia',
+                'SIRS (pós-CEC, pós-cirurgia de grande porte)',
+                'Pancreatite aguda grave',
+                'Pós-IAM extenso',
+                'Pós-transfusão maciça',
+              ].map((causa, i) => (
+                <div key={i} className="flex items-center gap-2 text-sm text-text-secondary">
+                  <div className="w-1.5 h-1.5 min-w-[6px] rounded-full bg-warning" />
+                  {causa}
+                </div>
+              ))}
+            </div>
+
+            <SectionTitle>Conduta sugerida</SectionTitle>
+            <div className="space-y-2 mb-4">
+              <div className="flex items-start gap-2 text-sm text-text-secondary">
+                <span className="font-bold text-accent min-w-[20px]">1.</span>
+                <span>Considere vasopressor (noradrenalina como primeira linha)</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm text-text-secondary">
+                <span className="font-bold text-accent min-w-[20px]">2.</span>
+                <span>Reavaliação ecocardiográfica seriada conforme evolução</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm text-text-secondary">
+                <span className="font-bold text-accent min-w-[20px]">3.</span>
+                <span>Tratamento da causa base</span>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-4">
+              <button
+                onClick={() => goToInfusion('noradrenalina')}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-bg-elevated border border-border-card rounded-full text-xs font-medium text-info cursor-pointer min-h-[44px] active:bg-bg-hover"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2" /><line x1="8" y1="6" x2="16" y2="6" /></svg>
+                Calculadora NE
+              </button>
+              <button
+                onClick={() => goToInfusion('vasopressina')}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-bg-elevated border border-border-card rounded-full text-xs font-medium text-info cursor-pointer min-h-[44px] active:bg-bg-hover"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2" /><line x1="8" y1="6" x2="16" y2="6" /></svg>
+                Calculadora vasopressina
+              </button>
+            </div>
+
+            <Button variant="primary" fullWidth onClick={() => goTo('vti-result')}>
+              Ver resumo
+            </Button>
+          </div>
+        )}
+
+        {/* SCREEN: VTI-RESULT — Resultado final */}
+        {state.screen === 'vti-result' && (
+          <div className="animate-slide-in">
+            <BackButton onClick={() => goTo('vti-entry')} />
+
+            <div className="text-center mb-5">
+              <div className="text-xl font-bold">Resultado da classificação</div>
+              <div className="text-sm text-text-secondary">Algoritmo VTI-based</div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-4">
+              <DataBadge label="VTI" value={state.vtiValue ? `${fmt(state.vtiValue, 1)} cm` : '--'} />
+            </div>
+
+            {/* Shock type card */}
+            {state.vtiShockType === 'tamponamento' && (
+              <div className="p-4 rounded-xl border-2 border-danger mb-4">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-lg font-bold text-danger">Tamponamento cardíaco</div>
+                <div className="text-sm text-text-secondary mt-2">Choque obstrutivo por comprometimento pericárdico</div>
+                <div className="mt-3 space-y-1 text-sm text-text-secondary">
+                  <div><strong className="text-text-primary">Achados eco:</strong> Derrame pericárdico, colapso de AD/VD, VCI dilatada</div>
+                  <div><strong className="text-text-primary">Conduta:</strong> Considere pericardiocentese, expansão volêmica cautelosa</div>
+                </div>
+              </div>
+            )}
+
+            {state.vtiShockType === 'obstrutivo' && (
+              <div className="p-4 rounded-xl border-2 border-warning mb-4">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-lg font-bold text-warning">Choque obstrutivo</div>
+                <div className="text-sm text-text-secondary mt-2">Disfunção de VD com comprometimento hemodinâmico</div>
+                <div className="mt-3 space-y-1 text-sm text-text-secondary">
+                  <div><strong className="text-text-primary">Achados eco:</strong> VD/VE &gt; 1, TAPSE &lt; 14 mm, septo paradoxal</div>
+                  <div><strong className="text-text-primary">Causas:</strong> TEP, pneumotórax hipertensivo, PHTN</div>
+                </div>
+              </div>
+            )}
+
+            {state.vtiShockType === 'cardiogenico' && (
+              <div className="p-4 rounded-xl border-2 border-info mb-4">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-lg font-bold text-info">Choque cardiogênico</div>
+                <div className="text-sm text-text-secondary mt-2">Disfunção sistólica de VE</div>
+                <div className="mt-3 space-y-1 text-sm text-text-secondary">
+                  <div><strong className="text-text-primary">Achados eco:</strong> VE dilatado, FEVE &lt; 40%</div>
+                  <div><strong className="text-text-primary">Conduta:</strong> Considere inotrópico, vasopressor, suporte mecânico</div>
+                </div>
+              </div>
+            )}
+
+            {state.vtiShockType === 'cardiogenico-valvar' && (
+              <div className="p-4 rounded-xl border-2 mb-4" style={{ borderColor: '#8B5CF6' }}>
+                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-lg font-bold" style={{ color: '#8B5CF6' }}>Choque cardiogênico valvar</div>
+                <div className="text-sm text-text-secondary mt-2">Disfunção valvar aguda grave</div>
+                <div className="mt-3 space-y-1 text-sm text-text-secondary">
+                  <div><strong className="text-text-primary">Achados eco:</strong> IM/IA maciça ou EA/EM crítica</div>
+                  <div><strong className="text-text-primary">Conduta:</strong> Considere inotrópico, BIA, cirurgia</div>
+                </div>
+              </div>
+            )}
+
+            {state.vtiShockType === 'hipovolemico' && (
+              <div className="p-4 rounded-xl border-2 border-success mb-4">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-lg font-bold text-success">Choque hipovolêmico</div>
+                <div className="text-sm text-text-secondary mt-2">Baixo débito responsivo a volume</div>
+                <div className="mt-3 space-y-1 text-sm text-text-secondary">
+                  <div><strong className="text-text-primary">Conduta:</strong> Considere reposição volêmica, hemácias se sangramento</div>
+                  <div><strong className="text-text-primary">Causas:</strong> Sangramento, perdas GI, terceiro espaço</div>
+                </div>
+              </div>
+            )}
+
+            {state.vtiShockType === 'distributivo' && (
+              <div className="p-4 rounded-xl border-2 border-success mb-4">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-lg font-bold text-success">Choque distributivo</div>
+                <div className="text-sm text-text-secondary mt-2">Débito cardíaco adequado, RVP reduzida</div>
+                <div className="mt-3 space-y-1 text-sm text-text-secondary">
+                  <div><strong className="text-text-primary">Conduta:</strong> Considere vasopressor (noradrenalina), tratar causa base</div>
+                  <div><strong className="text-text-primary">Causas:</strong> Sepse, anafilaxia, SIRS, pancreatite</div>
+                </div>
+              </div>
+            )}
+
+            {/* Deep links */}
+            <SectionTitle>Calculadoras de infusão</SectionTitle>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {['noradrenalina', 'vasopressina', 'dobutamina'].map(drug => (
+                <button
+                  key={drug}
+                  onClick={() => goToInfusion(drug)}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-bg-elevated border border-border-card rounded-full text-xs font-medium text-info cursor-pointer min-h-[44px] active:bg-bg-hover"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2" /><line x1="8" y1="6" x2="16" y2="6" /></svg>
+                  {drug === 'noradrenalina' ? 'NE' : drug === 'vasopressina' ? 'Vasopressina' : 'Dobutamina'}
+                </button>
+              ))}
+            </div>
+
+            <AlertCard type="info" title="Referência">
+              Mercadal J et al. VTI-based algorithm in hemodynamic shock assessment. The Ultrasound Journal. 2022.
+            </AlertCard>
+
+            <div className="flex gap-3 mt-6 pt-4 border-t border-border">
+              <Button variant="secondary" fullWidth onClick={() => dispatch({ type: 'RESET_VTI' })}>Reiniciar VTI</Button>
+              <Button variant="primary" fullWidth onClick={() => goTo('home')}>Início</Button>
+            </div>
+          </div>
+        )}
+
         {/* SCREEN: REFERENCIAS */}
         {state.screen === 'referencias' && (
           <div className="animate-slide-in">
@@ -1695,6 +2515,11 @@ export default function ShockPath() {
                 author: 'Hernandez G, et al.',
                 title: 'Effect of a Resuscitation Strategy Targeting Peripheral Perfusion Status vs Serum Lactate Levels on 28-Day Mortality Among Patients With Septic Shock: The ANDROMEDA-SHOCK Randomized Clinical Trial. JAMA. 2019;321(7):654-664.',
                 note: 'ANDROMEDA-SHOCK original: TEC vs lactato',
+              },
+              {
+                author: 'Mercadal J, et al.',
+                title: 'VTI-based algorithm in hemodynamic shock assessment. The Ultrasound Journal. 2022.',
+                note: 'Algoritmo VTI-based para classificação hemodinâmica do choque indiferenciado',
               },
             ].map((ref, i) => (
               <div key={i} className="p-3 bg-bg-card border border-border-card rounded-lg mb-2 text-sm leading-relaxed text-text-secondary">
