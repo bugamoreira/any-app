@@ -67,12 +67,14 @@ function LoginPage() {
   return (
     <div className="min-h-screen bg-bg-primary flex flex-col items-center justify-center gap-8 p-6">
       {/* Logo quadrado empilhado */}
-      <img
-        src="/splash-logo.jpeg"
-        alt="ANY App"
-        className="w-[200px] rounded-2xl shadow-2xl"
-        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-      />
+      <div className="w-[180px] h-[180px] rounded-[20px] overflow-hidden" style={{ boxShadow: '0 0 0 4px #000' }}>
+        <img
+          src="/splash-logo.jpeg"
+          alt="ANY App"
+          className="w-full h-full object-cover scale-105"
+          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+        />
+      </div>
 
       {/* Créditos */}
       <div className="text-center">

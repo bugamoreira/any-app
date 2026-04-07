@@ -31,9 +31,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   async function signInWithGoogle() {
+    // Redireciona para a URL atual — se não autorizada no Supabase,
+    // usa anyapp.netlify.app como fallback (já autorizado)
+    const redirectUrl = window.location.origin
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin }
+      options: { redirectTo: redirectUrl }
     })
   }
 
