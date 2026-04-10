@@ -19,10 +19,10 @@ import type { FABItem } from '../types/clinical'
 // TYPES
 // ==========================================
 
-type Screen = 'home' | 'step1' | 'step2' | 'step3' | 'step4' | 'step5' | 'vneri' | 'gapco2' | 'referencias'
+type Screen = 'home' | 'step1' | 'step2' | 'step3' | 'step4' | 'step5' | 'vneri' | 'gapco2' | 'referências'
   | 'vti-entry' | 'vti-measure' | 'vti-low' | 'vti-grey' | 'vti-distributive' | 'vti-result'
 
-type VtiShockType = 'tamponamento' | 'obstrutivo' | 'cardiogenico' | 'cardiogenico-valvar' | 'hipovolemico' | 'distributivo' | null
+type VtiShockType = 'tamponamento' | 'obstrutivo' | 'cardiogênico' | 'cardiogênico-valvar' | 'hipovolemico' | 'distributivo' | null
 
 interface TecEntry {
   value: number
@@ -85,7 +85,7 @@ interface ShockState {
   vtiVE: 'sim' | 'nao' | null
   vtiValvar: 'sim' | 'nao' | null
   vtiFluidResp: 'sim' | 'nao' | null
-  vtiVentMode: 'espontanea' | 'mecanica' | null
+  vtiVentMode: 'espontanea' | 'mecânica' | null
   vtiShockType: VtiShockType
   vtiGreyScvo2: number | null
   vtiGreyLactato: number | null
@@ -131,7 +131,7 @@ type ShockAction =
   | { type: 'SET_VTI_VE'; value: 'sim' | 'nao' | null }
   | { type: 'SET_VTI_VALVAR'; value: 'sim' | 'nao' | null }
   | { type: 'SET_VTI_FLUID_RESP'; value: 'sim' | 'nao' | null }
-  | { type: 'SET_VTI_VENT_MODE'; value: 'espontanea' | 'mecanica' | null }
+  | { type: 'SET_VTI_VENT_MODE'; value: 'espontanea' | 'mecânica' | null }
   | { type: 'SET_VTI_SHOCK_TYPE'; value: VtiShockType }
   | { type: 'SET_VTI_GREY_SCVO2'; value: number | null }
   | { type: 'SET_VTI_GREY_LACTATO'; value: number | null }
@@ -310,7 +310,7 @@ function VNERiBar({ vneri }: { vneri: number }) {
 
       {/* Bar */}
       <div className="relative my-2 mb-7">
-        <div className="flex justify-between text-[11px] text-text-muted mb-1 px-0.5">
+        <div className="flex justify-between text-xs text-text-muted mb-1 px-0.5">
           <span className="w-[17%] text-center text-danger">Hipo grave</span>
           <span className="w-[28%] text-center text-warning">Parcial</span>
           <span className="w-[27%] text-center text-success">Adequada</span>
@@ -330,9 +330,9 @@ function VNERiBar({ vneri }: { vneri: number }) {
             }}
           />
           <div className="absolute -bottom-[18px] w-full">
-            <span className="absolute text-[11px] text-text-muted" style={{ left: '17%', transform: 'translateX(-50%)' }}>2,6</span>
-            <span className="absolute text-[11px] text-text-muted" style={{ left: '45%', transform: 'translateX(-50%)' }}>6,7</span>
-            <span className="absolute text-[11px] text-text-muted" style={{ left: '72%', transform: 'translateX(-50%)' }}>10,8</span>
+            <span className="absolute text-xs text-text-muted" style={{ left: '17%', transform: 'translateX(-50%)' }}>2,6</span>
+            <span className="absolute text-xs text-text-muted" style={{ left: '45%', transform: 'translateX(-50%)' }}>6,7</span>
+            <span className="absolute text-xs text-text-muted" style={{ left: '72%', transform: 'translateX(-50%)' }}>10,8</span>
           </div>
         </div>
       </div>
@@ -357,10 +357,10 @@ interface QuadrantGridProps {
 }
 
 const QUADRANT_CELLS = [
-  { id: 'lowDC', pos: 'tl', color: '#F44336', titleColor: '#FF6B6B', title: 'Baixo débito / estase', text: 'ScvO2 < 70% + Gap > 6\nConsidere inotrópico' },
-  { id: 'anemic', pos: 'tr', color: '#FFC107', titleColor: '#FFD740', title: 'Disóxia anêmica/hipóxica', text: 'ScvO2 < 70% + Gap <= 6\nChecar Hb, SaO2' },
-  { id: 'micro', pos: 'bl', color: '#FFC107', titleColor: '#FFD740', title: 'Microcirculação inadequada', text: 'ScvO2 >= 70% + Gap > 6\nOtimizar perfusão' },
-  { id: 'cytopathic', pos: 'br', color: '#666', titleColor: '#A0A0A0', title: 'Hipóxia citopática', text: 'ScvO2 >= 70% + Gap <= 6\nSuporte' },
+  { id: 'lowDC', pos: 'tl', color: '#F44336', titleColor: '#FF6B6B', title: 'Baixo débito / estase', text: 'ScvO₂ < 70% + Gap > 6\nConsidere inotrópico' },
+  { id: 'anemic', pos: 'tr', color: '#FFC107', titleColor: '#FFD740', title: 'Disóxia anêmica/hipóxica', text: 'ScvO₂ < 70% + Gap ≤ 6\nChecar Hb, SaO₂' },
+  { id: 'micro', pos: 'bl', color: '#FFC107', titleColor: '#FFD740', title: 'Microcirculação inadequada', text: 'ScvO₂ ≥ 70% + Gap > 6\nOtimizar perfusão' },
+  { id: 'cytopathic', pos: 'br', color: '#666', titleColor: '#A0A0A0', title: 'Hipóxia citopática', text: 'ScvO₂ ≥ 70% + Gap ≤ 6\nSuporte' },
 ]
 
 function QuadrantGrid({ activeId, pristine = true }: QuadrantGridProps) {
@@ -384,7 +384,7 @@ function QuadrantGrid({ activeId, pristine = true }: QuadrantGridProps) {
             <div className="font-bold mb-1 text-[13px]" style={{ color: cell.titleColor }}>
               {cell.title}
             </div>
-            <div className="text-text-muted text-[11px] whitespace-pre-line">{cell.text}</div>
+            <div className="text-text-muted text-xs whitespace-pre-line">{cell.text}</div>
           </div>
         )
       })}
@@ -590,7 +590,7 @@ export default function ShockPath() {
       condutas.push('Reavaliar TEC a cada 1 hora por 6 horas')
     }
     if (state.pad !== null && state.pad < 50) {
-      condutas.push('Titular noradrenalina para PAD >= 50 mmHg (Bertrand et al. 2025)')
+      condutas.push('Titular noradrenalina para PAD ≥ 50 mmHg (Bertrand et al. 2025)')
     }
     if (vneriInline !== null && vneriInline < 2.6) {
       condutas.push('Considere vasopressina 0,01-0,04 UI/min ou hidrocortisona 200 mg/dia (Goury et al. 2025)')
@@ -684,7 +684,7 @@ export default function ShockPath() {
     { label: 'Classificação VTI', onClick: () => goTo('vti-entry') },
     { label: 'VNERi', onClick: () => goTo('vneri') },
     { label: 'Gap CO2', onClick: () => goTo('gapco2') },
-    { label: 'Referências', onClick: () => goTo('referencias') },
+    { label: 'Referências', onClick: () => goTo('referências') },
   ], [goTo])
 
   // ==========================================
@@ -850,7 +850,7 @@ export default function ShockPath() {
                 { screen: 'vneri' as Screen, label: 'VNERi', desc: 'Responsividade vascular', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg> },
                 { screen: 'gapco2' as Screen, label: 'Gap CO2', desc: 'Quadrante perfusional', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg> },
                 { screen: null, label: 'Calculadoras', desc: 'Infusão contínua', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2" /><line x1="8" y1="6" x2="16" y2="6" /></svg>, onClick: () => goToInfusion('') },
-                { screen: 'referencias' as Screen, label: 'Referências', desc: 'Fontes e bibliografia', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg> },
+                { screen: 'referências' as Screen, label: 'Referências', desc: 'Fontes e bibliografia', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg> },
               ].map((item, i) => (
                 <button
                   key={i}
@@ -876,9 +876,9 @@ export default function ShockPath() {
 
             {[
               'Infecção suspeita ou confirmada',
-              'Lactato >= 2 mmol/L (ou >= 18 mg/dL)',
-              'Noradrenalina necessária para PAM >= 65 mmHg',
-              'Fluidos >= 1000 mL já administrados',
+              'Lactato ≥ 2 mmol/L (ou ≥ 18 mg/dL)',
+              'Noradrenalina necessária para PAM ≥ 65 mmHg',
+              'Fluidos ≥ 1000 mL já administrados',
             ].map((label, i) => (
               <CriteriaItem
                 key={i}
@@ -947,7 +947,7 @@ export default function ShockPath() {
 
             <Toggle
               options={[
-                { value: 'normal', label: 'Normal <= 3s' },
+                { value: 'normal', label: 'Normal ≤ 3s' },
                 { value: 'anormal', label: 'Anormal > 3s' },
               ]}
               value={state.tecMode ?? ''}
@@ -1184,7 +1184,7 @@ export default function ShockPath() {
             {/* PP Result — Adequado */}
             {state.pp !== null && state.pp >= 40 && (
               <div>
-                <ResultCard color="green" title="PP >= 40 mmHg — volume sistólico provavelmente adequado" titleColor="#66BB6A">
+                <ResultCard color="green" title="PP ≥ 40 mmHg — volume sistólico provavelmente adequado" titleColor="#66BB6A">
                   Considere prosseguir para otimização de vasopressor sem bolus adicionais.
                 </ResultCard>
                 <Button variant="primary" fullWidth onClick={() => goTo('step3')}>Vasopressor — Tier 1b</Button>
@@ -1286,7 +1286,7 @@ export default function ShockPath() {
                   className="w-10 h-10 rounded-full border border-border-card bg-bg-elevated text-accent text-xl font-bold cursor-pointer flex-shrink-0 flex items-center justify-center"
                 >+</button>
               </div>
-              <div className="flex justify-between text-[11px] text-text-muted mt-0.5 px-12">
+              <div className="flex justify-between text-xs text-text-muted mt-0.5 px-12">
                 <span>0,01</span><span>0,5</span><span>1,0</span><span>2,0</span><span>3,0</span>
               </div>
             </div>
@@ -1298,7 +1298,7 @@ export default function ShockPath() {
             {/* VNERi inline */}
             <SectionTitle>VNERi — Responsividade vascular</SectionTitle>
             <p className="text-xs text-text-secondary mb-1">Fórmula: PAD / (dose NE x FC)</p>
-            <p className="text-[11px] text-text-muted mb-4">Goury et al. Ann Intensive Care 2025</p>
+            <p className="text-xs text-text-muted mb-4">Goury et al. Ann Intensive Care 2025</p>
 
             {vneriInline !== null ? (
               <VNERiBar vneri={vneriInline} />
@@ -1425,7 +1425,7 @@ export default function ShockPath() {
 
             {/* Testes adicionais */}
             <Collapsible title="Testes adicionais">
-              {/* HTA cronica */}
+              {/* HTA crônica */}
               <div className="mb-4">
                 <div className="text-sm font-semibold mb-2">Hipertensão arterial crônica?</div>
                 <Toggle
@@ -1505,7 +1505,7 @@ export default function ShockPath() {
 
             {/* Profile card */}
             <div className="p-4 rounded-xl border-2 border-accent mb-4">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">MECANISMO PREDOMINANTE</div>
+              <div className="text-xs font-bold uppercase tracking-wider text-text-muted mb-1.5">MECANISMO PREDOMINANTE</div>
               <div className="text-lg font-bold text-accent">{perfil.label}</div>
             </div>
 
@@ -1663,7 +1663,7 @@ export default function ShockPath() {
             {vneriStandalone !== null ? (
               <div>
                 <VNERiBar vneri={vneriStandalone} />
-                <div className="mt-3 text-[11px] text-text-muted italic">
+                <div className="mt-3 text-xs text-text-muted italic">
                   Goury et al. Ann Intensive Care 2025 — Curva J invertida, nadir mortalidade em VNERi 6,7
                 </div>
               </div>
@@ -1673,7 +1673,7 @@ export default function ShockPath() {
               </div>
             )}
 
-            <div className="mt-4 text-[11px] text-text-muted">
+            <div className="mt-4 text-xs text-text-muted">
               Validado para choque séptico (Goury et al. Ann Intensive Care 2025).
             </div>
           </div>
@@ -1738,7 +1738,7 @@ export default function ShockPath() {
               </Card>
             )}
 
-            <div className="mt-4 text-[11px] text-text-muted">
+            <div className="mt-4 text-xs text-text-muted">
               Ltaief et al. Critical Care 2021.
             </div>
           </div>
@@ -1775,7 +1775,7 @@ export default function ShockPath() {
               Iniciar ecocardiografia básica
             </Button>
 
-            <div className="mt-4 text-[11px] text-text-muted text-center">
+            <div className="mt-4 text-xs text-text-muted text-center">
               Mercadal J et al. The Ultrasound Journal, 2022
             </div>
           </div>
@@ -1873,7 +1873,7 @@ export default function ShockPath() {
                       }}
                     />
                   </div>
-                  <div className="flex justify-between text-[11px] text-text-muted mt-1 px-0.5">
+                  <div className="flex justify-between text-xs text-text-muted mt-1 px-0.5">
                     <span>0</span><span>16</span><span>20</span><span>40</span>
                   </div>
                 </div>
@@ -2035,7 +2035,7 @@ export default function ShockPath() {
                       </button>
                     </div>
                     <Button variant="primary" fullWidth onClick={() => {
-                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'cardiogenico' })
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'cardiogênico' })
                       goTo('vti-result')
                     }}>
                       Ver resumo
@@ -2079,7 +2079,7 @@ export default function ShockPath() {
                       </div>
                     </ResultCard>
                     <Button variant="primary" fullWidth onClick={() => {
-                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'cardiogenico-valvar' })
+                      dispatch({ type: 'SET_VTI_SHOCK_TYPE', value: 'cardiogênico-valvar' })
                       goTo('vti-result')
                     }}>
                       Ver resumo
@@ -2100,10 +2100,10 @@ export default function ShockPath() {
                 <Toggle
                   options={[
                     { value: 'espontanea', label: 'Respiração espontânea' },
-                    { value: 'mecanica', label: 'Ventilação mecânica' },
+                    { value: 'mecânica', label: 'Ventilação mecânica' },
                   ]}
                   value={state.vtiVentMode ?? ''}
-                  onChange={(v) => dispatch({ type: 'SET_VTI_VENT_MODE', value: v as 'espontanea' | 'mecanica' })}
+                  onChange={(v) => dispatch({ type: 'SET_VTI_VENT_MODE', value: v as 'espontanea' | 'mecânica' })}
                   className="mb-3"
                 />
 
@@ -2113,7 +2113,7 @@ export default function ShockPath() {
                   </InfoCard>
                 )}
 
-                {state.vtiVentMode === 'mecanica' && (
+                {state.vtiVentMode === 'mecânica' && (
                   <InfoCard title="Variação dinâmica" borderColor="#10B981">
                     Considere responsivo se:
                     <ul className="list-disc pl-4 mt-1 space-y-0.5">
@@ -2382,7 +2382,7 @@ export default function ShockPath() {
             {/* Shock type card */}
             {state.vtiShockType === 'tamponamento' && (
               <div className="p-4 rounded-xl border-2 border-danger mb-4">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
                 <div className="text-lg font-bold text-danger">Tamponamento cardíaco</div>
                 <div className="text-sm text-text-secondary mt-2">Choque obstrutivo por comprometimento pericárdico</div>
                 <div className="mt-3 space-y-1 text-sm text-text-secondary">
@@ -2394,7 +2394,7 @@ export default function ShockPath() {
 
             {state.vtiShockType === 'obstrutivo' && (
               <div className="p-4 rounded-xl border-2 border-warning mb-4">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
                 <div className="text-lg font-bold text-warning">Choque obstrutivo</div>
                 <div className="text-sm text-text-secondary mt-2">Disfunção de VD com comprometimento hemodinâmico</div>
                 <div className="mt-3 space-y-1 text-sm text-text-secondary">
@@ -2404,9 +2404,9 @@ export default function ShockPath() {
               </div>
             )}
 
-            {state.vtiShockType === 'cardiogenico' && (
+            {state.vtiShockType === 'cardiogênico' && (
               <div className="p-4 rounded-xl border-2 border-info mb-4">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
                 <div className="text-lg font-bold text-info">Choque cardiogênico</div>
                 <div className="text-sm text-text-secondary mt-2">Disfunção sistólica de VE</div>
                 <div className="mt-3 space-y-1 text-sm text-text-secondary">
@@ -2416,9 +2416,9 @@ export default function ShockPath() {
               </div>
             )}
 
-            {state.vtiShockType === 'cardiogenico-valvar' && (
+            {state.vtiShockType === 'cardiogênico-valvar' && (
               <div className="p-4 rounded-xl border-2 mb-4" style={{ borderColor: '#8B5CF6' }}>
-                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
                 <div className="text-lg font-bold" style={{ color: '#8B5CF6' }}>Choque cardiogênico valvar</div>
                 <div className="text-sm text-text-secondary mt-2">Disfunção valvar aguda grave</div>
                 <div className="mt-3 space-y-1 text-sm text-text-secondary">
@@ -2430,7 +2430,7 @@ export default function ShockPath() {
 
             {state.vtiShockType === 'hipovolemico' && (
               <div className="p-4 rounded-xl border-2 border-success mb-4">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
                 <div className="text-lg font-bold text-success">Choque hipovolêmico</div>
                 <div className="text-sm text-text-secondary mt-2">Baixo débito responsivo a volume</div>
                 <div className="mt-3 space-y-1 text-sm text-text-secondary">
@@ -2442,7 +2442,7 @@ export default function ShockPath() {
 
             {state.vtiShockType === 'distributivo' && (
               <div className="p-4 rounded-xl border-2 border-success mb-4">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-text-muted mb-1.5">CLASSIFICAÇÃO</div>
                 <div className="text-lg font-bold text-success">Choque distributivo</div>
                 <div className="text-sm text-text-secondary mt-2">Débito cardíaco adequado, RVP reduzida</div>
                 <div className="mt-3 space-y-1 text-sm text-text-secondary">
@@ -2479,7 +2479,7 @@ export default function ShockPath() {
         )}
 
         {/* SCREEN: REFERENCIAS */}
-        {state.screen === 'referencias' && (
+        {state.screen === 'referências' && (
           <div className="animate-slide-in">
             <BackButton onClick={() => goTo('home')} />
 
@@ -2526,14 +2526,14 @@ export default function ShockPath() {
                 <strong className="text-text-primary block mb-0.5">{ref.author}</strong>
                 {ref.title}
                 <br />
-                <span className="text-[11px] text-text-muted">{ref.note}</span>
+                <span className="text-xs text-text-muted">{ref.note}</span>
               </div>
             ))}
           </div>
         )}
       </Container>
 
-      <Footer toolName="Shock Path" version="v2.0.0" />
+      <Footer toolName="Shock Path" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

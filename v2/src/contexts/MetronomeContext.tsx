@@ -147,7 +147,7 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
       {/* Banner global quando metronomo ativo */}
       {isPlaying && (
         <div className="fixed top-0 left-0 right-0 z-[9998] bg-accent text-white text-center py-2 px-4 text-sm font-semibold flex items-center justify-center gap-3">
-          <span className="animate-pulse">Metronomo ativo — {config.bpm} BPM</span>
+          <span className="animate-pulse">Metrônomo ativo — {config.bpm} BPM</span>
           <button onClick={stop} className="bg-white/20 px-3 py-1 rounded-lg text-xs font-bold border-none cursor-pointer text-white">Parar</button>
         </div>
       )}

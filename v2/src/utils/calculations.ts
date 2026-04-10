@@ -1,12 +1,12 @@
 import type { DoseStatus, DoseResult } from '../types/clinical'
 
 // ==========================================
-// FORMULAS DE DOSE — Centralizadas e testaveis
+// FORMULAS DE DOSE — Centralizadas e testáveis
 // Fonte: Infusion Guide ANY App v2.3.2
 // ==========================================
 
 /**
- * Calcula mL/h a partir de dose, peso e concentracao
+ * Calcula mL/h a partir de dose, peso e concentração
  * Para drogas em mcg/kg/min: factor = 60
  * Para drogas em mg/kg/h ou mcg/kg/h: factor = 1
  */
@@ -24,7 +24,7 @@ export function doseToMlh(
 }
 
 /**
- * Calcula dose a partir de mL/h, peso e concentracao (inverso)
+ * Calcula dose a partir de mL/h, peso e concentração (inverso)
  */
 export function mlhToDose(
   mlh: number,
@@ -75,7 +75,7 @@ export function calculateDose(
 }
 
 /**
- * Formata numero para exibicao (substitui ponto por virgula)
+ * Formata número para exibicao (substitui ponto por virgula)
  */
 export function fmt(n: number | null | undefined, decimals = 1): string {
   if (n === null || n === undefined || isNaN(n)) return '--'
@@ -96,7 +96,7 @@ export function calcVNERi(pad: number, doseNE: number, fc: number): number | nul
   return pad / (doseNE * fc)
 }
 
-/** Classificacao VNERi */
+/** Classificação VNERi */
 export function getVNERiZone(vneri: number): {
   label: string
   color: string
@@ -140,7 +140,7 @@ export function getQuadrant(gapCO2: number, scvO2: number): {
 } {
   if (scvO2 < 70 && gapCO2 > 6) return {
     id: 'lowDC',
-    label: 'Baixo debito cardiaco / Estase',
+    label: 'Baixo debito cardíaco / Estase',
     color: '#F44336',
     description: 'Considere inotrópico (dobutamina). Avaliar ecocardiograma.'
   }
@@ -148,7 +148,7 @@ export function getQuadrant(gapCO2: number, scvO2: number): {
     id: 'anemic',
     label: 'Disoxia anemica',
     color: '#FF9800',
-    description: 'Considere transfusao se Hb baixa. Avaliar oferta de O2.'
+    description: 'Considere transfusão se Hb baixa. Avaliar oferta de O2.'
   }
   if (scvO2 >= 70 && gapCO2 > 6) return {
     id: 'micro',
@@ -158,9 +158,9 @@ export function getQuadrant(gapCO2: number, scvO2: number): {
   }
   return {
     id: 'cytopathic',
-    label: 'Hipoxia citopatica',
+    label: 'Hipóxia citopatica',
     color: '#2196F3',
-    description: 'Disfuncao mitocondrial. Suporte de orgao. Sem intervencao hemodinamica adicional.'
+    description: 'Disfunção mitocondrial. Suporte de orgao. Sem intervenção hemodinâmica adicional.'
   }
 }
 
@@ -197,8 +197,8 @@ export function classifyWells(score: number): {
   label: string
   action: string
 } {
-  if (score < 2) return { risk: 'low', label: 'Baixa probabilidade', action: 'PERC → D-dimero' }
-  if (score <= 6) return { risk: 'moderate', label: 'Probabilidade intermediaria', action: 'D-dimero' }
+  if (score < 2) return { risk: 'low', label: 'Baixa probabilidade', action: 'PERC → D-dímero' }
+  if (score <= 6) return { risk: 'moderate', label: 'Probabilidade intermediaria', action: 'D-dímero' }
   return { risk: 'high', label: 'Alta probabilidade', action: 'Imagem direta' }
 }
 
@@ -234,7 +234,7 @@ export function calcHACOR(fc120: boolean, ph: number, gcs: number, pf: number, f
   return score
 }
 
-/** Volume de hidratacao dengue */
+/** Volume de hidratação dengue */
 export function calcDengueHydration(weight: number) {
   return {
     voTotal: weight * 60,       // mL/dia

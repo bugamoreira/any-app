@@ -2,4 +2,8 @@
 Fontes/
 Ícones/
 HTML segmentados/
+Arquivos para consulta/
 .DS_Store
+
+# Local Netlify folder
+.netlify

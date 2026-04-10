@@ -47,63 +47,63 @@ interface ManagementData {
 // ==========================================
 
 const WELLS_ITEMS = [
-  { label: 'Sinais clinicos de TVP', pts: 3 },
-  { label: 'TEP mais provavel que outros diagnosticos', pts: 3 },
+  { label: 'Sinais clínicos de TVP', pts: 3 },
+  { label: 'TEP mais provável que outros diagnósticos', pts: 3 },
   { label: 'FC >100 bpm', pts: 1.5 },
-  { label: 'Imobilizacao (>=3 dias) ou cirurgia nas ultimas 4 semanas', pts: 1.5 },
-  { label: 'TVP ou TEP previos', pts: 1.5 },
+  { label: 'Imobilização (≥3 dias) ou cirurgia nas últimas 4 semanas', pts: 1.5 },
+  { label: 'TVP ou TEP prévios', pts: 1.5 },
   { label: 'Hemoptise', pts: 1 },
-  { label: 'Cancer ativo', pts: 1 },
+  { label: 'Câncer ativo', pts: 1 },
 ]
 
 const PERC_ITEMS = [
-  'Idade >=50 anos',
-  'FC >=100 bpm',
-  'SpO2 <95% em ar ambiente',
+  'Idade ≥50 anos',
+  'FC ≥100 bpm',
+  'SpO₂ <95% em ar ambiente',
   'Hemoptise',
-  'Uso de estrogenio',
-  'Cirurgia ou trauma com hospitalizacao nas ultimas 4 semanas',
-  'TVP ou TEP previos',
+  'Uso de estrogênio',
+  'Cirurgia ou trauma com hospitalização nas últimas 4 semanas',
+  'TVP ou TEP prévios',
   'Edema unilateral de membro inferior',
 ]
 
 const SPESI_ITEMS = [
   'Idade >80 anos',
-  'Cancer ativo',
-  'Doenca cardiopulmonar cronica',
+  'Câncer ativo',
+  'Doença cardiopulmonar crônica',
   'PAS <100 mmHg',
-  'FC >=110 bpm',
-  'SpO2 <90%',
+  'FC ≥110 bpm',
+  'SpO₂ <90%',
 ]
 
 const PESI_ITEMS = [
   { label: 'Sexo masculino', pts: 10 },
-  { label: 'Cancer', pts: 30 },
-  { label: 'Insuficiencia cardiaca', pts: 10 },
-  { label: 'Doenca pulmonar cronica', pts: 10 },
-  { label: 'FC >=110 bpm', pts: 20 },
+  { label: 'Câncer', pts: 30 },
+  { label: 'Insuficiência cardíaca', pts: 10 },
+  { label: 'Doença pulmonar crônica', pts: 10 },
+  { label: 'FC ≥110 bpm', pts: 20 },
   { label: 'PAS <100 mmHg', pts: 30 },
-  { label: 'FR >=30 irpm', pts: 20 },
+  { label: 'FR ≥30 irpm', pts: 20 },
   { label: 'Temperatura <36C', pts: 20 },
-  { label: 'Alteracao do nivel de consciencia', pts: 60 },
-  { label: 'SpO2 <90%', pts: 20 },
+  { label: 'Alteração do nível de consciência', pts: 60 },
+  { label: 'SpO₂ <90%', pts: 20 },
 ]
 
 const BOVA_ITEMS = [
   { label: 'PAS 90-100 mmHg', pts: 2 },
   { label: 'Troponina elevada', pts: 2 },
-  { label: 'Disfuncao de VD (eco ou TC)', pts: 2 },
-  { label: 'FC >=110 bpm', pts: 1 },
+  { label: 'Disfunção de VD (eco ou TC)', pts: 2 },
+  { label: 'FC ≥110 bpm', pts: 1 },
 ]
 
 const HESTIA_ITEMS = [
-  'Instabilidade hemodinamica',
-  'Necessidade de trombolise ou embolectomia',
+  'Instabilidade hemodinâmica',
+  'Necessidade de trombólise ou embolectomia',
   'Sangramento ativo ou alto risco de sangramento',
-  'Necessidade de O2 >24h para manter SpO2 >90%',
-  'TEP diagnosticado durante anticoagulacao',
+  'Necessidade de O2 >24h para manter SpO₂ >90%',
+  'TEP diagnósticado durante anticoagulação',
   'Dor intensa necessitando analgesia IV >24h',
-  'Razao medica ou social para internacao >24h',
+  'Razão médica ou social para internação >24h',
   'Clearance de creatinina <30 mL/min',
   'Hepatopatia grave',
   'Gestante',
@@ -111,9 +111,9 @@ const HESTIA_ITEMS = [
 ]
 
 const YEARS_ITEMS = [
-  'Sinais clinicos de TVP',
+  'Sinais clínicos de TVP',
   'Hemoptise',
-  'TEP como diagnostico mais provavel',
+  'TEP como diagnóstico mais provável',
 ]
 
 const ECO_ITEMS = [
@@ -121,7 +121,7 @@ const ECO_ITEMS = [
   'TAPSE <16 mm',
   'Sinal de McConnell',
   'D-sign (septo achatado)',
-  'Trombo em camaras direitas',
+  'Trombo em câmaras direitas',
   'TAPSE/PASP <0,34',
   'Hipocinesia de VD',
 ]
@@ -129,158 +129,158 @@ const ECO_ITEMS = [
 function getManagement(cat: TepCategory): ManagementData {
   const data: Record<TepCategory, ManagementData> = {
     A1: {
-      description: 'TEP incidental, assintomatico, subsegmentar.',
+      description: 'TEP incidental, assintomático, subsegmentar.',
       actions: [
-        'Avaliar necessidade de anticoagulacao (considerar presenca de TVP, contexto clinico)',
+        'Avaliar necessidade de anticoagulação (considerar presença de TVP, contexto clínico)',
         'Considere alta do DE com seguimento ambulatorial',
       ],
       destino: 'Alta do DE',
       anticoag: 'Avaliar caso a caso',
       monitor: 'Ambulatorial',
-      advanced: 'Nao indicada',
-      followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, sincope, dor toracica ou hemoptise.',
+      advanced: 'Não indicada',
+      followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.',
     },
     A2: {
-      description: 'TEP incidental, assintomatico, segmentar ou mais proximal.',
+      description: 'TEP incidental, assintomático, segmentar ou mais próximal.',
       actions: [
-        'Anticoagulacao recomendada',
+        'Anticoagulação recomendada',
         'Alta do DE com seguimento ambulatorial',
       ],
       destino: 'Alta do DE',
       anticoag: 'DOAC (preferido)',
       monitor: 'Ambulatorial',
-      advanced: 'Nao indicada',
-      followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, sincope, dor toracica ou hemoptise.',
+      advanced: 'Não indicada',
+      followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.',
     },
     B1: {
-      description: 'TEP sintomatico, baixo risco, subsegmentar.',
+      description: 'TEP sintomático, baixo risco, subsegmentar.',
       actions: [
-        'Avaliar necessidade de anticoagulacao (considerar TVP, contexto)',
-        'Se anticoagular: avaliar tratamento ambulatorial (Hestia negativo -> razoavel)',
+        'Avaliar necessidade de anticoagulação (considerar TVP, contexto)',
+        'Se anticoagular: avaliar tratamento ambulatorial (Hestia negativo -> razoável)',
         'Seguimento ambulatorial em 1-2 semanas',
       ],
-      destino: 'Alta / Observacao breve',
+      destino: 'Alta / Observação breve',
       anticoag: 'Avaliar caso a caso',
       monitor: 'Ambulatorial',
-      advanced: 'Nao indicada',
-      followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, sincope, dor toracica ou hemoptise.',
+      advanced: 'Não indicada',
+      followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.',
     },
     B2: {
-      description: 'TEP sintomatico, baixo risco, segmentar ou mais proximal.',
+      description: 'TEP sintomático, baixo risco, segmentar ou mais próximal.',
       actions: [
-        'Anticoagulacao',
-        'Avaliar tratamento ambulatorial (Hestia negativo -> razoavel)',
+        'Anticoagulação',
+        'Avaliar tratamento ambulatorial (Hestia negativo -> razoável)',
         'DOAC preferido',
         'Seguimento ambulatorial em 1-2 semanas',
       ],
-      destino: 'Alta (se Hestia neg.) / Observacao',
+      destino: 'Alta (se Hestia neg.) / Observação',
       anticoag: 'DOAC (preferido)',
       monitor: 'Ambulatorial',
-      advanced: 'Nao indicada',
-      followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, sincope, dor toracica ou hemoptise.',
+      advanced: 'Não indicada',
+      followup: 'Retorno em 1-2 semanas. Procure atendimento imediato se: dispneia progressiva, síncope, dor torácica ou hemoptise.',
     },
     C1: {
-      description: 'TEP sintomatico, risco elevado. Sem biomarcadores alterados e sem disfuncao de VD.',
+      description: 'TEP sintomático, risco elevado. Sem biomarcadores alterados e sem disfunção de VD.',
       actions: [
-        'Internacao em enfermaria',
-        'Anticoagulacao (DOAC preferido)',
-        'Monitorizacao padrao',
+        'Internação em enfermaria',
+        'Anticoagulação (DOAC preferido)',
+        'Monitorização padrão',
       ],
       destino: 'Enfermaria',
       anticoag: 'DOAC (preferido)',
-      monitor: 'Padrao enfermaria',
-      advanced: 'Nao indicada',
+      monitor: 'Padrão enfermaria',
+      advanced: 'Não indicada',
     },
     C2: {
-      description: 'TEP sintomatico, risco elevado. Biomarcadores elevados OU disfuncao de VD.',
+      description: 'TEP sintomático, risco elevado. Biomarcadores elevados OU disfunção de VD.',
       actions: [
-        'Internacao',
-        'Anticoagulacao',
-        'Monitorizacao proxima',
+        'Internação',
+        'Anticoagulação',
+        'Monitorização próxima',
       ],
       destino: 'Enfermaria / Semi-intensiva',
       anticoag: 'DOAC ou HBPM',
-      monitor: 'Monitorizacao proxima',
-      advanced: 'Nao indicada (salvo deterioracao)',
+      monitor: 'Monitorização próxima',
+      advanced: 'Não indicada (salvo deterioração)',
     },
     C3: {
-      description: 'TEP sintomatico, risco elevado. Biomarcadores elevados E disfuncao de VD.',
+      description: 'TEP sintomático, risco elevado. Biomarcadores elevados E disfunção de VD.',
       actions: [
-        'Internacao em semi/UTI',
-        'Anticoagulacao (considere HBPM se possibilidade de escalar terapia)',
-        'Monitorizacao intensiva 24-72h (PEITHO: deterioracao media em 1,5 dias)',
-        'Se deterioracao -> considere terapias avancadas',
+        'Internação em semi/UTI',
+        'Anticoagulação (considere HBPM se possibilidade de escalar terapia)',
+        'Monitorização intensiva 24-72h (PEITHO: deterioração media em 1,5 dias)',
+        'Se deterioração -> considere terapias avançadas',
       ],
       destino: 'Semi-intensiva / UTI',
       anticoag: 'HBPM ou DOAC',
       monitor: 'Intensiva 24-72h',
-      advanced: 'Considerar se deterioracao',
+      advanced: 'Considerar se deterioração',
     },
     D: {
-      description: 'Pre-falencia cardiopulmonar. Hipotensao transitoria ou sinais de hipoperfusao (classificado via instabilidade).',
+      description: 'Pré-falência cardiopulmonar. Hipotensão transitória ou sinais de hipoperfusão (classificado via instabilidade).',
       actions: [
         'UTI',
-        'Anticoagulacao parenteral (HBPM ou HNF)',
-        'Vasopressores se necessario',
-        'Considere terapias avancadas conforme evolucao',
+        'Anticoagulação parenteral (HBPM ou HNF)',
+        'Vasopressores se necessário',
+        'Considere terapias avançadas conforme evolução',
         'Reavaliar e subclassificar em D1 ou D2 quando estabilizado',
       ],
       destino: 'UTI',
       anticoag: 'HBPM ou HNF',
-      monitor: 'UTI continua',
+      monitor: 'UTI contínua',
       advanced: 'Pode ser considerada',
     },
     D1: {
-      description: 'Pre-falencia cardiopulmonar. Hipotensao transitoria/recorrente sem sinais de hipoperfusao.',
+      description: 'Pré-falência cardiopulmonar. Hipotensão transitória/recorrente sem sinais de hipoperfusão.',
       actions: [
         'UTI',
-        'Anticoagulacao parenteral (HBPM ou HNF)',
-        'Vasopressores se necessario',
-        'Terapias avancadas podem ser consideradas',
+        'Anticoagulação parenteral (HBPM ou HNF)',
+        'Vasopressores se necessário',
+        'Terapias avançadas podem ser consideradas',
       ],
       destino: 'UTI',
       anticoag: 'HBPM ou HNF',
-      monitor: 'UTI continua',
+      monitor: 'UTI contínua',
       advanced: 'Pode ser considerada',
     },
     D2: {
-      description: 'Pre-falencia cardiopulmonar. Hipoperfusao ou disfuncao organica sem hipotensao persistente.',
+      description: 'Pré-falência cardiopulmonar. Hipoperfusão ou disfunção orgânica sem hipotensão persistente.',
       actions: [
         'UTI',
-        'Anticoagulacao parenteral',
+        'Anticoagulação parenteral',
         'Vasopressores (norepinefrina 1a escolha)',
-        'Terapias avancadas podem ser consideradas',
+        'Terapias avançadas podem ser consideradas',
       ],
       destino: 'UTI',
-      anticoag: 'HNF (preferivel)',
-      monitor: 'UTI continua',
+      anticoag: 'HNF (preferível)',
+      monitor: 'UTI contínua',
       advanced: 'Pode ser considerada',
     },
     E1: {
-      description: 'Falencia cardiopulmonar. Hipotensao persistente (PAS <90 mmHg por >=15 min).',
+      description: 'Falência cardiopulmonar. Hipotensão persistente (PAS <90 mmHg por ≥15 min).',
       actions: [
         'UTI',
-        'Anticoagulacao parenteral (HNF)',
-        'Vasopressores + inotropicos',
-        'Terapia avancada recomendada (trombolise sistemica, CDL, MT ou embolectomia)',
+        'Anticoagulação parenteral (HNF)',
+        'Vasopressores + inotrópicos',
+        'Terapia avancada recomendada (trombólise sistêmica, CDL, MT ou embolectomia)',
       ],
       destino: 'UTI',
       anticoag: 'HNF',
-      monitor: 'UTI + hemodinamica invasiva',
+      monitor: 'UTI + hemodinâmica invasiva',
       advanced: 'Recomendada',
     },
     E2: {
-      description: 'Falencia cardiopulmonar. Choque refratario ou parada cardiorrespiratoria.',
+      description: 'Falência cardiopulmonar. Choque refratário ou parada cardiorrespiratória.',
       actions: [
         'UTI',
-        'Anticoagulacao parenteral (HNF)',
-        'Vasopressores + inotropicos',
+        'Anticoagulação parenteral (HNF)',
+        'Vasopressores + inotrópicos',
         'Considere VA-ECMO',
         'Terapia avancada recomendada',
       ],
       destino: 'UTI',
       anticoag: 'HNF',
-      monitor: 'UTI + hemodinamica invasiva',
+      monitor: 'UTI + hemodinâmica invasiva',
       advanced: 'Recomendada + considere ECMO',
     },
   }
@@ -435,7 +435,7 @@ export default function TepGuide() {
   const [ddimerResult, setDdimerResult] = useState<'neg' | 'pos' | null>(null)
   const [yearsPregResult, setYearsPregResult] = useState<'neg' | 'pos' | null>(null)
 
-  // --- Trombolise decision tree ---
+  // --- Trombólise decision tree ---
   const [tromboStage, setTromboStage] = useState<TromboStage>('question')
 
   // --- Eco modal ---
@@ -618,7 +618,7 @@ export default function TepGuide() {
     goToPanel('step4')
   }, [goToPanel])
 
-  // --- D-dimero helper ---
+  // --- D-dímero helper ---
   function calcDdimerThreshold(age: number) {
     return age >= 50 ? age * 10 : 500
   }
@@ -627,16 +627,16 @@ export default function TepGuide() {
   function classifyPesi(score: number) {
     if (score <= 65) return { cls: 'I', risk: 'Risco muito baixo', color: 'green' as const }
     if (score <= 85) return { cls: 'II', risk: 'Risco baixo', color: 'green' as const }
-    if (score <= 105) return { cls: 'III', risk: 'Risco intermediario', color: 'yellow' as const }
+    if (score <= 105) return { cls: 'III', risk: 'Risco intermediário', color: 'yellow' as const }
     if (score <= 125) return { cls: 'IV', risk: 'Risco alto', color: 'orange' as const }
     return { cls: 'V', risk: 'Risco muito alto', color: 'red' as const }
   }
 
   // --- Bova classification ---
   function classifyBova(score: number) {
-    if (score <= 2) return { text: 'Estagio I -- Baixo risco de complicacoes', color: 'green' as const }
-    if (score <= 4) return { text: 'Estagio II -- Risco intermediario', color: 'yellow' as const }
-    return { text: 'Estagio III -- Risco elevado de complicacoes', color: 'red' as const }
+    if (score <= 2) return { text: 'Estágio I — Baixo risco de complicações', color: 'green' as const }
+    if (score <= 4) return { text: 'Estágio II — Risco intermediário', color: 'yellow' as const }
+    return { text: 'Estágio III — Risco elevado de complicações', color: 'red' as const }
   }
 
   // --- FAB menu ---
@@ -644,7 +644,7 @@ export default function TepGuide() {
     { label: 'Menu', onClick: () => showView('home') },
     { label: 'Pathway', onClick: () => showView('pathway') },
     { label: 'Calculadoras', onClick: () => showView('calc') },
-    { label: 'Referencias', onClick: () => showView('ref') },
+    { label: 'Referências', onClick: () => showView('ref') },
   ]
 
   // --- Deep link handler ---
@@ -670,8 +670,8 @@ export default function TepGuide() {
               <line x1="27.5" y1="26.5" x2="36" y2="34" /><circle cx="12" cy="38" r="4" />
               <circle cx="36" cy="38" r="4" />
             </svg>
-            <span className="text-[17px] font-semibold">TEP Guide -- Iniciar o atendimento</span>
-            <span className="text-xs text-text-secondary mt-1">Pathway de decisao com calculadoras integradas</span>
+            <span className="text-[17px] font-semibold">TEP Guide — Iniciar o atendimento</span>
+            <span className="text-xs text-text-secondary mt-1">Pathway de decisão com calculadoras integradas</span>
           </Card>
           <Card className="flex flex-col items-center justify-center text-center min-h-[100px]" onClick={() => showView('calc')}>
             <svg className="w-10 h-10 stroke-accent fill-none mb-3" viewBox="0 0 48 48" strokeWidth="1.5">
@@ -688,8 +688,8 @@ export default function TepGuide() {
               <line x1="14" y1="14" x2="32" y2="14" /><line x1="14" y1="20" x2="32" y2="20" />
               <line x1="14" y1="26" x2="28" y2="26" /><line x1="14" y1="32" x2="24" y2="32" />
             </svg>
-            <span className="text-[15px] font-semibold">Referencia rapida</span>
-            <span className="text-xs text-text-secondary mt-1">Anticoagulacao, eco, contraindicacoes</span>
+            <span className="text-[15px] font-semibold">Referência rápida</span>
+            <span className="text-xs text-text-secondary mt-1">Anticoagulação, eco, contraindicações</span>
           </Card>
         </div>
       </div>
@@ -705,9 +705,9 @@ export default function TepGuide() {
     return (
       <div>
         <button onClick={() => showView('home')} className="flex items-center gap-1.5 bg-transparent border border-bg-hover text-text-secondary text-xs px-4 py-2 rounded-lg cursor-pointer mb-4 hover:border-accent hover:text-text-primary transition-colors min-h-[44px]">
-          &larr; Menu
+          ← Menu
         </button>
-        <div className="text-[11px] font-semibold text-accent uppercase tracking-[2px] mb-4 pl-0.5">Pathway de decisao</div>
+        <div className="text-xs font-semibold text-accent uppercase tracking-[2px] mb-4 pl-0.5">Pathway de decisão</div>
         <ProgressDots current={currentStep} total={4} />
 
         {panel === 'step1' && renderStep1()}
@@ -723,14 +723,14 @@ export default function TepGuide() {
   function renderStep1() {
     return (
       <div className="bg-bg-card rounded-xl p-6 animate-slide-left">
-        <div className="text-[11px] font-semibold text-accent uppercase tracking-[1px] mb-2">Passo 1 de 4</div>
-        <h2 className="text-lg font-semibold mb-3">Estabilidade hemodinamica</h2>
-        <p className="text-sm text-text-secondary mb-4">Avaliacao inicial do paciente com suspeita de TEP agudo.</p>
+        <div className="text-xs font-semibold text-accent uppercase tracking-[1px] mb-2">Passo 1 de 4</div>
+        <h2 className="text-lg font-semibold mb-3">Estabilidade hemodinâmica</h2>
+        <p className="text-sm text-text-secondary mb-4">Avaliação inicial do paciente com suspeita de TEP agudo.</p>
         <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => goToPanel('step2')}>
-          Paciente hemodinamicamente estavel
+          Paciente hemodinâmicamente estável
         </Button>
         <Button variant="secondary" fullWidth className="text-left" onClick={() => goToPanel('stepUnstable')}>
-          Instabilidade hemodinamica (PAS &lt;90, choque, PCR)
+          Instabilidade hemodinâmica (PAS &lt;90, choque, PCR)
         </Button>
       </div>
     )
@@ -740,24 +740,24 @@ export default function TepGuide() {
   function renderStepUnstable() {
     return (
       <div className="bg-bg-card rounded-xl p-6 animate-slide-left space-y-3">
-        <div className="text-[11px] font-semibold text-accent uppercase tracking-[1px] mb-2">Paciente instavel</div>
-        <h2 className="text-lg font-semibold mb-3">Protocolo de instabilidade hemodinamica</h2>
+        <div className="text-xs font-semibold text-accent uppercase tracking-[1px] mb-2">Paciente instável</div>
+        <h2 className="text-lg font-semibold mb-3">Protocolo de instabilidade hemodinâmica</h2>
 
         <AlertCard type="danger">
-          <strong>Prioridade:</strong> Reanimacao hemodinamica antes de diagnostico. Inicie suporte imediatamente.
+          <strong>Prioridade:</strong> Reanimação hemodinâmica antes de diagnóstico. Inicie suporte imediatamente.
         </AlertCard>
 
-        {/* Acoes imediatas */}
+        {/* Ações imediatas */}
         <div className="bg-bg-hover rounded-lg p-3.5">
-          <p className="text-xs font-semibold text-danger uppercase tracking-[1px] mb-2.5">Acoes imediatas</p>
+          <p className="text-xs font-semibold text-danger uppercase tracking-[1px] mb-2.5">Ações imediatas</p>
           {[
-            'Acesso venoso calibroso (2 acessos perifericos ou central)',
-            'Monitorizacao continua (ECG, SpO2, PA invasiva se possivel)',
+            'Acesso venoso calibroso (2 acessos periféricos ou central)',
+            'Monitorização contínua (ECG, SpO₂, PA invasiva se possível)',
             'Gasometria arterial + lactato',
             'Troponina, BNP/NT-proBNP',
             'Hemograma, coagulograma, creatinina',
-            'Tipagem sanguinea + reserva de hemoderivados',
-            'Beta-hCG (mulheres em idade fertil)',
+            'Tipagem sanguínea + reserva de hemoderivados',
+            'Beta-hCG (mulheres em idade fértil)',
           ].map((item, i) => (
             <div key={i} className="flex items-start py-1.5 text-xs text-text-secondary">
               <span className="mr-2.5 text-text-secondary flex-shrink-0">{'\u25A1'}</span>{item}
@@ -767,23 +767,23 @@ export default function TepGuide() {
 
         {/* Eco a beira-leito */}
         <div className="bg-bg-hover rounded-lg p-3.5">
-          <p className="text-xs font-semibold text-info uppercase tracking-[1px] mb-2.5">Eco a beira-leito -- disfuncao de VD</p>
-          <p className="text-xs text-text-secondary mb-2">O eco pode definir a conduta antes da CTPA no paciente instavel.</p>
+          <p className="text-xs font-semibold text-info uppercase tracking-[1px] mb-2.5">Eco a beira-leito — disfunção de VD</p>
+          <p className="text-xs text-text-secondary mb-2">O eco pode definir a conduta antes da CTPA no paciente instável.</p>
           <Button variant="secondary" fullWidth size="sm" onClick={() => setEcoOpen(true)} className="mb-2">
             Registrar achados do eco
           </Button>
           {ecoConfirmed && (
             <div className="mt-2 p-2.5 bg-[#1A1A1A] rounded-lg" style={{ borderLeft: `3px solid ${ecoCount >= 3 ? '#F44336' : ecoCount >= 1 ? '#FFC107' : '#4CAF50'}` }}>
               <strong style={{ color: ecoCount >= 3 ? '#F44336' : ecoCount >= 1 ? '#FFC107' : '#4CAF50' }}>
-                {ecoCount === 0 ? 'Eco sem sinais de disfuncao de VD' : ecoCount >= 3 ? 'Disfuncao grave de VD' : 'Disfuncao de VD presente'}
+                {ecoCount === 0 ? 'Eco sem sinais de disfunção de VD' : ecoCount >= 3 ? 'Disfunção grave de VD' : 'Disfunção de VD presente'}
               </strong>
               {ecoCount > 0 && (
-                <span className="text-xs text-text-secondary"> -- {ecoCount} achados</span>
+                <span className="text-xs text-text-secondary"> —{ecoCount} achados</span>
               )}
             </div>
           )}
-          <button onClick={() => scrollToRef('ref')} className="text-xs text-info underline bg-transparent border-none cursor-pointer mt-2">
-            Ver referencia completa de eco
+          <button onClick={() => scrollToRef('ref')} className="text-xs text-info underline bg-transparent border-none cursor-pointer mt-2 min-h-[44px]">
+            Ver referência completa de eco
           </button>
         </div>
 
@@ -792,7 +792,7 @@ export default function TepGuide() {
           <div className="fixed inset-0 bg-black/85 z-[9999] flex items-center justify-center p-4" onClick={(e) => { if (e.target === e.currentTarget) setEcoOpen(false) }}>
             <div className="bg-bg-elevated rounded-2xl max-w-[420px] w-full max-h-[85vh] overflow-y-auto p-5">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-base font-bold text-info">Achados ecocardiograficos</h3>
+                <h3 className="text-base font-bold text-info">Achados ecocardiográficos</h3>
                 <button onClick={() => setEcoOpen(false)} className="bg-transparent border-none text-text-muted text-2xl cursor-pointer">&times;</button>
               </div>
               <ChecklistCalc
@@ -809,7 +809,7 @@ export default function TepGuide() {
                   ? 'Selecione os achados acima'
                   : <>
                       <strong style={{ color: ecoCount >= 3 ? '#F44336' : '#FFC107' }}>
-                        {ecoCount >= 3 ? 'Disfuncao grave de VD' : 'Disfuncao de VD presente'}
+                        {ecoCount >= 3 ? 'Disfunção grave de VD' : 'Disfunção de VD presente'}
                       </strong>{' '}
                       ({ecoCount} achados)
                     </>
@@ -822,56 +822,56 @@ export default function TepGuide() {
           </div>
         )}
 
-        {/* Suporte hemodinamico */}
+        {/* Suporte hemodinâmico */}
         <div className="bg-bg-hover rounded-lg p-3.5">
-          <p className="text-xs font-semibold text-warning uppercase tracking-[1px] mb-2.5">Suporte hemodinamico</p>
+          <p className="text-xs font-semibold text-warning uppercase tracking-[1px] mb-2.5">Suporte hemodinâmico</p>
           <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs">
-            <strong className="text-accent">Norepinefrina</strong> -- vasopressor de 1a escolha. Acima de 15 mcg/min, considere segundo agente.
-            <br /><button onClick={() => navigate('/infusion?drug=noradrenalina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1">Calculadora de Noradrenalina &rarr;</button>
+            <strong className="text-accent">Norepinefrina</strong> — vasopressor de 1a escolha. Acima de 15 mcg/min, considere segundo agente.
+            <br /><button onClick={() => navigate('/infusion?drug=noradrenalina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">Calculadora de Noradrenalina &rarr;</button>
           </div>
           <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs">
-            <strong className="text-accent">Volume com cautela</strong> -- VD sobrecarregado nao tolera expansao volemica excessiva. Considere 250 mL em bolus e reavalie.
+            <strong className="text-accent">Volume com cautela</strong> — VD sobrecarregado não tolera expansão volêmica excessiva. Considere 250 mL em bolus e reavalie.
           </div>
           <div className="bg-bg-hover rounded p-2.5 text-xs">
-            <strong className="text-accent">Dobutamina</strong> -- considere se baixo debito persistente apesar de vasopressores (ate 10 mcg/kg/min).
-            <br /><button onClick={() => navigate('/infusion?drug=dobutamina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1">Calculadora de Dobutamina &rarr;</button>
+            <strong className="text-accent">Dobutamina</strong> — considere se baixo débito persistente apesar de vasopressores (até 10 mcg/kg/min).
+            <br /><button onClick={() => navigate('/infusion?drug=dobutamina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">Calculadora de Dobutamina &rarr;</button>
           </div>
         </div>
 
         {/* Alerta IOT */}
         <AlertCard type="danger">
-          <strong>Sedacao e IOT:</strong> Podem causar colapso hemodinamico catastrofico em disfuncao de VD. Sedativos reduzem mecanismos compensatorios (taquicardia, aumento de RVS). Evitar salvo indicacao forte. CNAF antes de IOT quando possivel. Equipe preparada com vasopressores.
+          <strong>Sedação e IOT:</strong> Podem causar colapso hemodinâmico catastrófico em disfunção de VD. Sedativos reduzem mecanismos compensatórios (taquicardia, aumento de RVS). Evitar salvo indicação forte. CNAF antes de IOT quando possível. Equipe preparada com vasopressores.
           <div className="mt-2 flex gap-2 flex-wrap">
-            <button onClick={() => navigate('/airway')} className="text-info text-xs underline bg-transparent border-none cursor-pointer">Airway Guide &rarr;</button>
-            <button onClick={() => navigate('/seda')} className="text-info text-xs underline bg-transparent border-none cursor-pointer">Seda Path &rarr;</button>
+            <button onClick={() => navigate('/airway')} className="text-info text-xs underline bg-transparent border-none cursor-pointer min-h-[44px]">Airway Guide &rarr;</button>
+            <button onClick={() => navigate('/seda')} className="text-info text-xs underline bg-transparent border-none cursor-pointer min-h-[44px]">Seda Path &rarr;</button>
           </div>
         </AlertCard>
 
-        {/* Anticoagulacao empirica */}
+        {/* Anticoagulação empírica */}
         <div className="bg-bg-hover rounded-lg p-3.5">
-          <p className="text-xs font-semibold text-accent uppercase tracking-[1px] mb-2.5">Anticoagulacao empirica</p>
-          <p className="text-xs text-text-secondary mb-2">Se alta suspeita clinica + disfuncao de VD ao eco &rarr; considere anticoagulacao antes da confirmacao por CTPA.</p>
+          <p className="text-xs font-semibold text-accent uppercase tracking-[1px] mb-2.5">Anticoagulação empírica</p>
+          <p className="text-xs text-text-secondary mb-2">Se alta suspeita clínica + disfunção de VD ao eco &rarr; considere anticoagulação antes da confirmação por CTPA.</p>
           <div className="bg-bg-hover rounded p-2.5 text-xs">
-            <strong className="text-accent">HNF:</strong> Bolus 80 UI/kg IV + infusao 18 UI/kg/h. Preferida no instavel pela meia-vida curta e reversibilidade.
-            <br /><button onClick={() => navigate('/infusion?drug=heparina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1">Calculadora de Heparina &rarr;</button>
+            <strong className="text-accent">HNF:</strong> Bolus 80 UI/kg IV + infusão 18 UI/kg/h. Preferida no instável pela meia-vida curta e reversibilidade.
+            <br /><button onClick={() => navigate('/infusion?drug=heparina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">Calculadora de Heparina &rarr;</button>
           </div>
-          <button onClick={() => scrollToRef('ref')} className="text-xs text-info underline bg-transparent border-none cursor-pointer mt-2">
-            Verificar contraindicacoes antes
+          <button onClick={() => scrollToRef('ref')} className="text-xs text-info underline bg-transparent border-none cursor-pointer mt-2 min-h-[44px]">
+            Verificar contraindicações antes
           </button>
         </div>
 
-        {/* Trombolise */}
+        {/* Trombólise */}
         <div className="rounded-lg p-3.5 border-l-[3px]" style={{ background: 'rgba(198,40,40,0.08)', borderLeftColor: '#C62828' }}>
-          <p className="text-xs font-semibold uppercase tracking-[1px] mb-2.5" style={{ color: '#C62828' }}>Trombolise sistemica</p>
-          <p className="text-xs text-text-secondary mb-3">Em pacientes com hipotensao persistente ou choque e alta suspeita de TEP, trombolise sistemica pode ser considerada mesmo sem confirmacao por CTPA.</p>
+          <p className="text-xs font-semibold uppercase tracking-[1px] mb-2.5" style={{ color: '#C62828' }}>Trombólise sistêmica</p>
+          <p className="text-xs text-text-secondary mb-3">Em pacientes com hipotensão persistente ou choque e alta suspeita de TEP, trombólise sistêmica pode ser considerada mesmo sem confirmação por CTPA.</p>
 
           {tromboStage === 'question' && (
             <div>
-              <p className="text-sm font-semibold mb-2">O paciente tem contraindicacao absoluta?</p>
-              <p className="text-xs text-text-secondary mb-2">AVC hemorragico, cirurgia SNC &lt;3 semanas, sangramento ativo nao compressivel, lesao estrutural SNC</p>
+              <p className="text-sm font-semibold mb-2">O paciente tem contraindicação absoluta?</p>
+              <p className="text-xs text-text-secondary mb-2">AVC hemorrágico, cirurgia SNC &lt;3 semanas, sangramento ativo não compressível, lesão estrutural SNC</p>
               <div className="flex gap-2 mb-3">
-                <Button variant="secondary" size="sm" className="flex-1" onClick={() => setTromboStage('contraindicated')}>Sim -- Contraindicada</Button>
-                <Button variant="secondary" size="sm" className="flex-1" onClick={() => setTromboStage('risk')}>Nao</Button>
+                <Button variant="secondary" size="sm" className="flex-1" onClick={() => setTromboStage('contraindicated')}>Sim — Contraindicada</Button>
+                <Button variant="secondary" size="sm" className="flex-1" onClick={() => setTromboStage('risk')}>Não</Button>
               </div>
             </div>
           )}
@@ -879,19 +879,19 @@ export default function TepGuide() {
           {tromboStage === 'contraindicated' && (
             <div>
               <AlertCard type="danger">
-                <strong>Trombolise contraindicada.</strong> Considere alternativas: CDL (cateter-direcionada), trombectomia cirurgica, ou ECMO.
+                <strong>Trombólise contraindicada.</strong> Considere alternativas: CDL (cateter-direcionada), trombectomia cirúrgica, ou ECMO.
               </AlertCard>
-              <button onClick={() => setTromboStage('question')} className="text-xs text-text-secondary bg-transparent border-none cursor-pointer">&larr; Reavaliar</button>
+              <button onClick={() => setTromboStage('question')} className="text-xs text-text-secondary bg-transparent border-none cursor-pointer min-h-[44px]">← Reavaliar</button>
             </div>
           )}
 
           {tromboStage === 'risk' && (
             <div>
-              <p className="text-sm font-semibold mb-2">Ha risco hemorragico elevado?</p>
+              <p className="text-sm font-semibold mb-2">Ha risco hemorrágico elevado?</p>
               <p className="text-xs text-text-secondary mb-1">Idade &gt;75 anos, peso &lt;60 kg, cirurgia recente (&lt;10 dias), uso de anticoagulante, plaquetas &lt;100.000</p>
               <div className="flex gap-2 mb-3">
-                <Button variant="secondary" size="sm" className="flex-1" onClick={() => setTromboStage('doseHigh')}>Sim -- Risco alto</Button>
-                <Button variant="secondary" size="sm" className="flex-1" onClick={() => setTromboStage('doseStandard')}>Nao -- Risco padrao</Button>
+                <Button variant="secondary" size="sm" className="flex-1" onClick={() => setTromboStage('doseHigh')}>Sim — Risco alto</Button>
+                <Button variant="secondary" size="sm" className="flex-1" onClick={() => setTromboStage('doseStandard')}>Não — Risco padrão</Button>
               </div>
             </div>
           )}
@@ -901,57 +901,57 @@ export default function TepGuide() {
               <AlertCard type="warning"><strong>Dose reduzida recomendada</strong></AlertCard>
               <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs">
                 <strong className="text-accent">Alteplase 50 mg IV em 2h</strong><br />
-                Considere em: peso &lt;60 kg, idade &gt;75 anos, risco hemorragico elevado.<br />
-                Dados de MOPETT trial suportam eficacia com menor risco de sangramento.
+                Considere em: peso &lt;60 kg, idade &gt;75 anos, risco hemorrágico elevado.<br />
+                Dados de MOPETT trial suportam eficácia com menor risco de sangramento.
               </div>
               <div className="bg-bg-hover rounded p-2.5 text-xs">
-                <strong className="text-accent">Pos-trombolise:</strong> Suspender HNF durante infusao. Reiniciar sem bolus quando TTPa &lt;2x o controle.
+                <strong className="text-accent">Pós-trombólise:</strong> Suspender HNF durante infusão. Reiniciar sem bolus quando TTPa &lt;2x o controle.
               </div>
-              <button onClick={() => setTromboStage('question')} className="text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-2">&larr; Reavaliar</button>
+              <button onClick={() => setTromboStage('question')} className="text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-2 min-h-[44px]">← Reavaliar</button>
             </div>
           )}
 
           {tromboStage === 'doseStandard' && (
             <div>
-              <AlertCard type="success"><strong>Dose padrao</strong></AlertCard>
+              <AlertCard type="success"><strong>Dose padrão</strong></AlertCard>
               <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs">
                 <strong className="text-accent">Alteplase 100 mg IV em 2h</strong><br />
-                Regime padrao: 10 mg em bolus + 90 mg em 2h.<br />
-                Se PCR: 50 mg em bolus (pode repetir em 15 min se necessario).
+                Regime padrão: 10 mg em bolus + 90 mg em 2h.<br />
+                Se PCR: 50 mg em bolus (pode repetir em 15 min se necessário).
               </div>
               <div className="bg-bg-hover rounded p-2.5 text-xs">
-                <strong className="text-accent">Pos-trombolise:</strong> Suspender HNF durante infusao. Reiniciar sem bolus quando TTPa &lt;2x o controle.
+                <strong className="text-accent">Pós-trombólise:</strong> Suspender HNF durante infusão. Reiniciar sem bolus quando TTPa &lt;2x o controle.
               </div>
-              <button onClick={() => setTromboStage('question')} className="text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-2">&larr; Reavaliar</button>
+              <button onClick={() => setTromboStage('question')} className="text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-2 min-h-[44px]">← Reavaliar</button>
             </div>
           )}
 
-          <button onClick={() => scrollToRef('ref')} className="text-xs text-info underline bg-transparent border-none cursor-pointer mt-2">
-            Ver lista completa de contraindicacoes
+          <button onClick={() => scrollToRef('ref')} className="text-xs text-info underline bg-transparent border-none cursor-pointer mt-2 min-h-[44px]">
+            Ver lista completa de contraindicações
           </button>
         </div>
 
         <AlertCard type="info">
-          <strong>Confirmacao diagnostica:</strong> Considere CTPA quando estabilizado. Se indisponivel ou instabilidade refrataria, considere tratamento empirico baseado em eco + clinica.
+          <strong>Confirmação diagnóstica:</strong> Considere CTPA quando estabilizado. Se indisponível ou instabilidade refratária, considere tratamento empírico baseado em eco + clínica.
         </AlertCard>
 
         <div className="h-px bg-white/[0.06] my-4" />
         <p className="text-[15px] font-semibold mb-3">Classificar gravidade:</p>
         <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classifyUnstable('E2')}>
-          Choque refratario / PCR &rarr; Categoria E2
+          Choque refratário / PCR &rarr; Categoria E2
         </Button>
         <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classifyUnstable('E1')}>
-          Hipotensao persistente &rarr; Categoria E1
+          Hipotensão persistente &rarr; Categoria E1
         </Button>
         <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classifyUnstable('D')}>
-          Hipotensao transitoria / sinais de hipoperfusao &rarr; Categoria D
+          Hipotensão transitória / sinais de hipoperfusão &rarr; Categoria D
         </Button>
-        <button onClick={() => goToPanel('step1', 'right')} className="w-full text-center text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">&larr; Voltar</button>
+        <button onClick={() => goToPanel('step1', 'right')} className="w-full text-center text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">← Voltar</button>
       </div>
     )
   }
 
-  // --- STEP 2: Investigacao diagnostica ---
+  // --- STEP 2: Investigação diagnóstica ---
   function renderStep2() {
     const inlineDdimerThreshold = calcDdimerThreshold(inlineDdimerAge)
     const inlineDdimerVal = parseFloat(inlineDdimerValue)
@@ -964,17 +964,17 @@ export default function TepGuide() {
 
     return (
       <div className="bg-bg-card rounded-xl p-6 animate-slide-left space-y-3">
-        <div className="text-[11px] font-semibold text-accent uppercase tracking-[1px] mb-2">Passo 2 de 4</div>
-        <h2 className="text-lg font-semibold mb-3">Investigacao diagnostica</h2>
+        <div className="text-xs font-semibold text-accent uppercase tracking-[1px] mb-2">Passo 2 de 4</div>
+        <h2 className="text-lg font-semibold mb-3">Investigação diagnóstica</h2>
 
         <AlertCard type="warning">
-          <strong>Paciente ja anticoagulado?</strong> D-dimero e algoritmo YEARS nao foram validados em pacientes em anticoagulacao terapeutica. Considere imagem direto se suspeita clinica relevante.
+          <strong>Paciente já anticoagulado?</strong> D-dímero e algoritmo YEARS não foram validados em pacientes em anticoagulação terapêutica. Considere imagem direto se suspeita clínica relevante.
         </AlertCard>
 
         {/* Toggle gestante */}
         <Toggle
           options={[
-            { value: 'not_pregnant', label: 'Nao gestante (Wells)' },
+            { value: 'not_pregnant', label: 'Não gestante (Wells)' },
             { value: 'pregnant', label: 'Gestante (YEARS)' },
           ]}
           value={isPregnant ? 'pregnant' : 'not_pregnant'}
@@ -988,7 +988,7 @@ export default function TepGuide() {
           className="mb-4"
         />
 
-        {/* Nao gestante: Wells pathway */}
+        {/* Não gestante: Wells pathway */}
         {!isPregnant && (
           <>
             <p className="text-[15px] font-semibold mb-3">Probabilidade pre-teste (Wells)</p>
@@ -1016,7 +1016,7 @@ export default function TepGuide() {
               />
               <CalcResult
                 score={inlineWellsScore}
-                text={inlineWellsScore < 2 ? 'Baixa probabilidade' : inlineWellsScore <= 6 ? 'Probabilidade intermediaria' : 'Alta probabilidade -- imagem recomendada'}
+                text={inlineWellsScore < 2 ? 'Baixa probabilidade' : inlineWellsScore <= 6 ? 'Probabilidade intermediária' : 'Alta probabilidade — imagem recomendada'}
                 color={inlineWellsScore < 2 ? 'green' : inlineWellsScore <= 6 ? 'yellow' : 'red'}
               />
             </Collapsible>
@@ -1024,14 +1024,14 @@ export default function TepGuide() {
             {/* Wells LOW -> PERC + D-dimer */}
             {wellsLevel === 'low' && (
               <div className="mt-4">
-                <AlertCard type="success"><strong>Wells &lt;2 -- Baixa probabilidade.</strong></AlertCard>
+                <AlertCard type="success"><strong>Wells &lt;2 — Baixa probabilidade.</strong></AlertCard>
                 <p className="text-sm font-semibold mt-3 mb-2">PERC (se gestalt &lt;15%):</p>
                 <div className="flex gap-2 mb-2">
                   <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => setPercResult('neg')}>PERC negativo</Button>
                   <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => setPercResult('pos')}>PERC positivo</Button>
                 </div>
                 <Collapsible title="Calcular PERC">
-                  <p className="text-xs text-text-secondary mb-2">Todos os 8 criterios devem ser negativos + gestalt &lt;15% para considerar TEP improvavel.</p>
+                  <p className="text-xs text-text-secondary mb-2">Todos os 8 critérios devem ser negativos + gestalt &lt;15% para considerar TEP improvável.</p>
                   <ChecklistCalc
                     items={PERC_ITEMS}
                     checked={inlinePercChecked}
@@ -1042,15 +1042,15 @@ export default function TepGuide() {
                   />
                   <CalcResult
                     score={`${inlinePercCount} / 8`}
-                    text={inlinePercCount === 0 ? 'PERC negativo' : 'PERC positivo -- prossiga com D-dimero.'}
+                    text={inlinePercCount === 0 ? 'PERC negativo' : 'PERC positivo — prossiga com D-dímero.'}
                     color={inlinePercCount === 0 ? 'green' : 'yellow'}
                   />
                 </Collapsible>
                 {percResult === 'neg' && (
-                  <CalcResult text="TEP improvavel -- considere diagnosticos alternativos. Documente: PERC negativo + gestalt <15%." color="green" />
+                  <CalcResult text="TEP improvável — considere diagnósticos alternativos. Documente: PERC negativo + gestalt <15%." color="green" />
                 )}
                 {percResult === 'pos' && (
-                  <AlertCard type="warning" className="mt-2">PERC positivo -- prossiga com D-dimero abaixo.</AlertCard>
+                  <AlertCard type="warning" className="mt-2">PERC positivo — prossiga com D-dímero abaixo.</AlertCard>
                 )}
               </div>
             )}
@@ -1058,20 +1058,20 @@ export default function TepGuide() {
             {/* Wells MODERATE */}
             {wellsLevel === 'moderate' && (
               <div className="mt-4">
-                <AlertCard type="warning"><strong>Wells 2-6 -- Probabilidade intermediaria.</strong></AlertCard>
+                <AlertCard type="warning"><strong>Wells 2-6 — Probabilidade intermediária.</strong></AlertCard>
               </div>
             )}
 
-            {/* D-dimero (low+perc_pos or moderate) */}
+            {/* D-dímero (low+perc_pos or moderate) */}
             {((wellsLevel === 'low' && percResult === 'pos') || wellsLevel === 'moderate') && (
               <div className="mt-4">
-                <p className="text-sm font-semibold mb-2">Resultado do D-dimero:</p>
+                <p className="text-sm font-semibold mb-2">Resultado do D-dímero:</p>
                 <div className="flex gap-2 mb-2">
                   <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => setDdimerResult('neg')}>Negativo (abaixo do threshold)</Button>
                   <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => setDdimerResult('pos')}>Positivo (acima do threshold)</Button>
                 </div>
 
-                <Collapsible title="Calcular D-dimero ajustado por idade">
+                <Collapsible title="Calcular D-dímero ajustado por idade">
                   <p className="text-xs text-text-secondary mb-2">Threshold = idade x 10 ug/L (FEU). Abaixo de 50 anos: usar 500 ug/L.</p>
                   <div className="flex gap-3 mb-2">
                     <div className="flex-1">
@@ -1079,7 +1079,7 @@ export default function TepGuide() {
                       <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" value={inlineDdimerAge} onChange={e => setInlineDdimerAge(parseInt(e.target.value) || 50)} />
                     </div>
                     <div className="flex-1">
-                      <label className="block text-xs text-text-secondary mb-1.5">D-dimero (ug/L FEU)</label>
+                      <label className="block text-xs text-text-secondary mb-1.5">D-dímero (ug/L FEU)</label>
                       <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" placeholder="Ex: 750" value={inlineDdimerValue} onChange={e => {
                         setInlineDdimerValue(e.target.value)
                         const val = parseFloat(e.target.value)
@@ -1092,21 +1092,21 @@ export default function TepGuide() {
                   {!inlineDdimerValue ? (
                     <CalcResult text={`Threshold: ${inlineDdimerThreshold} ug/L (idade ${inlineDdimerAge})`} color="neutral" />
                   ) : !isNaN(inlineDdimerVal) && inlineDdimerVal < inlineDdimerThreshold ? (
-                    <CalcResult score={`${inlineDdimerVal} < ${inlineDdimerThreshold}`} text="D-dimero negativo -- TEP improvavel" color="green" />
+                    <CalcResult score={`${inlineDdimerVal} < ${inlineDdimerThreshold}`} text="D-dímero negativo — TEP improvável" color="green" />
                   ) : (
-                    <CalcResult score={`${inlineDdimerVal} >= ${inlineDdimerThreshold}`} text="D-dimero positivo -- imagem recomendada" color="red" />
+                    <CalcResult score={`${inlineDdimerVal} ≥ ${inlineDdimerThreshold}`} text="D-dímero positivo — imagem recomendada" color="red" />
                   )}
                 </Collapsible>
 
                 <Collapsible title="Calcular YEARS">
-                  <p className="text-xs text-text-secondary mb-2">{'>='}1 criterio YEARS: threshold 500 ug/L. Nenhum criterio: threshold 1000 ug/L.</p>
+                  <p className="text-xs text-text-secondary mb-2">≥1 critério YEARS: threshold 500 ug/L. Nenhum critério: threshold 1000 ug/L.</p>
                   <ChecklistCalc
                     items={YEARS_ITEMS}
                     checked={inlineYearsChecked}
                     onToggle={(i) => { const next = [...inlineYearsChecked]; next[i] = !next[i]; setInlineYearsChecked(next) }}
                   />
                   <div className="mt-2">
-                    <label className="block text-xs text-text-secondary mb-1.5">D-dimero (ug/L FEU)</label>
+                    <label className="block text-xs text-text-secondary mb-1.5">D-dímero (ug/L FEU)</label>
                     <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" placeholder="Ex: 750" value={inlineYearsDD} onChange={e => {
                       setInlineYearsDD(e.target.value)
                       const val = parseFloat(e.target.value)
@@ -1116,23 +1116,23 @@ export default function TepGuide() {
                     }} />
                   </div>
                   {!inlineYearsDD ? (
-                    <CalcResult text={`Criterios YEARS: ${inlineYearsCount}/3. Threshold: ${inlineYearsThreshold} ug/L`} color="neutral" />
+                    <CalcResult text={`Critérios YEARS: ${inlineYearsCount}/3. Threshold: ${inlineYearsThreshold} ug/L`} color="neutral" />
                   ) : !isNaN(inlineYearsVal) && inlineYearsVal < inlineYearsThreshold ? (
-                    <CalcResult score={`${inlineYearsVal} < ${inlineYearsThreshold}`} text="YEARS negativo -- TEP improvavel" color="green" />
+                    <CalcResult score={`${inlineYearsVal} < ${inlineYearsThreshold}`} text="YEARS negativo — TEP improvável" color="green" />
                   ) : (
-                    <CalcResult score={`${inlineYearsVal} >= ${inlineYearsThreshold}`} text="YEARS positivo -- imagem recomendada" color="red" />
+                    <CalcResult score={`${inlineYearsVal} ≥ ${inlineYearsThreshold}`} text="YEARS positivo — imagem recomendada" color="red" />
                   )}
                 </Collapsible>
 
                 {ddimerResult === 'neg' && (
-                  <CalcResult text="D-dimero negativo -- TEP improvavel. Considere diagnosticos alternativos. Se gestalt clinica elevada, considere imagem direta." color="green" />
+                  <CalcResult text="D-dímero negativo — TEP improvável. Considere diagnósticos alternativos. Se gestalt clínica elevada, considere imagem direta." color="green" />
                 )}
                 {ddimerResult === 'pos' && (
-                  <AlertCard type="info" className="mt-2"><strong>D-dimero positivo -- imagem recomendada.</strong> CTPA (preferida) ou V/Q se contraindicacao a contraste.</AlertCard>
+                  <AlertCard type="info" className="mt-2"><strong>D-dímero positivo — imagem recomendada.</strong> CTPA (preferida) ou V/Q se contraindicação a contraste.</AlertCard>
                 )}
 
                 <AlertCard type="warning" className="mt-2">
-                  <strong>Imagem indisponivel ou com atraso significativo?</strong> Considere anticoagulacao empirica se alta suspeita clinica e baixo risco de sangramento. <span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-info/20 text-info">COR 2a</span>
+                  <strong>Imagem indisponível ou com atraso significativo?</strong> Considere anticoagulação empírica se alta suspeita clínica e baixo risco de sangramento. <span className="inline-block px-2 py-0.5 rounded text-xs font-bold bg-info/20 text-info">COR 2a</span>
                 </AlertCard>
               </div>
             )}
@@ -1140,10 +1140,10 @@ export default function TepGuide() {
             {/* Wells HIGH */}
             {wellsLevel === 'high' && (
               <div className="mt-4">
-                <AlertCard type="danger"><strong>Wells &gt;6 -- Alta probabilidade.</strong> Imagem recomendada sem necessidade de D-dimero.</AlertCard>
-                <AlertCard type="info">CTPA (preferida) ou V/Q se contraindicacao a contraste iodado.</AlertCard>
+                <AlertCard type="danger"><strong>Wells &gt;6 — Alta probabilidade.</strong> Imagem recomendada sem necessidade de D-dímero.</AlertCard>
+                <AlertCard type="info">CTPA (preferida) ou V/Q se contraindicação a contraste iodado.</AlertCard>
                 <AlertCard type="warning">
-                  <strong>Imagem indisponivel ou com atraso significativo?</strong> Considere anticoagulacao empirica se baixo risco de sangramento. <span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-info/20 text-info">COR 2a</span>
+                  <strong>Imagem indisponível ou com atraso significativo?</strong> Considere anticoagulação empírica se baixo risco de sangramento. <span className="inline-block px-2 py-0.5 rounded text-xs font-bold bg-info/20 text-info">COR 2a</span>
                 </AlertCard>
               </div>
             )}
@@ -1153,21 +1153,21 @@ export default function TepGuide() {
         {/* Gestante: YEARS */}
         {isPregnant && (
           <div className="mt-4">
-            <AlertCard type="info"><strong>Gestante:</strong> Utilize YEARS adaptado para gestacao (COR 2b). USG de MMII se sintomas -- se positivo, considere tratar sem CTPA.</AlertCard>
+            <AlertCard type="info"><strong>Gestante:</strong> Utilize YEARS adaptado para gestação (COR 2b). USG de MMII se sintomas — se positivo, considere tratar sem CTPA.</AlertCard>
             <p className="text-sm font-semibold mt-3 mb-2">Resultado YEARS gestante:</p>
             <div className="flex gap-2 mb-2">
-              <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => setYearsPregResult('neg')}>TEP improvavel</Button>
-              <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => setYearsPregResult('pos')}>Imagem necessaria</Button>
+              <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => setYearsPregResult('neg')}>TEP improvável</Button>
+              <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => setYearsPregResult('pos')}>Imagem necessária</Button>
             </div>
             <Collapsible title="Calcular YEARS gestantes">
-              <p className="text-xs text-text-secondary mb-2">{'>='}1 criterio: threshold 500 ug/L. Nenhum: threshold 1000 ug/L.</p>
+              <p className="text-xs text-text-secondary mb-2">≥1 critério: threshold 500 ug/L. Nenhum: threshold 1000 ug/L.</p>
               <ChecklistCalc
                 items={YEARS_ITEMS}
                 checked={inlineYearsPregChecked}
                 onToggle={(i) => { const next = [...inlineYearsPregChecked]; next[i] = !next[i]; setInlineYearsPregChecked(next) }}
               />
               <div className="mt-2">
-                <label className="block text-xs text-text-secondary mb-1.5">D-dimero (ug/L FEU)</label>
+                <label className="block text-xs text-text-secondary mb-1.5">D-dímero (ug/L FEU)</label>
                 <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" placeholder="Ex: 750" value={inlineYearsPregDD} onChange={e => {
                   setInlineYearsPregDD(e.target.value)
                   const val = parseFloat(e.target.value)
@@ -1177,56 +1177,56 @@ export default function TepGuide() {
                 }} />
               </div>
               {!inlineYearsPregDD ? (
-                <CalcResult text={`Criterios: ${inlineYearsPregCount}/3. Threshold: ${inlineYearsPregThreshold} ug/L`} color="neutral" />
+                <CalcResult text={`Critérios: ${inlineYearsPregCount}/3. Threshold: ${inlineYearsPregThreshold} ug/L`} color="neutral" />
               ) : !isNaN(inlineYearsPregVal) && inlineYearsPregVal < inlineYearsPregThreshold ? (
-                <CalcResult score={`${inlineYearsPregVal} < ${inlineYearsPregThreshold}`} text="TEP improvavel" color="green" />
+                <CalcResult score={`${inlineYearsPregVal} < ${inlineYearsPregThreshold}`} text="TEP improvável" color="green" />
               ) : (
-                <CalcResult score={`${inlineYearsPregVal} >= ${inlineYearsPregThreshold}`} text="Imagem necessaria" color="red" />
+                <CalcResult score={`${inlineYearsPregVal} ≥ ${inlineYearsPregThreshold}`} text="Imagem necessária" color="red" />
               )}
               <div className="mt-2 p-2.5 rounded-r bg-info/[0.06] border-l-[3px] border-l-info text-xs text-[#82B1FF] leading-relaxed">
-                Se sintomas em MMII + USG compressao positiva &rarr; pode tratar com anticoagulacao sem necessidade de CTPA.
+                Se sintomas em MMII + USG compressão positiva &rarr; pode tratar com anticoagulação sem necessidade de CTPA.
               </div>
             </Collapsible>
             {yearsPregResult === 'neg' && (
-              <CalcResult text="YEARS gestante negativo -- TEP improvavel. Considere diagnosticos alternativos." color="green" />
+              <CalcResult text="YEARS gestante negativo — TEP improvável. Considere diagnósticos alternativos." color="green" />
             )}
             {yearsPregResult === 'pos' && (
-              <AlertCard type="info" className="mt-2"><strong>Imagem necessaria.</strong> CTPA ou V/Q. Se sintomas em MMII, considere USG antes.</AlertCard>
+              <AlertCard type="info" className="mt-2"><strong>Imagem necessária.</strong> CTPA ou V/Q. Se sintomas em MMII, considere USG antes.</AlertCard>
             )}
           </div>
         )}
 
         <div className="h-px bg-white/[0.06] my-4" />
         <Button fullWidth onClick={() => goToPanel('step3')}>TEP confirmado &rarr; Classificar</Button>
-        <button onClick={() => goToPanel('step1', 'right')} className="w-full text-center text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">&larr; Voltar</button>
+        <button onClick={() => goToPanel('step1', 'right')} className="w-full text-center text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">← Voltar</button>
       </div>
     )
   }
 
-  // --- STEP 3: Classificacao AHA/ACC ---
+  // --- STEP 3: Classificação AHA/ACC ---
   function renderStep3() {
     return (
       <div className="bg-bg-card rounded-xl p-6 animate-slide-left space-y-3">
-        <div className="text-[11px] font-semibold text-accent uppercase tracking-[1px] mb-2">Passo 3 de 4</div>
-        <h2 className="text-lg font-semibold mb-3">Classificacao AHA/ACC</h2>
-        <p className="text-sm text-text-secondary mb-4">Responda as perguntas para determinar a categoria clinica.</p>
+        <div className="text-xs font-semibold text-accent uppercase tracking-[1px] mb-2">Passo 3 de 4</div>
+        <h2 className="text-lg font-semibold mb-3">Classificação AHA/ACC</h2>
+        <p className="text-sm text-text-secondary mb-4">Responda as perguntas para determinar a categoria clínica.</p>
 
         {/* Q1: Sintomatico? */}
         {classPanel === 'classQ1' && (
           <div>
-            <p className="text-[15px] font-semibold mb-3">O paciente e sintomatico?</p>
-            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('asymptomatic')}>Nao -- TEP incidental / assintomatico</Button>
-            <Button variant="secondary" fullWidth className="text-left" onClick={() => classAnswer('symptomatic')}>Sim -- dispneia, dor toracica, sincope, hemoptise, etc.</Button>
+            <p className="text-[15px] font-semibold mb-3">O paciente e sintomático?</p>
+            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('asymptomatic')}>Não — TEP incidental / assintomático</Button>
+            <Button variant="secondary" fullWidth className="text-left" onClick={() => classAnswer('symptomatic')}>Sim — dispneia, dor torácica, síncope, hemoptise, etc.</Button>
           </div>
         )}
 
         {/* Q2: sPESI */}
         {classPanel === 'classQ2' && (
           <div>
-            <p className="text-[15px] font-semibold mb-3">sPESI -- estratificacao de risco</p>
+            <p className="text-[15px] font-semibold mb-3">sPESI — estratificação de risco</p>
             <div className="flex gap-2 mb-2">
               <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => classAnswer('lowRisk')}>sPESI = 0 (baixo risco)</Button>
-              <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => classAnswer('highRisk')}>sPESI {'>='}1 (risco elevado)</Button>
+              <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => classAnswer('highRisk')}>sPESI ≥1 (risco elevado)</Button>
             </div>
             <Collapsible title="Calcular sPESI">
               <ChecklistCalc
@@ -1236,7 +1236,7 @@ export default function TepGuide() {
               />
               <CalcResult
                 score={inlineSpesiCount}
-                text={inlineSpesiCount === 0 ? 'Baixo risco -- Categoria B' : `Risco elevado (>= 1) -- Categoria C ou superior`}
+                text={inlineSpesiCount === 0 ? 'Baixo risco — Categoria B' : `Risco elevado (≥1) — Categoria C ou superior`}
                 color={inlineSpesiCount === 0 ? 'green' : 'red'}
               />
               <div className="text-center mt-2">
@@ -1246,9 +1246,9 @@ export default function TepGuide() {
               </div>
             </Collapsible>
             <Collapsible title="Alternativa: PESI completo">
-              <p className="text-xs text-text-secondary mb-2">Score original com 11 variaveis. Classe I-II = baixo risco. Classe III+ = risco elevado.</p>
+              <p className="text-xs text-text-secondary mb-2">Score original com 11 variáveis. Classe I-II = baixo risco. Classe III+ = risco elevado.</p>
               <div className="mb-2">
-                <label className="block text-xs text-text-secondary mb-1.5">Idade (anos) -- somada ao score</label>
+                <label className="block text-xs text-text-secondary mb-1.5">Idade (anos) — somada ao score</label>
                 <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" value={inlinePesiAge} onChange={e => setInlinePesiAge(parseInt(e.target.value) || 65)} />
               </div>
               <ChecklistCalc
@@ -1262,7 +1262,7 @@ export default function TepGuide() {
                 const c = classifyPesi(inlinePesiScore)
                 return (
                   <>
-                    <CalcResult score={inlinePesiScore} text={`Classe ${c.cls} -- ${c.risk}`} color={c.color} />
+                    <CalcResult score={inlinePesiScore} text={`Classe ${c.cls} —${c.risk}`} color={c.color} />
                     <div className="text-center mt-2">
                       <Button size="sm" onClick={() => classAnswer(inlinePesiScore <= 85 ? 'lowRisk' : 'highRisk')}>
                         Prosseguir como {inlinePesiScore <= 85 ? 'Categoria B (baixo risco)' : 'Categoria C+ (risco elevado)'} &rarr;
@@ -1278,13 +1278,13 @@ export default function TepGuide() {
         {/* Q2h: Hestia */}
         {classPanel === 'classQ2h' && (
           <div>
-            <p className="text-[15px] font-semibold mb-3">Hestia -- elegibilidade para tratamento ambulatorial</p>
+            <p className="text-[15px] font-semibold mb-3">Hestia — elegibilidade para tratamento ambulatorial</p>
             <div className="flex gap-2 mb-2">
               <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => { setClassState(s => ({ ...s, hestia: 'neg' })); setClassPanel('classQ2b') }}>Hestia negativo (ambulatorial)</Button>
-              <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => { setClassState(s => ({ ...s, hestia: 'pos' })); setClassPanel('classQ2b') }}>Hestia positivo (internacao)</Button>
+              <Button variant="secondary" size="sm" className="flex-1 text-center" onClick={() => { setClassState(s => ({ ...s, hestia: 'pos' })); setClassPanel('classQ2b') }}>Hestia positivo (internação)</Button>
             </div>
             <Collapsible title="Calcular Hestia">
-              <p className="text-xs text-text-secondary mb-2">Todos negativos &rarr; ambulatorial. {'>='}1 positivo &rarr; internacao.</p>
+              <p className="text-xs text-text-secondary mb-2">Todos negativos &rarr; ambulatorial. ≥1 positivo &rarr; internação.</p>
               <ChecklistCalc
                 items={HESTIA_ITEMS}
                 checked={inlineHestiaChecked}
@@ -1292,69 +1292,69 @@ export default function TepGuide() {
               />
               <CalcResult
                 score={inlineHestiaCount}
-                text={inlineHestiaCount === 0 ? 'Hestia negativo -- ambulatorial' : 'Hestia positivo -- internacao'}
+                text={inlineHestiaCount === 0 ? 'Hestia negativo — ambulatorial' : 'Hestia positivo — internação'}
                 color={inlineHestiaCount === 0 ? 'green' : 'red'}
               />
               <Button fullWidth className="mt-3" onClick={() => {
                 setClassState(s => ({ ...s, hestia: inlineHestiaCount === 0 ? 'neg' : 'pos' }))
                 setClassPanel('classQ2b')
               }}>
-                Prosseguir -- localizacao do trombo &rarr;
+                Prosseguir — localização do trombo &rarr;
               </Button>
             </Collapsible>
           </div>
         )}
 
-        {/* Q2b: Localizacao */}
+        {/* Q2b: Localização */}
         {classPanel === 'classQ2b' && (
           <div>
-            <p className="text-[15px] font-semibold mb-3">Localizacao do trombo:</p>
+            <p className="text-[15px] font-semibold mb-3">Localização do trombo:</p>
             <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('subseg')}>Subsegmentar isolado</Button>
-            <Button variant="secondary" fullWidth className="text-left" onClick={() => classAnswer('segPlus')}>Segmentar ou mais proximal</Button>
+            <Button variant="secondary" fullWidth className="text-left" onClick={() => classAnswer('segPlus')}>Segmentar ou mais próximal</Button>
           </div>
         )}
 
         {/* Q3: Biomarcadores */}
         {classPanel === 'classQ3' && (
           <div>
-            <p className="text-[15px] font-semibold mb-3">Biomarcadores e disfuncao de VD:</p>
+            <p className="text-[15px] font-semibold mb-3">Biomarcadores e disfunção de VD:</p>
             <div className="bg-bg-hover rounded-lg p-3 mb-3">
-              <p className="text-xs font-semibold text-text-secondary uppercase tracking-[1px] mb-2">Criterios de disfuncao de VD (eco ou TC)</p>
+              <p className="text-xs font-semibold text-text-secondary uppercase tracking-[1px] mb-2">Critérios de disfunção de VD (eco ou TC)</p>
               <p className="text-xs text-text-secondary mb-1">VD/VE &gt;0,9 (apical 4C) | TAPSE &lt;16 mm | McConnell | D-sign</p>
-              <p className="text-xs text-text-secondary opacity-70">Combinacao TAPSE &lt;16 + VD/VE &gt;1 tem melhor desempenho (HR 6,5; VPN 95,6%)</p>
+              <p className="text-xs text-text-secondary opacity-70">Combinação TAPSE &lt;16 + VD/VE &gt;1 tem melhor desempenho (HR 6,5; VPN 95,6%)</p>
             </div>
-            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('c1')}>Nenhum -- troponina/BNP normais, sem disfuncao de VD</Button>
-            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('c2')}>Um positivo -- troponina/BNP elevados OU disfuncao de VD</Button>
-            <Button variant="secondary" fullWidth className="text-left" onClick={() => classAnswer('c3')}>Ambos -- troponina/BNP elevados E disfuncao de VD</Button>
+            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('c1')}>Nenhum — troponina/BNP normais, sem disfunção de VD</Button>
+            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('c2')}>Um positivo — troponina/BNP elevados OU disfunção de VD</Button>
+            <Button variant="secondary" fullWidth className="text-left" onClick={() => classAnswer('c3')}>Ambos — troponina/BNP elevados E disfunção de VD</Button>
           </div>
         )}
 
-        {/* Q3b: Pre-falencia */}
+        {/* Q3b: Pré-falência */}
         {classPanel === 'classQ3b' && (
           <div>
-            <p className="text-[15px] font-semibold mb-3">Avaliacao hemodinamica detalhada:</p>
-            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('d1')}>Hipotensao transitoria/recorrente SEM sinais de hipoperfusao</Button>
-            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('d2')}>Hipoperfusao ou disfuncao organica (lactato elevado, oliguria, alteracao consciencia)</Button>
-            <Button variant="secondary" fullWidth className="text-left" onClick={() => { setCategoryResult('C3'); setClassPanel('classQ4') }}>Sem sinais de pre-falencia &rarr; manter C3</Button>
-            <p className="text-xs text-text-secondary mt-2">Nota: se hipotensao persistente &rarr; voltar e classificar como instavel.</p>
+            <p className="text-[15px] font-semibold mb-3">Avaliação hemodinâmica detalhada:</p>
+            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('d1')}>Hipotensão transitória/recorrente SEM sinais de hipoperfusão</Button>
+            <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('d2')}>Hipoperfusão ou disfunção orgânica (lactato elevado, oligúria, alteração consciência)</Button>
+            <Button variant="secondary" fullWidth className="text-left" onClick={() => { setCategoryResult('C3'); setClassPanel('classQ4') }}>Sem sinais de pré-falência &rarr; manter C3</Button>
+            <p className="text-xs text-text-secondary mt-2">Nota: se hipotensão persistente &rarr; voltar e classificar como instável.</p>
           </div>
         )}
 
         {/* Q4: Modificador R */}
         {classPanel === 'classQ4' && (
           <div>
-            <p className="text-[15px] font-semibold mb-3">Modificador respiratorio (R):</p>
+            <p className="text-[15px] font-semibold mb-3">Modificador respiratório (R):</p>
             <Button variant="secondary" fullWidth className="mb-2 text-left" onClick={() => classAnswer('noR')}>Sem hipoxemia, taquipneia ou necessidade de O2</Button>
             <Button variant="secondary" fullWidth className="text-left" onClick={() => classAnswer('yesR')}>Com hipoxemia, taquipneia ou necessidade de O2 suplementar</Button>
           </div>
         )}
 
-        <button onClick={() => { resetClassification(); goToPanel('step2', 'right') }} className="w-full text-center text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-4 min-h-[44px]">&larr; Voltar ao diagnostico</button>
+        <button onClick={() => { resetClassification(); goToPanel('step2', 'right') }} className="w-full text-center text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-4 min-h-[44px]">← Voltar ao diagnóstico</button>
       </div>
     )
   }
 
-  // --- STEP 4: Manejo e disposicao ---
+  // --- STEP 4: Manejo e disposição ---
   function renderStep4() {
     if (!categoryResult) return null
     const mgmt = getManagement(categoryResult)
@@ -1364,7 +1364,7 @@ export default function TepGuide() {
 
     return (
       <div className="bg-bg-card rounded-xl p-6 animate-slide-left space-y-3">
-        <div className="text-[11px] font-semibold text-accent uppercase tracking-[1px] mb-2">Passo 4 de 4</div>
+        <div className="text-xs font-semibold text-accent uppercase tracking-[1px] mb-2">Passo 4 de 4</div>
         <h2 className="text-lg font-semibold mb-3">Manejo por categoria</h2>
 
         {/* Category card */}
@@ -1379,22 +1379,22 @@ export default function TepGuide() {
         {/* Subsegmental alert */}
         {(categoryResult === 'A1' || categoryResult === 'B1') && (
           <AlertCard type="warning">
-            <strong>TEP subsegmentar isolado</strong> -- a decisao de anticoagular pode considerar presenca de TVP concomitante, risco de recorrencia e contexto clinico. Considere discussao com equipe assistente.
+            <strong>TEP subsegmentar isolado</strong> — a decisão de anticoagular pode considerar presença de TVP concomitante, risco de recorrência e contexto clínico. Considere discussão com equipe assistente.
           </AlertCard>
         )}
 
         {/* Red flags */}
         {showRedFlags && (
           <div className="rounded-lg p-4 border border-danger/30 bg-danger/[0.06]">
-            <h4 className="text-xs font-bold text-danger uppercase tracking-[1px] mb-2">Red flags de deterioracao</h4>
+            <h4 className="text-xs font-bold text-danger uppercase tracking-[1px] mb-2">Red flags de deterioração</h4>
             <ul className="list-none p-0 space-y-0.5">
               {[
                 'Queda de PAS <90 mmHg ou MAP <80 mmHg',
-                'Taquicardia progressiva refrataria',
-                'Dessaturacao / necessidade crescente de O2',
-                'Alteracao do nivel de consciencia',
-                'Lactato em elevacao',
-                'Sinais de hipoperfusao (extremidades frias, TEC alargado, oliguria)',
+                'Taquicardia progressiva refratária',
+                'Dessaturação / necessidade crescente de O2',
+                'Alteração do nível de consciência',
+                'Lactato em elevação',
+                'Sinais de hipoperfusão (extremidades frias, TEC alargado, oligúria)',
               ].map((flag, i) => (
                 <li key={i} className="text-xs text-[#FF8A80] py-0.5 pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[8px] before:w-1.5 before:h-1.5 before:bg-accent before:rounded-full">{flag}</li>
               ))}
@@ -1408,8 +1408,8 @@ export default function TepGuide() {
           <h3 className="text-base font-bold uppercase tracking-[1px] mb-3" style={{ color: catColor.text }}>Categoria {catLabel}</h3>
           {[
             { label: 'Destino', value: mgmt.destino },
-            { label: 'Anticoagulacao', value: mgmt.anticoag },
-            { label: 'Monitorizacao', value: mgmt.monitor },
+            { label: 'Anticoagulação', value: mgmt.anticoag },
+            { label: 'Monitorização', value: mgmt.monitor },
             { label: 'Terapia avancada', value: mgmt.advanced },
             ...(mgmt.followup ? [{ label: 'Seguimento', value: mgmt.followup }] : []),
           ].map((row, i) => (
@@ -1421,10 +1421,10 @@ export default function TepGuide() {
         </div>
 
         <Button variant="secondary" fullWidth size="sm" onClick={() => scrollToRef('ref')} className="mt-4 text-center">
-          Ver esquemas de anticoagulacao
+          Ver esquemas de anticoagulação
         </Button>
         <Button variant="secondary" fullWidth size="sm" onClick={() => scrollToRef('ref')} className="text-center">
-          Ver contraindicacoes
+          Ver contraindicações
         </Button>
         <button onClick={() => { resetClassification(); resetStep2(); goToPanel('step1', 'right') }} className="w-full text-center text-xs text-text-secondary bg-transparent border-none cursor-pointer mt-4 min-h-[44px]">&#8634; Reiniciar pathway</button>
       </div>
@@ -1439,17 +1439,17 @@ export default function TepGuide() {
     return (
       <div>
         <button onClick={() => showView('home')} className="flex items-center gap-1.5 bg-transparent border border-bg-hover text-text-secondary text-xs px-4 py-2 rounded-lg cursor-pointer mb-4 hover:border-accent hover:text-text-primary transition-colors min-h-[44px]">
-          &larr; Menu
+          ← Menu
         </button>
-        <div className="text-[11px] font-semibold text-accent uppercase tracking-[2px] mb-4 pl-0.5">Calculadoras</div>
+        <div className="text-xs font-semibold text-accent uppercase tracking-[2px] mb-4 pl-0.5">Calculadoras</div>
 
         {/* PERC */}
         <Collapsible title="PERC (PE Rule-Out Criteria)">
-          <p className="text-xs text-text-secondary mb-2">Aplicavel apenas se gestalt &lt;15%. Todos criterios devem ser negativos para considerar TEP improvavel.</p>
+          <p className="text-xs text-text-secondary mb-2">Aplicável apenas se gestalt &lt;15%. Todos critérios devem ser negativos para considerar TEP improvável.</p>
           <ChecklistCalc items={PERC_ITEMS} checked={calcPercChecked} onToggle={(i) => { const n = [...calcPercChecked]; n[i] = !n[i]; setCalcPercChecked(n) }} />
           <CalcResult
             score={`${calcPercCount} / 8`}
-            text={calcPercCount === 0 ? 'PERC negativo -- se gestalt <15%, TEP pode ser considerado improvavel' : 'PERC positivo -- nao descarta TEP. Prossiga com D-dimero.'}
+            text={calcPercCount === 0 ? 'PERC negativo — se gestalt <15%, TEP pode ser considerado improvável' : 'PERC positivo — não descarta TEP. Prossiga com D-dímero.'}
             color={calcPercCount === 0 ? 'green' : 'yellow'}
           />
         </Collapsible>
@@ -1459,22 +1459,22 @@ export default function TepGuide() {
           <ChecklistCalc items={WELLS_ITEMS.map(w => w.label)} checked={calcWellsChecked} onToggle={(i) => { const n = [...calcWellsChecked]; n[i] = !n[i]; setCalcWellsChecked(n) }} showPoints pointsData={WELLS_ITEMS.map(w => w.pts)} />
           <CalcResult
             score={calcWellsScore}
-            text={calcWellsScore < 2 ? 'Baixa probabilidade (<2)' : calcWellsScore <= 6 ? 'Probabilidade intermediaria (2-6)' : 'Alta probabilidade (>6) -- imagem recomendada'}
+            text={calcWellsScore < 2 ? 'Baixa probabilidade (<2)' : calcWellsScore <= 6 ? 'Probabilidade intermediária (2-6)' : 'Alta probabilidade (>6) — imagem recomendada'}
             color={calcWellsScore < 2 ? 'green' : calcWellsScore <= 6 ? 'yellow' : 'red'}
           />
-          <div className="text-xs text-text-secondary/70 text-center mt-1.5">Wells modificado: {calcWellsScore > 4 ? 'TEP provavel (>4)' : 'TEP improvavel (<=4)'}</div>
+          <div className="text-xs text-text-secondary/70 text-center mt-1.5">Wells modificado: {calcWellsScore > 4 ? 'TEP provavel (>4)' : 'TEP improvável (<=4)'}</div>
         </Collapsible>
 
-        {/* D-dimero ajustado */}
-        <Collapsible title="D-dimero ajustado por idade">
-          <p className="text-xs text-text-secondary mb-2">Threshold = idade x 10 ug/L (FEU). Aplicavel para idade {'>='}50 anos; abaixo, usar 500 ug/L.</p>
+        {/* D-dímero ajustado */}
+        <Collapsible title="D-dímero ajustado por idade">
+          <p className="text-xs text-text-secondary mb-2">Threshold = idade x 10 ug/L (FEU). Aplicável para idade ≥50 anos; abaixo, usar 500 ug/L.</p>
           <div className="flex gap-3 mb-2">
             <div className="flex-1">
               <label className="block text-xs text-text-secondary mb-1.5">Idade (anos)</label>
               <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" value={calcDdimerAge} onChange={e => setCalcDdimerAge(parseInt(e.target.value) || 50)} />
             </div>
             <div className="flex-1">
-              <label className="block text-xs text-text-secondary mb-1.5">D-dimero (ug/L FEU)</label>
+              <label className="block text-xs text-text-secondary mb-1.5">D-dímero (ug/L FEU)</label>
               <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" placeholder="Ex: 750" value={calcDdimerValue} onChange={e => setCalcDdimerValue(e.target.value)} />
             </div>
           </div>
@@ -1482,47 +1482,47 @@ export default function TepGuide() {
             const threshold = calcDdimerThreshold(calcDdimerAge)
             const val = parseFloat(calcDdimerValue)
             if (!calcDdimerValue) return <CalcResult text={`Threshold ajustado: ${threshold} ug/L (idade ${calcDdimerAge})`} color="neutral" />
-            if (!isNaN(val) && val < threshold) return <CalcResult score={`${val} < ${threshold} ug/L`} text="D-dimero negativo -- TEP improvavel" color="green" />
-            return <CalcResult score={`${val} >= ${threshold} ug/L`} text="D-dimero positivo -- imagem recomendada" color="red" />
+            if (!isNaN(val) && val < threshold) return <CalcResult score={`${val} < ${threshold} ug/L`} text="D-dímero negativo — TEP improvável" color="green" />
+            return <CalcResult score={`${val} ≥ ${threshold} ug/L`} text="D-dímero positivo — imagem recomendada" color="red" />
           })()}
         </Collapsible>
 
         {/* YEARS */}
         <Collapsible title="Algoritmo YEARS">
-          <p className="text-xs text-text-secondary mb-2">Se {'>='}1 criterio YEARS: threshold D-dimero = 500 ug/L. Se nenhum: threshold = 1000 ug/L.</p>
+          <p className="text-xs text-text-secondary mb-2">Se ≥1 critério YEARS: threshold D-dímero = 500 ug/L. Se nenhum: threshold = 1000 ug/L.</p>
           <ChecklistCalc items={YEARS_ITEMS} checked={calcYearsChecked} onToggle={(i) => { const n = [...calcYearsChecked]; n[i] = !n[i]; setCalcYearsChecked(n) }} />
           <div className="mt-2">
-            <label className="block text-xs text-text-secondary mb-1.5">D-dimero (ug/L FEU)</label>
+            <label className="block text-xs text-text-secondary mb-1.5">D-dímero (ug/L FEU)</label>
             <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" placeholder="Ex: 750" value={calcYearsDD} onChange={e => setCalcYearsDD(e.target.value)} />
           </div>
           {(() => {
             const cnt = calcYearsChecked.filter(Boolean).length
             const thr = cnt >= 1 ? 500 : 1000
             const val = parseFloat(calcYearsDD)
-            if (!calcYearsDD) return <CalcResult text={`Criterios YEARS: ${cnt}/3. Threshold: ${thr} ug/L`} color="neutral" />
-            if (!isNaN(val) && val < thr) return <CalcResult score={`${val} < ${thr} ug/L`} text="YEARS negativo -- TEP improvavel" color="green" />
-            return <CalcResult score={`${val} >= ${thr} ug/L`} text="YEARS positivo -- imagem recomendada" color="red" />
+            if (!calcYearsDD) return <CalcResult text={`Critérios YEARS: ${cnt}/3. Threshold: ${thr} ug/L`} color="neutral" />
+            if (!isNaN(val) && val < thr) return <CalcResult score={`${val} < ${thr} ug/L`} text="YEARS negativo — TEP improvável" color="green" />
+            return <CalcResult score={`${val} ≥ ${thr} ug/L`} text="YEARS positivo — imagem recomendada" color="red" />
           })()}
         </Collapsible>
 
         {/* YEARS gestantes */}
         <Collapsible title="YEARS adaptado para gestantes">
-          <p className="text-xs text-text-secondary mb-2">Adaptacao para gestacao (COR 2b). D-dimero threshold de 1000 ug/L se sem criterios YEARS.</p>
+          <p className="text-xs text-text-secondary mb-2">Adaptação para gestação (COR 2b). D-dímero threshold de 1000 ug/L se sem critérios YEARS.</p>
           <ChecklistCalc items={YEARS_ITEMS} checked={calcYearsPregChecked} onToggle={(i) => { const n = [...calcYearsPregChecked]; n[i] = !n[i]; setCalcYearsPregChecked(n) }} />
           <div className="mt-2">
-            <label className="block text-xs text-text-secondary mb-1.5">D-dimero (ug/L FEU)</label>
+            <label className="block text-xs text-text-secondary mb-1.5">D-dímero (ug/L FEU)</label>
             <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" placeholder="Ex: 750" value={calcYearsPregDD} onChange={e => setCalcYearsPregDD(e.target.value)} />
           </div>
           {(() => {
             const cnt = calcYearsPregChecked.filter(Boolean).length
             const thr = cnt >= 1 ? 500 : 1000
             const val = parseFloat(calcYearsPregDD)
-            if (!calcYearsPregDD) return <CalcResult text={`Criterios: ${cnt}/3. Threshold gestante: ${thr} ug/L`} color="neutral" />
-            if (!isNaN(val) && val < thr) return <CalcResult score={`${val} < ${thr}`} text="YEARS gestante negativo -- TEP improvavel" color="green" />
-            return <CalcResult score={`${val} >= ${thr}`} text="YEARS gestante positivo -- imagem necessaria" color="red" />
+            if (!calcYearsPregDD) return <CalcResult text={`Critérios: ${cnt}/3. Threshold gestante: ${thr} ug/L`} color="neutral" />
+            if (!isNaN(val) && val < thr) return <CalcResult score={`${val} < ${thr}`} text="YEARS gestante negativo — TEP improvável" color="green" />
+            return <CalcResult score={`${val} ≥ ${thr}`} text="YEARS gestante positivo — imagem necessária" color="red" />
           })()}
           <div className="mt-2 p-2.5 rounded-r bg-info/[0.06] border-l-[3px] border-l-info text-xs text-[#82B1FF] leading-relaxed">
-            Se sintomas em MMII + USG compressao positiva &rarr; pode tratar com anticoagulacao sem necessidade de CTPA. Essa abordagem evita 65% das CTPAs no 1o trimestre.
+            Se sintomas em MMII + USG compressão positiva &rarr; pode tratar com anticoagulação sem necessidade de CTPA. Essa abordagem evita 65% das CTPAs no 1o trimestre.
           </div>
         </Collapsible>
 
@@ -1532,7 +1532,7 @@ export default function TepGuide() {
           <ChecklistCalc items={SPESI_ITEMS} checked={calcSpesiChecked} onToggle={(i) => { const n = [...calcSpesiChecked]; n[i] = !n[i]; setCalcSpesiChecked(n) }} />
           <CalcResult
             score={calcSpesiCount}
-            text={calcSpesiCount === 0 ? 'Baixo risco -- Categoria B' : 'Risco elevado (>=1) -- Categoria C ou superior'}
+            text={calcSpesiCount === 0 ? 'Baixo risco — Categoria B' : 'Risco elevado (≥1) — Categoria C ou superior'}
             color={calcSpesiCount === 0 ? 'green' : 'red'}
           />
         </Collapsible>
@@ -1540,19 +1540,19 @@ export default function TepGuide() {
         {/* PESI */}
         <Collapsible title="PESI (Pulmonary Embolism Severity Index)">
           <div className="mb-2">
-            <label className="block text-xs text-text-secondary mb-1.5">Idade (anos) -- somada diretamente ao score</label>
+            <label className="block text-xs text-text-secondary mb-1.5">Idade (anos) — somada diretamente ao score</label>
             <input type="number" inputMode="decimal" className="w-full p-3 bg-[#2D2D2D] border border-[#333] rounded-lg text-text-primary text-base" value={calcPesiAge} onChange={e => setCalcPesiAge(parseInt(e.target.value) || 65)} />
           </div>
           <ChecklistCalc items={PESI_ITEMS.map(p => p.label)} checked={calcPesiChecked} onToggle={(i) => { const n = [...calcPesiChecked]; n[i] = !n[i]; setCalcPesiChecked(n) }} showPoints pointsData={PESI_ITEMS.map(p => p.pts)} />
           {(() => {
             const c = classifyPesi(calcPesiScore)
-            return <CalcResult score={calcPesiScore} text={`Classe ${c.cls} -- ${c.risk}`} color={c.color} />
+            return <CalcResult score={calcPesiScore} text={`Classe ${c.cls} —${c.risk}`} color={c.color} />
           })()}
         </Collapsible>
 
         {/* Bova */}
         <Collapsible title="Bova Score">
-          <p className="text-xs text-text-secondary mb-2">Estratificacao de risco em TEP hemodinamicamente estavel.</p>
+          <p className="text-xs text-text-secondary mb-2">Estratificação de risco em TEP hemodinâmicamente estável.</p>
           <ChecklistCalc items={BOVA_ITEMS.map(b => b.label)} checked={calcBovaChecked} onToggle={(i) => { const n = [...calcBovaChecked]; n[i] = !n[i]; setCalcBovaChecked(n) }} showPoints pointsData={BOVA_ITEMS.map(b => b.pts)} />
           {(() => {
             const c = classifyBova(calcBovaScore)
@@ -1562,11 +1562,11 @@ export default function TepGuide() {
 
         {/* Hestia */}
         <Collapsible title="Hestia Criteria">
-          <p className="text-xs text-text-secondary mb-2">Se TODOS negativos &rarr; considere tratamento ambulatorial. Se {'>='}1 positivo &rarr; internacao.</p>
+          <p className="text-xs text-text-secondary mb-2">Se TODOS negativos &rarr; considere tratamento ambulatorial. Se ≥1 positivo &rarr; internação.</p>
           <ChecklistCalc items={HESTIA_ITEMS} checked={calcHestiaChecked} onToggle={(i) => { const n = [...calcHestiaChecked]; n[i] = !n[i]; setCalcHestiaChecked(n) }} />
           <CalcResult
             score={calcHestiaCount}
-            text={calcHestiaCount === 0 ? 'Hestia negativo -- considere tratamento ambulatorial' : 'Hestia positivo -- internacao recomendada'}
+            text={calcHestiaCount === 0 ? 'Hestia negativo — considere tratamento ambulatorial' : 'Hestia positivo — internação recomendada'}
             color={calcHestiaCount === 0 ? 'green' : 'red'}
           />
         </Collapsible>
@@ -1582,57 +1582,57 @@ export default function TepGuide() {
     return (
       <div>
         <button onClick={() => showView('home')} className="flex items-center gap-1.5 bg-transparent border border-bg-hover text-text-secondary text-xs px-4 py-2 rounded-lg cursor-pointer mb-4 hover:border-accent hover:text-text-primary transition-colors min-h-[44px]">
-          &larr; Menu
+          ← Menu
         </button>
-        <div className="text-[11px] font-semibold text-accent uppercase tracking-[2px] mb-4 pl-0.5">Referencia rapida</div>
+        <div className="text-xs font-semibold text-accent uppercase tracking-[2px] mb-4 pl-0.5">Referência rápida</div>
 
-        {/* Lab pre-anticoagulacao */}
-        <Collapsible title="Laboratorio pre-anticoagulacao">
-          <p className="text-xs text-text-secondary mb-2">Exames recomendados antes de iniciar anticoagulacao e para estratificacao de risco:</p>
+        {/* Lab pré-anticoagulação */}
+        <Collapsible title="Laboratório pré-anticoagulação">
+          <p className="text-xs text-text-secondary mb-2">Exames recomendados antes de iniciar anticoagulação e para estratificação de risco:</p>
           {[
-            'Hemograma completo (atencao as plaquetas)',
-            'Coagulograma (TAP/INR, TTPa) -- baseline',
-            'Creatinina + clearance estimado (ClCr) -- define escolha do anticoagulante',
-            'Hepatograma (TGO, TGP) -- hepatopatia contraindica DOACs',
-            'Troponina I ou T -- estratificacao (C1 vs C2/C3)',
-            'BNP ou NT-proBNP -- estratificacao adicional',
-            'Lactato arterial -- marcador de hipoperfusao (identifica Categoria D)',
-            'Tipagem sanguinea -- se risco de trombolise/cirurgia',
-            'Beta-hCG -- mulheres em idade fertil (muda toda a conduta)',
+            'Hemograma completo (atenção às plaquetas)',
+            'Coagulograma (TAP/INR, TTPa) — baseline',
+            'Creatinina + clearance estimado (ClCr) — define escolha do anticoagulante',
+            'Hepatograma (TGO, TGP) — hepatopatia contraindica DOACs',
+            'Troponina I ou T — estratificação (C1 vs C2/C3)',
+            'BNP ou NT-proBNP — estratificação adicional',
+            'Lactato arterial — marcador de hipoperfusão (identifica Categoria D)',
+            'Tipagem sanguínea — se risco de trombólise/cirurgia',
+            'Beta-hCG — mulheres em idade fértil (muda toda a conduta)',
           ].map((item, i) => (
             <div key={i} className="flex items-start py-1.5 text-xs text-text-secondary">
               <span className="mr-2.5 flex-shrink-0">{'\u25A1'}</span>{item}
             </div>
           ))}
           <div className="mt-2 p-2.5 rounded-r bg-info/[0.06] border-l-[3px] border-l-info text-xs text-[#82B1FF] leading-relaxed">
-            Troponina e BNP/NT-proBNP sao necessarios para diferenciar C1, C2 e C3. Solicite precocemente.
+            Troponina e BNP/NT-proBNP são necessários para diferenciar C1, C2 e C3. Solicite precocemente.
           </div>
         </Collapsible>
 
-        {/* Contraindicacoes */}
-        <Collapsible title="Contraindicacoes">
-          <h4 className="text-sm font-semibold mt-0 mb-2">Anticoagulacao -- contraindicacoes absolutas</h4>
-          {['Sangramento ativo maior', 'Plaquetas <25.000/uL', 'Coagulopatia grave nao corrigida'].map((item, i) => (
+        {/* Contraindicações */}
+        <Collapsible title="Contraindicações">
+          <h4 className="text-sm font-semibold mt-0 mb-2">Anticoagulação — contraindicações absolutas</h4>
+          {['Sangramento ativo maior', 'Plaquetas <25.000/uL', 'Coagulopatia grave não corrigida'].map((item, i) => (
             <div key={i} className="flex items-start py-1 text-xs text-text-secondary"><span className="mr-2.5 flex-shrink-0">{'\u25A1'}</span>{item}</div>
           ))}
-          <h4 className="text-sm font-semibold mt-4 mb-2">Trombolise sistemica -- contraindicacoes absolutas</h4>
+          <h4 className="text-sm font-semibold mt-4 mb-2">Trombólise sistêmica — contraindicações absolutas</h4>
           {[
-            'AVC hemorragico previo (qualquer tempo)',
+            'AVC hemorrágico prévio (qualquer tempo)',
             'AVC isquemico <3 meses',
             'Neoplasia intracraniana conhecida',
-            'Sangramento ativo (exceto menstruacao)',
+            'Sangramento ativo (exceto menstruação)',
             'Cirurgia intracraniana ou espinhal <3 meses',
             'Trauma craniano fechado <3 meses',
-            'Diatese hemorragica conhecida',
+            'Diatese hemorrágica conhecida',
           ].map((item, i) => (
             <div key={i} className="flex items-start py-1 text-xs text-text-secondary"><span className="mr-2.5 flex-shrink-0">{'\u25A1'}</span>{item}</div>
           ))}
-          <h4 className="text-sm font-semibold mt-4 mb-2">Trombolise sistemica -- contraindicacoes relativas</h4>
+          <h4 className="text-sm font-semibold mt-4 mb-2">Trombólise sistêmica — contraindicações relativas</h4>
           {[
             'PAS >180 mmHg',
             'Uso atual de anticoagulante',
-            'Gestacao',
-            'Puncao vascular nao compressivel',
+            'Gestação',
+            'Punção vascular não compressível',
             'RCP prolongada (>10 minutos)',
             'Cirurgia de grande porte <3 semanas',
             'Sangramento interno recente (2-4 semanas)',
@@ -1642,13 +1642,13 @@ export default function TepGuide() {
         </Collapsible>
 
         {/* Eco POC */}
-        <Collapsible title="Eco a beira-leito -- disfuncao de VD">
-          <p className="text-xs text-text-secondary mb-3">Parametros para definir disfuncao de VD na classificacao AHA/ACC. A acuracia aumenta com &gt;1 parametro presente.</p>
+        <Collapsible title="Eco a beira-leito — disfunção de VD">
+          <p className="text-xs text-text-secondary mb-3">Parâmetros para definir disfunção de VD na classificação AHA/ACC. A acurácia aumenta com &gt;1 parâmetro presente.</p>
           {[
-            { name: 'Relacao VD/VE (apical 4 camaras)', threshold: 'Anormal: >0,9', data: 'Sens 66-83% | Esp 75-77% para disfuncao VD. RR 1,61 para morte a curto prazo (Cimini 2023).' },
+            { name: 'Relação VD/VE (apical 4 câmaras)', threshold: 'Anormal: >0,9', data: 'Sens 66-83% | Esp 75-77% para disfunção VD. RR 1,61 para morte a curto prazo (Cimini 2023).' },
             { name: 'TAPSE (modo M, anel tricuspide)', threshold: 'Anormal: <16 mm', data: 'HR 3,8 para desfecho adverso. Preditor independente de mortalidade (Cimini 2023).' },
             { name: 'TAPSE + VD/VE combinados', threshold: 'TAPSE <16 mm E VD/VE >1', data: 'HR 6,5 (IC95% 3,2-13,3) para desfecho adverso. VPN 95,6%. Melhor desempenho combinado.' },
-            { name: 'Sinal de McConnell', threshold: 'Acinesia de parede livre com contratilidade apical preservada', data: 'Sens 22% | Esp 97% para diagnostico de TEP. OR 8,38 para choque normotensivo em TEP intermediaria (Zhang 2024).' },
+            { name: 'Sinal de McConnell', threshold: 'Acinesia de parede livre com contratilidade apical preservada', data: 'Sens 22% | Esp 97% para diagnóstico de TEP. OR 8,38 para choque normotensivo em TEP intermediária (Zhang 2024).' },
             { name: 'D-sign (septo achatado)', threshold: 'Septo interventricular abaulado para VE', data: 'Sens 31% | Esp 98% | LR+ 13,6 (de Wit 2021). Alta especificidade quando presente.' },
             { name: 'TAPSE/PASP', threshold: 'Anormal: <0,34 mm/mmHg', data: 'Sens 97% | Esp 91% para IC baixo. OR 2,63 para choque normotensivo (Yuriditsky 2024). Melhor preditor isolado.' },
           ].map((param, i) => (
@@ -1659,44 +1659,44 @@ export default function TepGuide() {
             </div>
           ))}
           <div className="mt-2 p-2.5 rounded-r bg-info/[0.06] border-l-[3px] border-l-info text-xs text-[#82B1FF] leading-relaxed">
-            <strong>Limitacoes:</strong> Os dados acima sao predominantemente prognosticos (predizem desfechos adversos), nao diagnosticos. A presenca de disfuncao de VD no eco nao confirma TEP, mas estratifica risco em TEP confirmada. Eco a beira-leito nao substitui CTPA para diagnostico.
+            <strong>Limitações:</strong> Os dados acima são predominantemente prognósticos (predizem desfechos adversos), não diagnósticos. A presença de disfunção de VD no eco não confirma TEP, mas estratifica risco em TEP confirmada. Eco a beira-leito não substitui CTPA para diagnóstico.
           </div>
         </Collapsible>
 
-        {/* Anticoagulacao */}
-        <Collapsible title="Anticoagulacao -- esquemas e doses">
-          <h4 className="text-sm font-semibold mt-0 mb-2">Principios gerais</h4>
-          <p className="text-xs text-text-secondary mb-1"><span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-success/20 text-success">COR 1</span> DOAC preferido sobre AVK para anticoagulacao oral.</p>
-          <p className="text-xs text-text-secondary mb-3"><span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-success/20 text-success">COR 1</span> HBPM preferida sobre HNF quando parenteral necessario.</p>
+        {/* Anticoagulação */}
+        <Collapsible title="Anticoagulação — esquemas e doses">
+          <h4 className="text-sm font-semibold mt-0 mb-2">Princípios gerais</h4>
+          <p className="text-xs text-text-secondary mb-1"><span className="inline-block px-2 py-0.5 rounded text-xs font-bold bg-success/20 text-success">COR 1</span> DOAC preferido sobre AVK para anticoagulação oral.</p>
+          <p className="text-xs text-text-secondary mb-3"><span className="inline-block px-2 py-0.5 rounded text-xs font-bold bg-success/20 text-success">COR 1</span> HBPM preferida sobre HNF quando parenteral necessário.</p>
 
-          <h4 className="text-sm font-semibold mt-4 mb-2">DOACs -- dose inicial</h4>
+          <h4 className="text-sm font-semibold mt-4 mb-2">DOACs — dose inicial</h4>
           <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs"><strong className="text-accent">Rivaroxabana:</strong> 15 mg VO 2x/dia por 21 dias &rarr; 20 mg 1x/dia</div>
           <div className="bg-bg-hover rounded p-2.5 mb-3 text-xs"><strong className="text-accent">Apixabana:</strong> 10 mg VO 2x/dia por 7 dias &rarr; 5 mg 2x/dia</div>
 
           <h4 className="text-sm font-semibold mt-4 mb-2">HBPM</h4>
           <div className="bg-bg-hover rounded p-2.5 mb-3 text-xs">
             <strong className="text-accent">Enoxaparina:</strong> 1 mg/kg SC 12/12h<br />
-            <span className="text-text-secondary text-[11px]">Ampolas: 40 mg/0,4 mL | 60 mg/0,6 mL | 80 mg/0,8 mL</span>
+            <span className="text-text-secondary text-xs">Ampolas: 40 mg/0,4 mL | 60 mg/0,6 mL | 80 mg/0,8 mL</span>
           </div>
 
           <h4 className="text-sm font-semibold mt-4 mb-2">HNF</h4>
           <div className="bg-bg-hover rounded p-2.5 mb-3 text-xs">
-            <strong className="text-accent">Heparina nao fracionada:</strong> Bolus 80 UI/kg IV + infusao continua 18 UI/kg/h<br />
-            <span className="text-text-secondary text-[11px]">Ajustar por TTPa a cada 6h.</span>
-            <br /><button onClick={() => navigate('/infusion?drug=heparina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1">Calculadora de Heparina &rarr;</button>
+            <strong className="text-accent">Heparina não fracionada:</strong> Bolus 80 UI/kg IV + infusão contínua 18 UI/kg/h<br />
+            <span className="text-text-secondary text-xs">Ajustar por TTPa a cada 6h.</span>
+            <br /><button onClick={() => navigate('/infusion?drug=heparina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">Calculadora de Heparina &rarr;</button>
           </div>
 
-          <h4 className="text-sm font-semibold mt-4 mb-2">Situacoes especiais</h4>
+          <h4 className="text-sm font-semibold mt-4 mb-2">Situações especiais</h4>
           <div className="overflow-x-auto">
             <table className="w-full text-xs border-collapse">
-              <thead><tr className="bg-bg-hover"><th className="text-left p-2 text-text-secondary font-semibold text-[11px] uppercase">Situacao</th><th className="text-left p-2 text-text-secondary font-semibold text-[11px] uppercase">Recomendacao</th></tr></thead>
+              <thead><tr className="bg-bg-hover"><th className="text-left p-2 text-text-secondary font-semibold text-xs uppercase">Situação</th><th className="text-left p-2 text-text-secondary font-semibold text-xs uppercase">Recomendação</th></tr></thead>
               <tbody>
                 {[
                   ['Gestante', 'HBPM (DOACs e AVK contraindicados)'],
-                  ['SAAF trombotica', 'AVK (DOACs inferiores para eventos arteriais) COR 1'],
+                  ['SAAF trombótica', 'AVK (DOACs inferiores para eventos arteriais) COR 1'],
                   ['DRC grave (ClCr <30)', 'HNF (HBPM com cautela, ajustar dose)'],
-                  ['Cancer ativo', 'DOAC ou HBPM (preferidos sobre AVK) COR 1'],
-                  ['Obesidade grau III (IMC >40)', 'DOAC razoavel; se HBPM, considere reducao de dose COR 2b'],
+                  ['Câncer ativo', 'DOAC ou HBPM (preferidos sobre AVK) COR 1'],
+                  ['Obesidade grau III (IMC >40)', 'DOAC razoável; se HBPM, considere redução de dose COR 2b'],
                   ['Hepatopatia leve-moderada', 'Apixabana/rivaroxabana com cautela; grave -> HNF'],
                 ].map(([sit, rec], i) => (
                   <tr key={i} className="border-b border-white/[0.04]"><td className="p-2 align-top">{sit}</td><td className="p-2 align-top">{rec}</td></tr>
@@ -1706,18 +1706,18 @@ export default function TepGuide() {
           </div>
         </Collapsible>
 
-        {/* Trombolise */}
-        <Collapsible title="Trombolise sistemica">
-          <h4 className="text-sm font-semibold mt-0 mb-2">Indicacoes por categoria</h4>
+        {/* Trombólise */}
+        <Collapsible title="Trombólise sistêmica">
+          <h4 className="text-sm font-semibold mt-0 mb-2">Indicações por categoria</h4>
           <div className="overflow-x-auto">
             <table className="w-full text-xs border-collapse">
-              <thead><tr className="bg-bg-hover"><th className="text-left p-2 text-text-secondary font-semibold text-[11px] uppercase">Categoria</th><th className="text-left p-2 text-text-secondary font-semibold text-[11px] uppercase">Recomendacao</th></tr></thead>
+              <thead><tr className="bg-bg-hover"><th className="text-left p-2 text-text-secondary font-semibold text-xs uppercase">Categoria</th><th className="text-left p-2 text-text-secondary font-semibold text-xs uppercase">Recomendação</th></tr></thead>
               <tbody>
                 {[
-                  ['E1-E2', 'COR 2a -- Razoavel se risco de sangramento aceitavel'],
-                  ['D1-D2', 'COR 2b -- Pode ser considerada para prevenir deterioracao'],
-                  ['C3', 'COR 2b -- Beneficio incerto'],
-                  ['A -- C2', 'COR 3: Dano -- Nao recomendada -- risco de sangramento maior e HIC'],
+                  ['E1-E2', 'COR 2a — Razoavel se risco de sangramento aceitável'],
+                  ['D1-D2', 'COR 2b — Pode ser considerada para prevenir deterioração'],
+                  ['C3', 'COR 2b — Beneficio incerto'],
+                  ['A — C2', 'COR 3: Dano — Não recomendada — risco de sangramento maior e HIC'],
                 ].map(([cat, rec], i) => (
                   <tr key={i} className="border-b border-white/[0.04]"><td className="p-2 align-top">{cat}</td><td className="p-2 align-top">{rec}</td></tr>
                 ))}
@@ -1725,46 +1725,46 @@ export default function TepGuide() {
             </table>
           </div>
           <h4 className="text-sm font-semibold mt-4 mb-2">Doses</h4>
-          <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs"><strong className="text-accent">Alteplase (rt-PA):</strong> 100 mg IV em 2 horas (dose padrao)</div>
-          <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs"><strong className="text-accent">Dose reduzida:</strong> 50 mg IV em 2 horas -- pode ser considerada para reduzir risco de sangramento <span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-warning/20 text-warning">COR 2b</span></div>
+          <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs"><strong className="text-accent">Alteplase (rt-PA):</strong> 100 mg IV em 2 horas (dose padrão)</div>
+          <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs"><strong className="text-accent">Dose reduzida:</strong> 50 mg IV em 2 horas — pode ser considerada para reduzir risco de sangramento <span className="inline-block px-2 py-0.5 rounded text-xs font-bold bg-warning/20 text-warning">COR 2b</span></div>
           <div className="mt-2 p-2.5 rounded-r bg-info/[0.06] border-l-[3px] border-l-info text-xs text-[#82B1FF] leading-relaxed">
-            Trombolise de resgate pode beneficiar pacientes que deterioram sob anticoagulacao isolada.
+            Trombólise de resgate pode beneficiar pacientes que deterioram sob anticoagulação isolada.
           </div>
         </Collapsible>
 
-        {/* Suporte hemodinamico */}
-        <Collapsible title="Suporte hemodinamico no DE">
+        {/* Suporte hemodinâmico */}
+        <Collapsible title="Suporte hemodinâmico no DE">
           <div className="bg-bg-hover rounded p-2.5 mb-2 text-xs">
-            <strong className="text-accent">Norepinefrina</strong> -- vasopressor de 1a escolha<br />
+            <strong className="text-accent">Norepinefrina</strong> — vasopressor de 1a escolha<br />
             Dose: 0,1-0,5 mcg/kg/min (titular). Ate 15 mcg/min: pouco efeito na RVP.<br />
-            <span className="text-warning text-[11px]">Acima de 15 mcg/min: pode aumentar RVP &rarr; considere segundo agente (vasopressina, fenilefrina).</span>
-            <br /><button onClick={() => navigate('/infusion?drug=noradrenalina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1">Calculadora de Noradrenalina &rarr;</button>
+            <span className="text-warning text-xs">Acima de 15 mcg/min: pode aumentar RVP &rarr; considere segundo agente (vasopressina, fenilefrina).</span>
+            <br /><button onClick={() => navigate('/infusion?drug=noradrenalina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">Calculadora de Noradrenalina &rarr;</button>
           </div>
           <div className="bg-bg-hover rounded p-2.5 mb-3 text-xs">
-            <strong className="text-accent">Dobutamina</strong> -- inotropico adjunto<br />
-            Dose: ate 10 mcg/kg/min. Pode aumentar IC as custas de queda da RVS.<br />
-            <span className="text-text-secondary text-[11px]">Considere se baixo debito persistente apesar de vasopressores.</span>
-            <br /><button onClick={() => navigate('/infusion?drug=dobutamina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1">Calculadora de Dobutamina &rarr;</button>
+            <strong className="text-accent">Dobutamina</strong> — inotrópico adjunto<br />
+            Dose: até 10 mcg/kg/min. Pode aumentar IC às custas de queda da RVS.<br />
+            <span className="text-text-secondary text-xs">Considere se baixo débito persistente apesar de vasopressores.</span>
+            <br /><button onClick={() => navigate('/infusion?drug=dobutamina')} className="text-info text-xs underline bg-transparent border-none cursor-pointer mt-1 min-h-[44px]">Calculadora de Dobutamina &rarr;</button>
           </div>
-          <h4 className="text-sm font-semibold mt-4 mb-2">Suporte respiratorio</h4>
-          <p className="text-xs text-text-secondary mb-2">CNAF pode ser considerada antes de IOT para melhorar oxigenacao.</p>
+          <h4 className="text-sm font-semibold mt-4 mb-2">Suporte respiratório</h4>
+          <p className="text-xs text-text-secondary mb-2">CNAF pode ser considerada antes de IOT para melhorar oxigenação.</p>
           <AlertCard type="danger">
-            <strong>Atencao -- sedacao e IOT:</strong> Podem causar colapso hemodinamico catastrofico em disfuncao de VD. Sedativos e analgesicos reduzem mecanismos compensatorios. Evitar IOT salvo indicacao forte (hipoxemia refrataria, protecao de via aerea). Equipe pronta com vasopressores/inotropicos ou VA-ECMO.
+            <strong>Atenção — sedação e IOT:</strong> Podem causar colapso hemodinâmico catastrófico em disfunção de VD. Sedativos e analgésicos reduzem mecanismos compensatórios. Evitar IOT salvo indicação forte (hipoxemia refratária, proteção de via aérea). Equipe pronta com vasopressores/inotrópicos ou VA-ECMO.
             <div className="mt-2 flex gap-2 flex-wrap">
-              <button onClick={() => navigate('/airway')} className="text-info text-xs underline bg-transparent border-none cursor-pointer">Airway Guide &rarr;</button>
-              <button onClick={() => navigate('/seda')} className="text-info text-xs underline bg-transparent border-none cursor-pointer">Seda Path &rarr;</button>
+              <button onClick={() => navigate('/airway')} className="text-info text-xs underline bg-transparent border-none cursor-pointer min-h-[44px]">Airway Guide &rarr;</button>
+              <button onClick={() => navigate('/seda')} className="text-info text-xs underline bg-transparent border-none cursor-pointer min-h-[44px]">Seda Path &rarr;</button>
             </div>
           </AlertCard>
           <h4 className="text-sm font-semibold mt-4 mb-2">Vasodilatadores pulmonares inalatorios</h4>
-          <p className="text-xs text-text-secondary"><span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-warning/20 text-warning">COR 2b</span> Podem ser considerados para reduzir pos-carga de VD em categorias C2-E.</p>
+          <p className="text-xs text-text-secondary"><span className="inline-block px-2 py-0.5 rounded text-xs font-bold bg-warning/20 text-warning">COR 2b</span> Podem ser considerados para reduzir pós-carga de VD em categorias C2-E.</p>
         </Collapsible>
 
         {/* Filtro VCI */}
         <Collapsible title="Filtro de veia cava inferior">
-          <p className="text-xs text-text-secondary mb-2"><span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-info/20 text-info">COR 2a</span> Considere apenas se contraindicacao absoluta a anticoagulacao com TEP agudo e risco de recorrencia.</p>
-          <p className="text-xs text-text-secondary mb-2"><span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-danger/20 text-danger">COR 3</span> Nao recomendado rotineiramente em pacientes que podem ser anticoagulados -- sem beneficio de mortalidade e aumento de risco de TVP.</p>
+          <p className="text-xs text-text-secondary mb-2"><span className="inline-block px-2 py-0.5 rounded text-xs font-bold bg-info/20 text-info">COR 2a</span> Considere apenas se contraindicação absoluta a anticoagulação com TEP agudo e risco de recorrência.</p>
+          <p className="text-xs text-text-secondary mb-2"><span className="inline-block px-2 py-0.5 rounded text-xs font-bold bg-danger/20 text-danger">COR 3</span> Não recomendado rotineiramente em pacientes que podem ser anticoagulados — sem benefício de mortalidade e aumento de risco de TVP.</p>
           <div className="mt-2 p-2.5 rounded-r bg-info/[0.06] border-l-[3px] border-l-info text-xs text-[#82B1FF] leading-relaxed">
-            Se colocado, retirar assim que possivel (idealmente &lt;54 dias). Apos 90 dias, a retirada torna-se progressivamente mais dificil.
+            Se colocado, retirar assim que possível (idealmente &lt;54 dias). Apos 90 dias, a retirada torna-se progressivamente mais difícil.
           </div>
         </Collapsible>
       </div>
@@ -1778,14 +1778,14 @@ export default function TepGuide() {
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary">
       <Disclaimer />
-      <Header title="TEP Guide" subtitle="Tromboembolismo pulmonar agudo -- AHA/ACC 2026" />
+      <Header title="TEP Guide" subtitle="Tromboembolismo pulmonar agudo — AHA/ACC 2026" />
       <Container>
         {view === 'home' && renderHome()}
         {view === 'pathway' && renderPathway()}
         {view === 'calc' && renderCalc()}
         {view === 'ref' && renderRef()}
       </Container>
-      <Footer toolName="TEP Guide" version="v2.0.0" />
+      <Footer toolName="TEP Guide" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

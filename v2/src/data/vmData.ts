@@ -1,5 +1,5 @@
 // ==========================================
-// VM Guide — Dados clinicos e definicoes
+// VM Guide — Dados clínicos e definições
 // Fonte: VM Guide ANY App v1.1.1
 // ==========================================
 
@@ -31,45 +31,45 @@ export interface HacorEntry {
   label: string
 }
 
-// ----- Indice de calculadoras (para busca) -----
+// ----- Índice de calculadoras (para busca) -----
 
 export const VM_CALCULATORS: VmCalculator[] = [
   { id: 'pesoideal', name: 'Peso ideal', sectionId: 'peso', sectionName: 'Peso ideal e volume corrente' },
-  { id: 'rva', name: 'Resistencia de vias aereas (Rva)', sectionId: 'mecanica', sectionName: 'Mecanica respiratoria' },
-  { id: 'cst', name: 'Complacencia estatica (Cst)', sectionId: 'mecanica', sectionName: 'Mecanica respiratoria' },
-  { id: 'dp', name: 'Driving pressure (deltaP)', sectionId: 'mecanica', sectionName: 'Mecanica respiratoria' },
-  { id: 'pf', name: 'Relacao P/F (PaO2/FiO2)', sectionId: 'troca', sectionName: 'Troca gasosa' },
-  { id: 'sf', name: 'Relacao S/F (SpO2/FiO2)', sectionId: 'troca', sectionName: 'Troca gasosa' },
-  { id: 'ajustefio2', name: 'Ajuste de FiO2', sectionId: 'troca', sectionName: 'Troca gasosa' },
-  { id: 'ajustefreq', name: 'Ajuste de frequencia respiratoria', sectionId: 'troca', sectionName: 'Troca gasosa' },
-  { id: 'tobin', name: 'Indice de Tobin (IRRS)', sectionId: 'desmame', sectionName: 'Desmame' },
-  { id: 'rox', name: 'Indice ROX', sectionId: 'desmame', sectionName: 'Desmame' },
-  { id: 'tau', name: 'Constante de tempo (tau)', sectionId: 'outros', sectionName: 'Outros parametros' },
-  { id: 'pmus', name: 'Pressao muscular (Pmus)', sectionId: 'outros', sectionName: 'Outros parametros' },
-  { id: 'mp', name: 'Mechanical power', sectionId: 'outros', sectionName: 'Outros parametros' },
-  { id: 'ia', name: 'Indice de assincronia', sectionId: 'outros', sectionName: 'Outros parametros' },
+  { id: 'rva', name: 'Resistência de vias aéreas (Rva)', sectionId: 'mecânica', sectionName: 'Mecânica respiratória' },
+  { id: 'cst', name: 'Complacência estática (Cst)', sectionId: 'mecânica', sectionName: 'Mecânica respiratória' },
+  { id: 'dp', name: 'Driving pressure (deltaP)', sectionId: 'mecânica', sectionName: 'Mecânica respiratória' },
+  { id: 'pf', name: 'Relação P/F (PaO₂/FiO₂)', sectionId: 'troca', sectionName: 'Troca gasosa' },
+  { id: 'sf', name: 'Relação S/F (SpO₂/FiO₂)', sectionId: 'troca', sectionName: 'Troca gasosa' },
+  { id: 'ajustefio2', name: 'Ajuste de FiO₂', sectionId: 'troca', sectionName: 'Troca gasosa' },
+  { id: 'ajustefreq', name: 'Ajuste de frequência respiratória', sectionId: 'troca', sectionName: 'Troca gasosa' },
+  { id: 'tobin', name: 'Índice de Tobin (IRRS)', sectionId: 'desmame', sectionName: 'Desmame' },
+  { id: 'rox', name: 'Índice ROX', sectionId: 'desmame', sectionName: 'Desmame' },
+  { id: 'tau', name: 'Constante de tempo (tau)', sectionId: 'outros', sectionName: 'Outros parâmetros' },
+  { id: 'pmus', name: 'Pressão muscular (Pmus)', sectionId: 'outros', sectionName: 'Outros parâmetros' },
+  { id: 'mp', name: 'Mechanical power', sectionId: 'outros', sectionName: 'Outros parâmetros' },
+  { id: 'ia', name: 'Índice de assincronia', sectionId: 'outros', sectionName: 'Outros parâmetros' },
   { id: 'hacor', name: 'HACOR score (falha de VNI)', sectionId: 'hacor', sectionName: 'HACOR score' },
 ]
 
-// ----- Descricoes clinicas -----
+// ----- Descrições clínicas -----
 
 export const VM_DESCRIPTIONS = {
-  pesoIdeal: 'O peso ideal (PBW) e baseado na altura e sexo do paciente, nao no peso real. E usado para calcular o volume corrente em ventilacao protetora, evitando volutrauma por volumes excessivos em relacao ao tamanho pulmonar.',
-  rva: 'A resistencia de vias aereas reflete a oposicao ao fluxo de ar no sistema respiratorio. Valores elevados indicam obstrucao (broncoespasmo, secrecoes, tubo pequeno ou obstruido).',
-  cst: 'A complacencia estatica mede a distensibilidade do sistema respiratorio (pulmao + caixa toracica). Valores baixos indicam pulmao "duro" (SDRA, fibrose, edema). Valores altos podem indicar enfisema.',
-  dp: 'A driving pressure (pressao de distensao) e a pressao necessaria para insuflar o pulmao acima da PEEP. Valores <=15 cmH2O estao associados a menor mortalidade em SDRA. E considerado o melhor preditor de desfecho em ventilacao mecanica.',
-  pf: 'A relacao P/F e o principal indice de oxigenacao, calculado pela PaO2 (gasometria) dividida pela FiO2 (fracao de oxigenio). Valores normais sao >400. Valores <300 indicam comprometimento da troca gasosa e classificam a gravidade da SDRA.',
-  sf: 'A relacao S/F e um substituto nao invasivo da P/F, usando a saturacao periferica (SpO2) em vez da PaO2. So e valida com SpO2 <=97% (regiao ingreme da curva de dissociacao). Util quando nao ha gasometria disponivel.',
-  ajusteFio2: 'Estima a nova FiO2 necessaria para atingir uma PaO2 alvo, assumindo que a relacao P/F permanece constante. Util para ajustar oxigenio com base na gasometria.',
-  ajusteFreq: 'Estima a nova frequencia respiratoria necessaria para atingir uma PaCO2 alvo, assumindo volume corrente constante. A ventilacao alveolar e proporcional a frequencia x volume corrente.',
-  tobin: 'O indice de Tobin (f/VT) avalia a tolerancia ao desmame. Valores <105 sugerem boa reserva ventilatoria e probabilidade de extubacao bem-sucedida. Valores >105 indicam respiracao rapida e superficial, sugerindo maior risco de falha.',
-  rox: 'O indice ROX prediz falha de cateter nasal de alto fluxo (CNAF). Combina a relacao S/F com a frequencia respiratoria. Valores >=4.88 em 2-12h indicam menor risco de intubacao. Valores <3.85 sugerem alto risco de falha.',
-  tau: 'A constante de tempo (tau) representa o tempo necessario para esvaziar 63% do volume pulmonar. E o produto da resistencia pela complacencia. O tempo expiratorio deve ser 4-5 tau para evitar auto-PEEP (air trapping).',
-  pmus: 'A Pmus estimada reflete o esforco muscular do paciente durante ventilacao assistida. E derivada da manobra de oclusao (deltaPocc). Valores entre 5-10 cmH2O indicam esforco adequado. Valores baixos sugerem hipoventilacao; altos indicam excesso de esforco.',
-  mp: 'O mechanical power e a energia total transferida ao sistema respiratorio por minuto, integrando VC, driving pressure e frequencia. Valores >17 J/min estao associados a maior mortalidade. E um marcador de intensidade da ventilacao e potencial lesao pulmonar.',
-  ia: 'O indice de assincronia quantifica a proporcao de ciclos com assincronia paciente-ventilador (duplo disparo, auto-trigger, etc). Valores >10% estao associados a maior tempo de VM e pior prognostico.',
-  hacor: 'O HACOR score prediz falha de ventilacao nao invasiva (VNI). Combina frequencia cardiaca, acidose, consciencia, oxigenacao e frequencia respiratoria. Score >= 5 em 1-2h de VNI indica alto risco de falha.',
-  sdra: 'A definicao Global 2024 expandiu os criterios de Berlim, incluindo S/F para locais sem gasometria, CNAF como suporte valido, e ultrassonografia para imagem.',
+  pesoIdeal: 'O peso ideal (PBW) é baseado na altura e sexo do paciente, não no peso real. É usado para calcular o volume corrente em ventilação protetora, evitando volutrauma por volumes excessivos em relação ao tamanho pulmonar.',
+  rva: 'A resistência de vias aéreas reflete a oposição ao fluxo de ar no sistema respiratório. Valores elevados indicam obstrução (broncoespasmo, secreções, tubo pequeno ou obstruído).',
+  cst: 'A complacência estática mede a distensibilidade do sistema respiratório (pulmão + caixa torácica). Valores baixos indicam pulmão "duro" (SDRA, fibrose, edema). Valores altos podem indicar enfisema.',
+  dp: 'A driving pressure (pressão de distensão) é a pressão necessária para insuflar o pulmão acima da PEEP. Valores ≤15 cmH₂O estão associados a menor mortalidade em SDRA. É considerado o melhor preditor de desfecho em ventilação mecânica.',
+  pf: 'A relação P/F é o principal índice de oxigenação, calculado pela PaO₂ (gasometria) dividida pela FiO₂ (fração de oxigênio). Valores normais são >400. Valores <300 indicam comprometimento da troca gasosa e classificam a gravidade da SDRA.',
+  sf: 'A relação S/F é um substituto não invasivo da P/F, usando a saturação periférica (SpO₂) em vez da PaO₂. Só é válida com SpO₂ ≤97% (região íngreme da curva de dissociação). Útil quando não há gasometria disponível.',
+  ajusteFio2: 'Estima a nova FiO₂ necessária para atingir uma PaO₂ alvo, assumindo que a relação P/F permanece constante. Útil para ajustar oxigênio com base na gasometria.',
+  ajusteFreq: 'Estima a nova frequência respiratória necessária para atingir uma PaCO2 alvo, assumindo volume corrente constante. A ventilação alveolar é proporcional à frequência x volume corrente.',
+  tobin: 'O índice de Tobin (f/VT) avalia a tolerância ao desmame. Valores <105 sugerem boa reserva ventilatória e probabilidade de extubação bem-sucedida. Valores >105 indicam respiração rápida e superficial, sugerindo maior risco de falha.',
+  rox: 'O índice ROX prediz falha de cateter nasal de alto fluxo (CNAF). Combina a relação S/F com a frequência respiratória. Valores ≥4.88 em 2-12h indicam menor risco de intubação. Valores <3.85 sugerem alto risco de falha.',
+  tau: 'A constante de tempo (tau) representa o tempo necessário para esvaziar 63% do volume pulmonar. É o produto da resistência pela complacência. O tempo expiratório deve ser 4-5 tau para evitar auto-PEEP (air trapping).',
+  pmus: 'A Pmus estimada reflete o esforço muscular do paciente durante ventilação assistida. É derivada da manobra de oclusão (deltaPocc). Valores entre 5-10 cmH₂O indicam esforço adequado. Valores baixos sugerem hipoventilação; altos indicam excesso de esforço.',
+  mp: 'O mechanical power é a energia total transferida ao sistema respiratório por minuto, integrando VC, driving pressure e frequência. Valores >17 J/min estão associados a maior mortalidade. É um marcador de intensidade da ventilação e potencial lesão pulmonar.',
+  ia: 'O índice de assincronia quantifica a proporção de ciclos com assincronia paciente-ventilador (duplo disparo, auto-trigger, etc). Valores >10% estão associados a maior tempo de VM e pior prognóstico.',
+  hacor: 'O HACOR score prediz falha de ventilação não invasiva (VNI). Combina frequência cardíaca, acidose, consciência, oxigenação e frequência respiratória. Score ≥ 5 em 1-2h de VNI indica alto risco de falha.',
+  sdra: 'A definição Global 2024 expandiu os critérios de Berlim, incluindo S/F para locais sem gasometria, CNAF como suporte válido, e ultrassonografia para imagem.',
 } as const
 
 // ----- SDRA (Global 2024) -----
@@ -81,10 +81,10 @@ export const SDRA_TABLE: SdraRow[] = [
 ]
 
 export const SDRA_NOVIDADES = [
-  'Suporte: VM invasiva, VNI ou CNAF >=30 L/min',
+  'Suporte: VM invasiva, VNI ou CNAF ≥30 L/min',
   'Imagem: Rx, TC ou ultrassonografia',
   'S/F validado como alternativa a P/F',
-  'Opacidades bilaterais nao explicadas por outras causas',
+  'Opacidades bilaterais não explicadas por outras causas',
 ]
 
 // ----- HACOR Score (Duan et al. 2017) -----
@@ -92,9 +92,9 @@ export const SDRA_NOVIDADES = [
 export const HACOR_VARIABLES: HacorVariable[] = [
   {
     key: 'fc',
-    label: 'FC >= 120 bpm',
+    label: 'FC ≥ 120 bpm',
     options: [
-      { label: 'Nao: 0', value: 0 },
+      { label: 'Não: 0', value: 0 },
       { label: 'Sim: 1', value: 1 },
     ],
   },
@@ -102,7 +102,7 @@ export const HACOR_VARIABLES: HacorVariable[] = [
     key: 'ph',
     label: 'pH',
     options: [
-      { label: '>= 7,35: 0', value: 0 },
+      { label: '≥ 7,35: 0', value: 0 },
       { label: '7,30-7,34: 2', value: 2 },
       { label: '7,25-7,29: 3', value: 3 },
       { label: '< 7,25: 4', value: 4 },
@@ -115,12 +115,12 @@ export const HACOR_VARIABLES: HacorVariable[] = [
       { label: '15: 0', value: 0 },
       { label: '13-14: 2', value: 2 },
       { label: '11-12: 5', value: 5 },
-      { label: '<= 10: 15', value: 15 },
+      { label: '≤ 10: 15', value: 15 },
     ],
   },
   {
     key: 'pf',
-    label: 'PaO2/FiO2',
+    label: 'PaO₂/FiO₂',
     options: [
       { label: '> 200: 0', value: 0 },
       { label: '175-200: 2', value: 2 },
@@ -131,9 +131,9 @@ export const HACOR_VARIABLES: HacorVariable[] = [
   },
   {
     key: 'fr',
-    label: 'FR >= 30 irpm',
+    label: 'FR ≥ 30 irpm',
     options: [
-      { label: 'Nao: 0', value: 0 },
+      { label: 'Não: 0', value: 0 },
       { label: 'Sim: 1', value: 1 },
     ],
   },
@@ -141,7 +141,7 @@ export const HACOR_VARIABLES: HacorVariable[] = [
 
 export const HACOR_REF = 'Duan J, et al. An updated HACOR score for predicting the failure of noninvasive ventilation. Crit Care. 2017;21(1):300.'
 
-// ----- Referencias -----
+// ----- Referências -----
 
 export const VM_REFERENCES = [
   'Matthay MA, et al. A New Global Definition of ARDS. Am J Respir Crit Care Med. 2024;209(1):37-47.',
@@ -158,7 +158,7 @@ export const VM_REFERENCES = [
 
 export const VM_FAB_SECTIONS = [
   { id: 'peso', label: 'Peso/Ajuste' },
-  { id: 'mecanica', label: 'Mecanica' },
+  { id: 'mecânica', label: 'Mecânica' },
   { id: 'troca', label: 'Troca gasosa' },
   { id: 'desmame', label: 'Desmame' },
   { id: 'hacor', label: 'HACOR' },
@@ -175,7 +175,7 @@ export function calcPesoIdeal(sexo: 'M' | 'F', alturaCm: number): number {
   return Math.max(0, base + 0.91 * (alturaCm - 152.4))
 }
 
-/** Resistencia de vias aereas (Rva)
+/** Resistência de vias aéreas (Rva)
  * Rva = (Ppico - Ppausa) / (Fluxo em L/s)
  * Normal: <10 cmH2O/L/s
  */
@@ -186,11 +186,11 @@ export function calcRva(ppico: number, ppausa: number, fluxoLmin: number): numbe
 
 export function interpretRva(rva: number): { status: 'success' | 'warning' | 'danger'; text: string } {
   if (rva < 10) return { status: 'success', text: 'Normal' }
-  if (rva <= 20) return { status: 'warning', text: 'Elevada -- considere broncoespasmo, secrecoes ou tubo' }
-  return { status: 'danger', text: 'Muito elevada -- investigar obstrucao' }
+  if (rva <= 20) return { status: 'warning', text: 'Elevada — considere broncoespasmo, secreções ou tubo' }
+  return { status: 'danger', text: 'Muito elevada — investigar obstrução' }
 }
 
-/** Complacencia estatica (Cst)
+/** Complacência estatica (Cst)
  * Cst = VC / (Pplat - PEEP)
  * Normal: 50-80 mL/cmH2O
  */
@@ -199,9 +199,9 @@ export function calcCst(vcMl: number, pplat: number, peep: number): number {
 }
 
 export function interpretCst(cst: number): { status: 'success' | 'warning' | 'danger'; text: string } {
-  if (cst >= 50) return { status: 'success', text: 'Normal (50-80 mL/cmH2O)' }
-  if (cst >= 30) return { status: 'warning', text: 'Reduzida -- possivel SDRA, edema, atelectasia' }
-  return { status: 'danger', text: 'Muito reduzida -- pulmao restritivo grave' }
+  if (cst >= 50) return { status: 'success', text: 'Normal (50-80 mL/cmH₂O)' }
+  if (cst >= 30) return { status: 'warning', text: 'Reduzida — possível SDRA, edema, atelectasia' }
+  return { status: 'danger', text: 'Muito reduzida — pulmão restritivo grave' }
 }
 
 /** Driving pressure (deltaP)
@@ -213,30 +213,30 @@ export function calcDP(pplat: number, peep: number): number {
 }
 
 export function interpretDP(dp: number): { status: 'success' | 'warning' | 'danger'; text: string } {
-  if (dp < 10) return { status: 'success', text: 'Excelente -- baixo risco de VILI' }
-  if (dp <= 15) return { status: 'warning', text: 'Aceitavel -- meta <=15 cmH2O em SDRA' }
-  return { status: 'danger', text: 'Elevada -- considere reduzir VC ou otimizar PEEP' }
+  if (dp < 10) return { status: 'success', text: 'Excelente — baixo risco de VILI' }
+  if (dp <= 15) return { status: 'warning', text: 'Aceitável — meta ≤15 cmH₂O em SDRA' }
+  return { status: 'danger', text: 'Elevada — considere reduzir VC ou otimizar PEEP' }
 }
 
-/** Relacao P/F */
+/** Relação P/F */
 export function calcPF(pao2: number, fio2: number): number {
   return pao2 / fio2
 }
 
 export function interpretPF(pf: number): { status: 'success' | 'warning' | 'danger'; text: string } {
-  if (pf > 300) return { status: 'success', text: 'Normal -- sem criterio para SDRA' }
+  if (pf > 300) return { status: 'success', text: 'Normal — sem critério para SDRA' }
   if (pf > 200) return { status: 'warning', text: 'SDRA leve (P/F 200-300)' }
   if (pf > 100) return { status: 'warning', text: 'SDRA moderada (P/F 100-199)' }
   return { status: 'danger', text: 'SDRA grave (P/F <100)' }
 }
 
-/** Relacao S/F */
+/** Relação S/F */
 export function calcSF(spo2: number, fio2: number): number {
   return spo2 / fio2
 }
 
 export function interpretSF(sf: number): { status: 'success' | 'warning' | 'danger'; text: string } {
-  if (sf > 315) return { status: 'success', text: 'Normal -- sem criterio para SDRA' }
+  if (sf > 315) return { status: 'success', text: 'Normal — sem critério para SDRA' }
   if (sf >= 235) return { status: 'warning', text: 'SDRA leve (S/F 235-315)' }
   if (sf >= 148) return { status: 'warning', text: 'SDRA moderada (S/F 148-234)' }
   return { status: 'danger', text: 'SDRA grave (S/F <148)' }
@@ -247,24 +247,24 @@ export function calcNewFiO2(pao2Atual: number, fio2Atual: number, pao2Alvo: numb
   return Math.max(0.21, Math.min(1.0, pao2Alvo * (fio2Atual / pao2Atual)))
 }
 
-/** Ajuste de frequencia respiratoria */
+/** Ajuste de frequência respiratoria */
 export function calcNewFreq(freqAtual: number, paco2Atual: number, paco2Alvo: number): number {
   return freqAtual * (paco2Atual / paco2Alvo)
 }
 
-/** Indice de Tobin (IRRS = f/VT) */
+/** Índice de Tobin (IRRS = f/VT) */
 export function calcTobin(freq: number, veLmin: number): { tobin: number; vcMl: number } {
   const vcL = veLmin / freq
   return { tobin: freq / vcL, vcMl: vcL * 1000 }
 }
 
 export function interpretTobin(tobin: number): { status: 'success' | 'warning' | 'danger'; text: string } {
-  if (tobin < 80) return { status: 'success', text: 'Favoravel ao desmame' }
-  if (tobin <= 105) return { status: 'warning', text: 'Zona cinzenta -- avaliar outros fatores' }
-  return { status: 'danger', text: 'Desfavoravel -- risco de falha de extubacao' }
+  if (tobin < 80) return { status: 'success', text: 'Favorável ao desmame' }
+  if (tobin <= 105) return { status: 'warning', text: 'Zona cinzenta — avaliar outros fatores' }
+  return { status: 'danger', text: 'Desfavorável — risco de falha de extubação' }
 }
 
-/** Indice ROX */
+/** Índice ROX */
 export function calcROX(spo2: number, fio2: number, freq: number): number {
   const fio2Pct = fio2 <= 1 ? fio2 * 100 : fio2
   return (spo2 / fio2Pct) / freq
@@ -272,8 +272,8 @@ export function calcROX(spo2: number, fio2: number, freq: number): number {
 
 export function interpretROX(rox: number): { status: 'success' | 'warning' | 'danger'; text: string } {
   if (rox >= 4.88) return { status: 'success', text: 'Baixo risco de falha de CNAF' }
-  if (rox >= 3.85) return { status: 'warning', text: 'Risco intermediario -- reavaliar em 2h' }
-  return { status: 'danger', text: 'Alto risco de falha -- considere intubacao' }
+  if (rox >= 3.85) return { status: 'warning', text: 'Risco intermediário — reavaliar em 2h' }
+  return { status: 'danger', text: 'Alto risco de falha — considere intubação' }
 }
 
 /** Constante de tempo (tau) */
@@ -282,16 +282,16 @@ export function calcTau(rva: number, cstMlCmH2O: number): number {
   return rva * cstL
 }
 
-/** Pressao muscular estimada (Pmus) */
+/** Pressão muscular estimada (Pmus) */
 export function calcPmus(deltaPocc: number): number {
   return -0.75 * deltaPocc
 }
 
 export function interpretPmus(pmus: number): { status: 'success' | 'warning' | 'danger'; text: string } {
-  if (pmus >= 5 && pmus <= 10) return { status: 'success', text: 'Esforco adequado (5-10 cmH2O)' }
-  if (pmus < 5) return { status: 'warning', text: 'Esforco baixo -- possivel oversupport' }
-  if (pmus <= 13) return { status: 'warning', text: 'Esforco moderadamente alto' }
-  return { status: 'danger', text: 'Esforco excessivo -- risco de P-SILI' }
+  if (pmus >= 5 && pmus <= 10) return { status: 'success', text: 'Esforço adequado (5-10 cmH₂O)' }
+  if (pmus < 5) return { status: 'warning', text: 'Esforço baixo — possível oversupport' }
+  if (pmus <= 13) return { status: 'warning', text: 'Esforço moderadamente alto' }
+  return { status: 'danger', text: 'Esforço excessivo — risco de P-SILI' }
 }
 
 /** Mechanical power (formula simplificada)
@@ -302,20 +302,20 @@ export function calcMP(vcMl: number, dp: number, freq: number): number {
 }
 
 export function interpretMP(mp: number): { status: 'success' | 'warning' | 'danger'; text: string } {
-  if (mp < 12) return { status: 'success', text: 'Baixa intensidade -- menor risco de VILI' }
-  if (mp <= 17) return { status: 'warning', text: 'Moderada -- monitorar' }
-  return { status: 'danger', text: 'Elevada -- maior risco de mortalidade' }
+  if (mp < 12) return { status: 'success', text: 'Baixa intensidade — menor risco de VILI' }
+  if (mp <= 17) return { status: 'warning', text: 'Moderada — monitorar' }
+  return { status: 'danger', text: 'Elevada — maior risco de mortalidade' }
 }
 
-/** Indice de assincronia */
+/** Índice de assincronia */
 export function calcIA(eventos: number, freqTotal: number): number {
   return (eventos / freqTotal) * 100
 }
 
 export function interpretIA(ia: number): { status: 'success' | 'warning' | 'danger'; text: string } {
-  if (ia < 5) return { status: 'success', text: 'Baixo -- boa sincronia' }
-  if (ia <= 10) return { status: 'warning', text: 'Moderado -- otimizar ajustes' }
-  return { status: 'danger', text: 'Elevado (>10%) -- associado a pior prognostico' }
+  if (ia < 5) return { status: 'success', text: 'Baixo — boa sincronia' }
+  if (ia <= 10) return { status: 'warning', text: 'Moderado — otimizar ajustes' }
+  return { status: 'danger', text: 'Elevado (>10%) — associado a pior prognóstico' }
 }
 
 /** HACOR score total */
@@ -329,6 +329,6 @@ export function hacorTotal(scores: Record<string, number | null>): number | null
 }
 
 export function interpretHACOR(score: number): { risk: 'low' | 'high'; text: string } {
-  if (score < 5) return { risk: 'low', text: 'Baixo risco de falha -- VNI com reavaliacao padrao' }
-  return { risk: 'high', text: 'Alto risco de falha -- considere intubacao orotraqueal' }
+  if (score < 5) return { risk: 'low', text: 'Baixo risco de falha — VNI com reavaliação padrão' }
+  return { risk: 'high', text: 'Alto risco de falha — considere intubação orotraqueal' }
 }

@@ -18,7 +18,7 @@ interface VNERiResponse {
 
 /**
  * Hook para calcular doses no servidor (formulas protegidas)
- * Fallback para calculo local se servidor indisponivel
+ * Fallback para calculo local se servidor indisponível
  */
 export function useServerCalc() {
 

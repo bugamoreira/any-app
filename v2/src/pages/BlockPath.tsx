@@ -4,12 +4,12 @@ import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Container } from '../components/layout/Container'
 import { FABMenu } from '../components/layout/FABMenu'
-import { Card } from '../components/common/Card'
 import { Button } from '../components/common/Button'
 import { Collapsible } from '../components/common/Collapsible'
 import { AlertCard } from '../components/common/AlertCard'
 import { ToastContainer } from '../components/common/Toast'
 import { useToast } from '../contexts/ToastContext'
+import { MapPin, List, Calculator, AlertTriangle, FileText } from 'lucide-react'
 
 // ==========================================
 // DADOS
@@ -41,64 +41,64 @@ interface TopoCategory {
 }
 
 const topography: TopoCategory[] = [
-  { title: 'Pescoco / Clavicula', items: [
-    { lesion: 'Fratura de clavicula', blockId: 'plexo-cervical', blockName: 'Plexo cervical' }
+  { title: 'Pescoço / Clavícula', items: [
+    { lesion: 'Fratura de clavícula', blockId: 'plexo-cervical', blockName: 'Plexo cervical' }
   ]},
   { title: 'Membro superior', items: [
-    { lesion: 'Ombro, umero proximal', blockId: 'interescalenico', blockName: 'Interescalenico' },
-    { lesion: 'Cotovelo, antebraco', blockId: 'supraclavicular', blockName: 'Supraclavicular' },
-    { lesion: 'Antebraco distal, mao', blockId: 'axilar', blockName: 'Axilar' },
-    { lesion: 'Mao, dedos', blockId: 'punho', blockName: 'Punho' }
+    { lesion: 'Ombro, úmero proximal', blockId: 'interescalênico', blockName: 'Interescalênico' },
+    { lesion: 'Cotovelo, antebraço', blockId: 'supraclavícular', blockName: 'Supraclavicular' },
+    { lesion: 'Antebraço distal, mão', blockId: 'axilar', blockName: 'Axilar' },
+    { lesion: 'Mão, dedos', blockId: 'punho', blockName: 'Punho' }
   ]},
   { title: 'Membro inferior', items: [
-    { lesion: 'Quadril, femur proximal', blockId: 'peng', blockName: 'PENG' },
-    { lesion: 'Quadril (alternativa)', blockId: 'fascia-iliaca', blockName: 'Fascia iliaca' },
+    { lesion: 'Quadril, fêmur proximal', blockId: 'peng', blockName: 'PENG' },
+    { lesion: 'Quadril (alternativa)', blockId: 'fáscia-ilíaca', blockName: 'Fáscia ilíaca' },
     { lesion: 'Coxa anterior, joelho', blockId: 'femoral', blockName: 'Femoral' },
-    { lesion: 'Perna distal, tornozelo, pe', blockId: 'ciatico-popliteo', blockName: 'Ciatico popliteo' },
+    { lesion: 'Perna distal, tornozelo, pé', blockId: 'ciático-poplíteo', blockName: 'Ciático poplíteo' },
     { lesion: 'Complemento (face medial)', blockId: 'safeno', blockName: 'Safeno' },
-    { lesion: 'Pe, dedos', blockId: 'tornozelo', blockName: 'Tornozelo' }
+    { lesion: 'Pé, dedos', blockId: 'tornozelo', blockName: 'Tornozelo' }
   ]},
-  { title: 'Torax / Costelas', items: [
+  { title: 'Tórax / Costelas', items: [
     { lesion: 'Fraturas costelas (posterior)', blockId: 'esp', blockName: 'ESP' },
-    { lesion: 'Fraturas costelas (lateral)', blockId: 'serratil', blockName: 'Serratil anterior' },
+    { lesion: 'Fraturas costelas (lateral)', blockId: 'serrátil', blockName: 'Serrátil anterior' },
     { lesion: 'Fratura costela isolada', blockId: 'intercostal', blockName: 'Intercostal' }
   ]}
 ]
 
 const blocks: BlockData[] = [
   {
-    id: 'plexo-cervical', name: 'Plexo cervical superficial', region: 'Pescoco', volume: '5-10 mL', type: 'Sensitivo',
-    indications: ['Fratura de clavicula', 'Procedimentos cervicais superficiais', 'Endarterectomia de carotida (complemento)', 'Linfonodectomia cervical', 'Acesso venoso central (jugular)'],
-    contraindications: ['Recusa do paciente', 'Infeccao no local de puncao', 'Alergia a anestesicos locais', 'Coagulopatia grave (relativa)'],
-    material: ['Luvas estereis', 'Clorexidina alcoolica 0,5%', 'Campo esteril', 'Seringa 10 mL', 'Agulha 22-25G x 40mm', 'Anestesico local (5-10 mL)', 'USG linear (opcional)', 'Gel esteril'],
-    technique: ['Paciente supino, cabeca virada para lado contralateral', 'Identificar ponto medio da borda posterior do ECM', 'Transdutor transversal neste nivel (opcional)', 'Inserir agulha superficialmente, posterior ao ECM', 'Depositar 5-10 mL em leque subcutaneo'],
-    tip: { title: 'Ponto de Erb', text: 'Borda posterior do ECM, juncao dos tercos superior e medio.' },
-    anesthetics: [{ drug: 'Lidocaina', conc: '1-2%', vol: '5-10 mL' }, { drug: 'Bupivacaina', conc: '0,25-0,5%', vol: '5-10 mL' }, { drug: 'Ropivacaina', conc: '0,2-0,5%', vol: '5-10 mL' }]
+    id: 'plexo-cervical', name: 'Plexo cervical superficial', region: 'Pescoço', volume: '5-10 mL', type: 'Sensitivo',
+    indications: ['Fratura de clavícula', 'Procedimentos cervicais superficiais', 'Endarterectomia de carótida (complemento)', 'Linfonodectomia cervical', 'Acesso venoso central (jugular)'],
+    contraindications: ['Recusa do paciente', 'Infecção no local de punção', 'Alergia a anestésicos locais', 'Coagulopatia grave (relativa)'],
+    material: ['Luvas estéreis', 'Clorexidina alcoólica 0,5%', 'Campo estéril', 'Seringa 10 mL', 'Agulha 22-25G x 40mm', 'Anestésico local (5-10 mL)', 'USG linear (opcional)', 'Gel estéril'],
+    technique: ['Paciente supino, cabeça virada para lado contralateral', 'Identificar ponto médio da borda posterior do ECM', 'Transdutor transversal neste nível (opcional)', 'Inserir agulha superficialmente, posterior ao ECM', 'Depositar 5-10 mL em leque subcutâneo'],
+    tip: { title: 'Ponto de Erb', text: 'Borda posterior do ECM, junção dos terços superior e médio.' },
+    anesthetics: [{ drug: 'Lidocaína', conc: '1-2%', vol: '5-10 mL' }, { drug: 'Bupivacaína', conc: '0,25-0,5%', vol: '5-10 mL' }, { drug: 'Ropivacaína', conc: '0,2-0,5%', vol: '5-10 mL' }]
   },
   // TODO: adicionar os outros 13 bloqueios extraindo do HTML atual
 ]
 
 // Lista simplificada de todos os bloqueios para a tela de lista
 const blockList = [
-  { region: 'Pescoco', items: [{ id: 'plexo-cervical', name: 'Plexo cervical superficial', volume: '5-10 mL' }] },
+  { region: 'Pescoço', items: [{ id: 'plexo-cervical', name: 'Plexo cervical superficial', volume: '5-10 mL' }] },
   { region: 'Membro superior', items: [
-    { id: 'interescalenico', name: 'Interescalenico', volume: '7-15 mL' },
-    { id: 'supraclavicular', name: 'Supraclavicular', volume: '20-25 mL' },
+    { id: 'interescalênico', name: 'Interescalênico', volume: '7-15 mL' },
+    { id: 'supraclavícular', name: 'Supraclavicular', volume: '20-25 mL' },
     { id: 'axilar', name: 'Axilar', volume: '20 mL' },
     { id: 'punho', name: 'Punho', volume: '9-15 mL' }
   ]},
   { region: 'Membro inferior', items: [
     { id: 'peng', name: 'PENG', volume: '15-20 mL' },
-    { id: 'fascia-iliaca', name: 'Fascia iliaca', volume: '30-40 mL' },
+    { id: 'fáscia-ilíaca', name: 'Fáscia ilíaca', volume: '30-40 mL' },
     { id: 'femoral', name: 'Femoral', volume: '15-20 mL' },
     { id: 'safeno', name: 'Safeno', volume: '8-10 mL' },
-    { id: 'ciatico-popliteo', name: 'Ciatico popliteo', volume: '15-20 mL' },
+    { id: 'ciático-poplíteo', name: 'Ciático poplíteo', volume: '15-20 mL' },
     { id: 'tornozelo', name: 'Tornozelo', volume: '15-25 mL' }
   ]},
-  { region: 'Torax', items: [
+  { region: 'Tórax', items: [
     { id: 'esp', name: 'ESP (Eretor da espinha)', volume: '20-30 mL' },
-    { id: 'serratil', name: 'Serratil anterior', volume: '20-30 mL' },
-    { id: 'intercostal', name: 'Intercostal', volume: '3-5 mL/nivel' }
+    { id: 'serrátil', name: 'Serrátil anterior', volume: '20-30 mL' },
+    { id: 'intercostal', name: 'Intercostal', volume: '3-5 mL/nível' }
   ]}
 ]
 
@@ -114,9 +114,9 @@ interface AnestheticCalc {
 }
 
 const anesthetics: AnestheticCalc[] = [
-  { name: 'Lidocaina', noEpi: 4.5, withEpi: 7, concentrations: [{ label: '1%', factor: 10 }, { label: '2%', factor: 20 }] },
-  { name: 'Bupivacaina', noEpi: 2.5, withEpi: 3, concentrations: [{ label: '0,25%', factor: 2.5 }, { label: '0,5%', factor: 5 }] },
-  { name: 'Ropivacaina', noEpi: 3, withEpi: 3.5, concentrations: [{ label: '0,2%', factor: 2 }, { label: '0,5%', factor: 5 }] },
+  { name: 'Lidocaína', noEpi: 4.5, withEpi: 7, concentrations: [{ label: '1%', factor: 10 }, { label: '2%', factor: 20 }] },
+  { name: 'Bupivacaína', noEpi: 2.5, withEpi: 3, concentrations: [{ label: '0,25%', factor: 2.5 }, { label: '0,5%', factor: 5 }] },
+  { name: 'Ropivacaína', noEpi: 3, withEpi: 3.5, concentrations: [{ label: '0,2%', factor: 2 }, { label: '0,5%', factor: 5 }] },
 ]
 
 // ==========================================
@@ -131,10 +131,10 @@ export default function BlockPath() {
   const [lipidWeight, setLipidWeight] = useState(70)
   const { addToast } = useToast()
 
-  // Evolucao state
+  // Evolução state
   const [evoForm, setEvoForm] = useState({
-    indicacao: '', tipo: '', lado: '', transdutor: '', agulha: '',
-    tecnica: '', droga: '', volume: '', dose: '', epi: '',
+    indicação: '', tipo: '', lado: '', transdutor: '', agulha: '',
+    técnica: '', droga: '', volume: '', dose: '', epi: '',
     interc: 'Nenhuma', intercDesc: '', sensitivo: true, motor: false,
     last: true, resp: '', crm: ''
   })
@@ -155,23 +155,23 @@ export default function BlockPath() {
     const lines = [
       'BLOQUEIO REGIONAL GUIADO POR ULTRASSOM',
       '',
-      `Indicacao: ${f.indicacao || '--'}`,
+      `Indicação: ${f.indicação || '--'}`,
       `Bloqueio: ${f.tipo || '--'} ${f.lado ? `(${f.lado})` : ''}`,
       `Transdutor: ${f.transdutor || '--'}`,
       `Agulha: ${f.agulha || '--'}`,
-      `Tecnica: ${f.tecnica || '--'}`,
-      `Anestesico: ${f.droga || '--'}`,
+      `Técnica: ${f.técnica || '--'}`,
+      `Anestésico: ${f.droga || '--'}`,
       `Volume: ${f.volume || '--'} mL | Dose: ${f.dose || '--'} mg`,
       `Epinefrina: ${f.epi || '--'}`,
       '',
-      'Avaliacao pos-bloqueio:',
+      'Avaliação pós-bloqueio:',
       f.sensitivo ? '- Bloqueio sensitivo presente' : '- Bloqueio sensitivo ausente',
       f.motor ? '- Bloqueio motor presente' : '',
-      f.last ? '- Ausencia de sinais de LAST' : '- ATENCAO: sinais de LAST',
+      f.last ? '- Ausência de sinais de LAST' : '- ATENÇÃO: sinais de LAST',
       '',
-      `Intercorrencias: ${f.interc === 'Sim' ? f.intercDesc || 'Sim' : 'Nenhuma'}`,
+      `Intercorrências: ${f.interc === 'Sim' ? f.intercDesc || 'Sim' : 'Nenhuma'}`,
       '',
-      `Responsavel: ${f.resp || '--'}`,
+      `Responsável: ${f.resp || '--'}`,
       `CRM: ${f.crm || '--'}`,
     ].filter(Boolean).join('\n')
 
@@ -189,7 +189,7 @@ export default function BlockPath() {
   }
 
   const fabItems = [
-    { label: 'Inicio', onClick: () => setScreen('home') },
+    { label: 'Início', onClick: () => setScreen('home') },
     { label: 'Topografia', onClick: () => setScreen('topography') },
     { label: 'Lista de bloqueios', onClick: () => setScreen('blocklist') },
     { label: 'Calculadora', onClick: () => setScreen('calculator') },
@@ -199,53 +199,66 @@ export default function BlockPath() {
   return (
     <div className="min-h-screen bg-bg-primary">
       <Disclaimer />
-      <Header title="Block Path" subtitle="Bloqueios regionais no DE" />
+      <Header title="BlockPath" subtitle="Bloqueios regionais para anestesia local" />
       <Container>
 
         {/* HOME */}
         {screen === 'home' && (
           <div className="flex flex-col gap-3">
-            <Card borderColor="#10B981" onClick={() => setScreen('topography')}>
-              <div className="font-semibold text-sm">Escolher por topografia</div>
-              <div className="text-xs text-text-muted mt-1">Arvore de decisao por local da lesao</div>
-            </Card>
-            <Card borderColor="#60A5FA" onClick={() => setScreen('blocklist')}>
-              <div className="font-semibold text-sm">Lista de bloqueios</div>
-              <div className="text-xs text-text-muted mt-1">Acesso direto aos 14 bloqueios</div>
-            </Card>
-            <Card borderColor="#8B5CF6" onClick={() => setScreen('calculator')}>
-              <div className="font-semibold text-sm">Calculadora de dose</div>
-              <div className="text-xs text-text-muted mt-1">Dose maxima de anestesico local</div>
-            </Card>
-            <Card borderColor="#EF4444" onClick={() => setScreen('last')}>
-              <div className="font-semibold text-sm">LAST — Toxicidade</div>
-              <div className="text-xs text-text-muted mt-1">Protocolo de emergencia</div>
-            </Card>
-            <Card borderColor="#F59E0B" onClick={() => setScreen('evolution')}>
-              <div className="font-semibold text-sm">Modelo de evolucao</div>
-              <div className="text-xs text-text-muted mt-1">Template copiavel para prontuario</div>
-            </Card>
+            {[
+              { key: 'topography', color: '#10B981', icon: <MapPin size={22} />, title: 'Escolher por topografia', desc: 'Árvore de decisão por local da lesão', emergency: false },
+              { key: 'blocklist', color: '#60A5FA', icon: <List size={22} />, title: 'Lista de bloqueios', desc: 'Acesso direto aos 14 bloqueios', emergency: false },
+              { key: 'calculator', color: '#8B5CF6', icon: <Calculator size={22} />, title: 'Calculadora de dose', desc: 'Dose máxima de anestésico local', emergency: false },
+              { key: 'last', color: '#EF4444', icon: <AlertTriangle size={22} />, title: 'LAST — Toxicidade', desc: 'Protocolo de emergência', emergency: true },
+              { key: 'evolution', color: '#F59E0B', icon: <FileText size={22} />, title: 'Modelo de evolução', desc: 'Template copiável para prontuário', emergency: false },
+            ].map(btn => (
+              <button
+                key={btn.key}
+                onClick={() => setScreen(btn.key)}
+                className="flex items-center gap-4 py-[18px] px-5 border-2 rounded-xl cursor-pointer transition-all min-h-[44px] text-left"
+                style={{
+                  background: btn.emergency ? 'rgba(244,67,54,0.1)' : '#111',
+                  borderColor: btn.emergency ? '#EF4444' : '#333',
+                  borderLeftWidth: '4px',
+                  borderLeftColor: btn.color,
+                }}
+              >
+                <div
+                  className="w-[44px] h-[44px] rounded-[10px] flex items-center justify-center flex-shrink-0"
+                  style={{ background: `${btn.color}26`, color: btn.color }}
+                >
+                  {btn.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[16px] font-semibold text-accent mb-0.5">{btn.title}</div>
+                  <div className="text-[13px] text-[#999]">{btn.desc}</div>
+                </div>
+                <span className="text-[20px] text-[#999] flex-shrink-0">›</span>
+              </button>
+            ))}
           </div>
         )}
 
         {/* TOPOGRAPHY */}
         {screen === 'topography' && (
-          <div>
-            <Button variant="outline" size="sm" onClick={() => setScreen('home')} className="mb-4">← Voltar</Button>
-            <h2 className="text-lg font-bold mb-2">Onde esta a lesao?</h2>
-            <p className="text-sm text-text-secondary mb-4">Selecione a topografia para ver as opcoes de bloqueio</p>
-            <div className="bg-bg-elevated border border-border-card rounded-xl p-4">
+          <div className="px-1">
+            <button onClick={() => setScreen('home')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-5 px-0 min-h-[44px]"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>Início</button>
+            <div className="bg-bg-elevated border-l-4 border-l-accent rounded-t-xl p-5 mb-0">
+              <h2 className="text-xl font-semibold mb-1">Onde está a lesão?</h2>
+              <p className="text-sm text-text-secondary">Selecione a topografia para ver as opções de bloqueio</p>
+            </div>
+            <div className="bg-[#111] border border-[#333] rounded-b-xl p-4">
               {topography.map(cat => (
                 <div key={cat.title} className="mb-4 last:mb-0">
-                  <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">{cat.title}</div>
+                  <div className="bg-bg-hover text-accent rounded-lg px-4 py-3 font-semibold text-[15px] mb-2">{cat.title}</div>
                   {cat.items.map(item => (
                     <button
                       key={item.blockId}
                       onClick={() => setScreen(`block-${item.blockId}`)}
-                      className="flex items-center justify-between w-full px-3 py-3 rounded-lg bg-transparent border-none text-left cursor-pointer active:bg-bg-hover transition-colors min-h-[44px]"
+                      className="flex items-center justify-between w-full px-4 py-[14px] rounded-lg bg-bg-hover mb-2 border-none text-left cursor-pointer active:bg-[#333] transition-colors min-h-[44px]"
                     >
                       <span className="text-sm text-text-primary">{item.lesion}</span>
-                      <span className="text-xs text-info font-medium">{item.blockName} →</span>
+                      <span className="text-[13px] text-accent font-semibold">{item.blockName} →</span>
                     </button>
                   ))}
                 </div>
@@ -256,25 +269,27 @@ export default function BlockPath() {
 
         {/* BLOCK LIST */}
         {screen === 'blocklist' && (
-          <div>
-            <Button variant="outline" size="sm" onClick={() => setScreen('home')} className="mb-4">← Voltar</Button>
-            <h2 className="text-lg font-bold mb-2">Lista de bloqueios</h2>
-            <p className="text-sm text-text-secondary mb-4">14 bloqueios disponiveis</p>
-            <div className="bg-bg-elevated border border-border-card rounded-xl p-4">
+          <div className="px-1">
+            <button onClick={() => setScreen('home')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-5 px-0 min-h-[44px]"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>Início</button>
+            <div className="bg-bg-elevated border-l-4 border-l-accent rounded-t-xl p-5 mb-0">
+              <h2 className="text-xl font-semibold mb-1">Lista de bloqueios</h2>
+              <p className="text-sm text-text-secondary">14 bloqueios disponíveis</p>
+            </div>
+            <div className="bg-[#111] border border-[#333] rounded-b-xl p-4">
               {blockList.map(cat => (
-                <div key={cat.region} className="mb-4 last:mb-0">
-                  <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">{cat.region}</div>
+                <div key={cat.region} className="mb-5 last:mb-0">
+                  <div className="text-[13px] font-semibold text-[#999] uppercase tracking-wide mb-2 pl-1">{cat.region}</div>
                   {cat.items.map(item => (
                     <button
                       key={item.id}
                       onClick={() => setScreen(`block-${item.id}`)}
-                      className="flex items-center justify-between w-full px-3 py-3 rounded-lg bg-transparent border-none text-left cursor-pointer active:bg-bg-hover transition-colors min-h-[44px]"
+                      className="flex items-center justify-between w-full px-4 py-[14px] bg-bg-elevated border border-border-card rounded-lg mb-2 text-left cursor-pointer hover:border-accent hover:bg-[rgba(16,185,129,0.1)] transition-all min-h-[44px]"
                     >
                       <div>
-                        <div className="text-sm font-medium text-text-primary">{item.name}</div>
-                        <div className="text-xs text-text-muted">{item.volume}</div>
+                        <div className="text-[15px] font-medium text-accent">{item.name}</div>
+                        <div className="text-xs text-[#999]">{item.volume}</div>
                       </div>
-                      <span className="text-text-muted">›</span>
+                      <span className="text-[#999] text-[20px]">›</span>
                     </button>
                   ))}
                 </div>
@@ -285,133 +300,143 @@ export default function BlockPath() {
 
         {/* CALCULATOR */}
         {screen === 'calculator' && (
-          <div>
-            <Button variant="outline" size="sm" onClick={() => setScreen('home')} className="mb-4">← Voltar</Button>
-            <h2 className="text-lg font-bold mb-2">Calculadora de dose maxima</h2>
-            <p className="text-sm text-text-secondary mb-4">Dose maxima de anestesico local por peso</p>
-
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-sm text-text-secondary">Peso:</span>
-              <input
-                type="range" min="40" max="150" value={calcWeight}
-                onChange={e => setCalcWeight(Number(e.target.value))}
-                className="flex-1"
-              />
-              <input
-                type="number" inputMode="decimal"
-                value={calcWeight} onChange={e => setCalcWeight(Number(e.target.value))}
-                className="w-16 bg-bg-elevated border border-border-card rounded-lg px-2 py-2 text-center text-accent font-bold text-lg"
-                min={40} max={200}
-              />
-              <span className="text-sm text-text-secondary">kg</span>
+          <div className="px-1">
+            <button onClick={() => setScreen('home')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-5 px-0 min-h-[44px]"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>Início</button>
+            <div className="bg-bg-elevated border-l-4 border-l-accent rounded-xl p-5 mb-4">
+              <h2 className="text-xl font-semibold mb-1">Calculadora de dose máxima</h2>
+              <p className="text-sm text-text-secondary">Dose máxima de anestésico local por peso</p>
             </div>
 
-            {anesthetics.map(a => (
-              <Card key={a.name} className="mb-3">
-                <div className="font-semibold text-sm text-accent mb-3">{a.name}</div>
-                <div className="grid grid-cols-2 gap-3 mb-3">
-                  <div className="bg-bg-hover rounded-lg p-3 text-center">
-                    <div className="text-xs text-text-muted mb-1">Sem epi ({a.noEpi} mg/kg)</div>
-                    <div className="text-lg font-bold text-success">{fmt(calcWeight * a.noEpi, 0)} mg</div>
-                  </div>
-                  <div className="bg-bg-hover rounded-lg p-3 text-center">
-                    <div className="text-xs text-text-muted mb-1">Com epi ({a.withEpi} mg/kg)</div>
-                    <div className="text-lg font-bold text-success">{fmt(calcWeight * a.withEpi, 0)} mg</div>
-                  </div>
+            <div className="bg-bg-elevated border border-border-card rounded-xl p-5 mb-4">
+              <div className="mb-5">
+                <label className="block text-sm font-medium text-text-primary mb-2">Peso do paciente</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="range" min="40" max="150" value={calcWeight}
+                    onChange={e => setCalcWeight(Number(e.target.value))}
+                    className="flex-1"
+                  />
+                  <input
+                    type="number" inputMode="decimal"
+                    value={calcWeight} onChange={e => setCalcWeight(Number(e.target.value))}
+                    className="w-20 bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-2.5 text-center text-accent font-semibold text-base"
+                    min={40} max={200}
+                  />
+                  <span className="text-sm text-[#999] font-medium">kg</span>
                 </div>
-                <table className="w-full text-xs">
-                  <thead><tr className="text-text-muted"><th className="text-left py-1">Conc.</th><th className="text-right py-1">Sem epi</th><th className="text-right py-1">Com epi</th></tr></thead>
-                  <tbody>
-                    {a.concentrations.map(c => (
-                      <tr key={c.label} className="border-t border-border">
-                        <td className="py-1.5 text-text-secondary">{c.label}</td>
-                        <td className="text-right text-text-primary">{fmt(calcWeight * a.noEpi / c.factor)} mL</td>
-                        <td className="text-right text-text-primary">{fmt(calcWeight * a.withEpi / c.factor)} mL</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Card>
-            ))}
+              </div>
 
-            <AlertCard type="warning" title="Atencao">
-              Reduzir 20-30% em idosos, hepatopatas, cardiopatas. Em bloqueios multiplos, considere dose total.
+              {anesthetics.map(a => (
+                <div key={a.name} className="bg-bg-hover rounded-[10px] p-4 mb-3 last:mb-0">
+                  <div className="text-sm font-semibold text-accent mb-3">{a.name}</div>
+                  <div className="grid grid-cols-2 gap-2 mb-3">
+                    <div className="bg-bg-elevated rounded-md p-3 text-center">
+                      <div className="text-[11px] text-[#999] mb-0.5">Sem epi ({a.noEpi} mg/kg)</div>
+                      <div className="text-base font-bold text-accent">{fmt(calcWeight * a.noEpi, 0)} mg</div>
+                    </div>
+                    <div className="bg-bg-elevated rounded-md p-3 text-center">
+                      <div className="text-[11px] text-[#999] mb-0.5">Com epi ({a.withEpi} mg/kg)</div>
+                      <div className="text-base font-bold text-accent">{fmt(calcWeight * a.withEpi, 0)} mg</div>
+                    </div>
+                  </div>
+                  <table className="w-full text-[13px] mt-3">
+                    <thead><tr><th className="text-left py-2.5 px-3 bg-bg-hover text-accent font-semibold rounded-tl-md">Conc.</th><th className="text-left py-2.5 px-3 bg-bg-hover text-accent font-semibold">Sem epi</th><th className="text-left py-2.5 px-3 bg-bg-hover text-accent font-semibold rounded-tr-md">Com epi</th></tr></thead>
+                    <tbody>
+                      {a.concentrations.map(c => (
+                        <tr key={c.label} className="border-b border-[#333] last:border-b-0">
+                          <td className="py-2.5 px-3 text-text-secondary">{c.label}</td>
+                          <td className="py-2.5 px-3 text-text-primary">{fmt(calcWeight * a.noEpi / c.factor)} mL</td>
+                          <td className="py-2.5 px-3 text-text-primary">{fmt(calcWeight * a.withEpi / c.factor)} mL</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ))}
+            </div>
+
+            <AlertCard type="warning" title="Atenção">
+              Reduzir 20-30% em idosos, hepatopatas, cardiopatas. Em bloqueios múltiplos, considere dose total.
             </AlertCard>
           </div>
         )}
 
         {/* LAST PROTOCOL */}
         {screen === 'last' && (
-          <div>
-            <Button variant="outline" size="sm" onClick={() => setScreen('home')} className="mb-4">← Voltar</Button>
-            <AlertCard type="danger" title="LAST — Intoxicacao por AL">
-              Toxicidade sistemica por anestesico local
-            </AlertCard>
+          <div className="px-1">
+            <button onClick={() => setScreen('home')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-5 px-0 min-h-[44px]"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>Início</button>
+
+            <div className="bg-gradient-to-br from-[#991B1B] to-[#DC2626] text-white rounded-xl p-5 mb-4 text-center">
+              <h2 className="text-xl font-bold mb-2">LAST — Intoxicação por AL</h2>
+              <p className="text-sm opacity-90">Toxicidade sistêmica por anestésico local</p>
+            </div>
 
             <Collapsible title="Sinais de alerta">
-              <AlertCard type="info" title="Neurologicos (precoces)">
-                Zumbido, gosto metalico, parestesias periorais, agitacao, confusao, convulsoes
+              <AlertCard type="info" title="Neurológicos (precoces)">
+                Zumbido, gosto metálico, parestesias periorais, agitação, confusão, convulsões
               </AlertCard>
               <AlertCard type="danger" title="Cardiovasculares (tardios)">
-                Hipotensao, bradicardia, arritmias ventriculares, alargamento QRS, PCR
+                Hipotensão, bradicardia, arritmias ventriculares, alargamento QRS, PCR
               </AlertCard>
             </Collapsible>
 
             {[
-              { n: 1, t: 'Parar a infusao de AL', d: 'Interromper qualquer administracao de anestesico local' },
+              { n: 1, t: 'Parar a infusão de AL', d: 'Interromper qualquer administração de anestésico local' },
               { n: 2, t: 'Pedir ajuda', d: 'Acionar equipe de suporte' },
-              { n: 3, t: 'Via aerea e O2 100%', d: 'Considere IOT precoce. Evitar hipoxia e acidose' },
-              { n: 4, t: 'Tratar convulsoes', d: 'Benzodiazepinicos (midazolam 1-2 mg IV)' },
+              { n: 3, t: 'Via aérea e O2 100%', d: 'Considere IOT precoce. Evitar hipóxia e acidose' },
+              { n: 4, t: 'Tratar convulsões', d: 'Benzodiazepínicos (midazolam 1-2 mg IV)' },
               { n: 5, t: 'ACLS modificado se PCR', d: 'Evitar vasopressina, reduzir epinefrina (<=1 mcg/kg)' },
             ].map(s => (
-              <div key={s.n} className="flex items-start gap-3 my-3">
-                <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center text-sm font-bold flex-shrink-0">{s.n}</div>
-                <div>
-                  <div className="font-semibold text-sm">{s.t}</div>
-                  <div className="text-xs text-text-secondary mt-0.5">{s.d}</div>
-                </div>
+              <div key={s.n} className="bg-bg-elevated border-2 border-border-card rounded-xl p-4 mb-3">
+                <div className="w-8 h-8 rounded-full bg-danger text-white flex items-center justify-center text-base font-bold mb-3">{s.n}</div>
+                <h4 className="text-[15px] font-semibold text-accent mb-2">{s.t}</h4>
+                <p className="text-sm text-text-primary">{s.d}</p>
               </div>
             ))}
 
-            <Card className="mt-4">
-              <div className="font-semibold text-sm text-accent mb-3">Emulsao lipidica 20%</div>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-sm text-text-secondary">Peso:</span>
-                <input type="range" min="40" max="150" value={lipidWeight} onChange={e => setLipidWeight(Number(e.target.value))} className="flex-1" />
-                <input type="number" inputMode="decimal" value={lipidWeight} onChange={e => setLipidWeight(Number(e.target.value))} className="w-16 bg-bg-elevated border border-border-card rounded-lg px-2 py-2 text-center text-accent font-bold" min={40} max={200} />
-                <span className="text-sm text-text-secondary">kg</span>
+            <div className="bg-[rgba(244,67,54,0.1)] border-2 border-danger rounded-xl p-5 mt-4">
+              <div className="text-base font-bold text-danger mb-4">Emulsão lipídica 20%</div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-text-primary mb-2">Peso do paciente</label>
+                <div className="flex items-center gap-3">
+                  <input type="range" min="40" max="150" value={lipidWeight} onChange={e => setLipidWeight(Number(e.target.value))} className="flex-1" />
+                  <input type="number" inputMode="decimal" value={lipidWeight} onChange={e => setLipidWeight(Number(e.target.value))} className="w-20 bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-2.5 text-center text-accent font-semibold text-base" min={40} max={200} />
+                  <span className="text-sm text-[#999] font-medium">kg</span>
+                </div>
               </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm"><span className="text-text-secondary">BOLUS (1,5 mL/kg)</span><span className="font-bold text-success">{fmt(lipidWeight * 1.5, 0)} mL</span></div>
-                <div className="flex justify-between text-sm"><span className="text-text-secondary">INFUSAO (0,25 mL/kg/min)</span><span className="font-bold text-warning">{fmt(lipidWeight * 0.25)} mL/min</span></div>
-                <div className="flex justify-between text-sm"><span className="text-text-secondary">DOSE MAX (12 mL/kg)</span><span className="font-bold text-danger">{fmt(lipidWeight * 12, 0)} mL</span></div>
+              <div className="bg-bg-elevated rounded-lg p-4">
+                <div className="flex justify-between py-2.5 border-b border-[#333]"><span className="text-sm text-text-primary">BOLUS (1,5 mL/kg)</span><span className="text-base font-bold text-danger">{fmt(lipidWeight * 1.5, 0)} mL</span></div>
+                <div className="flex justify-between py-2.5 border-b border-[#333]"><span className="text-sm text-text-primary">INFUSÃO (0,25 mL/kg/min)</span><span className="text-base font-bold text-danger">{fmt(lipidWeight * 0.25)} mL/min</span></div>
+                <div className="flex justify-between py-2.5"><span className="text-sm text-text-primary">DOSE MÁX (12 mL/kg)</span><span className="text-base font-bold text-danger">{fmt(lipidWeight * 12, 0)} mL</span></div>
               </div>
-            </Card>
+            </div>
           </div>
         )}
 
         {/* BLOCK DETAIL */}
         {activeBlock && (
-          <div>
-            <Button variant="outline" size="sm" onClick={() => setScreen('home')} className="mb-4">← Voltar</Button>
-            <h2 className="text-lg font-bold">{activeBlock.name}</h2>
-            <div className="flex gap-2 mt-1 mb-4">
-              <span className="text-xs bg-bg-hover px-2 py-1 rounded">{activeBlock.region}</span>
-              <span className="text-xs bg-bg-hover px-2 py-1 rounded">{activeBlock.volume}</span>
-              <span className="text-xs bg-bg-hover px-2 py-1 rounded">{activeBlock.type}</span>
+          <div className="px-1">
+            <button onClick={() => setScreen('home')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-5 px-0 min-h-[44px]"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>Início</button>
+            <div className="bg-bg-elevated border-l-4 border-l-accent rounded-xl p-5 mb-4">
+              <h2 className="text-[22px] font-bold mb-2">{activeBlock.name}</h2>
+              <div className="flex flex-wrap gap-4 text-sm text-text-secondary">
+                <span>{activeBlock.region}</span>
+                <span>{activeBlock.volume}</span>
+                <span>{activeBlock.type}</span>
+              </div>
             </div>
 
-            <Collapsible title="Indicacoes">
+            <Collapsible title="Indicações">
               <ul className="space-y-1">{activeBlock.indications.map((ind, i) => <li key={i} className="text-sm text-text-secondary">- {ind}</li>)}</ul>
               {activeBlock.tip && <AlertCard type="info" title={activeBlock.tip.title}>{activeBlock.tip.text}</AlertCard>}
             </Collapsible>
-            <Collapsible title="Contraindicacoes">
+            <Collapsible title="Contraindicações">
               <ul className="space-y-1">{activeBlock.contraindications.map((c, i) => <li key={i} className="text-sm text-warning">- {c}</li>)}</ul>
             </Collapsible>
             <Collapsible title="Material">
               <ul className="space-y-1">{activeBlock.material.map((m, i) => <li key={i} className="text-sm text-text-secondary flex items-center gap-2"><input type="checkbox" className="accent-accent" /> {m}</li>)}</ul>
             </Collapsible>
-            <Collapsible title="Tecnica">
+            <Collapsible title="Técnica">
               {activeBlock.technique.map((step, i) => (
                 <div key={i} className="flex items-start gap-3 my-2">
                   <div className="w-6 h-6 rounded-full bg-accent/20 text-accent flex items-center justify-center text-xs font-bold flex-shrink-0">{i + 1}</div>
@@ -419,7 +444,7 @@ export default function BlockPath() {
                 </div>
               ))}
             </Collapsible>
-            <Collapsible title="Anestesico local">
+            <Collapsible title="Anestésico local">
               <table className="w-full text-xs">
                 <thead><tr className="text-text-muted"><th className="text-left py-1">Droga</th><th className="text-left py-1">Conc.</th><th className="text-left py-1">Volume</th></tr></thead>
                 <tbody>
@@ -434,60 +459,120 @@ export default function BlockPath() {
 
         {/* EVOLUTION */}
         {screen === 'evolution' && (
-          <div>
-            <Button variant="outline" size="sm" onClick={() => setScreen('home')} className="mb-4">← Voltar</Button>
-            <h2 className="text-lg font-bold mb-2">Gerar evolucao</h2>
-            <p className="text-sm text-text-secondary mb-4">Preencha os campos para gerar o texto</p>
+          <div className="px-1">
+            <button onClick={() => setScreen('home')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-5 px-0 min-h-[44px]"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>Início</button>
+            <div className="bg-bg-elevated border-l-4 border-l-accent rounded-t-xl p-5 mb-0">
+              <h2 className="text-xl font-semibold mb-1">Gerar evolução</h2>
+              <p className="text-sm text-text-secondary">Preencha os campos para gerar o texto</p>
+            </div>
 
+            <div className="bg-bg-elevated border border-border-card rounded-b-xl overflow-hidden">
+              <div className="p-5">
             {!showEvoResult ? (
-              <div className="space-y-3">
-                <input className="w-full bg-bg-elevated border border-border-card rounded-lg px-3 py-3 text-sm text-text-primary" placeholder="Indicacao (ex: Fratura de colo femoral D)" value={evoForm.indicacao} onChange={e => setEvoForm(f => ({...f, indicacao: e.target.value}))} />
-                <select className="w-full bg-bg-elevated border border-border-card rounded-lg px-3 py-3 text-sm text-text-primary" value={evoForm.tipo} onChange={e => setEvoForm(f => ({...f, tipo: e.target.value}))}>
-                  <option value="">Tipo de bloqueio...</option>
-                  {blockList.flatMap(c => c.items).map(b => <option key={b.id} value={b.name}>{b.name}</option>)}
-                </select>
-                <div className="flex gap-2">
-                  {['D', 'E', 'Bilateral'].map(l => (
-                    <button key={l} onClick={() => setEvoForm(f => ({...f, lado: l}))} className={`flex-1 py-2.5 rounded-lg text-sm font-medium border min-h-[44px] ${evoForm.lado === l ? 'bg-accent text-white border-accent' : 'bg-bg-elevated text-text-secondary border-border-card'}`}>{l === 'D' ? 'Direito' : l === 'E' ? 'Esquerdo' : 'Bilateral'}</button>
-                  ))}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-accent mb-1.5">Indicação do bloqueio</label>
+                  <input className="w-full bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-3 text-[15px] text-text-primary" placeholder="Ex: Fratura de colo femoral D" value={evoForm.indicação} onChange={e => setEvoForm(f => ({...f, indicação: e.target.value}))} />
                 </div>
-                <select className="w-full bg-bg-elevated border border-border-card rounded-lg px-3 py-3 text-sm text-text-primary" value={evoForm.transdutor} onChange={e => setEvoForm(f => ({...f, transdutor: e.target.value}))}>
-                  <option value="">Transdutor...</option>
-                  <option value="Linear 6-13 MHz">Linear 6-13 MHz</option>
-                  <option value="Curvo 2-5 MHz">Curvo 2-5 MHz</option>
-                  <option value="Nao utilizado">Nao utilizado</option>
-                </select>
-                <select className="w-full bg-bg-elevated border border-border-card rounded-lg px-3 py-3 text-sm text-text-primary" value={evoForm.droga} onChange={e => setEvoForm(f => ({...f, droga: e.target.value}))}>
-                  <option value="">Anestesico local...</option>
-                  <option>Lidocaina 1%</option><option>Lidocaina 2%</option>
-                  <option>Bupivacaina 0,25%</option><option>Bupivacaina 0,5%</option>
-                  <option>Ropivacaina 0,2%</option><option>Ropivacaina 0,5%</option>
-                </select>
-                <div className="grid grid-cols-2 gap-3">
-                  <input type="number" inputMode="decimal" className="bg-bg-elevated border border-border-card rounded-lg px-3 py-3 text-sm text-text-primary" placeholder="Volume (mL)" value={evoForm.volume} onChange={e => setEvoForm(f => ({...f, volume: e.target.value}))} />
-                  <input type="number" inputMode="decimal" className="bg-bg-elevated border border-border-card rounded-lg px-3 py-3 text-sm text-text-primary" placeholder="Dose (mg)" value={evoForm.dose} onChange={e => setEvoForm(f => ({...f, dose: e.target.value}))} />
+                <div>
+                  <label className="block text-sm font-medium text-accent mb-1.5">Tipo de bloqueio</label>
+                  <select className="w-full bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-3 text-[15px] text-text-primary" value={evoForm.tipo} onChange={e => setEvoForm(f => ({...f, tipo: e.target.value}))}>
+                    <option value="">Selecione...</option>
+                    {blockList.flatMap(c => c.items).map(b => <option key={b.id} value={b.name}>{b.name}</option>)}
+                  </select>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <input className="bg-bg-elevated border border-border-card rounded-lg px-3 py-3 text-sm text-text-primary" placeholder="Responsavel" value={evoForm.resp} onChange={e => setEvoForm(f => ({...f, resp: e.target.value}))} />
-                  <input className="bg-bg-elevated border border-border-card rounded-lg px-3 py-3 text-sm text-text-primary" placeholder="CRM" value={evoForm.crm} onChange={e => setEvoForm(f => ({...f, crm: e.target.value}))} />
+                <div>
+                  <label className="block text-sm font-medium text-accent mb-1.5">Lateralidade</label>
+                  <div className="flex gap-3">
+                    {['D', 'E', 'Bilateral'].map(l => (
+                      <button key={l} onClick={() => setEvoForm(f => ({...f, lado: l}))} className={`flex-1 py-2.5 rounded-lg text-sm font-medium border min-h-[44px] ${evoForm.lado === l ? 'bg-accent text-white border-accent' : 'bg-bg-hover text-text-secondary border-[#333]'}`}>{l === 'D' ? 'Direito' : l === 'E' ? 'Esquerdo' : 'Bilateral'}</button>
+                    ))}
+                  </div>
                 </div>
-                <Button fullWidth onClick={generateEvolution}>Gerar evolucao</Button>
+                <div>
+                  <label className="block text-sm font-medium text-accent mb-1.5">Transdutor utilizado</label>
+                  <select className="w-full bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-3 text-[15px] text-text-primary" value={evoForm.transdutor} onChange={e => setEvoForm(f => ({...f, transdutor: e.target.value}))}>
+                    <option value="">Selecione...</option>
+                    <option value="Linear 6-13 MHz">Linear 6-13 MHz</option>
+                    <option value="Curvo 2-5 MHz">Curvo 2-5 MHz</option>
+                    <option value="Não utilizado">Não utilizado</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-accent mb-1.5">Agulha utilizada</label>
+                  <select className="w-full bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-3 text-[15px] text-text-primary" value={evoForm.agulha} onChange={e => setEvoForm(f => ({...f, agulha: e.target.value}))}>
+                    <option value="">Selecione...</option>
+                    <option value="Ecogênica 50mm">Ecogênica 50mm</option>
+                    <option value="Ecogênica 80mm">Ecogênica 80mm</option>
+                    <option value="Ecogênica 100mm">Ecogênica 100mm</option>
+                    <option value="22G x 40mm">22G x 40mm</option>
+                    <option value="25G x 25mm">25G x 25mm</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-accent mb-1.5">Técnica de inserção</label>
+                  <div className="flex gap-3">
+                    {['Em plano', 'Fora de plano'].map(t => (
+                      <button key={t} onClick={() => setEvoForm(f => ({...f, técnica: t}))} className={`flex-1 py-2.5 rounded-lg text-sm font-medium border min-h-[44px] ${evoForm.técnica === t ? 'bg-accent text-white border-accent' : 'bg-bg-hover text-text-secondary border-[#333]'}`}>{t}</button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-accent mb-1.5">Anestésico local</label>
+                  <select className="w-full bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-3 text-[15px] text-text-primary" value={evoForm.droga} onChange={e => setEvoForm(f => ({...f, droga: e.target.value}))}>
+                    <option value="">Selecione...</option>
+                    <option>Lidocaína 1%</option><option>Lidocaína 2%</option>
+                    <option>Bupivacaína 0,25%</option><option>Bupivacaína 0,5%</option>
+                    <option>Ropivacaína 0,2%</option><option>Ropivacaína 0,5%</option>
+                  </select>
+                </div>
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-accent mb-1.5">Volume (mL)</label>
+                    <input type="number" inputMode="decimal" className="w-full bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-3 text-[15px] text-text-primary" placeholder="20" value={evoForm.volume} onChange={e => setEvoForm(f => ({...f, volume: e.target.value}))} />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-accent mb-1.5">Dose total (mg)</label>
+                    <input type="number" inputMode="decimal" className="w-full bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-3 text-[15px] text-text-primary" placeholder="100" value={evoForm.dose} onChange={e => setEvoForm(f => ({...f, dose: e.target.value}))} />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-accent mb-1.5">Epinefrina</label>
+                  <div className="flex gap-3">
+                    {['Sim', 'Não'].map(e => (
+                      <button key={e} onClick={() => setEvoForm(f => ({...f, epi: e}))} className={`flex-1 py-2.5 rounded-lg text-sm font-medium border min-h-[44px] ${evoForm.epi === e ? 'bg-accent text-white border-accent' : 'bg-bg-hover text-text-secondary border-[#333]'}`}>{e}</button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-accent mb-1.5">Responsável</label>
+                    <input className="w-full bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-3 text-[15px] text-text-primary" placeholder="Dr. Nome" value={evoForm.resp} onChange={e => setEvoForm(f => ({...f, resp: e.target.value}))} />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-accent mb-1.5">CRM</label>
+                    <input className="w-full bg-bg-hover border-2 border-[#333] rounded-lg px-3 py-3 text-[15px] text-text-primary" placeholder="00000-GO" value={evoForm.crm} onChange={e => setEvoForm(f => ({...f, crm: e.target.value}))} />
+                  </div>
+                </div>
+                <Button fullWidth onClick={generateEvolution} className="mt-2">Gerar texto da evolução</Button>
               </div>
             ) : (
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-semibold text-sm">Evolucao gerada</h3>
-                  <Button variant="outline" size="sm" onClick={() => setShowEvoResult(false)}>Editar</Button>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-semibold text-base text-accent">Evolução gerada</h4>
+                  <button onClick={() => setShowEvoResult(false)} className="px-4 py-2 bg-bg-hover rounded-md text-[13px] text-text-primary cursor-pointer border-none hover:bg-[#333]">Editar</button>
                 </div>
-                <textarea readOnly value={evoText} className="w-full bg-bg-elevated border border-border-card rounded-lg p-3 text-xs text-text-primary font-mono min-h-[300px] resize-none" />
-                <Button fullWidth onClick={copyEvolution} className="mt-3">Copiar texto</Button>
+                <textarea readOnly value={evoText} className="w-full bg-bg-hover border border-[#333] rounded-lg p-4 text-[13px] text-text-primary font-mono leading-relaxed min-h-[300px] resize-y" />
+                <Button fullWidth onClick={copyEvolution} className="mt-4">Copiar texto</Button>
               </div>
             )}
+              </div>
+            </div>
           </div>
         )}
 
       </Container>
-      <Footer toolName="Block Path" version="v2.0.0" />
+      <Footer toolName="Block Path" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>

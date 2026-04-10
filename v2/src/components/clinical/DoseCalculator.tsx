@@ -23,7 +23,6 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
   const status = getDoseStatus(dose, drug.doseMin, drug.doseMax, drug.criticalThreshold)
   const colors = statusColors[status]
 
-  // Sync dose display
   useEffect(() => {
     if (!editingDose) setDoseValue(fmt(dose, 2))
   }, [dose, editingDose])
@@ -63,20 +62,20 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
   return (
     <div>
       {/* Apresentacao */}
-      <div className="bg-bg-elevated rounded-lg p-3 mb-3">
-        <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1">Diluicao</div>
+      <div className="bg-bg-elevated rounded-xl p-3.5 mb-3 border-l-[3px] border-info">
+        <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Diluição</div>
         <div className="text-sm text-text-secondary">{drug.presentation}</div>
-        <div className="text-xs text-accent font-semibold mt-1">→ {fmt(concentration, 0)} {drug.concentrationUnit}</div>
+        <div className="text-sm text-accent font-semibold mt-1">{fmt(concentration, 0)} {drug.concentrationUnit}</div>
       </div>
 
-      {/* Diluicoes alternativas */}
+      {/* Diluições alternativas */}
       {drug.dilutions && drug.dilutions.length > 1 && (
         <div className="flex gap-2 mb-3">
           {drug.dilutions.map(d => (
             <button
               key={d.concentration}
               onClick={() => changeDilution(d.concentration)}
-              className={`flex-1 py-2 px-2 rounded-lg text-xs font-medium border min-h-[36px] transition-colors ${
+              className={`flex-1 py-2 px-2 rounded-xl text-sm font-medium border min-h-[44px] transition-colors ${
                 concentration === d.concentration
                   ? 'bg-accent text-white border-accent'
                   : 'bg-bg-elevated text-text-secondary border-border-card'
@@ -89,38 +88,38 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
       )}
 
       {/* Range */}
-      <div className="bg-bg-hover rounded-lg px-3 py-2 mb-3 flex items-center justify-between">
-        <span className="text-xs text-text-muted">Range terapeutico</span>
-        <span className="text-xs font-semibold text-text-secondary">
+      <div className="bg-bg-hover rounded-xl px-4 py-2.5 mb-3 flex items-center justify-between">
+        <span className="text-sm text-text-muted">Range terapêutico</span>
+        <span className="text-sm font-semibold text-text-secondary">
           {fmt(drug.doseMin, 2)} - {fmt(drug.doseMax, 1)} {drug.doseUnit}
         </span>
       </div>
 
       {/* Slider */}
       <div className="mb-2">
-        <div className="text-xs text-text-muted mb-1">Dose ({drug.doseUnit})</div>
+        <div className="text-sm text-text-muted mb-1.5">Dose ({drug.doseUnit})</div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setDose(Math.max(drug.doseMin, dose - drug.doseStep))}
-            className="w-10 h-10 rounded-full border border-border-card bg-bg-elevated text-accent text-xl font-bold flex items-center justify-center cursor-pointer flex-shrink-0"
+            className="w-11 h-11 rounded-full border border-border-card bg-bg-elevated text-accent text-xl font-bold flex items-center justify-center cursor-pointer flex-shrink-0"
           >-</button>
           <input
             type="range"
             min={drug.doseMin} max={drug.doseMax} step={drug.doseStep}
             value={Math.min(drug.doseMax, Math.max(drug.doseMin, dose))}
             onChange={handleSliderChange}
-            className="flex-1 accent-accent"
+            className="flex-1 accent-accent h-2"
           />
           <button
             onClick={() => setDose(Math.min(drug.doseMax, dose + drug.doseStep))}
-            className="w-10 h-10 rounded-full border border-border-card bg-bg-elevated text-accent text-xl font-bold flex items-center justify-center cursor-pointer flex-shrink-0"
+            className="w-11 h-11 rounded-full border border-border-card bg-bg-elevated text-accent text-xl font-bold flex items-center justify-center cursor-pointer flex-shrink-0"
           >+</button>
         </div>
       </div>
 
       {/* Peso alert */}
       {!weight && (
-        <div className="text-center text-xs text-warning py-3">Informe o peso do paciente</div>
+        <div className="text-center text-sm text-warning py-4">Informe o peso do paciente</div>
       )}
 
       {/* Resultado */}
@@ -130,7 +129,7 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
             className="rounded-xl p-4 text-center border-2"
             style={{ background: colors.bg, borderColor: colors.border }}
           >
-            <div className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: colors.text }}>Velocidade</div>
+            <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: colors.text }}>Velocidade</div>
             <input
               type="text"
               inputMode="decimal"
@@ -138,16 +137,16 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
               onChange={handleMlInput}
               onFocus={() => { setEditingMl(true); setMlValue(mlh !== null ? fmt(mlh, 1) : '') }}
               onBlur={() => setEditingMl(false)}
-              className="w-full bg-transparent text-center text-2xl font-bold border-b border-current outline-none"
+              className="w-full bg-transparent text-center text-[28px] font-bold border-b border-current outline-none"
               style={{ color: colors.text }}
             />
-            <div className="text-xs mt-1" style={{ color: colors.text }}>mL/h</div>
+            <div className="text-sm mt-1" style={{ color: colors.text }}>mL/h</div>
           </div>
           <div
             className="rounded-xl p-4 text-center border-2"
             style={{ background: colors.bg, borderColor: colors.border }}
           >
-            <div className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: colors.text }}>Dose</div>
+            <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: colors.text }}>Dose</div>
             <input
               type="text"
               inputMode="decimal"
@@ -155,10 +154,10 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
               onChange={handleDoseInput}
               onFocus={() => { setEditingDose(true); setDoseValue(fmt(dose, 2)) }}
               onBlur={() => setEditingDose(false)}
-              className="w-full bg-transparent text-center text-2xl font-bold border-b border-current outline-none"
+              className="w-full bg-transparent text-center text-[28px] font-bold border-b border-current outline-none"
               style={{ color: colors.text }}
             />
-            <div className="text-xs mt-1" style={{ color: colors.text }}>{drug.doseUnit}</div>
+            <div className="text-sm mt-1" style={{ color: colors.text }}>{drug.doseUnit}</div>
           </div>
         </div>
       )}

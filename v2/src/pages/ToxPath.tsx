@@ -17,7 +17,7 @@ import {
   checklistSections,
   tabelaTabs, tabelaComparacoes,
   ecgTable, ecgTreatmentTable, odoresTable,
-  midriaseTable, mioseTable, bombasTable, examesIngestaoTable,
+  midríaseTable, mioseTable, bombasTable, examesIngestaoTable,
   toxicDrugs,
   type ToxQuestion, type ToxOption, type Toxindrome, type Antidote,
   type DispositionCriterion, type ChecklistSection, type TableRow,
@@ -28,7 +28,7 @@ import {
 // TIPOS
 // ==========================================
 
-type Screen = 'home' | 'toxindromes' | 'descontaminacao' | 'disposicao' | 'antidotos' | 'checklist' | 'tabelas'
+type Screen = 'home' | 'toxindromes' | 'descontaminação' | 'disposição' | 'antídotos' | 'checklist' | 'tabelas'
 
 // ==========================================
 // SUB-COMPONENTES
@@ -43,7 +43,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <polyline points="15 18 9 12 15 6" />
       </svg>
-      Inicio
+      Início
     </button>
   )
 }
@@ -81,7 +81,7 @@ function VitalBadge({ classe }: { classe: VitalClass }) {
 function HomeView({ onNavigate }: { onNavigate: (s: Screen) => void }) {
   return (
     <>
-      <Header title="Tox Path" subtitle="Manejo de intoxicacoes agudas" />
+      <Header title="Tox Path" subtitle="Manejo de intoxicações agudas" />
 
       {/* Banner CIATox */}
       <a
@@ -95,8 +95,8 @@ function HomeView({ onNavigate }: { onNavigate: (s: Screen) => void }) {
           </svg>
         </div>
         <div className="flex-1">
-          <h3 className="text-sm font-bold mb-0.5">Disque-Intoxicacao</h3>
-          <p className="text-xs opacity-90">Plantao 24h — Toque para ligar</p>
+          <h3 className="text-sm font-bold mb-0.5">Disque-Intóxicação</h3>
+          <p className="text-xs opacity-90">Plantão 24h — Toque para ligar</p>
         </div>
         <div className="bg-[#1A1A1A] text-text-primary border border-accent px-3 py-2.5 rounded-lg font-bold text-sm flex items-center gap-1.5 whitespace-nowrap">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -108,9 +108,17 @@ function HomeView({ onNavigate }: { onNavigate: (s: Screen) => void }) {
 
       {/* Modulos */}
       <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">Ferramentas</p>
-      <div className="flex flex-col gap-3 mb-6">
+      <div className="flex flex-col gap-4 mb-6">
         {homeModules.map(m => (
-          <Card key={m.id} borderColor={m.borderColor} onClick={() => onNavigate(m.id as Screen)} className="flex items-center gap-3.5 min-h-[72px]">
+          <Card key={m.id} borderColor={m.borderColor} onClick={() => onNavigate(m.id as Screen)} className="flex items-center gap-4 min-h-[72px]">
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${m.borderColor}20` }}>
+              {m.id === 'toxindromes' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={m.borderColor} strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M9 9h.01M15 9h.01M8 14s1.5 2 4 2 4-2 4-2"/></svg>}
+              {m.id === 'descontaminação' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={m.borderColor} strokeWidth="2" strokeLinecap="round"><path d="M12 2v6M12 18v4M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M2 12h6M16 12h6M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/></svg>}
+              {m.id === 'disposição' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={m.borderColor} strokeWidth="2" strokeLinecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>}
+              {m.id === 'antídotos' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={m.borderColor} strokeWidth="2" strokeLinecap="round"><path d="M10 2v6.5c0 1-1.5 2.5-1.5 4.5 0 3 2 5 3.5 5s3.5-2 3.5-5c0-2-1.5-3.5-1.5-4.5V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/></svg>}
+              {m.id === 'checklist' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={m.borderColor} strokeWidth="2" strokeLinecap="round"><path d="M9 11l3 3L22 4"/><rect x="3" y="4" width="16" height="16" rx="2"/></svg>}
+              {m.id === 'tabelas' && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={m.borderColor} strokeWidth="2" strokeLinecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>}
+            </div>
             <div className="flex-1">
               <h3 className="text-base font-bold text-text-primary mb-0.5">{m.title}</h3>
               <p className="text-[13px] text-text-secondary">{m.subtitle}</p>
@@ -133,7 +141,7 @@ function HomeView({ onNavigate }: { onNavigate: (s: Screen) => void }) {
           </div>
           <div>
             <h3 className="text-sm font-bold text-text-primary">0800 646 4350</h3>
-            <p className="text-xs text-text-secondary">CIATox Goias</p>
+            <p className="text-xs text-text-secondary">CIATox Goiás</p>
           </div>
         </Card>
       </a>
@@ -232,7 +240,7 @@ function ToxindromesView({ onBack, onNavigate }: { onBack: () => void; onNavigat
         <div className="animate-fade-in">
           <div className="rounded-2xl overflow-hidden shadow-lg mb-4">
             <div className="p-5 text-white text-center" style={{ background: `linear-gradient(135deg, ${result.gradientFrom}, ${result.gradientTo})` }}>
-              <p className="text-[13px] font-semibold opacity-90 uppercase tracking-wider mb-1">Possivel toxindrome</p>
+              <p className="text-[13px] font-semibold opacity-90 uppercase tracking-wider mb-1">Possível toxíndrome</p>
               <h3 className="text-2xl font-extrabold">{result.nome}</h3>
             </div>
             <div className="p-5 bg-bg-primary">
@@ -248,10 +256,10 @@ function ToxindromesView({ onBack, onNavigate }: { onBack: () => void; onNavigat
 
               {/* Vitais */}
               <div className="mb-5">
-                <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Padrao de sinais vitais</p>
+                <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Padrão de sinais vitais</p>
                 <div className="border border-border-card rounded-lg overflow-hidden">
                   {Object.entries(result.vitais).map(([key, v]) => {
-                    const labels: Record<string, string> = { consciencia: 'Consciencia', fc: 'FC', pa: 'PA', fr: 'FR', temp: 'Temperatura', pupilas: 'Pupilas', pele: 'Pele' }
+                    const labels: Record<string, string> = { consciência: 'Consciência', fc: 'FC', pa: 'PA', fr: 'FR', temp: 'Temperatura', pupilas: 'Pupilas', pele: 'Pele' }
                     const colorCls = v.classe === 'up' ? 'text-danger' : v.classe === 'down' ? 'text-info' : 'text-success'
                     return (
                       <div key={key} className="flex justify-between items-center px-3 py-2 border-b border-border-card last:border-0">
@@ -267,35 +275,35 @@ function ToxindromesView({ onBack, onNavigate }: { onBack: () => void; onNavigat
 
               {/* Agentes */}
               <div className="mb-5">
-                <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Agentes possiveis</p>
+                <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Agentes possíveis</p>
                 <p className="text-sm text-text-primary leading-relaxed">{result.agentes}</p>
               </div>
 
               {/* Antidoto */}
               <div className="mb-5">
-                <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Recomendacoes terapeuticas</p>
-                <p className="text-sm text-text-primary font-bold">{result.antidoto}</p>
+                <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Recomendações terapêuticas</p>
+                <p className="text-sm text-text-primary font-bold">{result.antídoto}</p>
               </div>
 
               {/* Action buttons */}
               <div className="flex flex-col gap-2.5 mt-5">
-                <button onClick={() => onNavigate('antidotos')} className="w-full py-3.5 bg-accent text-white rounded-xl font-semibold text-[15px] border-none cursor-pointer min-h-[48px]">
-                  Ver antidotos e doses
+                <button onClick={() => onNavigate('antídotos')} className="w-full py-3.5 bg-accent text-white rounded-xl font-semibold text-[15px] border-none cursor-pointer min-h-[48px]">
+                  Ver antídotos e doses
                 </button>
-                <button onClick={() => onNavigate('disposicao')} className="w-full py-3.5 bg-transparent text-accent border-2 border-accent rounded-xl font-semibold text-[15px] cursor-pointer min-h-[48px]">
-                  Criterios de disposicao
+                <button onClick={() => onNavigate('disposição')} className="w-full py-3.5 bg-transparent text-accent border-2 border-accent rounded-xl font-semibold text-[15px] cursor-pointer min-h-[48px]">
+                  Critérios de disposição
                 </button>
                 <a href="tel:08007226001" className="w-full py-3.5 text-white rounded-xl font-semibold text-[15px] text-center no-underline flex items-center justify-center gap-2 min-h-[48px]" style={{ background: 'linear-gradient(135deg, #FF5252, #FF7272)' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                   </svg>
-                  Disque-Intoxicacao
+                  Disque-Intóxicação
                 </a>
               </div>
             </div>
           </div>
           <button onClick={restart} className="w-full text-text-secondary text-sm underline bg-transparent border-none cursor-pointer py-3">
-            Recomecar avaliacao
+            Recomeçar avaliação
           </button>
         </div>
       )}
@@ -307,7 +315,7 @@ function ToxindromesView({ onBack, onNavigate }: { onBack: () => void; onNavigat
 // DESCONTAMINACAO VIEW
 // ==========================================
 
-function DescontaminacaoView({ onBack }: { onBack: () => void }) {
+function DescontaminaçãoView({ onBack }: { onBack: () => void }) {
   const [step, setStep] = useState(0)
   const [deconAnswers, setDeconAnswers] = useState<Record<number, string>>({})
   const [resultType, setResultType] = useState<string | null>(null)
@@ -327,11 +335,11 @@ function DescontaminacaoView({ onBack }: { onBack: () => void }) {
         else setStep(2)
         break
       case 2:
-        if (ans === 'mais_2h') showResult('naoIndicado', 'Tempo superior a 2 horas desde a ingestao', 'Apos 2 horas, a maior parte da absorcao ja ocorreu. O beneficio da descontaminacao e improvavel.')
+        if (ans === 'mais_2h') showResult('naoIndicado', 'Tempo superior a 2 horas desde a ingestão', 'Após 2 horas, a maior parte da absorção já ocorreu. O benefício da descontaminação é improvável.')
         else { setStep(3); if (ans === 'desconhecido') newAnswers['tempo_incerto' as unknown as number] = 'true' }
         break
       case 3:
-        if (ans === 'nao_adsorvida') showResult('naoIndicado', 'Substancia nao e efetivamente adsorvida pelo carvao', 'Alcoois, metais (ferro, litio) e solventes nao sao bem adsorvidos.')
+        if (ans === 'nao_adsorvida') showResult('naoIndicado', 'Substância não é efetivamente adsorvida pelo carvão', 'Álcoois, metais (ferro, lítio) e solventes não são bem adsorvidos.')
         else if (ans === 'incerto_subst') showResult('incerto')
         else setStep(4)
         break
@@ -340,7 +348,7 @@ function DescontaminacaoView({ onBack }: { onBack: () => void }) {
         else setStep(5)
         break
       case 5:
-        if (ans === 'com_ci') showResult('naoIndicado', 'Presenca de contraindicacao relativa', 'Avalie o risco-beneficio individual.')
+        if (ans === 'com_ci') showResult('naoIndicado', 'Presença de contraindicação relativa', 'Avalie o risco-benefício individual.')
         else showResult('indicado')
         break
     }
@@ -362,17 +370,17 @@ function DescontaminacaoView({ onBack }: { onBack: () => void }) {
 
   const stepContent: Record<number, { question: string; hint: string; options: { text: string; value: string }[] }> = {
     1: {
-      question: 'A substancia ingerida e caustica, hidrocarboneto ou tem risco de aspiracao?',
-      hint: 'Alcalis fortes, acidos, produtos de limpeza, derivados de petroleo',
+      question: 'A substância ingerida é cáustica, hidrocarboneto ou tem risco de aspiração?',
+      hint: 'Álcalis fortes, ácidos, produtos de limpeza, derivados de petróleo',
       options: [
-        { text: 'Sim, substancia caustica', value: 'caustico' },
+        { text: 'Sim, substância cáustica', value: 'caustico' },
         { text: 'Nao', value: 'nao' },
-        { text: 'Nao sei / Incerto', value: 'incerto' },
+        { text: 'Não sei / Incerto', value: 'incerto' },
       ],
     },
     2: {
-      question: 'Quanto tempo desde a ingestao?',
-      hint: 'O tempo e fator critico na decisao de descontaminacao',
+      question: 'Quanto tempo desde a ingestão?',
+      hint: 'O tempo é fator crítico na decisão de descontaminação',
       options: [
         { text: 'Menos de 1 hora', value: 'menos_1h' },
         { text: '1-2 horas', value: '1_2h' },
@@ -381,28 +389,28 @@ function DescontaminacaoView({ onBack }: { onBack: () => void }) {
       ],
     },
     3: {
-      question: 'A substancia e adsorvida pelo carvao ativado?',
-      hint: 'Carvao nao adsorve: metais (ferro, litio), alcoois, solventes',
+      question: 'A substância é adsorvida pelo carvão ativado?',
+      hint: 'Carvão não adsorve: metais (ferro, lítio), álcoois, solventes',
       options: [
-        { text: 'Sim, e adsorvida', value: 'adsorvida' },
-        { text: 'Nao e adsorvida', value: 'nao_adsorvida' },
-        { text: 'Nao sei', value: 'incerto_subst' },
+        { text: 'Sim, é adsorvida', value: 'adsorvida' },
+        { text: 'Não é adsorvida', value: 'nao_adsorvida' },
+        { text: 'Não sei', value: 'incerto_subst' },
       ],
     },
     4: {
-      question: 'O paciente esta consciente e com via aerea protegida?',
-      hint: 'Avaliar Glasgow, reflexo de deglutição, risco de aspiracao',
+      question: 'O paciente está consciente e com via aérea protegida?',
+      hint: 'Avaliar Glasgow, reflexo de deglutição, risco de aspiração',
       options: [
-        { text: 'Consciente e via aerea ok', value: 'consciente' },
-        { text: 'Rebaixado / VA nao protegida', value: 'rebaixado' },
+        { text: 'Consciente e via aérea ok', value: 'consciente' },
+        { text: 'Rebaixado / VA não protegida', value: 'rebaixado' },
       ],
     },
     5: {
-      question: 'Ha outras contraindicacoes?',
-      hint: 'Cirurgia abdominal recente, perfuracao intestinal, obstrucao',
+      question: 'Há outras contraindicações?',
+      hint: 'Cirurgia abdominal recente, perfuração intestinal, obstrução',
       options: [
-        { text: 'Sem contraindicacoes', value: 'sem_ci' },
-        { text: 'Com contraindicacao', value: 'com_ci' },
+        { text: 'Sem contraindicações', value: 'sem_ci' },
+        { text: 'Com contraindicação', value: 'com_ci' },
       ],
     },
   }
@@ -410,19 +418,19 @@ function DescontaminacaoView({ onBack }: { onBack: () => void }) {
   return (
     <>
       <BackButton onClick={onBack} />
-      <ModuleHeader title="Descontaminacao GI" subtitle="Avaliacao guiada passo a passo" />
+      <ModuleHeader title="Descontaminação GI" subtitle="Avaliação guiada passo a passo" />
       <ProgressBar percent={progress} />
 
       {/* Intro */}
       {step === 0 && !resultType && (
         <Card className="!p-5 !border-2 !border-border-card animate-fade-in">
-          <p className="text-xs font-bold text-accent uppercase tracking-wider mb-2">Avaliacao de descontaminacao GI</p>
-          <h2 className="text-lg font-bold text-text-primary mb-2">Quando considerar descontaminacao gastrointestinal?</h2>
-          <p className="text-sm text-text-secondary mb-4">Este fluxo auxilia na decisao sobre carvao ativado ou lavagem gastrica em intoxicacoes agudas.</p>
-          <AlertCard type="info" title="Principio geral">A descontaminacao GI apresenta beneficio limitado na maioria dos casos. A decisao deve considerar tempo, substancia e estado clinico do paciente.</AlertCard>
-          <AlertCard type="warning">Este fluxo e um auxilio a decisao. A conduta final deve ser individualizada e, em caso de duvida, recomenda-se contato com o Disque-Intoxicacao (0800 722 6001).</AlertCard>
+          <p className="text-xs font-bold text-accent uppercase tracking-wider mb-2">Avaliação de descontaminação GI</p>
+          <h2 className="text-lg font-bold text-text-primary mb-2">Quando considerar descontaminação gastrointestinal?</h2>
+          <p className="text-sm text-text-secondary mb-4">Este fluxo auxilia na decisão sobre carvão ativado ou lavagem gástrica em intoxicações agudas.</p>
+          <AlertCard type="info" title="Princípio geral">A descontaminação GI apresenta benefício limitado na maioria dos casos. A decisão deve considerar tempo, substância e estado clínico do paciente.</AlertCard>
+          <AlertCard type="warning">Este fluxo é um auxílio à decisão. A conduta final deve ser individualizada e, em caso de dúvida, recomenda-se contato com o Disque-Intóxicação (0800 722 6001).</AlertCard>
           <button onClick={() => setStep(1)} className="w-full mt-4 py-3.5 bg-accent text-white rounded-xl font-semibold text-[15px] border-none cursor-pointer min-h-[48px]">
-            Iniciar avaliacao
+            Iniciar avaliação
           </button>
         </Card>
       )}
@@ -451,13 +459,13 @@ function DescontaminacaoView({ onBack }: { onBack: () => void }) {
       {resultType && (
         <div className="animate-fade-in">
           {resultType === 'caustico' && (
-            <AlertCard type="danger" title="CONTRAINDICACAO ABSOLUTA">
-              Substancias causticas e hidrocarbonetos apresentam risco de perfuracao e aspiracao. Descontaminacao GI esta contraindicada.
+            <AlertCard type="danger" title="CONTRAINDICAÇÃO ABSOLUTA">
+              Substâncias cáusticas e hidrocarbonetos apresentam risco de perfuração e aspiração. Descontaminação GI está contraindicada.
             </AlertCard>
           )}
           {resultType === 'incerto' && (
             <AlertCard type="warning" title="Recomenda-se contatar o CIATox">
-              Na duvida sobre a substancia ingerida, entre em contato com o Disque-Intoxicacao para orientacao especifica.
+              Na dúvida sobre a substância ingerida, entre em contato com o Disque-Intóxicação para orientação específica.
             </AlertCard>
           )}
           {resultType === 'naoIndicado' && (
@@ -466,35 +474,35 @@ function DescontaminacaoView({ onBack }: { onBack: () => void }) {
             </AlertCard>
           )}
           {resultType === 'protegerVA' && (
-            <AlertCard type="danger" title="Via aerea nao protegida">
-              Considere intubacao orotraqueal antes da descontaminacao. Carvao ativado em paciente rebaixado sem IOT apresenta risco de aspiracao.
+            <AlertCard type="danger" title="Via aérea não protegida">
+              Considere intubação orotraqueal antes da descontaminação. Carvão ativado em paciente rebaixado sem IOT apresenta risco de aspiração.
             </AlertCard>
           )}
           {resultType === 'indicado' && (
             <div>
               <div className="rounded-xl p-4 mb-4" style={{ background: 'linear-gradient(135deg, #10B981, #059669)' }}>
-                <p className="text-white font-bold text-base">Carvao ativado pode ser considerado</p>
+                <p className="text-white font-bold text-base">Carvão ativado pode ser considerado</p>
                 <p className="text-white/90 text-sm mt-1">
                   {deconAnswers[2] === '1_2h' || deconAnswers['tempo_incerto' as unknown as number]
-                    ? 'Beneficio possivel, porem reduzido — avalie individualmente'
-                    : 'Todos os criterios de elegibilidade foram atendidos'}
+                    ? 'Benefício possível, porém reduzido — avalie individualmente'
+                    : 'Todos os critérios de elegibilidade foram atendidos'}
                 </p>
               </div>
               <Card className="!p-4">
-                <p className="text-sm font-bold text-text-primary mb-2">Dose de carvao ativado</p>
+                <p className="text-sm font-bold text-text-primary mb-2">Dose de carvão ativado</p>
                 <p className="text-sm text-text-secondary">Adulto: <strong className="text-text-primary">50 g (1 g/kg)</strong> via oral ou SNG</p>
-                <p className="text-sm text-text-secondary mt-1">Pediatrico: <strong className="text-text-primary">1 g/kg</strong> (max 50 g)</p>
-                <p className="text-xs text-text-muted mt-3">Diluir em agua ou SNG. Dose unica na maioria dos casos.</p>
+                <p className="text-sm text-text-secondary mt-1">Pediátrico: <strong className="text-text-primary">1 g/kg</strong> (max 50 g)</p>
+                <p className="text-xs text-text-muted mt-3">Diluir em água ou SNG. Dose única na maioria dos casos.</p>
               </Card>
             </div>
           )}
 
           <div className="flex flex-col gap-2.5 mt-4">
             <a href="tel:08007226001" className="w-full py-3.5 text-white rounded-xl font-semibold text-[15px] text-center no-underline flex items-center justify-center gap-2 min-h-[48px]" style={{ background: 'linear-gradient(135deg, #FF5252, #FF7272)' }}>
-              Disque-Intoxicacao: 0800 722 6001
+              Disque-Intóxicação: 0800 722 6001
             </a>
             <button onClick={restart} className="w-full text-text-secondary text-sm underline bg-transparent border-none cursor-pointer py-3">
-              Recomecar avaliacao
+              Recomeçar avaliação
             </button>
           </div>
         </div>
@@ -507,7 +515,7 @@ function DescontaminacaoView({ onBack }: { onBack: () => void }) {
 // DISPOSICAO VIEW
 // ==========================================
 
-function DisposicaoView({ onBack, onNavigate }: { onBack: () => void; onNavigate: (s: Screen) => void }) {
+function DisposiçãoView({ onBack, onNavigate }: { onBack: () => void; onNavigate: (s: Screen) => void }) {
   const [utiChecked, setUtiChecked] = useState<boolean[]>(new Array(utiCriteria.length).fill(false))
   const [enfChecked, setEnfChecked] = useState<boolean[]>(new Array(enfermariaCriteria.length).fill(false))
 
@@ -515,7 +523,7 @@ function DisposicaoView({ onBack, onNavigate }: { onBack: () => void; onNavigate
   const enfCount = enfChecked.filter(Boolean).length
   const totalCount = utiCount + enfCount
 
-  const disposition = utiCount > 0 ? 'UTI' : enfCount > 0 ? 'ENFERMARIA' : 'OBSERVACAO / POSSIVEL ALTA'
+  const disposition = utiCount > 0 ? 'UTI' : enfCount > 0 ? 'ENFERMARIA' : 'OBSERVAÇÃO / POSSÍVEL ALTA'
   const dispositionColor = utiCount > 0 ? '#EF4444' : enfCount > 0 ? '#F59E0B' : '#10B981'
 
   function resetCriteria() {
@@ -545,14 +553,14 @@ function DisposicaoView({ onBack, onNavigate }: { onBack: () => void; onNavigate
   return (
     <>
       <BackButton onClick={onBack} />
-      <ModuleHeader title="Criterios de disposicao" subtitle="Marque os criterios presentes" />
+      <ModuleHeader title="Critérios de disposição" subtitle="Marque os critérios presentes" />
 
       <AlertCard type="info">
-        Marque todos os criterios que o paciente apresenta. A recomendacao de destino sera atualizada automaticamente.
+        Marque todos os critérios que o paciente apresenta. A recomendação de destino será atualizada automaticamente.
       </AlertCard>
 
       {/* UTI */}
-      <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2 mt-5">Criterios para UTI</p>
+      <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2 mt-5">Critérios para UTI</p>
       <p className="text-[13px] text-text-secondary mb-3">Qualquer um destes indica necessidade de terapia intensiva</p>
       <div className="space-y-2">
         {utiCriteria.map((c, i) => (
@@ -561,8 +569,8 @@ function DisposicaoView({ onBack, onNavigate }: { onBack: () => void; onNavigate
       </div>
 
       {/* Enfermaria */}
-      <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2 mt-5">Criterios para enfermaria</p>
-      <p className="text-[13px] text-text-secondary mb-3">Toxicidade moderada ou necessidade de monitorizacao</p>
+      <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2 mt-5">Critérios para enfermaria</p>
+      <p className="text-[13px] text-text-secondary mb-3">Toxicidade moderada ou necessidade de monitorização</p>
       <div className="space-y-2">
         {enfermariaCriteria.map((c, i) => (
           <CriterionItem key={i} item={c} checked={enfChecked[i]} onToggle={() => setEnfChecked(prev => { const n = [...prev]; n[i] = !n[i]; return n })} />
@@ -570,31 +578,31 @@ function DisposicaoView({ onBack, onNavigate }: { onBack: () => void; onNavigate
       </div>
 
       {/* Obs boxes */}
-      <AlertCard type="warning" title="Observacao no DE (4-6 horas)" className="mt-4">
-        Se nenhum criterio acima estiver presente, considere observacao na emergencia por 4-6 horas antes da alta, especialmente se: ingestao recente, formulacoes de liberacao prolongada, ingestao intencional, historia nao confiavel.
+      <AlertCard type="warning" title="Observação no DE (4-6 horas)" className="mt-4">
+        Se nenhum critério acima estiver presente, considere observação na emergência por 4-6 horas antes da alta, especialmente se: ingestão recente, formulações de liberação prolongada, ingestão intencional, história não confiável.
       </AlertCard>
 
-      <AlertCard type="success" title="Criterios que podem favorecer alta" className="mt-2">
-        Assintomatico apos observacao, sinais vitais estaveis, ECG sem alteracoes, exames normais, avaliacao psiquiatrica realizada (se ingestao intencional).
+      <AlertCard type="success" title="Critérios que podem favorecer alta" className="mt-2">
+        Assintomático após observação, sinais vitais estáveis, ECG sem alterações, exames normais, avaliação psiquiátrica realizada (se ingestão intencional).
       </AlertCard>
 
-      {/* Alerta bombas-relogio */}
+      {/* Alerta bombas-relógio */}
       <div className="bg-danger/10 border-2 border-danger rounded-xl p-4 mt-4 text-center">
         <p className="text-sm font-bold text-danger mb-2">LEMBRETE IMPORTANTE</p>
-        <p className="text-[13px] text-text-primary mb-3">Considere verificar se nao ha ingestao de substancia com toxicidade tardia</p>
+        <p className="text-[13px] text-text-primary mb-3">Considere verificar se não há ingestão de substância com toxicidade tardia</p>
         <button onClick={() => onNavigate('tabelas')} className="bg-danger text-white px-5 py-2.5 rounded-lg font-semibold text-sm border-none cursor-pointer">
-          Ver Bombas-Relogio Toxicas
+          Ver Bombas-relógio tóxicas
         </button>
       </div>
 
       <button onClick={resetCriteria} className="w-full text-text-secondary text-sm underline bg-transparent border-none cursor-pointer py-3 mt-2">
-        Limpar todas as marcacoes
+        Limpar todas as marcações
       </button>
 
       {/* Result bar */}
       <div className="fixed bottom-[52px] left-0 right-0 bg-bg-elevated border-t border-border p-3 z-40 text-center">
         <div className="text-sm font-bold" style={{ color: dispositionColor }}>CONSIDERE {disposition}</div>
-        <p className="text-xs text-text-muted">{totalCount} criterio{totalCount !== 1 ? 's' : ''} marcado{totalCount !== 1 ? 's' : ''}</p>
+        <p className="text-xs text-text-muted">{totalCount} critério{totalCount !== 1 ? 's' : ''} marcado{totalCount !== 1 ? 's' : ''}</p>
       </div>
     </>
   )
@@ -621,8 +629,8 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
     )
   }, [search])
 
-  const disponiveis = filtered.filter(a => a.available)
-  const indisponiveis = filtered.filter(a => !a.available)
+  const disponíveis = filtered.filter(a => a.available)
+  const indisponíveis = filtered.filter(a => !a.available)
 
   // Nomograma Rumack-Matthew
   const nomogramaResult = useMemo(() => {
@@ -630,7 +638,7 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
     const n = parseFloat(nacNivel)
     if (!t || !n || t < 4 || t > 24) return null
     const linha = 150 * Math.exp(-0.173 * (t - 4))
-    return { acima: n >= linha, nivel: n, linha: linha.toFixed(1), tempo: t }
+    return { acima: n >= linha, nível: n, linha: linha.toFixed(1), tempo: t }
   }, [nacTempo, nacNivel])
 
   // NAC calculator
@@ -660,7 +668,7 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
   return (
     <>
       <BackButton onClick={onBack} />
-      <ModuleHeader title="Guia de antidotos" />
+      <ModuleHeader title="Guia de antídotos" />
 
       {/* Search */}
       <div className="relative mb-4">
@@ -668,7 +676,7 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="Buscar antidoto ou indicacao..."
+          placeholder="Buscar antídoto ou indicação..."
           className="w-full bg-bg-elevated border border-border-card rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted outline-none"
         />
         {search && (
@@ -680,16 +688,16 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
 
       {/* Legend */}
       <div className="flex gap-4 mb-4 text-xs text-text-secondary">
-        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-success" /> Disponivel</span>
-        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-danger" /> Nao disponivel</span>
+        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-success" /> Disponível</span>
+        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-danger" /> Não disponível</span>
       </div>
 
-      {/* Disponiveis */}
-      {disponiveis.length > 0 && (
+      {/* Disponíveis */}
+      {disponíveis.length > 0 && (
         <>
-          <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Disponiveis</p>
+          <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Disponíveis</p>
           <div className="space-y-2 mb-4">
-            {disponiveis.map(a => (
+            {disponíveis.map(a => (
               <Collapsible key={a.id} title={a.name} badge={a.indication} badgeColor="#10B981">
                 {a.sections.map((s, i) => (
                   <div key={i} className="mb-3">
@@ -705,22 +713,22 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
                   <div className="bg-bg-elevated rounded-xl p-4 mt-3 space-y-3">
                     <p className="text-xs font-bold text-accent uppercase">Nomograma de Rumack-Matthew</p>
                     <div>
-                      <label className="text-xs text-text-secondary block mb-1">Tempo desde a ingestao (horas):</label>
+                      <label className="text-xs text-text-secondary block mb-1">Tempo desde a ingestão (horas):</label>
                       <input type="number" inputMode="decimal" min={4} max={24} value={nacTempo} onChange={e => setNacTempo(e.target.value)} placeholder="4 a 24 horas"
                         className="w-full bg-bg-primary border border-border-card rounded-lg px-3 py-2.5 text-sm text-text-primary" />
                     </div>
                     <div>
-                      <label className="text-xs text-text-secondary block mb-1">Nivel serico de paracetamol (ug/mL):</label>
+                      <label className="text-xs text-text-secondary block mb-1">Nível sérico de paracetamol (ug/mL):</label>
                       <input type="number" inputMode="decimal" value={nacNivel} onChange={e => setNacNivel(e.target.value)} placeholder="Ex: 150"
                         className="w-full bg-bg-primary border border-border-card rounded-lg px-3 py-2.5 text-sm text-text-primary" />
                     </div>
                     {nomogramaResult && (
                       <AlertCard type={nomogramaResult.acima ? 'danger' : 'success'} title={nomogramaResult.acima ? 'ACIMA DA LINHA DE TRATAMENTO' : 'ABAIXO DA LINHA DE TRATAMENTO'}>
-                        Nivel atual: {nomogramaResult.nivel} ug/mL | Linha em {nomogramaResult.tempo}h: {nomogramaResult.linha} ug/mL.
-                        {nomogramaResult.acima ? ' INICIAR NAC IMEDIATAMENTE.' : ' NAC nao indicado pelo nomograma.'}
+                        Nível atual: {nomogramaResult.nível} ug/mL | Linha em {nomogramaResult.tempo}h: {nomogramaResult.linha} ug/mL.
+                        {nomogramaResult.acima ? ' INICIAR NAC IMEDIATAMENTE.' : ' NAC não indicado pelo nomograma.'}
                       </AlertCard>
                     )}
-                    <p className="text-[11px] text-text-muted">* Valido apenas para ingestoes agudas unicas.</p>
+                    <p className="text-xs text-text-muted">* Válido apenas para ingestões agudas únicas.</p>
 
                     <p className="text-xs font-bold text-accent uppercase mt-4">Calculadora de doses NAC</p>
                     <div>
@@ -750,7 +758,7 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
 
                 {a.hasCalculator === 'atropina' && (
                   <div className="bg-bg-elevated rounded-xl p-4 mt-3 space-y-3">
-                    <p className="text-xs font-bold text-accent uppercase">Calculadora de infusao continua</p>
+                    <p className="text-xs font-bold text-accent uppercase">Calculadora de infusão contínua</p>
                     <div>
                       <label className="text-xs text-text-secondary block mb-1">Dose de ataque efetiva (mg):</label>
                       <input type="number" inputMode="decimal" value={atropinaAtaque} onChange={e => setAtropinaAtaque(e.target.value)} placeholder="Ex: 8"
@@ -758,7 +766,7 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
                     </div>
                     {atropinaResult && (
                       <div className="bg-bg-primary rounded-lg p-3 border-l-4 border-accent">
-                        <p className="text-sm font-semibold text-accent mb-1">Infusao continua (20%/hora):</p>
+                        <p className="text-sm font-semibold text-accent mb-1">Infusão contínua (20%/hora):</p>
                         <p className="text-xl font-bold text-text-primary">{atropinaResult.dose}</p>
                         <p className="text-[13px] text-text-secondary mt-1">{atropinaResult.ampolas}</p>
                       </div>
@@ -771,13 +779,13 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
         </>
       )}
 
-      {/* Indisponiveis */}
-      {indisponiveis.length > 0 && (
+      {/* Indisponíveis */}
+      {indisponíveis.length > 0 && (
         <>
-          <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Nao disponiveis</p>
+          <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Não disponíveis</p>
           <div className="space-y-2 mb-4">
-            {indisponiveis.map(a => (
-              <Collapsible key={a.id} title={a.name} badge="Indisponivel" badgeColor="#EF4444">
+            {indisponíveis.map(a => (
+              <Collapsible key={a.id} title={a.name} badge="Indisponível" badgeColor="#EF4444">
                 {a.sections.map((s, i) => (
                   <div key={i} className="mb-3">
                     <p className="text-xs font-bold text-text-secondary uppercase mb-1">{s.title}</p>
@@ -792,10 +800,10 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
 
       {/* CIATox */}
       <div className="rounded-xl p-4 text-center mt-4" style={{ background: 'linear-gradient(135deg, #FF5252, #FF7272)' }}>
-        <p className="text-white font-bold text-sm mb-1">Duvidas sobre doses ou indicacoes?</p>
-        <p className="text-white/90 text-xs mb-3">Plantao 24 horas para profissionais de saude</p>
+        <p className="text-white font-bold text-sm mb-1">Dúvidas sobre doses ou indicações?</p>
+        <p className="text-white/90 text-xs mb-3">Plantão 24 horas para profissionais de saúde</p>
         <a href="tel:08007226001" className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-lg font-semibold text-sm no-underline">
-          Disque-Intoxicacao: 0800 722 6001
+          Disque-Intóxicação: 0800 722 6001
         </a>
       </div>
     </>
@@ -833,7 +841,7 @@ function ChecklistView({ onBack, onNavigate }: { onBack: () => void; onNavigate:
   return (
     <>
       <BackButton onClick={onBack} />
-      <ModuleHeader title="Checklist de avaliacao" subtitle="Exame fisico direcionado para intoxicacoes" />
+      <ModuleHeader title="Checklist de avaliação" subtitle="Exame físico direcionado para intoxicações" />
 
       {/* Progress circle */}
       <div className="flex items-center justify-between bg-bg-card border border-border-card rounded-xl p-4 mb-4">
@@ -981,7 +989,7 @@ function TabelasView({ onBack }: { onBack: () => void }) {
   return (
     <>
       <BackButton onClick={onBack} />
-      <ModuleHeader title="Tabelas de consulta" subtitle="Referencia rapida para intoxicacoes" />
+      <ModuleHeader title="Tabelas de consulta" subtitle="Referência rápida para intoxicações" />
 
       {/* Tabs */}
       <div className="flex overflow-x-auto gap-1 mb-4 pb-1">
@@ -1003,7 +1011,7 @@ function TabelasView({ onBack }: { onBack: () => void }) {
         <>
           <ComparisonCards cards={tabelaComparacoes} />
           <AlertCard type="info" className="mt-3">
-            <strong>Dica:</strong> Simpaticomimetico vs. Anticolinergico -- checar pele! Umida = simpaticomimetico, Seca = anticolinergico
+            <strong>Dica:</strong> Simpaticomiméticos vs. anticolinérgicos — checar pele! Úmida = simpaticomiméticos, Seca = anticolinérgicos
           </AlertCard>
         </>
       )}
@@ -1039,7 +1047,7 @@ function TabelasView({ onBack }: { onBack: () => void }) {
                 {selectedDrug.retardada && <span className="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full mt-1 inline-block">Lib. retardada</span>}
               </div>
               <div className="flex justify-between py-2 border-b border-border-card">
-                <span className="text-sm text-text-secondary">Dose toxica</span>
+                <span className="text-sm text-text-secondary">Dose tóxica</span>
                 <span className="text-sm font-bold text-accent">{selectedDrug.dose} {selectedDrug.unidade}</span>
               </div>
               <div className="flex justify-between py-2">
@@ -1070,9 +1078,9 @@ function TabelasView({ onBack }: { onBack: () => void }) {
                     </div>
                     <div className={`rounded-lg p-3 text-center ${doseCalc.ratio < 0.5 ? 'bg-success/10' : doseCalc.ratio < 1 ? 'bg-warning/10' : 'bg-danger/10'}`}>
                       <p className={`text-sm font-bold ${doseCalc.ratio < 0.5 ? 'text-success' : doseCalc.ratio < 1 ? 'text-warning' : 'text-danger'}`}>
-                        {doseCalc.ratio < 0.5 ? 'ABAIXO DA DOSE TOXICA' : doseCalc.ratio < 1 ? 'PROXIMO DA DOSE TOXICA' : `ACIMA DA DOSE TOXICA (${doseCalc.ratio.toFixed(1)}x)`}
+                        {doseCalc.ratio < 0.5 ? 'ABAIXO DA DOSE TÓXICA' : doseCalc.ratio < 1 ? 'PRÓXIMO DA DOSE TÓXICA' : `ACIMA DA DOSE TÓXICA (${doseCalc.ratio.toFixed(1)}x)`}
                       </p>
-                      <p className="text-xs text-text-secondary mt-1">{(doseCalc.ratio * 100).toFixed(0)}% da dose toxica</p>
+                      <p className="text-xs text-text-secondary mt-1">{(doseCalc.ratio * 100).toFixed(0)}% da dose tóxica</p>
                     </div>
                   </div>
                 )}
@@ -1082,7 +1090,7 @@ function TabelasView({ onBack }: { onBack: () => void }) {
 
           {!selectedDrug && !drugSearch && (
             <div className="text-center py-8 text-text-muted">
-              <p className="text-sm">Digite o nome do medicamento para consultar a dose toxica</p>
+              <p className="text-sm">Digite o nome do medicamento para consultar a dose tóxica</p>
               <p className="text-xs mt-1">Base com <strong>200+</strong> medicamentos</p>
             </div>
           )}
@@ -1093,13 +1101,13 @@ function TabelasView({ onBack }: { onBack: () => void }) {
       {/* ECG */}
       {activeTab === 'ecg' && (
         <>
-          <p className="text-xs font-bold text-text-secondary mb-2">Alteracoes de ECG por agente</p>
+          <p className="text-xs font-bold text-text-secondary mb-2">Alterações de ECG por agente</p>
           <DataTable headers={['Achado ECG', 'Agentes']} rows={ecgTable} />
           <AlertCard type="danger" className="mt-3">
-            <strong>Atencao:</strong> QRS {'>'} 100 ms + historia de ingestao = considerar bicarbonato de sodio empirico!
+            <strong>Atenção:</strong> QRS {'>'} 100 ms + história de ingestão = considerar bicarbonato de sódio empírico!
           </AlertCard>
-          <p className="text-xs font-bold text-text-secondary mb-2 mt-4">Tratamento por alteracao de ECG</p>
-          <DataTable headers={['Alteracao', 'Tratamento']} rows={ecgTreatmentTable} />
+          <p className="text-xs font-bold text-text-secondary mb-2 mt-4">Tratamento por alteração de ECG</p>
+          <DataTable headers={['Alteração', 'Tratamento']} rows={ecgTreatmentTable} />
         </>
       )}
 
@@ -1108,7 +1116,7 @@ function TabelasView({ onBack }: { onBack: () => void }) {
         <>
           <DataTable headers={['Odor', 'Agentes']} rows={odoresTable} />
           <AlertCard type="danger" className="mt-3">
-            <strong>Alerta:</strong> Odor de alho + sindrome colinergica = ORGANOFOSFORADO ate prova em contrario!
+            <strong>Alerta:</strong> Odor de alho + síndrome colinérgica = ORGANOFOSFORADO até prova em contrário!
           </AlertCard>
         </>
       )}
@@ -1116,25 +1124,25 @@ function TabelasView({ onBack }: { onBack: () => void }) {
       {/* Pupilas */}
       {activeTab === 'pupilas' && (
         <>
-          <p className="text-xs font-bold text-text-secondary mb-2">Midriase (pupilas dilatadas)</p>
-          <DataTable headers={['Categoria', 'Agentes']} rows={midriaseTable} />
-          <p className="text-xs font-bold text-text-secondary mb-2 mt-4">Miose (pupilas contraidas)</p>
+          <p className="text-xs font-bold text-text-secondary mb-2">Midríase (pupilas dilatadas)</p>
+          <DataTable headers={['Categoria', 'Agentes']} rows={midríaseTable} />
+          <p className="text-xs font-bold text-text-secondary mb-2 mt-4">Miose (pupilas contraídas)</p>
           <DataTable headers={['Categoria', 'Agentes']} rows={mioseTable} />
           <AlertCard type="info" className="mt-3">
-            <strong>Macete:</strong> Miose + depressao respiratoria = OPIOIDE (dar naloxona!)
+            <strong>Macete:</strong> Miose + depressão respiratória = OPIOIDE (dar naloxona!)
           </AlertCard>
         </>
       )}
 
-      {/* Bombas-Relogio */}
+      {/* Bombas-relógio */}
       {activeTab === 'bombas' && (
         <>
-          <p className="text-xs font-bold text-text-secondary mb-2">"Bombas-Relogio" toxicas</p>
+          <p className="text-xs font-bold text-text-secondary mb-2">"Bombas-relógio" tóxicas</p>
           <DataTable headers={['Agente', 'Toxicidade tardia']} rows={bombasTable} />
           <AlertCard type="danger" className="mt-3">
-            <strong>Regra:</strong> Paciente assintomatico com ingestao de "bomba-relogio" = INTERNAR e monitorar!
+            <strong>Regra:</strong> Paciente assintomático com ingestão de "bomba-relógio" = INTERNAR e monitorar!
           </AlertCard>
-          <p className="text-xs font-bold text-text-secondary mb-2 mt-4">Exames obrigatorios em ingestao intencional</p>
+          <p className="text-xs font-bold text-text-secondary mb-2 mt-4">Exames obrigatórios em ingestão intencional</p>
           <DataTable headers={['Exame', 'Justificativa']} rows={examesIngestaoTable} />
         </>
       )}
@@ -1156,11 +1164,11 @@ export default function ToxPath() {
   }, [])
 
   const fabItems = [
-    { label: 'Inicio', onClick: () => navigate('home') },
+    { label: 'Início', onClick: () => navigate('home') },
     { label: 'Toxindromes', onClick: () => navigate('toxindromes') },
-    { label: 'Descontaminacao', onClick: () => navigate('descontaminacao') },
-    { label: 'Disposicao', onClick: () => navigate('disposicao') },
-    { label: 'Antidotos', onClick: () => navigate('antidotos') },
+    { label: 'Descontaminação', onClick: () => navigate('descontaminação') },
+    { label: 'Disposição', onClick: () => navigate('disposição') },
+    { label: 'Antidotos', onClick: () => navigate('antídotos') },
     { label: 'Checklist', onClick: () => navigate('checklist') },
     { label: 'Tabelas', onClick: () => navigate('tabelas') },
   ]
@@ -1168,16 +1176,16 @@ export default function ToxPath() {
   return (
     <div className="min-h-screen bg-bg-primary">
       <Disclaimer />
-      <Container className={screen === 'disposicao' ? 'pb-36' : ''}>
+      <Container className={screen === 'disposição' ? 'pb-36' : ''}>
         {screen === 'home' && <HomeView onNavigate={navigate} />}
         {screen === 'toxindromes' && <ToxindromesView onBack={() => navigate('home')} onNavigate={navigate} />}
-        {screen === 'descontaminacao' && <DescontaminacaoView onBack={() => navigate('home')} />}
-        {screen === 'disposicao' && <DisposicaoView onBack={() => navigate('home')} onNavigate={navigate} />}
-        {screen === 'antidotos' && <AntidotosView onBack={() => navigate('home')} />}
+        {screen === 'descontaminação' && <DescontaminaçãoView onBack={() => navigate('home')} />}
+        {screen === 'disposição' && <DisposiçãoView onBack={() => navigate('home')} onNavigate={navigate} />}
+        {screen === 'antídotos' && <AntidotosView onBack={() => navigate('home')} />}
         {screen === 'checklist' && <ChecklistView onBack={() => navigate('home')} onNavigate={navigate} />}
         {screen === 'tabelas' && <TabelasView onBack={() => navigate('home')} />}
       </Container>
-      <Footer toolName="Tox Path" version="v2.0.0" />
+      <Footer toolName="Tox Path" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

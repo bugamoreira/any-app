@@ -2,7 +2,7 @@
 // TIPOS CLINICOS — ANY App
 // ==========================================
 
-/** Configuracao de uma droga para calculadora de infusao */
+/** Configuração de uma droga para calculadora de infusão */
 export interface DrugConfig {
   id: string
   name: string
@@ -58,7 +58,7 @@ export interface PathwayStep {
 /** Item de FAB menu */
 export interface FABItem {
   label: string
-  icon?: string
+  icon?: React.ReactNode
   onClick: () => void
 }
 

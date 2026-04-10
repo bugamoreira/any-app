@@ -14,7 +14,7 @@ import { Modal } from '../components/common/Modal'
 import { StepperNav } from '../components/clinical/StepperNav'
 import { useWeight } from '../contexts/WeightContext'
 import { useToast } from '../contexts/ToastContext'
-// fmt disponivel se necessario
+// fmt disponível se necessário
 import type { FABItem, PathwayStep } from '../types/clinical'
 
 // ==========================================
@@ -116,68 +116,68 @@ type AirwayAction =
 // ==========================================
 
 const INDICATION_ITEMS = [
-  { title: 'Falha em manter/proteger via aerea', desc: 'Rebaixamento, obstrucao, risco de aspiracao' },
-  { title: 'Falha de ventilacao ou oxigenacao', desc: 'Hipoxemia refrataria, fadiga, hipercapnia' },
-  { title: 'Curso clinico antecipado', desc: 'Queimadura VA, angioedema, procedimento' },
+  { title: 'Falha em manter/proteger via aérea', desc: 'Rebaixamento, obstrução, risco de aspiração' },
+  { title: 'Falha de ventilação ou oxigenação', desc: 'Hipoxemia refratária, fadiga, hipercapnia' },
+  { title: 'Curso clínico antecipado', desc: 'Queimadura VA, angioedema, procedimento' },
 ] as const
 
 const CRASH_ITEMS = [
-  { letter: 'C' as const, title: 'C -- Consumo de O2 aumentado', desc: 'Febre, sepse, agitacao, trabalho respiratorio aumentado', recs: ['Otimizar pre-oxigenacao prolongada', 'Oxigenacao apneica recomendada', 'Antecipar dessaturacao rapida'] },
-  { letter: 'R' as const, title: 'R -- Falencia de VD', desc: 'TEP, HAP, IAM VD, SDRA grave', recs: ['Evitar hipoxia e hipercapnia', 'Vasopressor precoce', 'Considerar ketamina como indutor'] },
-  { letter: 'A' as const, title: 'A -- Acidose metabolica', desc: 'pH < 7.2, lactato elevado, padrao Kussmaul', recs: ['Corrigir causa base primeiro se possivel', 'Minimizar tempo de apneia', 'Manter ventilacao-minuto alta pos-IOT'] },
-  { letter: 'S' as const, title: 'S -- Saturacao comprometida', desc: 'SpO2 < 93% mesmo com O2 suplementar', recs: ['VNI/CNAF durante preparo se tolerado', 'DSI (Delayed Sequence Intubation)', 'Oxigenacao apneica 15 L/min'] },
-  { letter: 'H' as const, title: 'H -- Hipotensao / Hipovolemia', desc: 'PAS < 90, ma perfusao, Shock Index > 1.0', recs: ['Ressuscitacao volemica antes se possivel', 'Vasopressor preparado/iniciado', 'Reduzir dose de indutor (50%)', 'Push-dose pressor a mao'] },
+  { letter: 'C' as const, title: 'C — Consumo de O2 aumentado', desc: 'Febre, sepse, agitação, trabalho respiratório aumentado', recs: ['Otimizar pré-oxigenação prolongada', 'Oxigenação apneica recomendada', 'Antecipar dessaturação rápida'] },
+  { letter: 'R' as const, title: 'R — Falência de VD', desc: 'TEP, HAP, IAM VD, SDRA grave', recs: ['Evitar hipóxia e hipercapnia', 'Vasopressor precoce', 'Considerar ketamina como indutor'] },
+  { letter: 'A' as const, title: 'A — Acidose metabólica', desc: 'pH < 7.2, lactato elevado, padrão Kussmaul', recs: ['Corrigir causa base primeiro se possível', 'Minimizar tempo de apneia', 'Manter ventilação-minuto alta pós-IOT'] },
+  { letter: 'S' as const, title: 'S — Saturação comprometida', desc: 'SpO₂ < 93% mesmo com O2 suplementar', recs: ['VNI/CNAF durante preparo se tolerado', 'DSI (Delayed Sequence Intubation)', 'Oxigenação apneica 15 L/min'] },
+  { letter: 'H' as const, title: 'H — Hipotensão / Hipovolemia', desc: 'PAS < 90, má perfusão, Shock Index > 1.0', recs: ['Ressuscitação volêmica antes se possível', 'Vasopressor preparado/iniciado', 'Reduzir dose de indutor (50%)', 'Push-dose pressor à mão'] },
 ] as const
 
 const LEMON_ITEMS = [
-  { title: 'L -- Look externally', desc: 'Impressao geral de VA dificil, trauma facial, barba' },
-  { title: 'E -- Evaluate 3-3-2', desc: 'Abertura oral < 3 dedos, mento-hioide < 3, tireo-hioide < 2' },
-  { title: 'M -- Mallampati >= III', desc: 'Visualizacao limitada de estruturas orofaringeas' },
-  { title: 'O -- Obstruction / Obesity', desc: 'Massa, epiglotite, obesidade (IMC > 30)' },
-  { title: 'N -- Neck mobility', desc: 'Rigidez cervical, colar, artrite, espondilite' },
+  { title: 'L — Look externally', desc: 'Impressão geral de VA difícil, trauma facial, barba' },
+  { title: 'E — Evaluate 3-3-2', desc: 'Abertura oral < 3 dedos, mento-hioide < 3, tireo-hioide < 2' },
+  { title: 'M — Mallampati >= III', desc: 'Visualização limitada de estruturas orofaríngeas' },
+  { title: 'O — Obstruction / Obesity', desc: 'Massa, epiglotite, obesidade (IMC > 30)' },
+  { title: 'N — Neck mobility', desc: 'Rigidez cervical, colar, artrite, espondilite' },
 ] as const
 
 const ROMAN_ITEMS = [
-  { title: 'R -- Radiation / Restriction', desc: 'Radioterapia cervical, complacencia pulmonar reduzida' },
-  { title: 'O -- Obstruction / Obesity / OSA', desc: 'Obstrucao de VA, obesidade, apneia do sono' },
-  { title: 'M -- Mask seal / Male', desc: 'Barba, trauma facial, edentulismo, sexo masculino' },
-  { title: 'A -- Age > 55 anos', desc: 'Alteracoes anatomicas relacionadas a idade' },
-  { title: 'N -- No teeth', desc: 'Edentulismo dificulta selamento da mascara' },
+  { title: 'R — Radiation / Restriction', desc: 'Radioterapia cervical, complacência pulmonar reduzida' },
+  { title: 'O — Obstruction / Obesity / OSA', desc: 'Obstrução de VA, obesidade, apneia do sono' },
+  { title: 'M — Mask seal / Male', desc: 'Barba, trauma facial, edentulismo, sexo masculino' },
+  { title: 'A — Age > 55 anos', desc: 'Alterações anatômicas relacionadas à idade' },
+  { title: 'N — No teeth', desc: 'Edentulismo dificulta selamento da máscara' },
 ] as const
 
 const CHECKLIST_PACIENTE = [
   { title: 'Acesso venoso funcionante', desc: '' },
-  { title: 'Posicionamento otimizado', desc: 'Cabeceira elevada, coxins, posicao olfativa' },
-  { title: 'Pre-oxigenacao', desc: '3-5 min, FiO2 100% (BMV / VNI / CNAF) + oxigenacao apneica' },
-  { title: 'Otimizacao hemodinamica', desc: 'Considere vasopressor ou cristaloide antes da inducao' },
-  { title: 'Membrana cricotireoidea identificada', desc: '' },
-  { title: 'Alergias e contraindicacoes verificadas', desc: '' },
+  { title: 'Posicionamento otimizado', desc: 'Cabeceira elevada, coxins, posição olfativa' },
+  { title: 'Pré-oxigenação', desc: '3-5 min, FiO₂ 100% (BMV / VNI / CNAF) + oxigenação apneica' },
+  { title: 'Otimização hemodinâmica', desc: 'Considere vasopressor ou cristaloide antes da indução' },
+  { title: 'Membrana cricotireóidea identificada', desc: '' },
+  { title: 'Alergias e contraindicações verificadas', desc: '' },
 ]
 
 const CHECKLIST_EQUIP = [
-  { title: 'Laringoscopio testado', desc: 'Videolaringoscopio e/ou lamina direta' },
+  { title: 'Laringoscópio testado', desc: 'Videolaringoscópio e/ou lâmina direta' },
   { title: 'TOT com cuff testado (2 tamanhos)', desc: '' },
   { title: 'Bougie + fio-guia', desc: '' },
   { title: 'BMV + circuito + ventilador', desc: '' },
-  { title: 'Aspiracao montada e testada', desc: '' },
-  { title: 'Monitorizacao completa + capnografia', desc: '' },
-  { title: 'DEG disponivel e lubrificado', desc: 'Plano B: mascara laringea' },
+  { title: 'Aspiração montada e testada', desc: '' },
+  { title: 'Monitorização completa + capnografia', desc: '' },
+  { title: 'DEG disponível e lubrificado', desc: 'Plano B: máscara laríngea' },
   { title: 'Kit de cricotireoidostomia', desc: 'Plano C: bisturi + bougie + TOT 6.0' },
 ]
 
 const CHECKLIST_EQUIPE = [
-  { title: 'Lider / intubador definido', desc: '' },
-  { title: 'Medico backup disponivel', desc: '' },
+  { title: 'Líder / intubador definido', desc: '' },
+  { title: 'Médico backup disponível', desc: '' },
   { title: 'Drogas preparadas e checadas', desc: '' },
   { title: 'Planos A / B / C verbalizados', desc: '' },
 ]
 
 const CHECKLIST_POS = [
   { title: 'Confirmar com capnografia', desc: '' },
-  { title: 'Fixacao do tubo + pressao do cuff', desc: '' },
-  { title: 'Elevar cabeceira + checar ventilacao', desc: '' },
-  { title: 'Sedacao continua', desc: '' },
-  { title: 'Gasometria + Rx torax', desc: '' },
+  { title: 'Fixação do tubo + pressão do cuff', desc: '' },
+  { title: 'Elevar cabeceira + checar ventilação', desc: '' },
+  { title: 'Sedação contínua', desc: '' },
+  { title: 'Gasometria + Rx tórax', desc: '' },
 ]
 
 interface DrugDef {
@@ -196,26 +196,26 @@ interface DrugDef {
 }
 
 const DRUGS: DrugDef[] = [
-  { id: 'fentanil', name: 'Fentanil', presentation: '50 mcg/mL -- ampola 2-10 mL | IV lento, 3 min antes', concentration: 50, unit: 'mcg', rateUnit: 'mcg/kg', min: 1, max: 3, step: 0.5, defaultVal: 3, category: 'simpatolitico' },
-  { id: 'ketamina', name: 'Cetamina', presentation: '50 mg/mL -- ampola 10 mL', concentration: 50, unit: 'mg', rateUnit: 'mg/kg', min: 1, max: 2, step: 0.5, defaultVal: 1.5, category: 'indutor', alert: 'Uso com cautela em emergencia hipertensiva. Considere etomidato como alternativa' },
+  { id: 'fentanil', name: 'Fentanil', presentation: '50 mcg/mL — ampola 2-10 mL | IV lento, 3 min antes', concentration: 50, unit: 'mcg', rateUnit: 'mcg/kg', min: 1, max: 3, step: 0.5, defaultVal: 3, category: 'simpatolitico' },
+  { id: 'ketamina', name: 'Cetamina', presentation: '50 mg/mL — ampola 10 mL', concentration: 50, unit: 'mg', rateUnit: 'mg/kg', min: 1, max: 2, step: 0.5, defaultVal: 1.5, category: 'indutor', alert: 'Uso com cautela em emergência hipertensiva. Considere etomidato como alternativa' },
   { id: 'etomidato', name: 'Etomidato', presentation: '2 mg/mL (10 mL)', concentration: 2, unit: 'mg', rateUnit: 'mg/kg', min: 0.2, max: 0.4, step: 0.01, defaultVal: 0.3, category: 'indutor' },
   { id: 'propofol', name: 'Propofol', presentation: '10 mg/mL (20 mL)', concentration: 10, unit: 'mg', rateUnit: 'mg/kg', min: 1, max: 2.5, step: 0.5, defaultVal: 1.5, category: 'indutor' },
-  { id: 'rocuronio', name: 'Rocuronio', presentation: '10 mg/mL (5 mL)', concentration: 10, unit: 'mg', rateUnit: 'mg/kg', min: 1.5, max: 2, step: 0.1, defaultVal: 1.5, category: 'bnm' },
-  { id: 'succinilcolina', name: 'Succinilcolina', presentation: '10 mg/mL (10 mL)', concentration: 10, unit: 'mg', rateUnit: 'mg/kg', min: 1.5, max: 2, step: 0.1, defaultVal: 1.5, category: 'bnm', alert: 'Contraindicada em hipercalemia, queimaduras extensas (>72h), miopatias, lesao medular cronica, doenca do neuronio motor' },
+  { id: 'rocuronio', name: 'Rocurônio', presentation: '10 mg/mL (5 mL)', concentration: 10, unit: 'mg', rateUnit: 'mg/kg', min: 1.5, max: 2, step: 0.1, defaultVal: 1.5, category: 'bnm' },
+  { id: 'succinilcolina', name: 'Succinilcolina', presentation: '10 mg/mL (10 mL)', concentration: 10, unit: 'mg', rateUnit: 'mg/kg', min: 1.5, max: 2, step: 0.1, defaultVal: 1.5, category: 'bnm', alert: 'Contraindicada em hipercalemia, queimaduras extensas (>72h), miopatias, lesão medular crônica, doença do neurônio motor' },
 ]
 
 const INDUTORES: (keyof MedsState)[] = ['ketamina', 'etomidato', 'propofol']
 const BNMS: (keyof MedsState)[] = ['rocuronio', 'succinilcolina']
 
 const PATHWAY_STEPS: PathwayStep[] = [
-  { id: 'indicacao', number: 1, title: 'Indicacao' },
+  { id: 'indicação', number: 1, title: 'Indicação' },
   { id: 'crash', number: 2, title: 'CRASH' },
-  { id: 'vad', number: 3, title: 'VAD Anatomica' },
+  { id: 'vad', number: 3, title: 'VAD Anatômica' },
   { id: 'dados', number: 4, title: 'Dados' },
   { id: 'triple', number: 5, title: 'Triple Setup' },
-  { id: 'otimizacao', number: 6, title: 'Otimizacao' },
-  { id: 'preox', number: 7, title: 'Pre-oxigenacao' },
-  { id: 'meds', number: 8, title: 'Medicacoes' },
+  { id: 'otimização', number: 6, title: 'Otimização' },
+  { id: 'preox', number: 7, title: 'Pré-oxigenação' },
+  { id: 'meds', number: 8, title: 'Medicações' },
   { id: 'procedimento', number: 9, title: 'Procedimento' },
   { id: 'resultado', number: 10, title: 'Resultado' },
   { id: 'resumo', number: 11, title: 'Resumo' },
@@ -536,16 +536,16 @@ export default function AirwayGuide() {
 
   const pasAlert = useMemo(() => {
     if (!state.siPAS) return null
-    if (state.siPAS < 90) return { text: 'Hipotensao', type: 'danger' as const }
+    if (state.siPAS < 90) return { text: 'Hipotensão', type: 'danger' as const }
     if (state.siPAS < 100) return { text: 'PAS limitrofe', type: 'warning' as const }
-    if (state.siPAS > 180) return { text: 'Hipertensao', type: 'warning' as const }
+    if (state.siPAS > 180) return { text: 'Hipertensão', type: 'warning' as const }
     return null
   }, [state.siPAS])
 
   // DEG size
   const degText = useMemo(() => {
     const ml = getDEGSize(w)
-    let text = `Mascara laringea: tamanho ${ml}`
+    let text = `Mascara laríngea: tamanho ${ml}`
     if (state.height) {
       const tl = getTLSize(state.height)
       text += ` | Tubo laringeo: tamanho ${tl}`
@@ -555,25 +555,25 @@ export default function AirwayGuide() {
 
   // Summary generation
   const generateReport = useCallback((): string => {
-    const indTexts = ['Falha em manter/proteger VA', 'Falha de ventilacao/oxigenacao', 'Curso clinico antecipado']
+    const indTexts = ['Falha em manter/proteger VA', 'Falha de ventilação/oxigenação', 'Curso clínico antecipado']
     const indLine = state.indications.map((v, i) => v ? indTexts[i] : null).filter(Boolean).join(', ') || '--'
 
     const crashLetters = Object.entries(state.crash).filter(([, v]) => v).map(([k]) => k).join('')
     let vadLine = `CRASH: ${crashCount}/5${crashLetters ? ` (${crashLetters})` : ''}`
     if (state.vadOption === 'yes') vadLine += `\nLEMON: ${lemonCount}/5 | ROMAN: ${romanCount}/5`
-    else if (state.vadOption === 'no') vadLine += '\nAvaliacao anatomica: nao realizada'
+    else if (state.vadOption === 'no') vadLine += '\nAvaliação anatômica: não realizada'
     if (state.shockIndex) vadLine += `\nShock Index: ${state.shockIndex.toFixed(2)}`
 
     let patLine = `Peso: ${state.localWeight || '--'} kg`
     if (state.height) patLine += ` | Altura: ${state.height} cm`
-    patLine += `\nSexo: ${state.sex === 'M' ? 'Masculino' : 'Feminino'} | Populacao: ${state.population}`
+    patLine += `\nSexo: ${state.sex === 'M' ? 'Masculino' : 'Feminino'} | População: ${state.population}`
 
     const medsLines: string[] = []
     if (state.meds.fentanil) { const r = state.medSliders.fentanil; medsLines.push(`Fentanil ${calcDose(w, r)} mcg (${r} mcg/kg)`) }
     if (state.meds.ketamina) { const r = state.medSliders.ketamina; medsLines.push(`Cetamina ${calcDose(w, r)} mg (${r} mg/kg)`) }
     if (state.meds.etomidato) { const r = state.medSliders.etomidato; medsLines.push(`Etomidato ${calcDoseDecimal(w, r)} mg (${r} mg/kg)`) }
     if (state.meds.propofol) { const r = state.medSliders.propofol; medsLines.push(`Propofol ${calcDose(w, r)} mg (${r} mg/kg)`) }
-    if (state.meds.rocuronio) { const r = state.medSliders.rocuronio; medsLines.push(`Rocuronio ${calcDose(w, r)} mg (${r} mg/kg)`) }
+    if (state.meds.rocuronio) { const r = state.medSliders.rocuronio; medsLines.push(`Rocurônio ${calcDose(w, r)} mg (${r} mg/kg)`) }
     if (state.meds.succinilcolina) { const r = state.medSliders.succinilcolina; medsLines.push(`Succinilcolina ${calcDose(w, r)} mg (${r} mg/kg)`) }
 
     let procLine = `Tubo: ${state.sex ? getTubeSize(state.sex) : '--'}`
@@ -585,20 +585,20 @@ export default function AirwayGuide() {
     if (state.rescueMethod) confLine = `Resgate: ${state.rescueMethod}\n${confLine}`
 
     return [
-      'RELATORIO DE IOT - AirwayGuide',
+      'RELATÓRIO DE IOT - AirwayGuide',
       new Date().toLocaleString('pt-BR'),
       '',
-      `INDICACAO:\n${indLine}`,
+      `INDICAÇÃO:\n${indLine}`,
       '',
-      `AVALIACAO DE VAD:\n${vadLine}`,
+      `AVALIAÇÃO DE VAD:\n${vadLine}`,
       '',
       `PACIENTE:\n${patLine}`,
       '',
-      `MEDICACOES:\n${medsLines.join('\n') || 'Nenhuma selecionada'}`,
+      `MEDICAÇÕES:\n${medsLines.join('\n') || 'Nenhuma selecionada'}`,
       '',
       `PROCEDIMENTO:\n${procLine}`,
       '',
-      `CONFIRMACAO:\n${confLine}`,
+      `CONFIRMAÇÃO:\n${confLine}`,
       '',
       '---',
       'Gerado por Airway Guide - ANY App v2.0.0',
@@ -608,18 +608,18 @@ export default function AirwayGuide() {
   const copyReport = useCallback(() => {
     const report = generateReport()
     navigator.clipboard.writeText(report).then(() => {
-      addToast('Relatorio copiado!', 'success')
+      addToast('Relatório copiado!', 'success')
     })
   }, [generateReport, addToast])
 
   // FAB items
   const fabItems: FABItem[] = useMemo(() => [
-    { label: 'Indicacao', onClick: () => { startPathway(); goToStep(1) } },
+    { label: 'Indicação', onClick: () => { startPathway(); goToStep(1) } },
     { label: 'CRASH', onClick: () => { startPathway(); goToStep(2) } },
     { label: 'Preparo', onClick: () => { startPathway(); goToStep(5) } },
-    { label: 'Medicacoes', onClick: () => { startPathway(); goToStep(8) } },
+    { label: 'Medicações', onClick: () => { startPathway(); goToStep(8) } },
     { label: 'Laringoscopia', onClick: () => { startPathway(); goToStep(9) } },
-    { label: 'Confirmacao', onClick: () => { startPathway(); goToStep(10) } },
+    { label: 'Confirmação', onClick: () => { startPathway(); goToStep(10) } },
   ], [startPathway, goToStep])
 
   // ==========================================
@@ -628,30 +628,29 @@ export default function AirwayGuide() {
 
   function renderHome() {
     return (
-      <div className="space-y-4">
-        <Card
-          className="cursor-pointer active:bg-bg-hover"
+      <div>
+        <div
           onClick={startPathway}
+          style={{ background: '#1A1A1A', border: '1px solid #333', borderLeft: '4px solid #FF5252', borderRadius: '12px', padding: '20px', marginBottom: '12px', cursor: 'pointer' }}
         >
-          <div className="font-bold text-base">Pathway de intubacao</div>
-          <div className="text-sm text-text-secondary mt-1">Guia passo a passo para via aerea</div>
-        </Card>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Card
-            className="cursor-pointer active:bg-bg-hover"
+          <div style={{ fontSize: '18px', fontWeight: 600, marginBottom: '4px' }}>Pathway de intubação</div>
+          <div style={{ fontSize: '13px', color: '#888' }}>Guia passo a passo para via aérea</div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div
             onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'checklist' })}
+            style={{ background: '#1A1A1A', border: '1px solid #333', borderLeft: '4px solid #2196F3', borderRadius: '12px', padding: '20px', cursor: 'pointer' }}
           >
-            <div className="font-bold text-sm">Checklist de IOT</div>
-            <div className="text-xs text-text-secondary mt-1">Materiais, equipe e planos</div>
-          </Card>
-          <Card
-            className="cursor-pointer active:bg-bg-hover"
+            <div style={{ fontSize: '18px', fontWeight: 600, marginBottom: '4px' }}>Checklist de IOT</div>
+            <div style={{ fontSize: '13px', color: '#888' }}>Materiais, equipe e planos</div>
+          </div>
+          <div
             onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'doses' })}
+            style={{ background: '#1A1A1A', border: '1px solid #333', borderLeft: '4px solid #2196F3', borderRadius: '12px', padding: '20px', cursor: 'pointer' }}
           >
-            <div className="font-bold text-sm">Doses de medicacoes</div>
-            <div className="text-xs text-text-secondary mt-1">Indutores e BNM</div>
-          </Card>
+            <div style={{ fontSize: '18px', fontWeight: 600, marginBottom: '4px' }}>Doses de medicações</div>
+            <div style={{ fontSize: '13px', color: '#888' }}>Indutores e BNM</div>
+          </div>
         </div>
       </div>
     )
@@ -664,9 +663,7 @@ export default function AirwayGuide() {
   function renderChecklist() {
     return (
       <div>
-        <Button variant="secondary" size="sm" onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'home' })} className="mb-4">
-          &#8592; Voltar
-        </Button>
+        <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'home' })} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-4 px-0 min-h-[44px]">← Voltar</button>
         <h2 className="text-xl font-extrabold mb-5">Checklist de IOT</h2>
 
         <Card borderColor="#FF5252" className="mb-4">
@@ -691,7 +688,7 @@ export default function AirwayGuide() {
         </Card>
 
         <Card borderColor="#FFC107" className="mb-4">
-          <div className="font-bold text-sm text-warning mb-3">Pos-intubacao</div>
+          <div className="font-bold text-sm text-warning mb-3">Pós-intubação</div>
           {CHECKLIST_POS.map((item, i) => (
             <SimpleCheckItem key={i} title={item.title} desc={item.desc} />
           ))}
@@ -707,10 +704,8 @@ export default function AirwayGuide() {
   function renderStandaloneDoses() {
     return (
       <div>
-        <Button variant="secondary" size="sm" onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'home' })} className="mb-4">
-          &#8592; Voltar
-        </Button>
-        <h2 className="text-xl font-extrabold mb-5">Doses de medicacoes</h2>
+        <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'home' })} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-4 px-0 min-h-[44px]">← Voltar</button>
+        <h2 className="text-xl font-extrabold mb-5">Doses de medicações</h2>
 
         <div className="mb-4">
           <label className="text-sm text-text-secondary block mb-1.5">Peso (kg)</label>
@@ -731,7 +726,7 @@ export default function AirwayGuide() {
 
         <p className="text-xs text-text-muted mb-3">Toque no card para selecionar. Ajuste a dose com o slider.</p>
 
-        <p className="text-[11px] text-text-muted uppercase tracking-wider mb-2">Bloqueio simpatico -- simpatolise (opcional)</p>
+        <p className="text-xs text-text-muted uppercase tracking-wider mb-2">Bloqueio simpático — simpatólise (opcional)</p>
         {DRUGS.filter(d => d.category === 'simpatolitico').map(drug => (
           <DoseCard
             key={drug.id}
@@ -744,7 +739,7 @@ export default function AirwayGuide() {
           />
         ))}
 
-        <p className="text-[11px] text-text-muted uppercase tracking-wider mt-3 mb-2">Indutores (selecionar 1)</p>
+        <p className="text-xs text-text-muted uppercase tracking-wider mt-3 mb-2">Indutores (selecionar 1)</p>
         {DRUGS.filter(d => d.category === 'indutor').map(drug => (
           <DoseCard
             key={drug.id}
@@ -757,7 +752,7 @@ export default function AirwayGuide() {
           />
         ))}
 
-        <p className="text-[11px] text-text-muted uppercase tracking-wider mt-3 mb-2">BNM (selecionar 1)</p>
+        <p className="text-xs text-text-muted uppercase tracking-wider mt-3 mb-2">BNM (selecionar 1)</p>
         {DRUGS.filter(d => d.category === 'bnm').map(drug => (
           <DoseCard
             key={drug.id}
@@ -781,9 +776,9 @@ export default function AirwayGuide() {
     return (
       <div>
         <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 1 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Indicacao de IOT</h2>
+        <h2 className="text-xl font-extrabold mb-5">Indicação de IOT</h2>
         <Card className="mb-4">
-          <div className="font-bold text-[15px] mb-3">Selecione a(s) indicacao(oes)</div>
+          <div className="font-bold text-[15px] mb-3">Selecione a(s) indicação(oes)</div>
           {INDICATION_ITEMS.map((item, i) => (
             <CheckItem
               key={i}
@@ -797,7 +792,7 @@ export default function AirwayGuide() {
 
         {hasIndication && (
           <AlertCard type="info" title="PCR ou PCR iminente?">
-            Considere intubacao sem RSI (sem drogas). Priorizar compressoes.
+            Considere intubação sem RSI (sem drogas). Priorizar compressoes.
           </AlertCard>
         )}
 
@@ -814,13 +809,13 @@ export default function AirwayGuide() {
     return (
       <div>
         <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 2 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">VAD Fisiologica -- CRASH</h2>
+        <h2 className="text-xl font-extrabold mb-5">VAD Fisiológica — CRASH</h2>
         <Card className="mb-4">
           <div className="flex items-center gap-3 mb-4 pb-3 border-b border-border-card">
             <MnemonicDisplay letters={['C', 'R', 'A', 'S', 'H']} activeMap={state.crash} />
             <span className="text-sm text-text-secondary ml-auto">{crashCount}/5</span>
           </div>
-          <p className="text-sm text-text-secondary mb-4">O paciente tolera apneia e inducao? Avalie fatores de risco:</p>
+          <p className="text-sm text-text-secondary mb-4">O paciente tolera apneia e indução? Avalie fatores de risco:</p>
 
           {CRASH_ITEMS.map(item => (
             <div key={item.letter}>
@@ -833,7 +828,7 @@ export default function AirwayGuide() {
               />
               {state.crash[item.letter] && (
                 <div className="ml-8 mb-3 p-3 bg-bg-elevated rounded-lg text-xs text-text-secondary leading-relaxed">
-                  <strong>Recomendacoes:</strong>
+                  <strong>Recomendações:</strong>
                   {item.recs.map((r, i) => <div key={i}>- {r}</div>)}
                 </div>
               )}
@@ -863,7 +858,7 @@ export default function AirwayGuide() {
                   className="w-full p-2.5 bg-bg-card border border-border-card rounded-lg text-text-primary text-base text-center"
                 />
                 {fcAlert && (
-                  <div className={`text-[10px] mt-1 px-2 py-1 rounded text-center ${
+                  <div className={`text-xs mt-1 px-2 py-1 rounded text-center ${
                     fcAlert.type === 'danger' ? 'bg-danger/20 text-danger' : 'bg-warning/20 text-warning'
                   }`}>{fcAlert.text}</div>
                 )}
@@ -887,7 +882,7 @@ export default function AirwayGuide() {
                   className="w-full p-2.5 bg-bg-card border border-border-card rounded-lg text-text-primary text-base text-center"
                 />
                 {pasAlert && (
-                  <div className={`text-[10px] mt-1 px-2 py-1 rounded text-center ${
+                  <div className={`text-xs mt-1 px-2 py-1 rounded text-center ${
                     pasAlert.type === 'danger' ? 'bg-danger/20 text-danger' : 'bg-warning/20 text-warning'
                   }`}>{pasAlert.text}</div>
                 )}
@@ -900,13 +895,13 @@ export default function AirwayGuide() {
         </Card>
 
         {crashCount > 0 && (
-          <AlertCard type="danger" title="VAD Fisiologica identificada">
-            Recomenda-se otimizacao antes da inducao.
+          <AlertCard type="danger" title="VAD Fisiológica identificada">
+            Recomenda-se otimização antes da indução.
           </AlertCard>
         )}
 
         <div className="flex gap-2.5 mt-5">
-          <Button variant="secondary" fullWidth onClick={() => goToStep(1)}>&#8592; Voltar</Button>
+          <button onClick={() => goToStep(1)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(3)}>Continuar &#8594;</Button>
         </div>
       </div>
@@ -917,11 +912,11 @@ export default function AirwayGuide() {
     return (
       <div>
         <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 3 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">VAD Anatomica</h2>
+        <h2 className="text-xl font-extrabold mb-5">VAD Anatômica</h2>
 
         <Card className="mb-4">
           <div className="font-bold text-[15px] mb-2">Deseja avaliar preditores de VAD?</div>
-          <p className="text-sm text-text-secondary mb-4">Avaliacao de LEMON e ROMAN</p>
+          <p className="text-sm text-text-secondary mb-4">Avaliação de LEMON e ROMAN</p>
           <div className="flex gap-2">
             <Button
               variant={state.vadOption === 'yes' ? 'primary' : 'secondary'}
@@ -947,7 +942,7 @@ export default function AirwayGuide() {
                 <MnemonicDisplay letters={['L', 'E', 'M', 'O', 'N']} activeMap={state.lemon} />
                 <span className="text-sm text-text-secondary ml-auto">{lemonCount}/5</span>
               </div>
-              <p className="text-xs text-text-secondary mb-3">Preditores de laringoscopia dificil:</p>
+              <p className="text-xs text-text-secondary mb-3">Preditores de laringoscopia difícil:</p>
               {LEMON_ITEMS.map((item, i) => (
                 <CheckItem
                   key={i}
@@ -965,7 +960,7 @@ export default function AirwayGuide() {
                 <MnemonicDisplay letters={['R', 'O', 'M', 'A', 'N']} activeMap={state.roman} />
                 <span className="text-sm text-text-secondary ml-auto">{romanCount}/5</span>
               </div>
-              <p className="text-xs text-text-secondary mb-3">Preditores de VMB dificil:</p>
+              <p className="text-xs text-text-secondary mb-3">Preditores de VMB difícil:</p>
               {ROMAN_ITEMS.map((item, i) => (
                 <CheckItem
                   key={i}
@@ -978,14 +973,14 @@ export default function AirwayGuide() {
               ))}
             </Card>
 
-            <AlertCard type="warning" title="Resumo VAD Anatomica">
+            <AlertCard type="warning" title="Resumo VAD Anatômica">
               LEMON: {lemonCount}/5 | ROMAN: {romanCount}/5
             </AlertCard>
           </>
         )}
 
         <div className="flex gap-2.5 mt-5">
-          <Button variant="secondary" fullWidth onClick={() => goToStep(2)}>&#8592; Voltar</Button>
+          <button onClick={() => goToStep(2)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           {state.vadOption === 'yes' && (
             <Button fullWidth onClick={() => goToStep(4)}>Continuar &#8594;</Button>
           )}
@@ -1036,7 +1031,7 @@ export default function AirwayGuide() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm text-text-secondary mb-1.5">Populacao</label>
+            <label className="block text-sm text-text-secondary mb-1.5">População</label>
             <div className="flex gap-2 flex-wrap">
               {(['adulto', 'idoso', 'obeso', 'gestante'] as Population[]).map(p => (
                 <button
@@ -1060,7 +1055,7 @@ export default function AirwayGuide() {
         </Card>
 
         <div className="flex gap-2.5 mt-5">
-          <Button variant="secondary" fullWidth onClick={() => goToStep(3)}>&#8592; Voltar</Button>
+          <button onClick={() => goToStep(3)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth disabled={!patientDataValid} onClick={() => goToStep(5)}>Continuar &#8594;</Button>
         </div>
       </div>
@@ -1080,23 +1075,23 @@ export default function AirwayGuide() {
         )}
 
         {isVADDifficult && (
-          <AlertCard type="danger" title="Via aerea dificil identificada">
+          <AlertCard type="danger" title="Via aérea difícil identificada">
             Considere pedir ajuda precoce{'\n'}
             Limite a 2 tentativas de laringoscopia{'\n'}
             Se falha: Plano B (dispositivo extraglótico) -{'>'} Plano C (cricotireoidostomia){'\n'}
-            Mantenha oxigenacao entre tentativas
+            Mantenha oxigenação entre tentativas
           </AlertCard>
         )}
 
         <Card className="mb-4">
-          <div className="font-bold text-[15px] mb-3">Plano A -- Laringoscopia</div>
-          <SimpleCheckItem title="Laringoscopio testado" desc="VL e/ou lamina direta" />
+          <div className="font-bold text-[15px] mb-3">Plano A — Laringoscopia</div>
+          <SimpleCheckItem title="Laringoscópio testado" desc="VL e/ou lâmina direta" />
           <SimpleCheckItem title="Tubo traqueal + fio-guia" desc={`Tamanho: ${state.sex ? getTubeSize(state.sex) : '--'}`} />
-          <SimpleCheckItem title="Bougie disponivel" desc="Disponivel e acessivel" />
+          <SimpleCheckItem title="Bougie disponível" desc="Disponível e acessivel" />
         </Card>
 
         <Card className="mb-4">
-          <div className="font-bold text-[15px] mb-3">Plano B -- DEG</div>
+          <div className="font-bold text-[15px] mb-3">Plano B — DEG</div>
           <SimpleCheckItem title="DEG testado e lubrificado" desc={degText} />
           {!state.height && (
             <div className="mt-3 p-3 bg-bg-elevated rounded-lg">
@@ -1118,11 +1113,11 @@ export default function AirwayGuide() {
         </Card>
 
         <Card className="mb-4">
-          <div className="font-bold text-[15px] mb-3">Plano C -- Crico</div>
-          <SimpleCheckItem title="Kit de crico disponivel" desc="Bisturi + bougie + tubo 6.0" />
+          <div className="font-bold text-[15px] mb-3">Plano C — Crico</div>
+          <SimpleCheckItem title="Kit de crico disponível" desc="Bisturi + bougie + tubo 6.0" />
 
           <div className="mt-3">
-            <label className="block text-sm text-text-secondary mb-1.5">Membrana cricotireoidea identificada?</label>
+            <label className="block text-sm text-text-secondary mb-1.5">Membrana cricotireóidea identificada?</label>
             <div className="flex gap-2">
               {(['palpacao', 'pocus', 'nao'] as MembraneMethod[]).map(m => (
                 <button
@@ -1132,38 +1127,38 @@ export default function AirwayGuide() {
                     state.membrane === m ? 'bg-accent border-accent text-white' : 'bg-bg-elevated border-border-card text-text-secondary'
                   }`}
                 >
-                  {m === 'palpacao' ? 'Palpacao' : m === 'pocus' ? 'POCUS' : 'Nao'}
+                  {m === 'palpacao' ? 'Palpação' : m === 'pocus' ? 'POCUS' : 'Não'}
                 </button>
               ))}
             </div>
           </div>
 
           {state.membrane === 'palpacao' && (
-            <Collapsible title="Tecnica TACA">
+            <Collapsible title="Técnica TACA">
               <div className="text-xs text-text-secondary leading-relaxed">
-                1. Palpar tireoide (proeminencia)<br />
-                2. Deslizar inferiormente ate cricoide<br />
-                3. Membrana = depressao entre elas<br />
-                4. Marcar com caneta se possivel
+                1. Palpar tireoide (proeminência)<br />
+                2. Deslizar inferiormente até cricoide<br />
+                3. Membrana = depressão entre elas<br />
+                4. Marcar com caneta se possível
               </div>
             </Collapsible>
           )}
 
           {state.membrane === 'pocus' && (
-            <Collapsible title="Tecnica POCUS">
+            <Collapsible title="Técnica POCUS">
               <div className="text-xs text-text-secondary leading-relaxed">
-                <strong>Transdutor:</strong> Linear, alta frequencia<br />
-                <strong>Posicao:</strong> Transversal na linha media cervical<br />
-                <strong>Tecnica:</strong> Identificar tireoide (anecoica em "U"), deslizar caudalmente ate cricoide<br />
+                <strong>Transdutor:</strong> Linear, alta frequência<br />
+                <strong>Posição:</strong> Transversal na linha média cervical<br />
+                <strong>Técnica:</strong> Identificar tireoide (anecoica em "U"), deslizar caudalmente até cricoide<br />
                 <strong>Membrana:</strong> Faixa hiperecoica entre tireoide e cricoide<br />
-                <strong>Dica:</strong> Marcar pele sob visualizacao direta
+                <strong>Dica:</strong> Marcar pele sob visualização direta
               </div>
             </Collapsible>
           )}
         </Card>
 
         <div className="flex gap-2.5 mt-5">
-          <Button variant="secondary" fullWidth onClick={() => goToStep(4)}>&#8592; Voltar</Button>
+          <button onClick={() => goToStep(4)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(6)}>Continuar &#8594;</Button>
         </div>
       </div>
@@ -1174,11 +1169,11 @@ export default function AirwayGuide() {
     return (
       <div>
         <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 6 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Otimizacao</h2>
+        <h2 className="text-xl font-extrabold mb-5">Otimização</h2>
 
         {hasHemoInstability && (
-          <AlertCard type="danger" title="Instabilidade hemodinamica">
-            Considere vasopressor antes da inducao.{' '}
+          <AlertCard type="danger" title="Instabilidade hemodinâmica">
+            Considere vasopressor antes da indução.{' '}
             <button onClick={() => goToInfusion('noradrenalina')} className="text-info underline bg-transparent border-none cursor-pointer text-sm">
               Calculadora de Noradrenalina &#8594;
             </button>
@@ -1186,21 +1181,21 @@ export default function AirwayGuide() {
         )}
 
         <Card className="mb-4">
-          <div className="font-bold text-[15px] mb-3">Otimizacao hemodinamica</div>
-          <SimpleCheckItem title="Acesso venoso calibroso" desc="Jelco 18G ou maior, testar patencia" />
+          <div className="font-bold text-[15px] mb-3">Otimização hemodinâmica</div>
+          <SimpleCheckItem title="Acesso venoso calibroso" desc="Jelco 18G ou maior, testar patência" />
           <SimpleCheckItem title="Cristaloide em curso" desc="SF 0,9% ou RL aberto" />
-          <SimpleCheckItem title="Vasopressor disponivel" desc="Preparado ou em infusao" />
+          <SimpleCheckItem title="Vasopressor disponível" desc="Preparado ou em infusão" />
         </Card>
 
         <Card className="mb-4">
           <div className="font-bold text-[15px] mb-3">Posicionamento</div>
-          <p className="text-xs text-text-secondary mb-3">Selecione uma opcao:</p>
-          <SimpleCheckItem title="Posicao olfativa (sniffing)" desc="Coxim occipital ou escapular se obeso" />
-          <SimpleCheckItem title="Cabeceira elevada 20-30 graus" desc="Head-up para obeso ou risco de aspiracao" />
+          <p className="text-xs text-text-secondary mb-3">Selecione uma opção:</p>
+          <SimpleCheckItem title="Posição olfativa (sniffing)" desc="Coxim occipital ou escapular se obeso" />
+          <SimpleCheckItem title="Cabeceira elevada 20-30 graus" desc="Head-up para obeso ou risco de aspiração" />
         </Card>
 
         <div className="flex gap-2.5 mt-5">
-          <Button variant="secondary" fullWidth onClick={() => goToStep(5)}>&#8592; Voltar</Button>
+          <button onClick={() => goToStep(5)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(7)}>Continuar &#8594;</Button>
         </div>
       </div>
@@ -1211,15 +1206,15 @@ export default function AirwayGuide() {
     return (
       <div>
         <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 7 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Pre-oxigenacao</h2>
+        <h2 className="text-xl font-extrabold mb-5">Pré-oxigenação</h2>
 
         <Card className="mb-4">
-          <div className="font-bold text-[15px] mb-3">Meta: pre-oxigenacao por 3 a 5 minutos com FiO2 de 100%</div>
+          <div className="font-bold text-[15px] mb-3">Meta: pré-oxigenação por 3 a 5 minutos com FiO2 de 100%</div>
           <SimpleCheckItem title="VNI (CPAP/BiPAP)" desc="FiO2 100%, se tolerar" />
           <SimpleCheckItem
             title={
               <>
-                Mascara nao reinalante 15 L/min (flush rate){' '}
+                Máscara não reinalante 15 L/min (flush rate){' '}
                 <button
                   onClick={e => { e.stopPropagation(); dispatch({ type: 'SET_FLUSH_RATE_MODAL', open: true }) }}
                   className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-info/20 text-info text-xs font-bold border-none cursor-pointer"
@@ -1228,34 +1223,34 @@ export default function AirwayGuide() {
                 </button>
               </>
             }
-            desc="Flush rate se disponivel"
+            desc="Flush rate se disponível"
           />
-          <SimpleCheckItem title="BVM com reservatorio" desc="Vedacao adequada, respiracoes espontaneas" />
+          <SimpleCheckItem title="BVM com reservatório" desc="Vedação adequada, respirações espontâneas" />
         </Card>
 
         <Card className="mb-4">
-          <div className="font-bold text-[15px] mb-3">Oxigenacao apneica</div>
+          <div className="font-bold text-[15px] mb-3">Oxigenação apneica</div>
           <SimpleCheckItem title="Cateter nasal 15 L/min" desc="Manter durante toda laringoscopia" />
         </Card>
 
         <div className="flex gap-2.5 mt-5">
-          <Button variant="secondary" fullWidth onClick={() => goToStep(6)}>&#8592; Voltar</Button>
+          <button onClick={() => goToStep(6)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(8)}>Continuar &#8594;</Button>
         </div>
 
         <Modal
           open={state.flushRateModal}
           onClose={() => dispatch({ type: 'SET_FLUSH_RATE_MODAL', open: false })}
-          title="Flush rate (fluxo maximo)"
+          title="Flush rate (fluxo máximo)"
         >
           <div className="text-sm text-text-secondary leading-relaxed space-y-3">
-            <p>Tecnica de abertura total do fluxometro de O2 (40-60 L/min), alem dos 15 L/min convencionais, para maximizar a FiO2 entregue.</p>
+            <p>Técnica de abertura total do fluxômetro de O2 (40-60 L/min), além dos 15 L/min convencionais, para maximizar a FiO2 entregue.</p>
             <p><strong>Como fazer:</strong></p>
-            <p>1. Conectar O2 ao fluxometro</p>
-            <p>2. Abrir fluxometro no maximo (flush rate = 40-60 L/min)</p>
-            <p>3. Manter reservatorio da mascara inflado</p>
-            <p>4. Garantir vedacao adequada da mascara na face</p>
-            <p><strong>Beneficio:</strong> FiO2 aumenta de ~60-70% para ~90%.</p>
+            <p>1. Conectar O2 ao fluxômetro</p>
+            <p>2. Abrir fluxômetro no máximo (flush rate = 40-60 L/min)</p>
+            <p>3. Manter reservatório da máscara inflado</p>
+            <p>4. Garantir vedação adequada da máscara na face</p>
+            <p><strong>Benefício:</strong> FiO2 aumenta de ~60-70% para ~90%.</p>
           </div>
         </Modal>
       </div>
@@ -1266,23 +1261,23 @@ export default function AirwayGuide() {
     return (
       <div>
         <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 8 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Medicacoes</h2>
+        <h2 className="text-xl font-extrabold mb-5">Medicações</h2>
 
         {shouldReduceDose && (
-          <AlertCard type="warning" title="Considere reducao de dose">
+          <AlertCard type="warning" title="Considere redução de dose">
             Paciente com instabilidade/idoso: considere reduzir a dose do indutor em 30-50%.
           </AlertCard>
         )}
 
         <Card className="mb-4">
           <p className="text-sm text-text-secondary mb-2">
-            Peso: <strong>{w}</strong> kg | Populacao: {state.population.charAt(0).toUpperCase() + state.population.slice(1)}
+            Peso: <strong>{w}</strong> kg | População: {state.population.charAt(0).toUpperCase() + state.population.slice(1)}
           </p>
           <p className="text-xs text-text-muted">Toque no card para selecionar. Selecione: 1 indutor + 1 BNM (bloqueio simpatico opcional)</p>
         </Card>
 
         <Card className="mb-4">
-          <div className="font-bold text-[15px] mb-3">Bloqueio simpatico -- simpatolise (opcional)</div>
+          <div className="font-bold text-[15px] mb-3">Bloqueio simpático — simpatólise (opcional)</div>
           {DRUGS.filter(d => d.category === 'simpatolitico').map(drug => (
             <DoseCard
               key={drug.id}
@@ -1327,7 +1322,7 @@ export default function AirwayGuide() {
         </Card>
 
         <div className="flex gap-2.5 mt-5">
-          <Button variant="secondary" fullWidth onClick={() => goToStep(7)}>&#8592; Voltar</Button>
+          <button onClick={() => goToStep(7)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(9)}>Continuar &#8594;</Button>
         </div>
       </div>
@@ -1341,10 +1336,10 @@ export default function AirwayGuide() {
         <h2 className="text-xl font-extrabold mb-5">Procedimento</h2>
 
         {isVADDifficult && (
-          <AlertCard type="danger" title="Via aerea dificil identificada">
+          <AlertCard type="danger" title="Via aérea difícil identificada">
             Considere pedir ajuda precoce. Limite a 2 tentativas de laringoscopia.
             Se falha: Plano B (DEG) -{'>'} Plano C (cricotireoidostomia).
-            Mantenha oxigenacao entre tentativas.
+            Mantenha oxigenação entre tentativas.
           </AlertCard>
         )}
 
@@ -1371,23 +1366,23 @@ export default function AirwayGuide() {
           <div className="p-4 text-xs text-text-secondary leading-[1.7]">
             {state.procTab === 'ld' ? (
               <>
-                1. Segurar laringoscopio com mao esquerda<br />
-                2. Abrir boca com tecnica de tesoura (mao direita)<br />
-                3. Inserir lamina pelo lado direito, varrer lingua para a esquerda<br />
-                4. Avancar ate a valecula (base da lingua)<br />
-                5. Elevar em direcao ventral e anterior -- nunca alavanca nos dentes<br />
-                6. Se visualizacao inadequada: manobra BURP<br />
-                7. Usar bougie ou estilete pre-moldado (fortemente recomendado)<br />
-                8. Avancar tubo pelo canto direito da boca<br />
+                1. Segurar laringoscópio com mão esquerda<br />
+                2. Abrir boca com técnica de tesoura (mão direita)<br />
+                3. Inserir lâmina pelo lado direito, varrer língua para a esquerda<br />
+                4. Avançar até a valécula (base da língua)<br />
+                5. Elevar em direção ventral e anterior — nunca alavanca nos dentes<br />
+                6. Se visualização inadequada: manobra BURP<br />
+                7. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br />
+                8. Avançar tubo pelo canto direito da boca<br />
                 9. Insuflar cuff
               </>
             ) : (
               <>
-                1. Inserir lamina na linha media sob visao na tela<br />
-                2. Avancar ate visualizar epiglote<br />
-                3. Posicionar ponta na valecula ou sob a epiglote<br />
-                4. Usar bougie ou estilete pre-moldado (fortemente recomendado)<br />
-                5. Avancar tubo sob visao continua na tela<br />
+                1. Inserir lâmina na linha média sob visão na tela<br />
+                2. Avançar até visualizar epiglote<br />
+                3. Posicionar ponta na valécula ou sob a epiglote<br />
+                4. Usar bougie ou estilete pré-moldado (fortemente recomendado)<br />
+                5. Avançar tubo sob visão contínua na tela<br />
                 6. Visualizar passagem entre as cordas vocais<br />
                 7. Insuflar cuff
               </>
@@ -1397,11 +1392,11 @@ export default function AirwayGuide() {
 
         <Collapsible title="Erros comuns">
           <div className="text-[13px] text-text-secondary leading-[1.8]">
-            <strong className="text-danger">Alavanca nos dentes</strong> -- levantar, nunca rotacionar a lamina<br />
-            <strong className="text-danger">Lamina superficial demais</strong> -- nao chega na valecula, sem visualizacao<br />
-            <strong className="text-danger">Lamina profunda demais</strong> -- passa a epiglote, perde referencia<br />
-            <strong className="text-danger">Tubo pelo centro da boca</strong> -- deve ser pelo canto direito<br />
-            <strong className="text-danger">Forca excessiva no bougie/tubo</strong> -- avancar com movimentos suaves
+            <strong className="text-danger">Alavanca nos dentes</strong> — levantar, nunca rotacionar a lâmina<br />
+            <strong className="text-danger">Lâmina superficial demais</strong> — não chega na valécula, sem visualização<br />
+            <strong className="text-danger">Lâmina profunda demais</strong> — passa a epiglote, perde referência<br />
+            <strong className="text-danger">Tubo pelo centro da boca</strong> — deve ser pelo canto direito<br />
+            <strong className="text-danger">Força excessiva no bougie/tubo</strong> — avançar com movimentos suaves
           </div>
         </Collapsible>
 
@@ -1458,16 +1453,16 @@ export default function AirwayGuide() {
         </Card>
 
         {(state.cormack === 'III' || state.cormack === 'IV') && (
-          <AlertCard type="danger" title="Visualizacao limitada (Cormack III-IV)">
-            - Considere bougie como primeira opcao{'\n'}
-            - Reposicionar: elevacao da cabeca, manipulacao laringea externa (BURP){'\n'}
-            - Considere videolaringoscopio se disponivel{'\n'}
+          <AlertCard type="danger" title="Visualização limitada (Cormack III-IV)">
+            - Considere bougie como primeira opção{'\n'}
+            - Reposicionar: elevação da cabeça, manipulação laríngea externa (BURP){'\n'}
+            - Considere videolaringoscópio se disponível{'\n'}
             - Limite a 2 tentativas antes de acionar Plano B
           </AlertCard>
         )}
 
         <div className="flex gap-2.5 mt-5">
-          <Button variant="secondary" fullWidth onClick={() => goToStep(8)}>&#8592; Voltar</Button>
+          <button onClick={() => goToStep(8)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(10)}>Continuar &#8594;</Button>
         </div>
       </div>
@@ -1478,7 +1473,7 @@ export default function AirwayGuide() {
     return (
       <div>
         <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 10 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Resultado e confirmacao</h2>
+        <h2 className="text-xl font-extrabold mb-5">Resultado e confirmação</h2>
 
         {/* Question: success? */}
         {state.intubationSuccess === null && (
@@ -1496,20 +1491,20 @@ export default function AirwayGuide() {
           <>
             <Card className="mb-4">
               <div className="font-bold text-[15px] mb-3">Confirme posicionamento</div>
-              <SimpleCheckItem title="Capnografia" desc="EtCO2 com curva adequada (padrao-ouro)" />
+              <SimpleCheckItem title="Capnografia" desc="EtCO2 com curva adequada (padrão-ouro)" />
               <SimpleCheckItem title="Ausculta bilateral" desc="Murmurio vesicular simetrico, 5 pontos" />
-              <SimpleCheckItem title="Expansibilidade toracica" desc="Simetrica bilateralmente" />
+              <SimpleCheckItem title="Expansibilidade torácica" desc="Simetrica bilateralmente" />
             </Card>
 
             <Card className="mb-4">
               <div className="font-bold text-[15px] mb-3">POCUS confirmatorio</div>
               <SimpleCheckItem
                 title="Traqueal (furcula esternal)"
-                desc="Linear transversal: 1 sinal hiperecoigenico (tubo) + esofago vazio. Se 'dupla via': intubacao esofagica"
+                desc="Linear transversal: 1 sinal hiperecoigenico (tubo) + esofago vazio. Se 'dupla via': intubação esofagica"
               />
               <SimpleCheckItem
                 title="Pulmonar bilateral"
-                desc="Lung sliding presente bilateralmente (se ausente unilateral: seletiva ou pneumotorax)"
+                desc="Lung sliding presente bilateralmente (se ausente unilateral: seletiva ou pneumotórax)"
               />
             </Card>
 
@@ -1518,7 +1513,7 @@ export default function AirwayGuide() {
               className="mb-4 cursor-pointer"
               onClick={() => goToInfusion()}
             >
-              <div className="font-bold text-sm text-info">Sedacao em infusao continua</div>
+              <div className="font-bold text-sm text-info">Sedação em infusão contínua</div>
               <div className="text-[13px] text-text-secondary">Abrir calculadora de infusoes</div>
               <div className="text-xs text-text-muted mt-1">Fentanil - Propofol - Midazolam - Dexmedetomidina</div>
             </Card>
@@ -1529,14 +1524,14 @@ export default function AirwayGuide() {
         {state.intubationSuccess === true && state.rescueMethod && (
           <>
             <AlertCard type="success" title={`Resgate: ${state.rescueMethod}`}>
-              Via aerea estabelecida com {state.rescueMethod}.
+              Via aérea estabelecida com {state.rescueMethod}.
             </AlertCard>
 
             <Card className="mb-4">
               <div className="font-bold text-[15px] mb-3">Confirme posicionamento</div>
-              <SimpleCheckItem title="Capnografia" desc="EtCO2 com curva adequada (padrao-ouro)" />
+              <SimpleCheckItem title="Capnografia" desc="EtCO2 com curva adequada (padrão-ouro)" />
               <SimpleCheckItem title="Ausculta bilateral" desc="Murmurio vesicular simetrico, 5 pontos" />
-              <SimpleCheckItem title="Expansibilidade toracica" desc="Simetrica bilateralmente" />
+              <SimpleCheckItem title="Expansibilidade torácica" desc="Simetrica bilateralmente" />
             </Card>
 
             <Card
@@ -1544,7 +1539,7 @@ export default function AirwayGuide() {
               className="mb-4 cursor-pointer"
               onClick={() => goToInfusion()}
             >
-              <div className="font-bold text-sm text-info">Sedacao em infusao continua</div>
+              <div className="font-bold text-sm text-info">Sedação em infusão contínua</div>
               <div className="text-[13px] text-text-secondary">Abrir calculadora de infusoes</div>
             </Card>
           </>
@@ -1554,37 +1549,37 @@ export default function AirwayGuide() {
         {state.intubationSuccess === false && (
           <>
             <Card borderColor="#FF5252" className="mb-4">
-              <div className="font-bold text-sm text-accent mb-2">Plano B -- Dispositivo extraglótico</div>
+              <div className="font-bold text-sm text-accent mb-2">Plano B — Dispositivo extraglótico</div>
               <div className="text-[13px] text-text-secondary leading-relaxed">
-                - Mascara laringea (ML) ou dispositivo supraglotico de 2a geracao<br />
-                - Inserir conforme tecnica padrao, insuflar cuff<br />
-                - Confirmar ventilacao: EtCO2 + ausculta<br />
-                - Se ventilacao adequada: considere intubacao atraves do DEG com fibroscopio
+                - Mascara laríngea (ML) ou dispositivo supraglotico de 2a geracao<br />
+                - Inserir conforme técnica padrão, insuflar cuff<br />
+                - Confirmar ventilação: EtCO2 + ausculta<br />
+                - Se ventilação adequada: considere intubação atraves do DEG com fibroscopio
               </div>
               <div className="flex gap-3 mt-3">
                 <Button variant="success" size="sm" fullWidth onClick={() => dispatch({ type: 'SET_RESCUE_METHOD', value: 'DEG' })}>
                   Resgatou com DEG
                 </Button>
                 <Button variant="danger" size="sm" fullWidth onClick={() => dispatch({ type: 'SHOW_PLAN_C' })}>
-                  Falhou -- Plano C
+                  Falhou — Plano C
                 </Button>
               </div>
             </Card>
 
             {state.showPlanC && (
               <Card borderColor="#F44336" className="mb-4">
-                <div className="font-bold text-sm text-danger mb-2">Plano C -- Cricotireoidostomia</div>
+                <div className="font-bold text-sm text-danger mb-2">Plano C — Cricotireoidostomia</div>
                 <div className="text-[13px] text-text-secondary leading-relaxed">
-                  <strong>Tecnica cirurgica (bisturi-bougie-tubo):</strong><br />
-                  1. Palpar membrana cricotireoidea (entre cartilagens tireoide e cricoide)<br />
-                  2. Incisao vertical na pele (3-4 cm) + incisao horizontal na membrana<br />
-                  3. Inserir bougie pela incisao, direcao caudal<br />
+                  <strong>Técnica cirúrgica (bisturi-bougie-tubo):</strong><br />
+                  1. Palpar membrana cricotireóidea (entre cartilagens tireoide e cricoide)<br />
+                  2. Incisão vertical na pele (3-4 cm) + incisão horizontal na membrana<br />
+                  3. Inserir bougie pela incisão, direção caudal<br />
                   4. Deslizar tubo 6.0 sobre o bougie<br />
-                  5. Confirmar posicao: capnografia + ausculta
+                  5. Confirmar posição: capnografia + ausculta
                 </div>
                 <div className="mt-3">
                   <Button variant="success" size="sm" fullWidth onClick={() => dispatch({ type: 'SET_RESCUE_METHOD', value: 'Cricotireoidostomia' })}>
-                    Via aerea estabelecida
+                    Via aérea estabelecida
                   </Button>
                 </div>
               </Card>
@@ -1594,34 +1589,34 @@ export default function AirwayGuide() {
 
         <div className="flex gap-2.5 mt-5">
           <Button variant="secondary" fullWidth onClick={() => { dispatch({ type: 'SET_INTUBATION_SUCCESS', value: null }); goToStep(9) }}>
-            &#8592; Voltar
+            ← Voltar
           </Button>
-          <Button fullWidth onClick={() => goToStep(11)}>Finalizar &#8594;</Button>
+          <Button fullWidth onClick={() => goToStep(11)}>Finalizar →</Button>
         </div>
       </div>
     )
   }
 
   function renderStep11() {
-    const indTexts = ['Falha em manter/proteger VA', 'Falha de ventilacao/oxigenacao', 'Curso clinico antecipado']
+    const indTexts = ['Falha em manter/proteger VA', 'Falha de ventilação/oxigenação', 'Curso clínico antecipado']
     const indLine = state.indications.map((v, i) => v ? indTexts[i] : null).filter(Boolean).join(', ') || '--'
 
     const crashLetters = Object.entries(state.crash).filter(([, v]) => v).map(([k]) => k).join('')
     let vadLine = `CRASH: ${crashCount}/5${crashLetters ? ` (${crashLetters})` : ''}`
     if (state.vadOption === 'yes') vadLine += ` | LEMON: ${lemonCount}/5 | ROMAN: ${romanCount}/5`
-    else if (state.vadOption === 'no') vadLine += ' | Avaliacao anatomica: nao realizada'
+    else if (state.vadOption === 'no') vadLine += ' | Avaliação anatômica: não realizada'
     if (state.shockIndex) vadLine += ` | SI: ${state.shockIndex.toFixed(2)}`
 
     let patLine = `Peso: ${state.localWeight || '--'} kg`
     if (state.height) patLine += ` | Altura: ${state.height} cm`
-    patLine += ` | Sexo: ${state.sex === 'M' ? 'Masculino' : 'Feminino'} | Populacao: ${state.population}`
+    patLine += ` | Sexo: ${state.sex === 'M' ? 'Masculino' : 'Feminino'} | População: ${state.population}`
 
     const medsLines: string[] = []
     if (state.meds.fentanil) medsLines.push(`Fentanil ${calcDose(w, state.medSliders.fentanil)} mcg (${state.medSliders.fentanil} mcg/kg)`)
     if (state.meds.ketamina) medsLines.push(`Cetamina ${calcDose(w, state.medSliders.ketamina)} mg (${state.medSliders.ketamina} mg/kg)`)
     if (state.meds.etomidato) medsLines.push(`Etomidato ${calcDoseDecimal(w, state.medSliders.etomidato)} mg (${state.medSliders.etomidato} mg/kg)`)
     if (state.meds.propofol) medsLines.push(`Propofol ${calcDose(w, state.medSliders.propofol)} mg (${state.medSliders.propofol} mg/kg)`)
-    if (state.meds.rocuronio) medsLines.push(`Rocuronio ${calcDose(w, state.medSliders.rocuronio)} mg (${state.medSliders.rocuronio} mg/kg)`)
+    if (state.meds.rocuronio) medsLines.push(`Rocurônio ${calcDose(w, state.medSliders.rocuronio)} mg (${state.medSliders.rocuronio} mg/kg)`)
     if (state.meds.succinilcolina) medsLines.push(`Succinilcolina ${calcDose(w, state.medSliders.succinilcolina)} mg (${state.medSliders.succinilcolina} mg/kg)`)
 
     let procLine = `Tubo: ${state.sex ? getTubeSize(state.sex) : '--'}`
@@ -1633,12 +1628,12 @@ export default function AirwayGuide() {
     if (state.rescueMethod) confLine = `Resgate: ${state.rescueMethod} | ${confLine}`
 
     const sections = [
-      { title: 'Indicacao', content: indLine },
-      { title: 'Avaliacao de VAD', content: vadLine },
+      { title: 'Indicação', content: indLine },
+      { title: 'Avaliação de VAD', content: vadLine },
       { title: 'Paciente', content: patLine },
-      { title: 'Medicacoes', content: medsLines.join(' | ') || 'Nenhuma selecionada' },
+      { title: 'Medicações', content: medsLines.join(' | ') || 'Nenhuma selecionada' },
       { title: 'Procedimento', content: procLine },
-      { title: 'Confirmacao', content: confLine },
+      { title: 'Confirmação', content: confLine },
     ]
 
     return (
@@ -1654,8 +1649,8 @@ export default function AirwayGuide() {
         ))}
 
         <div className="flex gap-2.5 mt-5">
-          <Button variant="secondary" fullWidth onClick={() => goToStep(10)}>&#8592; Voltar</Button>
-          <Button fullWidth onClick={copyReport}>Copiar relatorio</Button>
+          <button onClick={() => goToStep(10)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
+          <Button fullWidth onClick={copyReport}>Copiar relatório</Button>
         </div>
       </div>
     )
@@ -1668,9 +1663,7 @@ export default function AirwayGuide() {
   function renderPathway() {
     return (
       <div>
-        <Button variant="secondary" size="sm" onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'home' })} className="mb-3">
-          &#8592; Voltar
-        </Button>
+        <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'home' })} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-3 px-0 min-h-[44px]">← Voltar</button>
 
         <StepperNav
           steps={PATHWAY_STEPS}
@@ -1700,14 +1693,14 @@ export default function AirwayGuide() {
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary pb-[70px]">
       <Disclaimer />
-      <Header title="Airway Guide" subtitle="Manejo de via aerea na emergencia" />
+      <Header title="AirwayGuide" subtitle="Guia de Manejo de VA" />
       <Container>
         {state.screen === 'home' && renderHome()}
         {state.screen === 'pathway' && renderPathway()}
         {state.screen === 'checklist' && renderChecklist()}
         {state.screen === 'doses' && renderStandaloneDoses()}
       </Container>
-      <Footer toolName="Airway Guide" version="v2.0.0" />
+      <Footer toolName="Airway Guide" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

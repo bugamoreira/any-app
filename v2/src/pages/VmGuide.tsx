@@ -7,9 +7,9 @@ import { Container } from '../components/layout/Container'
 import { FABMenu } from '../components/layout/FABMenu'
 import { Collapsible } from '../components/common/Collapsible'
 import { ToastContainer } from '../components/common/Toast'
-// Toast disponivel via contexto
+// Toast disponível via contexto
 import { fmt } from '../utils/calculations'
-// calcHACOR disponivel em vmData
+// calcHACOR disponível em vmData
 import {
   VM_CALCULATORS,
   VM_DESCRIPTIONS,
@@ -85,8 +85,8 @@ function CalcInput({ label, id, unit, placeholder, value, onChange, warning }: {
           placeholder={placeholder}
           value={value}
           onChange={e => onChange(e.target.value)}
-          className={`flex-1 bg-[#2D2D2D] border rounded-lg px-3 py-3 text-base text-text-primary min-h-[44px] outline-none focus:border-accent ${
-            warning ? 'border-warning bg-warning/10' : 'border-[#444]'
+          className={`flex-1 bg-bg-elevated border rounded-lg px-3 py-3 text-base text-text-primary min-h-[44px] outline-none focus:border-accent ${
+            warning ? 'border-warning bg-warning/10' : 'border-border-card'
           }`}
         />
         {unit && <span className="text-sm text-text-secondary min-w-[50px]">{unit}</span>}
@@ -112,7 +112,7 @@ function CalcSelect({ label, value, onChange, options }: {
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full bg-[#2D2D2D] border border-[#444] rounded-lg px-3 py-3 text-base text-text-primary min-h-[44px] outline-none focus:border-accent"
+        className="w-full bg-bg-elevated border border-border-card rounded-lg px-3 py-3 text-base text-text-primary min-h-[44px] outline-none focus:border-accent"
       >
         {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
@@ -133,7 +133,7 @@ function CalcButton({ onClick, children }: { onClick: () => void; children: Reac
 
 function ConceptDesc({ text }: { text: string }) {
   return (
-    <div className="text-[13px] text-text-secondary mb-3 leading-relaxed p-2.5 bg-white/[0.03] rounded-lg border-l-[3px] border-l-accent">
+    <div className="text-[13px] text-text-secondary mb-3 leading-relaxed p-2.5 bg-bg-card rounded-lg border-l-[3px] border-l-accent">
       {text}
     </div>
   )
@@ -173,7 +173,7 @@ function SubCollapsible({ title, children, id }: { title: string; children: Reac
       <div
         ref={bodyRef}
         className="overflow-hidden transition-all duration-300 ease-in-out"
-        style={{ maxHeight: open ? bodyRef.current?.scrollHeight ? `${bodyRef.current.scrollHeight}px` : '2000px' : '0px' }}
+        style={{ maxHeight: open ? '9999px' : '0px' }}
       >
         <div className="px-3 pb-3">{children}</div>
       </div>
@@ -242,14 +242,14 @@ function RvaCalc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.rva} />
-      <CalcInput label="Pressao de pico (cmH2O)" id="ppico" unit="cmH2O" placeholder="Ex: 30" value={ppico} onChange={setPpico}
-        warning={parseFloat(ppico) && (parseFloat(ppico) < 5 || parseFloat(ppico) > 60) ? 'Valor fora da faixa habitual (5-60 cmH2O)' : null} />
-      <CalcInput label="Pressao de pausa (plato) (cmH2O)" id="ppausa" unit="cmH2O" placeholder="Ex: 20" value={ppausa} onChange={setPpausa}
-        warning={parseFloat(ppausa) && (parseFloat(ppausa) < 5 || parseFloat(ppausa) > 45) ? 'Valor fora da faixa habitual (5-45 cmH2O)' : null} />
-      <CalcInput label="Fluxo inspiratorio (L/min)" id="fluxo" unit="L/min" placeholder="Ex: 60" value={fluxo} onChange={setFluxo}
+      <CalcInput label="Pressão de pico (cmH₂O)" id="ppico" unit="cmH₂O" placeholder="Ex: 30" value={ppico} onChange={setPpico}
+        warning={parseFloat(ppico) && (parseFloat(ppico) < 5 || parseFloat(ppico) > 60) ? 'Valor fora da faixa habitual (5-60 cmH₂O)' : null} />
+      <CalcInput label="Pressão de pausa (plato) (cmH₂O)" id="ppausa" unit="cmH₂O" placeholder="Ex: 20" value={ppausa} onChange={setPpausa}
+        warning={parseFloat(ppausa) && (parseFloat(ppausa) < 5 || parseFloat(ppausa) > 45) ? 'Valor fora da faixa habitual (5-45 cmH₂O)' : null} />
+      <CalcInput label="Fluxo inspiratório (L/min)" id="fluxo" unit="L/min" placeholder="Ex: 60" value={fluxo} onChange={setFluxo}
         warning={parseFloat(fluxo) && (parseFloat(fluxo) < 20 || parseFloat(fluxo) > 100) ? 'Valor fora da faixa habitual (20-100 L/min)' : null} />
       <CalcButton onClick={calc}>Calcular Rva</CalcButton>
-      {result && <ResultBox status={result.status} value={`Rva: ${fmt(result.val)} cmH2O/L/s`} detail={result.text} visible />}
+      {result && <ResultBox status={result.status} value={`Rva: ${fmt(result.val)} cmH₂O/L/s`} detail={result.text} visible />}
     </>
   )
 }
@@ -273,12 +273,12 @@ function CstCalc() {
       <ConceptDesc text={VM_DESCRIPTIONS.cst} />
       <CalcInput label="Volume corrente (mL)" id="vcCst" unit="mL" placeholder="Ex: 400" value={vc} onChange={setVc}
         warning={parseFloat(vc) && (parseFloat(vc) < 200 || parseFloat(vc) > 800) ? 'Valor fora da faixa habitual (200-800 mL)' : null} />
-      <CalcInput label="Pressao de pausa (plato) (cmH2O)" id="ppausaCst" unit="cmH2O" placeholder="Ex: 20" value={ppausa} onChange={setPpausa}
+      <CalcInput label="Pressão de pausa (plato) (cmH₂O)" id="ppausaCst" unit="cmH₂O" placeholder="Ex: 20" value={ppausa} onChange={setPpausa}
         warning={parseFloat(ppausa) && (parseFloat(ppausa) < 5 || parseFloat(ppausa) > 45) ? 'Valor fora da faixa habitual' : null} />
-      <CalcInput label="PEEP (cmH2O)" id="peepCst" unit="cmH2O" placeholder="Ex: 5" value={peep} onChange={setPeep}
-        warning={parseFloat(peep) && (parseFloat(peep) < 0 || parseFloat(peep) > 24) ? 'Valor fora da faixa habitual (0-24 cmH2O)' : null} />
+      <CalcInput label="PEEP (cmH₂O)" id="peepCst" unit="cmH₂O" placeholder="Ex: 5" value={peep} onChange={setPeep}
+        warning={parseFloat(peep) && (parseFloat(peep) < 0 || parseFloat(peep) > 24) ? 'Valor fora da faixa habitual (0-24 cmH₂O)' : null} />
       <CalcButton onClick={calc}>Calcular Cst</CalcButton>
-      {result && <ResultBox status={result.status} value={`Cst: ${fmt(result.val)} mL/cmH2O`} detail={result.text} visible />}
+      {result && <ResultBox status={result.status} value={`Cst: ${fmt(result.val)} mL/cmH₂O`} detail={result.text} visible />}
     </>
   )
 }
@@ -299,12 +299,12 @@ function DPCalc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.dp} />
-      <CalcInput label="Pressao de pausa (plato) (cmH2O)" id="ppausaDP" unit="cmH2O" placeholder="Ex: 25" value={ppausa} onChange={setPpausa}
+      <CalcInput label="Pressão de pausa (plato) (cmH₂O)" id="ppausaDP" unit="cmH₂O" placeholder="Ex: 25" value={ppausa} onChange={setPpausa}
         warning={parseFloat(ppausa) && (parseFloat(ppausa) < 5 || parseFloat(ppausa) > 45) ? 'Valor fora da faixa habitual' : null} />
-      <CalcInput label="PEEP (cmH2O)" id="peepDP" unit="cmH2O" placeholder="Ex: 10" value={peep} onChange={setPeep}
+      <CalcInput label="PEEP (cmH₂O)" id="peepDP" unit="cmH₂O" placeholder="Ex: 10" value={peep} onChange={setPeep}
         warning={parseFloat(peep) && (parseFloat(peep) < 0 || parseFloat(peep) > 24) ? 'Valor fora da faixa habitual' : null} />
       <CalcButton onClick={calc}>Calcular deltaP</CalcButton>
-      {result && <ResultBox status={result.status} value={`deltaP: ${fmt(result.val)} cmH2O`} detail={result.text} visible />}
+      {result && <ResultBox status={result.status} value={`deltaP: ${fmt(result.val)} cmH₂O`} detail={result.text} visible />}
     </>
   )
 }
@@ -325,10 +325,10 @@ function PFCalc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.pf} />
-      <CalcInput label="PaO2 (mmHg)" id="pao2" unit="mmHg" placeholder="Ex: 80" value={pao2} onChange={setPao2}
+      <CalcInput label="PaO₂ (mmHg)" id="pao2" unit="mmHg" placeholder="Ex: 80" value={pao2} onChange={setPao2}
         warning={parseFloat(pao2) && (parseFloat(pao2) < 30 || parseFloat(pao2) > 500) ? 'Valor fora da faixa habitual (30-500 mmHg)' : null} />
-      <CalcInput label="FiO2 (0.21 a 1.0)" id="fio2PF" placeholder="Ex: 0.4" value={fio2} onChange={setFio2}
-        warning={parseFloat(fio2) && (parseFloat(fio2) < 0.21 || parseFloat(fio2) > 1.0) ? 'FiO2 deve estar entre 0.21 e 1.0' : null} />
+      <CalcInput label="FiO₂ (0.21 a 1.0)" id="fio2PF" placeholder="Ex: 0.4" value={fio2} onChange={setFio2}
+        warning={parseFloat(fio2) && (parseFloat(fio2) < 0.21 || parseFloat(fio2) > 1.0) ? 'FiO₂ deve estar entre 0.21 e 1.0' : null} />
       <CalcButton onClick={calc}>Calcular P/F</CalcButton>
       {result && <ResultBox status={result.status} value={`P/F: ${fmt(result.val, 0)}`} detail={result.text} visible />}
     </>
@@ -344,7 +344,7 @@ function SFCalc() {
     const s = parseFloat(spo2), f = parseFloat(fio2)
     if (!s || !f) { setResult(null); return }
     if (s > 97) {
-      setResult({ val: 0, status: 'info', text: 'Relacao S/F nao e confiavel com SpO2 > 97%' })
+      setResult({ val: 0, status: 'info', text: 'Relação S/F não é confiável com SpO₂ > 97%' })
       return
     }
     const sf = calcSF(s, f)
@@ -355,15 +355,15 @@ function SFCalc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.sf} />
-      <CalcInput label="SpO2 (%)" id="spo2" unit="%" placeholder="Ex: 92" value={spo2} onChange={setSpo2}
-        warning={parseFloat(spo2) && (parseFloat(spo2) < 70 || parseFloat(spo2) > 100) ? 'SpO2 deve estar entre 70-100%' : null} />
-      <CalcInput label="FiO2 (0.21 a 1.0)" id="fio2SF" placeholder="Ex: 0.4" value={fio2} onChange={setFio2}
-        warning={parseFloat(fio2) && (parseFloat(fio2) < 0.21 || parseFloat(fio2) > 1.0) ? 'FiO2 deve estar entre 0.21 e 1.0' : null} />
+      <CalcInput label="SpO₂ (%)" id="spo2" unit="%" placeholder="Ex: 92" value={spo2} onChange={setSpo2}
+        warning={parseFloat(spo2) && (parseFloat(spo2) < 70 || parseFloat(spo2) > 100) ? 'SpO₂ deve estar entre 70-100%' : null} />
+      <CalcInput label="FiO₂ (0.21 a 1.0)" id="fio2SF" placeholder="Ex: 0.4" value={fio2} onChange={setFio2}
+        warning={parseFloat(fio2) && (parseFloat(fio2) < 0.21 || parseFloat(fio2) > 1.0) ? 'FiO₂ deve estar entre 0.21 e 1.0' : null} />
       <CalcButton onClick={calc}>Calcular S/F</CalcButton>
       {result && (
         <ResultBox
           status={result.status}
-          value={result.val === 0 ? 'SpO2 > 97%' : `S/F: ${fmt(result.val, 0)}`}
+          value={result.val === 0 ? 'SpO₂ > 97%' : `S/F: ${fmt(result.val, 0)}`}
           detail={result.text}
           visible
         />
@@ -387,12 +387,12 @@ function AjusteFiO2Calc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.ajusteFio2} />
-      <CalcInput label="PaO2 atual (mmHg)" id="pao2Atual" unit="mmHg" placeholder="Ex: 60" value={pao2Atual} onChange={setPao2Atual} />
-      <CalcInput label="FiO2 atual (0.21 a 1.0)" id="fio2Atual" placeholder="Ex: 0.4" value={fio2Atual} onChange={setFio2Atual} />
-      <CalcInput label="PaO2 alvo (mmHg)" id="pao2Alvo" unit="mmHg" placeholder="Ex: 80" value={pao2Alvo} onChange={setPao2Alvo} />
-      <CalcButton onClick={calc}>Calcular nova FiO2</CalcButton>
+      <CalcInput label="PaO₂ atual (mmHg)" id="pao2Atual" unit="mmHg" placeholder="Ex: 60" value={pao2Atual} onChange={setPao2Atual} />
+      <CalcInput label="FiO₂ atual (0.21 a 1.0)" id="fio2Atual" placeholder="Ex: 0.4" value={fio2Atual} onChange={setFio2Atual} />
+      <CalcInput label="PaO₂ alvo (mmHg)" id="pao2Alvo" unit="mmHg" placeholder="Ex: 80" value={pao2Alvo} onChange={setPao2Alvo} />
+      <CalcButton onClick={calc}>Calcular nova FiO₂</CalcButton>
       {result !== null && (
-        <ResultBox status="info" value={`Nova FiO2: ${result.toFixed(2)}`} detail={`Equivalente a ${(result * 100).toFixed(0)}%`} visible />
+        <ResultBox status="info" value={`Nova FiO₂: ${result.toFixed(2)}`} detail={`Equivalente a ${(result * 100).toFixed(0)}%`} visible />
       )}
     </>
   )
@@ -413,14 +413,14 @@ function AjusteFreqCalc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.ajusteFreq} />
-      <CalcInput label="Frequencia atual (ipm)" id="freqAtual" unit="ipm" placeholder="Ex: 16" value={freqAtual} onChange={setFreqAtual}
+      <CalcInput label="Frequência atual (ipm)" id="freqAtual" unit="ipm" placeholder="Ex: 16" value={freqAtual} onChange={setFreqAtual}
         warning={parseFloat(freqAtual) && (parseFloat(freqAtual) < 6 || parseFloat(freqAtual) > 40) ? 'Valor fora da faixa habitual (6-40 ipm)' : null} />
       <CalcInput label="PaCO2 atual (mmHg)" id="paco2Atual" unit="mmHg" placeholder="Ex: 50" value={paco2Atual} onChange={setPaco2Atual}
         warning={parseFloat(paco2Atual) && (parseFloat(paco2Atual) < 15 || parseFloat(paco2Atual) > 120) ? 'Valor fora da faixa habitual (15-120 mmHg)' : null} />
       <CalcInput label="PaCO2 alvo (mmHg)" id="paco2Alvo" unit="mmHg" placeholder="Ex: 40" value={paco2Alvo} onChange={setPaco2Alvo} />
-      <CalcButton onClick={calc}>Calcular nova frequencia</CalcButton>
+      <CalcButton onClick={calc}>Calcular nova frequência</CalcButton>
       {result !== null && (
-        <ResultBox status="info" value={`Nova frequencia: ${fmt(result, 0)} ipm`} detail="Ajuste sugerido mantendo VC constante" visible />
+        <ResultBox status="info" value={`Nova frequência: ${fmt(result, 0)} ipm`} detail="Ajuste sugerido mantendo VC constante" visible />
       )}
     </>
   )
@@ -442,7 +442,7 @@ function TobinCalc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.tobin} />
-      <CalcInput label="Frequencia respiratoria (ipm)" id="freqTobin" unit="ipm" placeholder="Ex: 20" value={freq} onChange={setFreq}
+      <CalcInput label="Frequência respiratória (ipm)" id="freqTobin" unit="ipm" placeholder="Ex: 20" value={freq} onChange={setFreq}
         warning={parseFloat(freq) && (parseFloat(freq) < 6 || parseFloat(freq) > 40) ? 'Valor fora da faixa habitual' : null} />
       <CalcInput label="Volume minuto (L/min)" id="veTobin" unit="L/min" placeholder="Ex: 8" value={ve} onChange={setVe}
         warning={parseFloat(ve) && (parseFloat(ve) < 2 || parseFloat(ve) > 25) ? 'Valor fora da faixa habitual (2-25 L/min)' : null} />
@@ -455,9 +455,9 @@ function TobinCalc() {
           visible
         />
       )}
-      <InfoBox title="Outros parametros de desmame:" items={[
-        'PImax: idealmente <= -25 cmH2O (mais negativo = melhor)',
-        'P0.1: idealmente < 3.5 cmH2O (drive ventilatorio)',
+      <InfoBox title="Outros parâmetros de desmame:" items={[
+        'PImax: idealmente ≤ -25 cmH₂O (mais negativo = melhor)',
+        'P0.1: idealmente < 3.5 cmH₂O (drive ventilatório)',
       ]} />
     </>
   )
@@ -481,9 +481,9 @@ function ROXCalc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.rox} />
-      <CalcInput label="SpO2 (%)" id="spo2ROX" unit="%" placeholder="Ex: 94" value={spo2} onChange={setSpo2} />
-      <CalcInput label="FiO2 (0.21 a 1.0)" id="fio2ROX" placeholder="Ex: 0.5" value={fio2} onChange={setFio2} />
-      <CalcInput label="Frequencia respiratoria (ipm)" id="freqROX" unit="ipm" placeholder="Ex: 22" value={freq} onChange={setFreq} />
+      <CalcInput label="SpO₂ (%)" id="spo2ROX" unit="%" placeholder="Ex: 94" value={spo2} onChange={setSpo2} />
+      <CalcInput label="FiO₂ (0.21 a 1.0)" id="fio2ROX" placeholder="Ex: 0.5" value={fio2} onChange={setFio2} />
+      <CalcInput label="Frequência respiratória (ipm)" id="freqROX" unit="ipm" placeholder="Ex: 22" value={freq} onChange={setFreq} />
       <CalcButton onClick={calc}>Calcular ROX</CalcButton>
       {result && (
         <div>
@@ -516,14 +516,14 @@ function TauCalc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.tau} />
-      <CalcInput label="Resistencia (cmH2O/L/s)" id="rvaTau" unit="cmH2O/L/s" placeholder="Ex: 10" value={rva} onChange={setRva} />
-      <CalcInput label="Complacencia (mL/cmH2O)" id="cstTau" unit="mL/cmH2O" placeholder="Ex: 50" value={cst} onChange={setCst} />
+      <CalcInput label="Resistência (cmH₂O/L/s)" id="rvaTau" unit="cmH₂O/L/s" placeholder="Ex: 10" value={rva} onChange={setRva} />
+      <CalcInput label="Complacência (mL/cmH₂O)" id="cstTau" unit="mL/cmH₂O" placeholder="Ex: 50" value={cst} onChange={setCst} />
       <CalcButton onClick={calc}>Calcular tau</CalcButton>
       {result !== null && (
         <ResultBox
           status="info"
           value={`tau: ${result.toFixed(2)} segundos`}
-          detail={`Tempo expiratorio recomendado:<br>4tau = ${(4 * result).toFixed(2)} s | 5tau = ${(5 * result).toFixed(2)} s`}
+          detail={`Tempo expiratório recomendado:<br>4tau = ${(4 * result).toFixed(2)} s | 5tau = ${(5 * result).toFixed(2)} s`}
           visible
         />
       )}
@@ -546,9 +546,9 @@ function PmusCalc() {
   return (
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.pmus} />
-      <CalcInput label="deltaPocc (deflexao na oclusao, cmH2O)" id="pocc" unit="cmH2O" placeholder="Ex: -10" value={pocc} onChange={setPocc} />
+      <CalcInput label="deltaPocc (deflexão na oclusão, cmH₂O)" id="pocc" unit="cmH₂O" placeholder="Ex: -10" value={pocc} onChange={setPocc} />
       <CalcButton onClick={calc}>Calcular Pmus</CalcButton>
-      {result && <ResultBox status={result.status} value={`Pmus estimada: ${fmt(result.val)} cmH2O`} detail={result.text} visible />}
+      {result && <ResultBox status={result.status} value={`Pmus estimada: ${fmt(result.val)} cmH₂O`} detail={result.text} visible />}
     </>
   )
 }
@@ -572,8 +572,8 @@ function MPCalc() {
       <ConceptDesc text={VM_DESCRIPTIONS.mp} />
       <CalcInput label="Volume corrente (mL)" id="vcMP" unit="mL" placeholder="Ex: 400" value={vc} onChange={setVc}
         warning={parseFloat(vc) && (parseFloat(vc) < 200 || parseFloat(vc) > 800) ? 'Valor fora da faixa habitual' : null} />
-      <CalcInput label="Driving pressure (cmH2O)" id="dpMP" unit="cmH2O" placeholder="Ex: 15" value={dp} onChange={setDp} />
-      <CalcInput label="Frequencia respiratoria (ipm)" id="freqMP" unit="ipm" placeholder="Ex: 20" value={freq} onChange={setFreq} />
+      <CalcInput label="Driving pressure (cmH₂O)" id="dpMP" unit="cmH₂O" placeholder="Ex: 15" value={dp} onChange={setDp} />
+      <CalcInput label="Frequência respiratória (ipm)" id="freqMP" unit="ipm" placeholder="Ex: 20" value={freq} onChange={setFreq} />
       <CalcButton onClick={calc}>Calcular MP</CalcButton>
       {result && <ResultBox status={result.status} value={`MP: ${fmt(result.val)} J/min`} detail={result.text} visible />}
     </>
@@ -597,7 +597,7 @@ function IACalc() {
     <>
       <ConceptDesc text={VM_DESCRIPTIONS.ia} />
       <CalcInput label="Eventos de assincronia" id="eventosIA" placeholder="Ex: 5" value={eventos} onChange={setEventos} />
-      <CalcInput label="Frequencia total (ciclos ventilador + triggers)" id="freqTotalIA" placeholder="Ex: 20" value={freqTotal} onChange={setFreqTotal} />
+      <CalcInput label="Frequência total (ciclos ventilador + triggers)" id="freqTotalIA" placeholder="Ex: 20" value={freqTotal} onChange={setFreqTotal} />
       <CalcButton onClick={calc}>Calcular IA</CalcButton>
       {result && <ResultBox status={result.status} value={`IA: ${fmt(result.val)}%`} detail={result.text} visible />}
     </>
@@ -642,16 +642,16 @@ function HacorScoreForm({ label, scores, onSelect }: {
 }
 
 function HACORSection() {
-  const [screen, setScreen] = useState<'home' | 'inicio' | 'reaval'>('home')
-  const [inicioScores, setInicioScores] = useState<HacorScores>({ fc: null, ph: null, gcs: null, pf: null, fr: null })
+  const [screen, setScreen] = useState<'home' | 'início' | 'reaval'>('home')
+  const [inícioScores, setInícioScores] = useState<HacorScores>({ fc: null, ph: null, gcs: null, pf: null, fr: null })
   const [reavalScores, setReavalScores] = useState<HacorScores>({ fc: null, ph: null, gcs: null, pf: null, fr: null })
   const [history, setHistory] = useState<HacorEntry[]>([])
 
-  const inicioTotal = hacorTotal(inicioScores)
+  const inícioTotal = hacorTotal(inícioScores)
   const reavalTotal = hacorTotal(reavalScores)
 
-  function handleInicioSelect(key: string, value: number) {
-    setInicioScores(prev => ({ ...prev, [key]: value }))
+  function handleInícioSelect(key: string, value: number) {
+    setInícioScores(prev => ({ ...prev, [key]: value }))
   }
 
   function handleReavalSelect(key: string, value: number) {
@@ -659,10 +659,10 @@ function HACORSection() {
   }
 
   function salvarT0() {
-    if (inicioTotal === null) return
+    if (inícioTotal === null) return
     const now = new Date()
     const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
-    setHistory([{ time: timeStr, score: inicioTotal, label: 'T0' }])
+    setHistory([{ time: timeStr, score: inícioTotal, label: 'T0' }])
     setReavalScores({ fc: null, ph: null, gcs: null, pf: null, fr: null })
     setScreen('reaval')
   }
@@ -676,11 +676,11 @@ function HACORSection() {
     setReavalScores({ fc: null, ph: null, gcs: null, pf: null, fr: null })
   }
 
-  function novaAvaliacao() {
+  function novaAvaliação() {
     setHistory([])
-    setInicioScores({ fc: null, ph: null, gcs: null, pf: null, fr: null })
+    setInícioScores({ fc: null, ph: null, gcs: null, pf: null, fr: null })
     setReavalScores({ fc: null, ph: null, gcs: null, pf: null, fr: null })
-    setScreen('inicio')
+    setScreen('início')
   }
 
   return (
@@ -691,7 +691,7 @@ function HACORSection() {
       {screen === 'home' && (
         <div className="flex flex-col gap-3">
           <button
-            onClick={() => setScreen('inicio')}
+            onClick={() => setScreen('início')}
             className="p-4 bg-[#1A1A1A] border border-[#333] rounded-xl text-left cursor-pointer active:bg-[#2A2A2A] active:border-accent"
           >
             <div className="text-base font-semibold text-text-primary mb-1">Iniciar VNI</div>
@@ -702,27 +702,27 @@ function HACORSection() {
             className="p-4 bg-[#1A1A1A] border border-[#333] rounded-xl text-left cursor-pointer active:bg-[#2A2A2A] active:border-accent"
           >
             <div className="text-base font-semibold text-text-primary mb-1">Reavaliar VNI</div>
-            <div className="text-[13px] text-text-secondary">Paciente ja em VNI -- verificar resposta</div>
+            <div className="text-[13px] text-text-secondary">Paciente ja em VNI — verificar resposta</div>
           </button>
         </div>
       )}
 
-      {/* Inicio */}
-      {screen === 'inicio' && (
+      {/* Início */}
+      {screen === 'início' && (
         <div>
           <button onClick={() => setScreen('home')} className="text-sm text-accent bg-transparent border-none cursor-pointer mb-3 px-0">Voltar</button>
-          <HacorScoreForm label="inicio" scores={inicioScores} onSelect={handleInicioSelect} />
-          {inicioTotal !== null && (
+          <HacorScoreForm label="início" scores={inícioScores} onSelect={handleInícioSelect} />
+          {inícioTotal !== null && (
             <>
               <div className={`mt-3 p-4 rounded-xl border text-center ${
-                inicioTotal < 5 ? 'border-success bg-success/[0.08]' : 'border-danger bg-danger/[0.08]'
+                inícioTotal < 5 ? 'border-success bg-success/[0.08]' : 'border-danger bg-danger/[0.08]'
               }`}>
-                <div className={`text-[28px] font-bold ${inicioTotal < 5 ? 'text-success' : 'text-danger'}`}>
-                  HACOR: {inicioTotal}
+                <div className={`text-[28px] font-bold ${inícioTotal < 5 ? 'text-success' : 'text-danger'}`}>
+                  HACOR: {inícioTotal}
                 </div>
                 <div className="text-sm mt-1.5 leading-relaxed text-text-primary">
-                  {inicioTotal < 5 ? (
-                    <><strong>Baixo risco de falha</strong><br />VNI com reavaliacao padrao</>
+                  {inícioTotal < 5 ? (
+                    <><strong>Baixo risco de falha</strong><br />VNI com reavaliação padrão</>
                   ) : (
                     <><strong>Alto risco de falha</strong><br />Prepare material de IOT. Reavalie em 1h.</>
                   )}
@@ -731,11 +731,11 @@ function HACORSection() {
               <CalcButton onClick={salvarT0}>Iniciar VNI e registrar T0</CalcButton>
             </>
           )}
-          <div className="text-[11px] text-text-secondary mt-4 italic">{HACOR_REF}</div>
+          <div className="text-xs text-text-secondary mt-4 italic">{HACOR_REF}</div>
         </div>
       )}
 
-      {/* Reavaliacao */}
+      {/* Reavaliação */}
       {screen === 'reaval' && (
         <div>
           <button onClick={() => setScreen('home')} className="text-sm text-accent bg-transparent border-none cursor-pointer mb-3 px-0">Voltar</button>
@@ -745,7 +745,7 @@ function HACORSection() {
             <div className={`mb-4 p-3 rounded-xl border text-sm font-semibold text-center ${
               history[0].score < 5 ? 'border-success text-success' : 'border-danger text-danger'
             }`}>
-              T0 ({history[0].time}): HACOR {history[0].score} -- {history[0].score < 5 ? 'baixo risco' : 'alto risco'}
+              T0 ({history[0].time}): HACOR {history[0].score} — {history[0].score < 5 ? 'baixo risco' : 'alto risco'}
             </div>
           )}
 
@@ -761,16 +761,16 @@ function HACORSection() {
                 </div>
                 <div className="text-sm mt-1.5 leading-relaxed text-text-primary">
                   {reavalTotal < 5 ? (
-                    <><strong>Baixo risco de falha</strong><br />Manter VNI com reavaliacao padrao</>
+                    <><strong>Baixo risco de falha</strong><br />Manter VNI com reavaliação padrão</>
                   ) : (
-                    <><strong>Alto risco de falha</strong><br />Considere intubacao orotraqueal</>
+                    <><strong>Alto risco de falha</strong><br />Considere intubação orotraqueal</>
                   )}
                   {history.length > 0 && (
                     <div className="text-xs text-text-secondary mt-2">
                       Anterior: {history[history.length - 1].score} → Atual: {reavalTotal} ({
                         reavalTotal < history[history.length - 1].score ? 'melhora'
                         : reavalTotal > history[history.length - 1].score ? 'piora'
-                        : 'estavel'
+                        : 'estável'
                       })
                     </div>
                   )}
@@ -778,10 +778,10 @@ function HACORSection() {
               </div>
               <CalcButton onClick={salvarReaval}>Salvar e reavaliar depois</CalcButton>
               <button
-                onClick={novaAvaliacao}
+                onClick={novaAvaliação}
                 className="w-full text-sm text-accent bg-transparent border-none cursor-pointer mt-2 text-center py-2"
               >
-                Nova avaliacao inicial
+                Nova avaliação inicial
               </button>
             </>
           )}
@@ -789,18 +789,18 @@ function HACORSection() {
           {/* Timeline */}
           {history.length > 0 && (
             <div className="mt-4">
-              <div className="text-[13px] font-semibold text-text-secondary mb-2">Historico de avaliacoes</div>
+              <div className="text-[13px] font-semibold text-text-secondary mb-2">Histórico de avaliações</div>
               {history.map((h, i) => (
                 <div key={i} className="flex items-center gap-2 py-2 border-b border-[#222]">
                   <div className={`w-2 h-2 rounded-full flex-shrink-0 ${h.score < 5 ? 'bg-success' : 'bg-danger'}`} />
                   <span className="text-[13px] text-text-secondary">{h.label} ({h.time})</span>
                   <span className={`text-[15px] font-bold ${h.score < 5 ? 'text-success' : 'text-danger'}`}>HACOR {h.score}</span>
-                  <span className="text-xs text-text-muted"> -- {h.score < 5 ? 'baixo risco' : 'alto risco'}</span>
+                  <span className="text-xs text-text-muted"> — {h.score < 5 ? 'baixo risco' : 'alto risco'}</span>
                 </div>
               ))}
               {history.length >= 2 && (
                 <div className="mt-2 p-2.5 bg-white/[0.04] rounded-lg text-[13px] text-text-secondary">
-                  Tendencia: <strong className={
+                  Tendência: <strong className={
                     history[history.length - 1].score < history[0].score ? 'text-success'
                     : history[history.length - 1].score > history[0].score ? 'text-danger'
                     : 'text-warning'
@@ -808,7 +808,7 @@ function HACORSection() {
                     {history[0].score} → {history[history.length - 1].score} ({
                       history[history.length - 1].score < history[0].score ? 'melhora'
                       : history[history.length - 1].score > history[0].score ? 'piora'
-                      : 'estavel'
+                      : 'estável'
                     })
                   </strong>
                 </div>
@@ -816,7 +816,7 @@ function HACORSection() {
             </div>
           )}
 
-          <div className="text-[11px] text-text-secondary mt-4 italic">{HACOR_REF}</div>
+          <div className="text-xs text-text-secondary mt-4 italic">{HACOR_REF}</div>
         </div>
       )}
     </div>
@@ -854,10 +854,10 @@ export default function VmGuide() {
   return (
     <div className="min-h-screen bg-bg-primary">
       <Disclaimer />
-      <Header title="VM Guide" subtitle="Ventilacao mecanica invasiva" />
+      <Header title="VM Guide" subtitle="Parâmetros de ventilação mecânica" />
 
       {/* Busca */}
-      <div className="max-w-[500px] mx-auto px-4 pb-4 relative">
+      <div className="max-w-[500px] mx-auto px-5 pb-4 relative">
         <div className="relative">
           <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 stroke-text-secondary fill-none" strokeWidth="2" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -867,7 +867,7 @@ export default function VmGuide() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Buscar calculadora..."
-            className="w-full bg-bg-card border border-[#333] rounded-xl py-3.5 px-4 pl-11 text-base text-text-primary placeholder:text-text-secondary outline-none focus:border-accent"
+            className="w-full bg-bg-card border border-[#333] rounded-xl py-3.5 px-4 pl-14 text-base text-text-primary placeholder:text-text-secondary outline-none focus:border-accent"
             autoComplete="off"
           />
         </div>
@@ -902,13 +902,13 @@ export default function VmGuide() {
           </Collapsible>
         </div>
 
-        {/* SECAO 2: Mecanica respiratoria */}
-        <div ref={el => { sectionRefs.current['mecanica'] = el }}>
-          <Collapsible title="Mecanica respiratoria">
-            <SubCollapsible title="Resistencia de vias aereas (Rva)" id="rva">
+        {/* SECAO 2: Mecânica respiratoria */}
+        <div ref={el => { sectionRefs.current['mecânica'] = el }}>
+          <Collapsible title="Mecânica respiratória">
+            <SubCollapsible title="Resistência de vias aéreas (Rva)" id="rva">
               <RvaCalc />
             </SubCollapsible>
-            <SubCollapsible title="Complacencia estatica (Cst)" id="cst">
+            <SubCollapsible title="Complacência estática (Cst)" id="cst">
               <CstCalc />
             </SubCollapsible>
             <SubCollapsible title="Driving pressure (deltaP)" id="dp">
@@ -920,16 +920,16 @@ export default function VmGuide() {
         {/* SECAO 3: Troca gasosa */}
         <div ref={el => { sectionRefs.current['troca'] = el }}>
           <Collapsible title="Troca gasosa">
-            <SubCollapsible title="Relacao P/F (PaO2/FiO2)" id="pf">
+            <SubCollapsible title="Relação P/F (PaO₂/FiO₂)" id="pf">
               <PFCalc />
             </SubCollapsible>
-            <SubCollapsible title="Relacao S/F (SpO2/FiO2)" id="sf">
+            <SubCollapsible title="Relação S/F (SpO₂/FiO₂)" id="sf">
               <SFCalc />
             </SubCollapsible>
-            <SubCollapsible title="Ajuste de FiO2" id="ajustefio2">
+            <SubCollapsible title="Ajuste de FiO₂" id="ajustefio2">
               <AjusteFiO2Calc />
             </SubCollapsible>
-            <SubCollapsible title="Ajuste de frequencia respiratoria" id="ajustefreq">
+            <SubCollapsible title="Ajuste de frequência respiratória" id="ajustefreq">
               <AjusteFreqCalc />
             </SubCollapsible>
           </Collapsible>
@@ -938,28 +938,28 @@ export default function VmGuide() {
         {/* SECAO 4: Desmame */}
         <div ref={el => { sectionRefs.current['desmame'] = el }}>
           <Collapsible title="Desmame">
-            <SubCollapsible title="Indice de respiracao rapida e superficial (IRRS/Tobin)" id="tobin">
+            <SubCollapsible title="Índice de respiração rápida e superficial (IRRS/Tobin)" id="tobin">
               <TobinCalc />
             </SubCollapsible>
-            <SubCollapsible title="Indice ROX (cateter nasal de alto fluxo)" id="rox">
+            <SubCollapsible title="Índice ROX (cateter nasal de alto fluxo)" id="rox">
               <ROXCalc />
             </SubCollapsible>
           </Collapsible>
         </div>
 
-        {/* SECAO 5: Outros parametros */}
+        {/* SECAO 5: Outros parâmetros */}
         <div ref={el => { sectionRefs.current['outros'] = el }}>
-          <Collapsible title="Outros parametros">
+          <Collapsible title="Outros parâmetros">
             <SubCollapsible title="Constante de tempo (tau)" id="tau">
               <TauCalc />
             </SubCollapsible>
-            <SubCollapsible title="Pressao muscular estimada (Pmus)" id="pmus">
+            <SubCollapsible title="Pressão muscular estimada (Pmus)" id="pmus">
               <PmusCalc />
             </SubCollapsible>
-            <SubCollapsible title="Mechanical power (potencia mecanica)" id="mp">
+            <SubCollapsible title="Mechanical power (potência mecânica)" id="mp">
               <MPCalc />
             </SubCollapsible>
-            <SubCollapsible title="Indice de assincronia" id="ia">
+            <SubCollapsible title="Índice de assincronia" id="ia">
               <IACalc />
             </SubCollapsible>
           </Collapsible>
@@ -967,14 +967,14 @@ export default function VmGuide() {
 
         {/* SECAO 6: SDRA */}
         <div ref={el => { sectionRefs.current['sdra'] = el }}>
-          <Collapsible title="Criterios de SDRA (Global 2024)">
+          <Collapsible title="Critérios de SDRA (Global 2024)">
             <ConceptDesc text={VM_DESCRIPTIONS.sdra} />
             <table className="w-full border-collapse mt-3 text-[13px]">
               <thead>
                 <tr>
                   <th className="text-text-secondary font-medium text-xs text-left py-2.5 px-2 border-b border-[#333]">Gravidade</th>
-                  <th className="text-text-secondary font-medium text-xs text-left py-2.5 px-2 border-b border-[#333]">P/F (PEEP &gt;=5)</th>
-                  <th className="text-text-secondary font-medium text-xs text-left py-2.5 px-2 border-b border-[#333]">S/F (SpO2 &lt;=97%)</th>
+                  <th className="text-text-secondary font-medium text-xs text-left py-2.5 px-2 border-b border-[#333]">P/F (PEEP ≥5)</th>
+                  <th className="text-text-secondary font-medium text-xs text-left py-2.5 px-2 border-b border-[#333]">S/F (SpO₂ ≤97%)</th>
                 </tr>
               </thead>
               <tbody>
@@ -987,7 +987,7 @@ export default function VmGuide() {
                 ))}
               </tbody>
             </table>
-            <InfoBox title="Novidades da definicao Global 2024:" items={SDRA_NOVIDADES} />
+            <InfoBox title="Novidades da definição Global 2024:" items={SDRA_NOVIDADES} />
           </Collapsible>
         </div>
 
@@ -998,9 +998,9 @@ export default function VmGuide() {
           </Collapsible>
         </div>
 
-        {/* SECAO 8: Referencias */}
+        {/* SECAO 8: Referências */}
         <div ref={el => { sectionRefs.current['ref'] = el }}>
-          <Collapsible title="Referencias">
+          <Collapsible title="Referências">
             <ul className="text-[13px] text-text-secondary leading-relaxed list-none">
               {VM_REFERENCES.map((ref, i) => (
                 <li key={i} className="mb-2">{ref}</li>
@@ -1010,7 +1010,7 @@ export default function VmGuide() {
         </div>
       </Container>
 
-      <Footer toolName="VM Guide" version="v2.0.0" />
+      <Footer toolName="VM Guide" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>

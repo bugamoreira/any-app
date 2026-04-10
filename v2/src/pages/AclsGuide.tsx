@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef, useCallback, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Disclaimer } from '../components/layout/Disclaimer'
-// Header disponivel se necessario
+// Header disponível se necessário
 import { Footer } from '../components/layout/Footer'
 import { Container } from '../components/layout/Container'
 import { FABMenu } from '../components/layout/FABMenu'
-// Card disponivel se necessario
+// Card disponível se necessário
 import { Button } from '../components/common/Button'
 import { Collapsible } from '../components/common/Collapsible'
 import { Modal } from '../components/common/Modal'
 import { useToast } from '../contexts/ToastContext'
-// fmt disponivel se necessario
+// fmt disponível se necessário
 import type { FABItem } from '../types/clinical'
 
 // ==========================================
@@ -110,7 +110,7 @@ const OVACE_SIGNS = [
   'Tosse fraca ou ausente',
   'Incapaz de falar ou chorar',
   'Cianose',
-  'Alteracao do estado mental',
+  'Alteração do estado mental',
   'Apneia',
 ]
 
@@ -123,48 +123,48 @@ interface HsTs {
 const HS_CAUSES: HsTs[] = [
   {
     name: 'Hipovolemia',
-    action: 'SF 0,9% 500 ml bolus rapido, repetir conforme necessidade. Hemoderivados se trauma ou hemorragia ativa.',
+    action: 'SF 0,9% 500 ml bolus rápido, repetir conforme necessidade. Hemoderivados se trauma ou hemorragia ativa.',
   },
   {
-    name: 'Hipoxia',
-    action: 'FiO2 100%. Considerar IOT. Verificar posicao do tubo.',
+    name: 'Hipóxia',
+    action: 'FiO₂ 100%. Considerar IOT. Verificar posição do tubo.',
     link: { label: 'Airway Guide', path: '/airway' },
   },
   {
-    name: 'Hidrogenio (acidose)',
-    action: 'Bicarbonato de sodio 1 mEq/kg IV. Considerar se PCR prolongada, acidose previa ou hipercalemia.',
+    name: 'Hidrogênio (acidose)',
+    action: 'Bicarbonato de sódio 1 mEq/kg IV. Considerar se PCR prolongada, acidose prévia ou hipercalemia.',
   },
   {
     name: 'Hipo/Hipercalemia',
-    action: 'Hipercalemia: Gluconato de calcio 10% 20 ml IV (2-5 min), Insulina regular 10 UI + Glicose 50% 25 g IV, Bicarbonato 50 mEq IV. Hipocalemia: KCl 20 mEq IV em 1h, Sulfato de magnesio 2 g IV.',
+    action: 'Hipercalemia: Gluconato de cálcio 10% 20 ml IV (2-5 min), Insulina regular 10 UI + Glicose 50% 25 g IV, Bicarbonato 50 mEq IV. Hipocalemia: KCl 20 mEq IV em 1h, Sulfato de magnésio 2 g IV.',
   },
   {
     name: 'Hipotermia',
-    action: 'Reaquecimento ativo: SF aquecido 42 graus C IV, manta termica, lavagem peritoneal/pleural se grave (menor que 30 graus C). Manter RCP -- nao declarar obito ate reaquecer.',
+    action: 'Reaquecimento ativo: SF aquecido 42 °C IV, manta térmica, lavagem peritoneal/pleural se grave (menor que 30 °C). Manter RCP — não declarar óbito até reaquecer.',
   },
 ]
 
 const TS_CAUSES: HsTs[] = [
   {
-    name: 'Tensao (pneumotorax hipertensivo)',
-    action: 'Descompressao com agulha no 2 grau EIC linha hemiclavicular ou 5 grau EIC linha axilar anterior. Seguida de drenagem toracica.',
+    name: 'Tensão (pneumotórax hipertensivo)',
+    action: 'Descompressão com agulha no 2° EIC linha hemiclavicular ou 5° EIC linha axilar anterior. Seguida de drenagem torácica.',
   },
   {
-    name: 'Tamponamento cardiaco',
-    action: 'Pericardiocentese guiada por USG (subxifoide). Volume rapido IV para manter pre-carga. Considerar toracotomia de emergencia se trauma.',
+    name: 'Tamponamento cardíaco',
+    action: 'Pericardiocentese guiada por USG (subxifoide). Volume rápido IV para manter pré-carga. Considerar toracotomia de emergência se trauma.',
   },
   {
     name: 'Toxinas',
-    action: 'Identificar agente e administrar antidoto especifico. Considerar carvao ativado se ingestao recente.',
+    action: 'Identificar agente e administrar antídoto específico. Considerar carvão ativado se ingestão recente.',
     link: { label: 'Tox Path', path: '/tox' },
   },
   {
     name: 'Trombose pulmonar (TEP)',
-    action: 'Trombolise: Alteplase 50 mg IV em bolus durante a RCP. Se suspeita forte, considerar trombolise empirica. Manter RCP por pelo menos 60-90 min apos trombolise.',
+    action: 'Trombólise: Alteplase 50 mg IV em bolus durante a RCP. Se suspeita forte, considerar trombólise empírica. Manter RCP por pelo menos 60-90 min após trombólise.',
   },
   {
     name: 'Trombose coronaria (IAM)',
-    action: 'Cateterismo de emergencia (ICP) se disponivel. Se nao: trombolise com tenecteplase ou alteplase. ECG 12 derivacoes pos-ROSC.',
+    action: 'Cateterismo de emergência (ICP) se disponível. Se não: trombólise com tenecteplase ou alteplase. ECG 12 derivações pós-ROSC.',
   },
 ]
 
@@ -176,24 +176,24 @@ interface MedConfig {
 
 const MEDICATIONS: MedConfig[] = [
   { name: 'Epinefrina 1 mg IV/IO', dose: 'A cada 3-5 min', group: 'Vasopressor' },
-  { name: 'Amiodarona 300 mg IV', dose: '1a dose (apos 3o choque)', group: 'Antiarritmicos' },
-  { name: 'Amiodarona 150 mg IV', dose: '2a dose', group: 'Antiarritmicos' },
-  { name: 'Lidocaina 100 mg IV', dose: 'Alternativa: 1-1,5 mg/kg', group: 'Antiarritmicos' },
-  { name: 'Sulfato de magnesio 2 g IV', dose: 'Torsades de Pointes', group: 'Eletrolitos e outros' },
-  { name: 'Gluconato de calcio 3 g IV', dose: 'Hipercalemia / bloq. calcio', group: 'Eletrolitos e outros' },
-  { name: 'Bicarbonato de sodio 1 mEq/kg IV', dose: 'Acidose / hipercalemia', group: 'Eletrolitos e outros' },
+  { name: 'Amiodarona 300 mg IV', dose: '1ª dose (após 3° choque)', group: 'Antiarrítmicos' },
+  { name: 'Amiodarona 150 mg IV', dose: '2ª dose', group: 'Antiarrítmicos' },
+  { name: 'Lidocaína 100 mg IV', dose: 'Alternativa: 1-1,5 mg/kg', group: 'Antiarrítmicos' },
+  { name: 'Sulfato de magnésio 2 g IV', dose: 'Torsades de Pointes', group: 'Eletrólitos e outros' },
+  { name: 'Gluconato de cálcio 3 g IV', dose: 'Hipercalemia / bloq. cálcio', group: 'Eletrólitos e outros' },
+  { name: 'Bicarbonato de sódio 1 mEq/kg IV', dose: 'Acidose / hipercalemia', group: 'Eletrólitos e outros' },
 ]
 
 const ROSC_CHECKLIST = [
-  'Via aerea: avaliar/confirmar posicionamento',
-  'FiO2 100% ate SpO2 confiavel, depois alvo 90-98%',
+  'Via aérea: avaliar/confirmar posicionamento',
+  'FiO₂ 100% até SpO₂ confiável, depois alvo 90-98%',
   'PaCO2 alvo 35-45 mmHg',
   'PAM alvo maior ou igual a 65 mmHg',
-  'ECG 12 derivacoes',
+  'ECG 12 derivações',
   'Considere TC e/ou eco a beira-leito',
-  'Segue comandos? Se nao: controle de temperatura (32-37,5 graus C por pelo menos 36h)',
-  'Considere cate se: ST supra persistente, choque cardiogenico, arritmia refrataria',
-  'Avalie convulsao, solicite EEG se nao segue comandos',
+  'Segue comandos? Se não: controle de temperatura (32-37,5 °C por pelo menos 36h)',
+  'Considere cate se: ST supra persistente, choque cardiogênico, arritmia refratária',
+  'Avalie convulsão, solicite EEG se não segue comandos',
   'Evite hipoglicemia (menor que 70) e hiperglicemia (maior que 180)',
 ]
 
@@ -231,7 +231,7 @@ function aclsReducer(state: ACLSState, action: ACLSAction): ACLSState {
         ...INITIAL_STATE,
         running: true,
         startTime: Date.now(),
-        events: [{ time: 0, type: 'system', detail: 'Codigo iniciado' }],
+        events: [{ time: 0, type: 'system', detail: 'Código iniciado' }],
       }
     case 'SET_RHYTHM':
       return {
@@ -297,7 +297,7 @@ function aclsReducer(state: ACLSState, action: ACLSAction): ACLSState {
         events: action.value
           ? [
               ...state.events,
-              { time: getElapsed(state.startTime), type: 'system', detail: 'Via aerea avancada confirmada' },
+              { time: getElapsed(state.startTime), type: 'system', detail: 'Via aérea avançada confirmada' },
             ]
           : state.events,
       }
@@ -316,7 +316,7 @@ function aclsReducer(state: ACLSState, action: ACLSAction): ACLSState {
           pauseStart: Date.now(),
           events: [
             ...state.events,
-            { time: getElapsed(state.startTime), type: 'fct', detail: 'Pausa nas compressoes' },
+            { time: getElapsed(state.startTime), type: 'fct', detail: 'Pausa nas compressões' },
           ],
         }
       } else {
@@ -330,7 +330,7 @@ function aclsReducer(state: ACLSState, action: ACLSAction): ACLSState {
             {
               time: getElapsed(state.startTime),
               type: 'fct',
-              detail: `Compressoes retomadas (pausa: ${Math.round(pauseDuration / 1000)}s)`,
+              detail: `Compressões retomadas (pausa: ${Math.round(pauseDuration / 1000)}s)`,
             },
           ],
         }
@@ -357,7 +357,7 @@ function aclsReducer(state: ACLSState, action: ACLSAction): ACLSState {
         running: false,
         events: [
           ...state.events,
-          { time: getElapsed(state.startTime), type: 'outcome', detail: 'Obito declarado' },
+          { time: getElapsed(state.startTime), type: 'outcome', detail: 'Óbito declarado' },
         ],
       }
     case 'RESET':
@@ -663,7 +663,7 @@ export default function AclsGuide() {
 
     if (state.rhythm === 'shockable') {
       if (state.shockCount >= 2 && !state.amio300Given) {
-        return { text: 'Considere amiodarona 300 mg IV', sub: 'Apos 3o choque sem sucesso', type: 'alert' }
+        return { text: 'Considere amiodarona 300 mg IV', sub: 'Após 3° choque sem sucesso', type: 'alert' }
       }
       if (state.shockCount >= 4 && state.amio300Given && !state.amio150Given) {
         return { text: 'Considere amiodarona 150 mg IV', sub: 'Dose adicional', type: 'alert' }
@@ -704,17 +704,17 @@ export default function AclsGuide() {
 
     // IV nudge (first cycle only)
     if (state.cycleCount === 0 && t < 180) {
-      nudges.push({ id: 'iv', text: 'Priorize acesso IV. IO se IV nao viavel.', urgent: false })
+      nudges.push({ id: 'iv', text: 'Priorize acesso IV. IO se IV não viável.', urgent: false })
     }
 
     // Airway nudge
     if (!state.advancedAirway && state.cycleCount >= 2) {
-      nudges.push({ id: 'airway', text: 'Considere via aerea avancada', urgent: false })
+      nudges.push({ id: 'airway', text: 'Considere via aérea avançada', urgent: false })
     }
 
     // H&T nudge
     if (state.cycleCount >= 4) {
-      nudges.push({ id: 'ht', text: "Revisou causas reversiveis? (H's e T's)", urgent: false })
+      nudges.push({ id: 'ht', text: "Revisou causas reversíveis? (H's e T's)", urgent: false })
     }
 
     // Max 2 visible
@@ -764,7 +764,7 @@ export default function AclsGuide() {
       event: {
         time: getElapsed(stateRef.current.startTime),
         type: 'rhythm',
-        detail: result === 'shockable' ? 'Ritmo chocavel' : 'Ritmo nao chocavel',
+        detail: result === 'shockable' ? 'Ritmo chocável' : 'Ritmo não chocável',
       },
     })
     // Update rhythm in state without adding a duplicate event
@@ -821,7 +821,7 @@ export default function AclsGuide() {
   }
 
   function handleConfirmDeath() {
-    if (window.confirm('Confirma encerramento por obito?')) {
+    if (window.confirm('Confirma encerramento por óbito?')) {
       handleFinishDeath()
     }
   }
@@ -850,14 +850,14 @@ export default function AclsGuide() {
 
     const elapsed = getElapsed(s.startTime)
 
-    lines.push('RELATORIO DE PCR -- ACLS Guide (ANY App)')
+    lines.push('RELATÓRIO DE PCR — ACLS Guide (ANY App)')
     lines.push(`Atendimento #${recordNum}`)
-    lines.push(`Data: ${dateStr} | Inicio: ${timeStr}`)
+    lines.push(`Data: ${dateStr} | Início: ${timeStr}`)
     lines.push(`Ritmo inicial: ${s.events.find(e => e.type === 'rhythm')?.detail || '---'}`)
     lines.push(`Tempo total: ${formatElapsed(elapsed)}`)
     lines.push(`Ciclos de RCP: ${s.cycleCount}`)
     lines.push(`Choques: ${s.shockCount}`)
-    lines.push(`Desfecho: ${s.outcome === 'rosc' ? 'RCE obtido' : 'Obito'}`)
+    lines.push(`Desfecho: ${s.outcome === 'rosc' ? 'RCE obtido' : 'Óbito'}`)
 
     if (s.fctTracking && s.totalPauseTime > 0) {
       const pauseSec = Math.round(s.totalPauseTime / 1000)
@@ -868,7 +868,7 @@ export default function AclsGuide() {
     lines.push('')
     lines.push('LINHA DO TEMPO:')
     s.events.forEach(e => {
-      lines.push(`  ${formatElapsed(e.time)} -- ${e.detail}`)
+      lines.push(`  ${formatElapsed(e.time)} — ${e.detail}`)
     })
 
     if (s.endTime) {
@@ -888,7 +888,7 @@ export default function AclsGuide() {
       startTime: timeStr,
       endTime: endTimeStr,
       rhythm: s.events.find(e => e.type === 'rhythm')?.detail || '---',
-      outcome: s.outcome === 'rosc' ? 'RCE' : 'Obito',
+      outcome: s.outcome === 'rosc' ? 'RCE' : 'Óbito',
       cycles: s.cycleCount,
       shocks: s.shockCount,
       duration: elapsed,
@@ -908,7 +908,7 @@ export default function AclsGuide() {
 
   function handleCopyReport() {
     navigator.clipboard.writeText(reportText).then(() => {
-      addToast('Relatorio copiado!', 'success')
+      addToast('Relatório copiado!', 'success')
     })
   }
 
@@ -923,7 +923,7 @@ export default function AclsGuide() {
   }
 
   function handleClearHistory() {
-    if (window.confirm('Limpar todo o historico de atendimentos?')) {
+    if (window.confirm('Limpar todo o histórico de atendimentos?')) {
       localStorage.removeItem('acls_records')
       setHistoryRecords([])
     }
@@ -1001,16 +1001,16 @@ export default function AclsGuide() {
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
             />
             <h1 className="text-[22px] font-bold mt-2 tracking-tight">ACLS Guide</h1>
-            <p className="text-[13px] text-text-secondary mt-1">Guia de parada cardiorrespiratoria</p>
+            <p className="text-[13px] text-text-secondary mt-1">Guia de parada cardiorrespiratória</p>
           </div>
 
           {/* Start button */}
           <button
             onClick={handleStartCode}
-            className="w-[200px] h-[200px] rounded-full bg-accent border-none text-white text-2xl font-bold cursor-pointer mx-auto flex items-center justify-center text-center leading-tight transition-transform active:scale-95"
+            className="w-[200px] h-[200px] rounded-full bg-accent border-none text-white text-2xl font-bold cursor-pointer mx-auto flex items-center justify-center text-center leading-tight transition-transform active:scale-95 mt-4 mb-4"
             style={{ boxShadow: '0 0 40px rgba(255,82,82,0.3)' }}
           >
-            Iniciar<br />codigo
+            Iniciar<br />código
           </button>
 
           {/* OVACE card */}
@@ -1019,7 +1019,7 @@ export default function AclsGuide() {
             className="bg-bg-card border-2 border-border-card rounded-xl p-5 mt-5 cursor-pointer text-center transition-colors active:border-accent"
           >
             <div className="text-base font-semibold mb-1">OVACE</div>
-            <div className="text-xs text-text-secondary">Obstrucao de via aerea por corpo estranho</div>
+            <div className="text-xs text-text-secondary">Obstrução de via aérea por corpo estranho</div>
           </div>
 
           {/* History card */}
@@ -1028,10 +1028,10 @@ export default function AclsGuide() {
             className="bg-bg-card border-2 border-border-card rounded-xl p-5 mt-3 cursor-pointer text-center transition-colors active:border-accent"
           >
             <div className="text-base font-semibold mb-1">Atendimentos salvos</div>
-            <div className="text-xs text-text-secondary">Historico de codigos anteriores</div>
+            <div className="text-xs text-text-secondary">Histórico de códigos anteriores</div>
           </div>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" />
+          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
         </Container>
       )}
 
@@ -1040,27 +1040,27 @@ export default function AclsGuide() {
         <Container>
           <div className="text-center py-5 px-4 border-b border-border mb-4">
             <h1 className="text-[22px] font-bold">OVACE</h1>
-            <p className="text-[13px] text-text-secondary mt-1">Obstrucao de via aerea por corpo estranho (AHA 2025)</p>
+            <p className="text-[13px] text-text-secondary mt-1">Obstrução de via aérea por corpo estranho (AHA 2025)</p>
           </div>
 
           {ovaceStep === 'assessment' && (
             <>
               <div className="rounded-xl p-5 mb-4 border-l-4 bg-yellow-500/15" style={{ borderLeftColor: '#FFC107' }}>
-                <div className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">Avaliacao</div>
+                <div className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">Avaliação</div>
                 <div className="text-lg font-semibold">O paciente apresenta sinais de OVACE grave?</div>
               </div>
               <div className="bg-bg-card rounded-lg p-4 my-3">
                 {OVACE_SIGNS.map((sign, i) => (
                   <div key={i} className="text-sm py-1 text-text-secondary before:content-[''] before:inline-block">
-                    <span className="text-accent mr-2">{'\u2022'}</span>{sign}
+                    <span className="text-accent mr-2">{'•'}</span>{sign}
                   </div>
                 ))}
               </div>
               <Button fullWidth className="mb-2.5" onClick={() => setOvaceStep('severe')}>
-                Sim -- OVACE grave
+                Sim — OVACE grave
               </Button>
               <Button fullWidth variant="secondary" onClick={() => setOvaceStep('mild')}>
-                Nao -- OVACE leve
+                Não — OVACE leve
               </Button>
             </>
           )}
@@ -1070,10 +1070,10 @@ export default function AclsGuide() {
               <div className="rounded-xl p-5 mb-4 border-l-4 bg-green-500/10" style={{ borderLeftColor: '#4CAF50' }}>
                 <div className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">OVACE leve</div>
                 <div className="text-lg font-semibold">Incentive a tosse</div>
-                <div className="text-[13px] text-text-secondary mt-1.5">Continue monitorando sinais de agravamento. Nao interfira enquanto a tosse for efetiva.</div>
+                <div className="text-[13px] text-text-secondary mt-1.5">Continue monitorando sinais de agravamento. Não interfira enquanto a tosse for efetiva.</div>
               </div>
               <Button fullWidth variant="secondary" onClick={() => setOvaceStep('assessment')}>
-                {'<-'} Voltar
+                ← Voltar
               </Button>
             </>
           )}
@@ -1082,13 +1082,13 @@ export default function AclsGuide() {
             <>
               <div className="rounded-xl p-5 mb-4 border-l-4 bg-red-500/10" style={{ borderLeftColor: '#FF5252' }}>
                 <div className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">OVACE grave</div>
-                <div className="text-lg font-semibold">O paciente esta consciente?</div>
+                <div className="text-lg font-semibold">O paciente está consciente?</div>
               </div>
               <Button fullWidth className="mb-2.5" onClick={() => setOvaceStep('conscious')}>
-                Sim -- Consciente
+                Sim — Consciente
               </Button>
               <Button fullWidth className="mb-2.5" onClick={() => setOvaceStep('unconscious')}>
-                Nao -- Inconsciente
+                Não — Inconsciente
               </Button>
             </>
           )}
@@ -1097,13 +1097,13 @@ export default function AclsGuide() {
             <>
               <div className="bg-red-500/10 border-l-4 rounded-lg p-4 my-3" style={{ borderLeftColor: '#FF5252' }}>
                 <h3 className="text-base font-semibold mb-1">Ciclos repetidos</h3>
-                <p className="text-sm text-text-secondary">5 tapas nas costas (golpes) seguidos de 5 compressoes abdominais</p>
+                <p className="text-sm text-text-secondary">5 tapas nas costas (golpes) seguidos de 5 compressões abdominais</p>
               </div>
               <div className="rounded-xl p-5 mb-4 border-l-4 bg-blue-500/10" style={{ borderLeftColor: '#2196F3' }}>
-                <div className="text-lg font-semibold">Repita ate que o objeto seja expelido ou o paciente fique inconsciente</div>
+                <div className="text-lg font-semibold">Repita até que o objeto seja expelido ou o paciente fique inconsciente</div>
               </div>
               <p className="text-xs text-text-muted italic mt-2">
-                Gestante ou obeso: substituir compressoes abdominais por compressoes toracicas.
+                Gestante ou obeso: substituir compressões abdominais por compressões torácicas.
               </p>
               <div className="mt-4 space-y-2.5">
                 <Button fullWidth variant="success" onClick={() => setOvaceStep('expelled')}>
@@ -1113,7 +1113,7 @@ export default function AclsGuide() {
                   Ficou inconsciente
                 </Button>
                 <Button fullWidth variant="secondary" onClick={() => setOvaceStep('assessment')}>
-                  Voltar ao inicio
+                  Voltar ao início
                 </Button>
               </div>
             </>
@@ -1123,17 +1123,17 @@ export default function AclsGuide() {
             <>
               <div className="bg-red-500/10 border-l-4 rounded-lg p-4 my-3" style={{ borderLeftColor: '#FF5252' }}>
                 <h3 className="text-base font-semibold mb-1">Iniciar RCP</h3>
-                <p className="text-sm text-text-secondary">Inicie compressoes toracicas. Antes de cada ventilacao, verifique se ha objeto visivel na boca.</p>
+                <p className="text-sm text-text-secondary">Inicie compressões torácicas. Antes de cada ventilação, verifique se há objeto visível na boca.</p>
               </div>
               <div className="rounded-xl p-5 mb-4 border-l-4 bg-yellow-500/15" style={{ borderLeftColor: '#FFC107' }}>
-                <div className="text-lg font-semibold">Acione o servico medico de emergencia</div>
+                <div className="text-lg font-semibold">Acione o serviço médico de emergência</div>
               </div>
               <div className="mt-4 space-y-2.5">
                 <Button fullWidth onClick={() => { setOvaceStep('assessment'); handleStartCode() }}>
-                  Iniciar Codigo de PCR
+                  Iniciar Código de PCR
                 </Button>
                 <Button fullWidth variant="secondary" onClick={() => setOvaceStep('assessment')}>
-                  Voltar ao inicio
+                  Voltar ao início
                 </Button>
               </div>
             </>
@@ -1144,15 +1144,15 @@ export default function AclsGuide() {
               <div className="rounded-xl p-5 mb-4 border-l-4 bg-green-500/10" style={{ borderLeftColor: '#4CAF50' }}>
                 <div className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1">Objeto expelido</div>
                 <div className="text-lg font-semibold">Continue monitorando o paciente</div>
-                <div className="text-[13px] text-text-secondary mt-1.5">Mantenha observacao ate a chegada do servico medico de emergencia.</div>
+                <div className="text-[13px] text-text-secondary mt-1.5">Mantenha observação até a chegada do serviço médico de emergência.</div>
               </div>
               <Button fullWidth variant="secondary" onClick={() => setScreen('start')}>
-                Voltar ao inicio
+                Voltar ao início
               </Button>
             </>
           )}
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" />
+          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
         </Container>
       )}
 
@@ -1173,17 +1173,17 @@ export default function AclsGuide() {
 
           <div
             onClick={() => handleSelectRhythm('shockable')}
-            className="bg-bg-card border-2 border-border-card rounded-xl p-6 mb-3 cursor-pointer transition-colors active:border-accent hover:border-accent min-h-[70px] flex flex-col justify-center"
+            className="bg-bg-card border-2 border-danger rounded-xl p-5 mb-3 cursor-pointer transition-colors active:border-accent hover:border-accent min-h-[70px] flex flex-col justify-center"
           >
-            <div className="text-lg font-semibold">Chocavel</div>
+            <div className="text-lg font-semibold">Chocável</div>
             <div className="text-[13px] text-text-secondary mt-1">FV / TV sem pulso</div>
           </div>
 
           <div
             onClick={() => handleSelectRhythm('nonshockable')}
-            className="bg-bg-card border-2 border-border-card rounded-xl p-6 mb-3 cursor-pointer transition-colors active:border-accent hover:border-accent min-h-[70px] flex flex-col justify-center"
+            className="bg-bg-card border-2 border-info rounded-xl p-5 mb-3 cursor-pointer transition-colors active:border-accent hover:border-accent min-h-[70px] flex flex-col justify-center"
           >
-            <div className="text-lg font-semibold">Nao chocavel</div>
+            <div className="text-lg font-semibold">Não chocável</div>
             <div className="text-[13px] text-text-secondary mt-1">AESP / Assistolia</div>
           </div>
         </Container>
@@ -1259,7 +1259,7 @@ export default function AclsGuide() {
           {state.rhythm === 'shockable' && (
             <button
               onClick={handleRegisterShock}
-              className="w-full py-4 px-5 bg-red-500/12 border-2 border-accent rounded-xl text-accent text-lg font-bold cursor-pointer flex items-center justify-center gap-2.5 transition-all active:bg-red-500/30 active:scale-[0.97] mb-2"
+              className="w-full py-4 px-5 bg-red-500/12 border-2 border-accent rounded-xl text-accent text-lg font-bold cursor-pointer flex items-center justify-center gap-2.5 transition-all active:bg-red-500/30 active:scale-[0.97] mb-2 min-h-[48px]"
             >
               <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M7 2v11h3v9l7-12h-4l4-8z" />
@@ -1272,7 +1272,7 @@ export default function AclsGuide() {
           )}
 
           {/* Medications */}
-          <div className="text-xs text-text-muted uppercase tracking-wider mb-2 pl-1 mt-4">Medicacoes</div>
+          <div className="text-xs text-text-muted uppercase tracking-wider mb-2 pl-1 mt-4">Medicações</div>
           <div className="mb-4">
             {(() => {
               let lastGroup = ''
@@ -1284,17 +1284,17 @@ export default function AclsGuide() {
                 return (
                   <div key={i}>
                     {showGroup && (
-                      <div className="text-[10px] text-text-muted uppercase tracking-widest py-2 px-1 mt-1">{med.group}</div>
+                      <div className="text-xs text-text-muted uppercase tracking-widest py-2 px-1 mt-1">{med.group}</div>
                     )}
                     <button
                       onClick={() => handleRegisterMed(med.name)}
-                      className={`w-full text-left bg-bg-card rounded-lg p-3.5 mb-2 flex justify-between items-center cursor-pointer transition-colors active:bg-bg-hover ${
+                      className={`w-full text-left bg-bg-card rounded-lg p-3.5 mb-2 flex justify-between items-center cursor-pointer transition-colors active:bg-bg-hover min-h-[48px] ${
                         isRegistered ? 'border border-success bg-green-500/[0.08]' : 'border border-border-card'
                       }`}
                     >
                       <div className="flex flex-col gap-0.5">
                         <span className="text-[15px] text-text-primary">{med.name}</span>
-                        <span className="text-[11px] text-text-muted">{med.dose}</span>
+                        <span className="text-xs text-text-muted">{med.dose}</span>
                       </div>
                       <div
                         className={`w-9 h-9 rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0 relative ${
@@ -1302,7 +1302,7 @@ export default function AclsGuide() {
                         }`}
                       >
                         {count > 0 && (
-                          <span className="absolute -top-2 -right-2 bg-success text-white text-[11px] font-bold min-w-[20px] h-5 rounded-full flex items-center justify-center px-1">
+                          <span className="absolute -top-2 -right-2 bg-success text-white text-xs font-bold min-w-[20px] h-5 rounded-full flex items-center justify-center px-1">
                             {count}
                           </span>
                         )}
@@ -1327,7 +1327,7 @@ export default function AclsGuide() {
                         <span className="relative z-10">
                           {epiUrgent
                             ? 'Epinefrina AGORA'
-                            : `Proxima epi em ${formatElapsed(Math.max(0, epiRemaining || 0))}`}
+                            : `Próxima epi em ${formatElapsed(Math.max(0, epiRemaining || 0))}`}
                         </span>
                       </div>
                     )}
@@ -1339,7 +1339,7 @@ export default function AclsGuide() {
 
           {/* Advanced Airway Toggle */}
           <div className="flex justify-between items-center bg-bg-card rounded-lg p-3.5 mb-2">
-            <span className="text-sm">Via aerea avancada</span>
+            <span className="text-sm">Via aérea avançada</span>
             <div
               onClick={handleToggleAirway}
               className={`w-12 h-7 rounded-full relative cursor-pointer transition-colors ${
@@ -1355,7 +1355,7 @@ export default function AclsGuide() {
           </div>
 
           {/* H's and T's collapsible */}
-          <Collapsible title="Causas reversiveis (H's e T's)">
+          <Collapsible title="Causas reversíveis (H's e T's)">
             <div className="text-xs text-text-muted uppercase tracking-wider mb-2">Hs</div>
             {HS_CAUSES.map((cause, i) => (
               <HTCard key={`h-${i}`} cause={cause} navigate={navigate} />
@@ -1367,7 +1367,7 @@ export default function AclsGuide() {
           </Collapsible>
 
           {/* Settings collapsible */}
-          <Collapsible title="Configuracoes">
+          <Collapsible title="Configurações">
             <div className="flex justify-between items-center bg-bg-card rounded-lg p-3.5 mb-2">
               <span className="text-[13px]">Registrar pausas (FCT)</span>
               <div
@@ -1402,16 +1402,16 @@ export default function AclsGuide() {
             <div className="bg-bg-card/95 backdrop-blur-sm border-t border-border-card flex justify-around items-center py-2.5 px-4 max-w-[500px] mx-auto">
               <div className="text-center tabular-nums">
                 <div className="text-xl font-bold">{formatElapsed(totalElapsed)}</div>
-                <div className="text-[10px] text-text-secondary uppercase tracking-wider">Total</div>
+                <div className="text-xs text-text-secondary uppercase tracking-wider">Total</div>
               </div>
               <div className="text-center tabular-nums">
                 <div className="text-xl font-bold">{state.cycleCount || '--'}</div>
-                <div className="text-[10px] text-text-secondary uppercase tracking-wider">Ciclo</div>
+                <div className="text-xs text-text-secondary uppercase tracking-wider">Ciclo</div>
               </div>
               {state.fctTracking && (
                 <button
                   onClick={() => dispatch({ type: 'TOGGLE_PAUSE' })}
-                  className={`px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+                  className={`px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer transition-all min-h-[48px] ${
                     state.pauseStart
                       ? 'bg-yellow-500/15 border-2 border-warning text-warning animate-pulse'
                       : 'bg-red-500/15 border-2 border-accent text-accent'
@@ -1422,13 +1422,13 @@ export default function AclsGuide() {
               )}
               <button
                 onClick={handleToggleMetronome}
-                className={`px-4 py-2 rounded-full border text-xs cursor-pointer transition-all ${
+                className={`px-4 py-2 rounded-full border text-xs cursor-pointer transition-all min-h-[48px] ${
                   state.metronomeOn
                     ? 'bg-accent text-white border-accent'
                     : 'bg-transparent text-text-secondary border-border-card'
                 }`}
               >
-                {state.metronomeOn ? 'Metronomo ON' : 'Metronomo'}
+                {state.metronomeOn ? 'Metrônomo ON' : 'Metrônomo'}
               </button>
             </div>
           </div>
@@ -1456,22 +1456,22 @@ export default function AclsGuide() {
 
         <div className="space-y-2.5">
           <Button fullWidth onClick={() => handleRhythmCheck('shockable')}>
-            Chocavel -- Choque
+            Chocável — Choque
           </Button>
           <button
             onClick={() => handleRhythmCheck('nonshockable')}
-            className="w-full py-4 rounded-lg text-base font-semibold cursor-pointer transition-opacity active:opacity-80 bg-info text-white border-none"
+            className="w-full py-4 rounded-lg text-base font-semibold cursor-pointer transition-opacity active:opacity-80 bg-info text-white border-none min-h-[48px]"
           >
-            Nao chocavel
+            Não chocável
           </button>
           <Button fullWidth variant="success" onClick={() => handleRhythmCheck('rosc')}>
             RCE (pulso presente)
           </Button>
           <button
             onClick={() => handleRhythmCheck('death')}
-            className="w-full py-4 rounded-lg text-base font-semibold cursor-pointer transition-opacity active:opacity-80 bg-[#555] text-white border-none"
+            className="w-full py-4 rounded-lg text-base font-semibold cursor-pointer transition-opacity active:opacity-80 bg-[#555] text-white border-none min-h-[48px]"
           >
-            Obito
+            Óbito
           </button>
         </div>
       </Modal>
@@ -1487,7 +1487,7 @@ export default function AclsGuide() {
           </div>
 
           <div className="text-xs text-text-muted uppercase tracking-wider mb-2 pl-1">
-            Checklist pos-ROSC (AHA 2025)
+            Checklist pós-ROSC (AHA 2025)
           </div>
 
           {ROSC_CHECKLIST.map((item, i) => (
@@ -1511,10 +1511,10 @@ export default function AclsGuide() {
           ))}
 
           <Button fullWidth className="mt-6" onClick={handleShowReport}>
-            Gerar relatorio
+            Gerar relatório
           </Button>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" />
+          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
         </Container>
       )}
 
@@ -1522,11 +1522,11 @@ export default function AclsGuide() {
       {screen === 'death' && (
         <Container>
           <div className="bg-white/5 rounded-xl p-5 text-center mb-5">
-            <h2 className="text-[22px] font-bold">Fim dos esforcos</h2>
+            <h2 className="text-[22px] font-bold">Fim dos esforços</h2>
             <div className="text-sm text-text-secondary mt-2">
               {state.endTime && (
                 <>
-                  Horario do obito: {new Date(state.endTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                  Horário do óbito: {new Date(state.endTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                   <br />
                   Tempo total de RCP: {formatElapsed(getElapsed(state.startTime))}
                 </>
@@ -1535,10 +1535,10 @@ export default function AclsGuide() {
           </div>
 
           <Button fullWidth onClick={handleShowReport}>
-            Gerar relatorio
+            Gerar relatório
           </Button>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" />
+          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
         </Container>
       )}
 
@@ -1546,7 +1546,7 @@ export default function AclsGuide() {
       {screen === 'report' && (
         <Container>
           <div className="text-center py-5 px-4 border-b border-border mb-4">
-            <h1 className="text-[22px] font-bold">Relatorio do codigo</h1>
+            <h1 className="text-[22px] font-bold">Relatório do código</h1>
           </div>
 
           <div className="bg-bg-card rounded-xl p-5 font-mono text-xs leading-[1.8] whitespace-pre-wrap text-text-secondary max-h-[400px] overflow-y-auto">
@@ -1554,14 +1554,14 @@ export default function AclsGuide() {
           </div>
 
           <Button fullWidth className="mt-3" onClick={handleCopyReport}>
-            Copiar relatorio
+            Copiar relatório
           </Button>
 
           <Button fullWidth variant="secondary" className="mt-3" onClick={handleResetAndRestart}>
-            Iniciar novo codigo
+            Iniciar novo código
           </Button>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" />
+          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
         </Container>
       )}
 
@@ -1597,16 +1597,16 @@ export default function AclsGuide() {
                 </div>
                 {expandedHistory === r.id && (
                   <div className="px-4 pb-4">
-                    <div className="bg-bg-primary rounded-lg p-3 font-mono text-[11px] leading-[1.8] whitespace-pre-wrap text-text-secondary max-h-[200px] overflow-y-auto">
+                    <div className="bg-bg-primary rounded-lg p-3 font-mono text-xs leading-[1.8] whitespace-pre-wrap text-text-secondary max-h-[200px] overflow-y-auto">
                       {r.report}
                     </div>
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
                         navigator.clipboard.writeText(r.report)
-                        addToast('Relatorio copiado!', 'success')
+                        addToast('Relatório copiado!', 'success')
                       }}
-                      className="w-full mt-2 py-2 bg-bg-hover rounded-lg text-sm text-text-primary border-none cursor-pointer"
+                      className="w-full mt-2 py-2 bg-bg-hover rounded-lg text-sm text-text-primary border-none cursor-pointer min-h-[48px]"
                     >
                       Copiar
                     </button>
@@ -1617,14 +1617,14 @@ export default function AclsGuide() {
           )}
 
           <Button fullWidth variant="secondary" className="mt-4" onClick={() => setScreen('start')}>
-            {'<-'} Voltar
+            ← Voltar
           </Button>
 
           <Button fullWidth variant="danger" className="mt-3" onClick={handleClearHistory}>
-            Limpar historico
+            Limpar histórico
           </Button>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" />
+          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
         </Container>
       )}
 

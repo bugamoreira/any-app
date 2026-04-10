@@ -1,9 +1,9 @@
 import type { DrugConfig, DrugCategory } from '../types/clinical'
 
 // ==========================================
-// CONFIGURACAO DE TODAS AS DROGAS
+// CONFIGURAÇÃO DE TODAS AS DROGAS
 // Fonte: Infusion Guide ANY App v2.3.2
-// Validado clinicamente (auditoria Opus 04/2026)
+// Validado clínicamente (auditoria Opus 04/2026)
 // ==========================================
 
 export const drugConfigs: DrugConfig[] = [
@@ -18,7 +18,7 @@ export const drugConfigs: DrugConfig[] = [
     cautionThreshold: 1, criticalThreshold: 2,
     factor: 60, usesWeight: true,
     dilutions: [
-      { label: 'Padrao (64 mcg/mL)', concentration: 64, isDefault: true },
+      { label: 'Padrão (64 mcg/mL)', concentration: 64, isDefault: true },
       { label: 'Dobrada (128 mcg/mL)', concentration: 128 },
     ]
   },
@@ -42,9 +42,9 @@ export const drugConfigs: DrugConfig[] = [
     cautionThreshold: 20, criticalThreshold: 30,
     factor: 60, usesWeight: true,
     dilutions: [
-      { label: 'Padrao (1000 mcg/mL)', concentration: 1000, isDefault: true },
+      { label: 'Padrão (1000 mcg/mL)', concentration: 1000, isDefault: true },
       { label: 'Dobrada (2000 mcg/mL)', concentration: 2000 },
-      { label: 'Quadrupla (4000 mcg/mL)', concentration: 4000 },
+      { label: 'Quádrupla (4000 mcg/mL)', concentration: 4000 },
     ]
   },
   {
@@ -76,7 +76,7 @@ export const drugConfigs: DrugConfig[] = [
     factor: 60, usesWeight: true,
   },
 
-  // === SEDACAO / ANALGESIA ===
+  // === SEDAÇÃO / ANALGESIA ===
   {
     id: 'midazolam', name: 'Midazolam', aliases: ['mida', 'dormonid', 'dormicum'],
     category: 'sedation',
@@ -98,7 +98,7 @@ export const drugConfigs: DrugConfig[] = [
   {
     id: 'propofol', name: 'Propofol', aliases: ['diprivan'],
     category: 'sedation',
-    presentation: 'Puro — 10 mg/mL (NAO diluir)',
+    presentation: 'Puro — 10 mg/mL (NÃO diluir)',
     concentration: 10, concentrationUnit: 'mg/mL',
     doseUnit: 'mg/kg/h', resultUnit: 'mL/h',
     doseMin: 1, doseMax: 4, doseStep: 0.1, doseDefault: 2,
@@ -126,7 +126,7 @@ export const drugConfigs: DrugConfig[] = [
 
   // === BNM ===
   {
-    id: 'cisatracurio', name: 'Cisatracurio', aliases: ['cisa', 'nimbex'],
+    id: 'cisatracurio', name: 'Cisatracúrio', aliases: ['cisa', 'nimbex'],
     category: 'neuromuscular',
     presentation: '50 mg (5 amp 10mL — 2mg/mL) + SF 0,9% 200 mL = 250 mL',
     concentration: 200, concentrationUnit: 'mcg/mL',
@@ -135,7 +135,7 @@ export const drugConfigs: DrugConfig[] = [
     factor: 60, usesWeight: true,
   },
   {
-    id: 'rocuronio', name: 'Rocuronio', aliases: ['rocu', 'esmeron'],
+    id: 'rocuronio', name: 'Rocurônio', aliases: ['rocu', 'esmeron'],
     category: 'neuromuscular',
     presentation: '500 mg (5 amp 10mL — 10mg/mL) + SF 0,9% qsp 100 mL',
     concentration: 5000, concentrationUnit: 'mcg/mL',
@@ -193,8 +193,8 @@ export function searchDrug(query: string): DrugConfig[] {
 
 /** Labels por categoria */
 export const categoryLabels: Record<DrugCategory, string> = {
-  vasopressors: 'Vasopressores e inotopicos',
-  sedation: 'Sedacao e analgesia',
+  vasopressors: 'Vasopressores e inotrópicos',
+  sedation: 'Sedação e analgesia',
   neuromuscular: 'Bloqueadores neuromusculares',
   vasodilators: 'Vasodilatadores',
   protocols: 'Protocolos',

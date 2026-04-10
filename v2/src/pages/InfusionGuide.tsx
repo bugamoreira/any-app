@@ -13,10 +13,12 @@ import { getDrugsByCategory, searchDrug, categoryLabels } from '../data/drugConf
 import type { DrugCategory } from '../types/clinical'
 
 export default function InfusionGuide() {
-  const { weight } = useWeight()
+  const { weight, setWeight } = useWeight()
   const [search, setSearch] = useState('')
   const [openDrug, setOpenDrug] = useState<string | null>(null)
-  const [gateOpen, setGateOpen] = useState(!!weight)
+  const [gateWeight, setGateWeight] = useState('')
+  const [gateError, setGateError] = useState('')
+  const savedWeight = typeof window !== 'undefined' ? localStorage.getItem('anyapp-peso') : null
 
   const filteredDrugs = useMemo(() => {
     if (!search.trim()) return null
@@ -29,34 +31,67 @@ export default function InfusionGuide() {
 
   const fabItems = [
     { label: 'Vasopressores', onClick: () => setSearch('') },
-    { label: 'Sedacao', onClick: () => setSearch('') },
+    { label: 'Sedação', onClick: () => setSearch('') },
     { label: 'BNM', onClick: () => setSearch('') },
     { label: 'Vasodilatadores', onClick: () => setSearch('') },
   ]
 
+  function handleConfirmWeight() {
+    const val = parseFloat(gateWeight)
+    if (isNaN(val) || val < 40 || val > 200) {
+      setGateError('Peso deve ser entre 40 e 200 kg')
+      return
+    }
+    setGateError('')
+    setWeight(val)
+  }
+
   // Gate de peso
-  if (!gateOpen && !weight) {
+  if (!weight) {
     return (
       <div className="min-h-screen bg-bg-primary">
         <Disclaimer />
-        <Header title="Calculadora de Infusoes" subtitle="Drogas vasoativas e sedacao" />
+        <Header title="Calculadora de Infusões" subtitle="Drogas vasoativas e sedação" />
         <Container>
-          <div className="text-center py-8">
-            <div className="text-lg font-bold text-text-primary mb-2">Informe o peso do paciente</div>
-            <div className="text-sm text-text-secondary mb-6">Necessario para calcular as doses</div>
-            <WeightInput sticky={false} />
+          <div className="bg-bg-card border border-border-card rounded-xl p-6 max-w-[400px] mx-auto mt-8">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-lg font-bold text-text-primary">Peso do paciente</span>
+              <span className="text-accent text-sm font-semibold">Obrigatório</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <input
+                type="number"
+                inputMode="decimal"
+                value={gateWeight}
+                onChange={e => { setGateWeight(e.target.value); setGateError('') }}
+                onKeyDown={e => { if (e.key === 'Enter') handleConfirmWeight() }}
+                placeholder="70"
+                className="flex-1 bg-bg-elevated border border-border-card rounded-xl py-4 text-center text-3xl font-bold text-accent placeholder:text-text-muted/40 outline-none focus:border-accent transition-colors"
+              />
+              <span className="text-lg font-semibold text-text-secondary">kg</span>
+            </div>
+            <p className="text-sm text-text-muted text-center mt-2">Adultos: 40-200 kg</p>
+            {gateError && <p className="text-sm text-danger text-center mt-2">{gateError}</p>}
             <button
-              onClick={() => { if (weight) setGateOpen(true) }}
-              className={`mt-6 w-full py-4 rounded-xl font-semibold text-base min-h-[48px] transition-colors ${
-                weight ? 'bg-accent text-white cursor-pointer' : 'bg-bg-elevated text-text-muted cursor-not-allowed'
-              }`}
-              disabled={!weight}
+              onClick={handleConfirmWeight}
+              className="mt-4 w-full bg-accent text-white rounded-xl py-4 text-base font-semibold min-h-[56px] cursor-pointer active:opacity-80 transition-opacity"
             >
               Confirmar peso
             </button>
+            {savedWeight && (
+              <button
+                onClick={() => {
+                  const val = parseFloat(savedWeight)
+                  if (!isNaN(val) && val >= 40 && val <= 200) setWeight(val)
+                }}
+                className="mt-3 w-full border border-border-card text-text-secondary rounded-xl py-3 text-sm font-medium min-h-[44px] cursor-pointer active:opacity-80 transition-opacity bg-transparent"
+              >
+                Recuperar ultimo peso ({savedWeight} kg)
+              </button>
+            )}
           </div>
         </Container>
-        <Footer toolName="Infusion Guide" version="v2.0.0" />
+        <Footer toolName="Infusion Guide" version="v2.0.0" updatedAt="Abril 2026" />
         <ToastContainer />
       </div>
     )
@@ -65,7 +100,7 @@ export default function InfusionGuide() {
   return (
     <div className="min-h-screen bg-bg-primary">
       <Disclaimer />
-      <Header title="Calculadora de Infusoes" subtitle="Drogas vasoativas e sedacao" />
+      <Header title="Calculadora de Infusões" subtitle="Drogas vasoativas e sedação" />
       <WeightInput />
       <Container>
         {/* Busca */}
@@ -134,7 +169,7 @@ export default function InfusionGuide() {
           </div>
         )}
       </Container>
-      <Footer toolName="Infusion Guide" version="v2.0.0" />
+      <Footer toolName="Infusion Guide" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>

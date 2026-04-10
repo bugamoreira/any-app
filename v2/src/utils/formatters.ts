@@ -1,4 +1,4 @@
-/** Formata numero com virgula (padrao BR) */
+/** Formata número com virgula (padrão BR) */
 export function fmt(n: number | null | undefined, decimals = 1): string {
   if (n === null || n === undefined || isNaN(n)) return '--'
   return n.toFixed(decimals).replace('.', ',')

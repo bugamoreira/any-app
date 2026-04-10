@@ -8,10 +8,7 @@ interface WeightContextType {
 const WeightContext = createContext<WeightContextType | null>(null)
 
 export function WeightProvider({ children }: { children: ReactNode }) {
-  const [weight, setWeightState] = useState<number | null>(() => {
-    const saved = localStorage.getItem('anyapp-peso')
-    return saved ? parseFloat(saved) : null
-  })
+  const [weight, setWeightState] = useState<number | null>(null)
 
   function setWeight(w: number | null) {
     setWeightState(w)

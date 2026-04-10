@@ -5,7 +5,7 @@ import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Container } from '../components/layout/Container'
 import { FABMenu } from '../components/layout/FABMenu'
-// Card disponivel se necessario
+// Card disponível se necessário
 import { Button } from '../components/common/Button'
 import { Collapsible } from '../components/common/Collapsible'
 import { AlertCard } from '../components/common/AlertCard'
@@ -22,8 +22,8 @@ import type { FABItem } from '../types/clinical'
 type Screen =
   | 'triagem'
   | 'colaborativo'
-  | 'sem-sedacao'
-  | 'sedacao-vo'
+  | 'sem-sedação'
+  | 'sedação-vo'
   | 'pouco-colaborativo'
   | 'urgencia-alta-pc'
   | 'escolha-im-urgente'
@@ -44,8 +44,8 @@ interface SedaState {
   triagem: Triagem
   via: Via
   protocolo: Protocolo
-  sedacaoPrevia: boolean
-  sedacaoPreviaVO: boolean
+  sedaçãoPrevia: boolean
+  sedaçãoPreviaVO: boolean
   // Combativo / urgente IM selection
   medUrgente: Protocolo
   medCombativo: Protocolo
@@ -57,13 +57,13 @@ interface SedaState {
   posCombativoChecks: Record<string, boolean>
   urgBaixaChecks: Record<string, boolean>
   altaChecks: Record<string, boolean>
-  contencaoChecks: Record<string, boolean>
+  contençãoChecks: Record<string, boolean>
   // Local weight inputs for IM calculators
   pesoKetUrg: string
   pesoKetComb: string
   pesoKetofol: string
-  // Sedacao previa context
-  sedacaoPreviaPc: boolean
+  // Sedação previa context
+  sedaçãoPreviaPc: boolean
 }
 
 const INITIAL_STATE: SedaState = {
@@ -72,8 +72,8 @@ const INITIAL_STATE: SedaState = {
   triagem: null,
   via: null,
   protocolo: null,
-  sedacaoPrevia: false,
-  sedacaoPreviaVO: false,
+  sedaçãoPrevia: false,
+  sedaçãoPreviaVO: false,
   medUrgente: null,
   medCombativo: null,
   redflags: {},
@@ -83,11 +83,11 @@ const INITIAL_STATE: SedaState = {
   posCombativoChecks: {},
   urgBaixaChecks: {},
   altaChecks: {},
-  contencaoChecks: {},
+  contençãoChecks: {},
   pesoKetUrg: '',
   pesoKetComb: '',
   pesoKetofol: '',
-  sedacaoPreviaPc: false,
+  sedaçãoPreviaPc: false,
 }
 
 // ==========================================
@@ -97,17 +97,17 @@ const INITIAL_STATE: SedaState = {
 const BREADCRUMB_LABELS: Record<Screen, string> = {
   triagem: 'Triagem',
   colaborativo: 'Colaborativo',
-  'sem-sedacao': 'Sem sedacao',
-  'sedacao-vo': 'Sedacao VO',
+  'sem-sedação': 'Sem sedação',
+  'sedação-vo': 'Sedação VO',
   'pouco-colaborativo': 'Pouco colaborativo',
   'urgencia-alta-pc': 'Urgente',
   'escolha-im-urgente': 'IM urgente',
-  'urgencia-baixa': 'Nao urgente',
+  'urgencia-baixa': 'Não urgente',
   'nao-colaborativo': 'Combativo',
   'preparo-iv': 'Preparo IV',
   ketofol: 'Ketofol',
   durante: 'Durante',
-  pos: 'Pos-sedacao',
+  pos: 'Pós-sedação',
 }
 
 // ==========================================
@@ -181,12 +181,12 @@ export default function SedaPath() {
     const peso = parseFloat(pesoStr)
     if (!peso || peso <= 0) return null
     const doseKgInducao = sedPrevia ? 0.25 : 0.5
-    const doseKgManutencao = sedPrevia ? 0.125 : 0.25
+    const doseKgManutenção = sedPrevia ? 0.125 : 0.25
     const doseInducao = peso * doseKgInducao
-    const doseManutencao = peso * doseKgManutencao
+    const doseManutenção = peso * doseKgManutenção
     const volumeInducao = doseInducao / 5
-    const volumeManutencao = doseManutencao / 5
-    return { doseInducao, volumeInducao, doseManutencao, volumeManutencao }
+    const volumeManutenção = doseManutenção / 5
+    return { doseInducao, volumeInducao, doseManutenção, volumeManutenção }
   }
 
   // ---- FAB ----
@@ -232,20 +232,20 @@ export default function SedaPath() {
   }) {
     const borderColors = {
       green: '#10B981',
-      yellow: '#F59E0B',
+      yellow: '#FFC107',
       red: '#EF4444',
       blue: '#FF5252',
     }
     return (
       <div
         onClick={onClick}
-        className={`bg-bg-elevated border-2 rounded-xl p-4 mb-3 cursor-pointer transition-colors border-l-4 active:border-accent ${
-          selected ? 'border-accent bg-[#1A0A0A]' : 'border-border'
+        className={`bg-bg-card border border-border-card rounded-xl p-5 min-h-[70px] cursor-pointer transition-colors border-l-4 active:border-accent ${
+          selected ? 'border-accent bg-[#1A0A0A]' : ''
         } ${className}`}
         style={{ borderLeftColor: borderColors[color] }}
       >
-        <h3 className="text-base font-semibold text-text-primary mb-1">{title}</h3>
-        <p className="text-[13px] text-text-secondary">{description}</p>
+        <h3 className="text-base font-bold text-text-primary mb-1">{title}</h3>
+        <p className="text-sm text-text-muted">{description}</p>
       </div>
     )
   }
@@ -253,14 +253,14 @@ export default function SedaPath() {
   function MedOption({
     title,
     dose,
-    indicacao,
+    indicação,
     extra,
     selected,
     onClick,
   }: {
     title: string
     dose: string
-    indicacao: string
+    indicação: string
     extra?: string
     selected: boolean
     onClick: () => void
@@ -268,13 +268,13 @@ export default function SedaPath() {
     return (
       <div
         onClick={onClick}
-        className={`bg-bg-elevated border-2 rounded-xl p-3.5 mb-3 cursor-pointer transition-colors ${
-          selected ? 'border-accent bg-[#1A0A0A]' : 'border-border'
+        className={`bg-bg-elevated border-2 rounded-xl p-4 mb-3 cursor-pointer transition-colors ${
+          selected ? 'border-accent bg-[#1A0A0A]' : 'border-border-card'
         }`}
       >
         <h4 className="text-[15px] font-semibold text-accent mb-1">{title}</h4>
         <div className="text-sm font-medium text-success mb-1">{dose}</div>
-        <div className="text-xs text-text-secondary">{indicacao}</div>
+        <div className="text-xs text-text-secondary">{indicação}</div>
         {extra && <div className="text-xs text-text-secondary mt-2"><strong>Preferir se:</strong> {extra}</div>}
       </div>
     )
@@ -352,12 +352,12 @@ export default function SedaPath() {
       <div className="flex gap-3 mt-6">
         {onBack && (
           <Button variant="secondary" onClick={onBack} className="flex-1">
-            &#8592; Voltar
+            ← Voltar
           </Button>
         )}
         {onNext && (
           <Button onClick={onNext} disabled={nextDisabled} className="flex-1">
-            {nextLabel || 'Proximo'} &#8594;
+            {nextLabel || 'Próximo'} &#8594;
           </Button>
         )}
       </div>
@@ -390,28 +390,33 @@ export default function SedaPath() {
   // ---- 1. TRIAGEM ----
   function ScreenTriagem() {
     return (
-      <div className="animate-slide-left">
-        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Avaliacao inicial</h2>
-        <p className="text-sm text-text-secondary mb-4">Qual a situacao atual do paciente?</p>
+      <div className="animate-slide-left pt-5">
+        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Avaliação inicial</h2>
+        <p className="text-sm text-text-secondary mb-4">Qual a situação atual do paciente?</p>
 
-        <OptionCard
-          color="green"
-          title="Colaborativo"
-          description="Aceita orientacoes, permite acesso venoso e monitorizacao"
-          onClick={() => { set('triagem', 'colaborativo'); goTo('colaborativo') }}
-        />
-        <OptionCard
-          color="yellow"
-          title="Pouco colaborativo"
-          description="Agitado, nao permite procedimentos, sem risco iminente"
-          onClick={() => { set('triagem', 'pouco-colaborativo'); goTo('pouco-colaborativo') }}
-        />
-        <OptionCard
-          color="red"
-          title="Combativo / Agitacao grave"
-          description="Risco imediato para equipe ou para si"
-          onClick={() => { set('triagem', 'nao-colaborativo'); goTo('nao-colaborativo') }}
-        />
+        <div className="flex flex-col gap-4">
+          <OptionCard
+            color="green"
+            title="Colaborativo"
+            description="Aceita orientações, permite acesso venoso e monitorização"
+            onClick={() => { set('triagem', 'colaborativo'); goTo('colaborativo') }}
+            className="!mb-0"
+          />
+          <OptionCard
+            color="yellow"
+            title="Pouco colaborativo"
+            description="Agitado, não permite procedimentos, sem risco iminente"
+            onClick={() => { set('triagem', 'pouco-colaborativo'); goTo('pouco-colaborativo') }}
+            className="!mb-0"
+          />
+          <OptionCard
+            color="red"
+            title="Combativo / Agitação grave"
+            description="Risco imediato para equipe ou para si"
+            onClick={() => { set('triagem', 'nao-colaborativo'); goTo('nao-colaborativo') }}
+            className="!mb-0"
+          />
+        </div>
       </div>
     )
   }
@@ -419,25 +424,25 @@ export default function SedaPath() {
   // ---- 1B. COLABORATIVO ----
   function ScreenColaborativo() {
     return (
-      <div className="animate-slide-left">
+      <div className="animate-slide-left pt-5">
         <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Paciente colaborativo</h2>
 
         <div className="bg-bg-hover border-2 border-accent rounded-xl p-5 mb-5 text-center">
-          <h3 className="text-lg font-bold text-accent mb-2">A sedacao e realmente necessaria?</h3>
-          <p className="text-sm text-text-secondary">Avalie se o paciente consegue tolerar o procedimento sem sedacao</p>
+          <h3 className="text-lg font-bold text-accent mb-2">A sedação é realmente necessária?</h3>
+          <p className="text-sm text-text-secondary">Avalie se o paciente consegue tolerar o procedimento sem sedação</p>
         </div>
 
         <OptionCard
           color="green"
-          title="Nao -- procedimento sem sedacao"
-          description="Paciente consegue ficar imovel, tolera o procedimento"
-          onClick={() => goTo('sem-sedacao')}
+          title="Não — procedimento sem sedação"
+          description="Paciente consegue ficar imóvel, tolera o procedimento"
+          onClick={() => goTo('sem-sedação')}
         />
         <OptionCard
           color="blue"
-          title="Sim -- precisa de sedacao"
-          description="Ansiedade, dificuldade de imobilizacao, dor nao controlada"
-          onClick={() => goTo('sedacao-vo')}
+          title="Sim — precisa de sedação"
+          description="Ansiedade, dificuldade de imobilização, dor não controlada"
+          onClick={() => goTo('sedação-vo')}
         />
 
         <NavButtons onBack={goBack} />
@@ -446,20 +451,20 @@ export default function SedaPath() {
   }
 
   // ---- SEM SEDACAO ----
-  function ScreenSemSedacao() {
+  function ScreenSemSedação() {
     return (
-      <div className="animate-slide-left">
+      <div className="animate-slide-left pt-5">
         <div className="bg-[#0A1A0F] border-2 border-success rounded-xl p-6 text-center mb-4">
-          <h3 className="text-lg font-semibold text-emerald-300 mb-2">Procedimento sem sedacao</h3>
-          <p className="text-sm text-emerald-400">Paciente colaborativo -- sedacao nao necessaria</p>
+          <h3 className="text-lg font-semibold text-emerald-300 mb-2">Procedimento sem sedação</h3>
+          <p className="text-sm text-emerald-400">Paciente colaborativo — sedação não necessária</p>
         </div>
 
         <AlertCard type="info" title="Dica">
-          Mantenha comunicacao clara com o paciente durante o procedimento. Explique cada etapa.
+          Mantenha comunicação clara com o paciente durante o procedimento. Explique cada etapa.
         </AlertCard>
 
         <div className="flex gap-3 mt-6">
-          <Button variant="secondary" onClick={goBack} className="flex-1">&#8592; Voltar</Button>
+          <button onClick={goBack} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button onClick={reiniciar} className="flex-1">Novo paciente</Button>
         </div>
       </div>
@@ -467,36 +472,36 @@ export default function SedaPath() {
   }
 
   // ---- SEDACAO VO ----
-  function ScreenSedacaoVO() {
+  function ScreenSedaçãoVO() {
     return (
-      <div className="animate-slide-left">
-        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Sedacao leve -- via oral</h2>
+      <div className="animate-slide-left pt-5">
+        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Sedação leve — via oral</h2>
 
         <div className="bg-[#1A0A0A] border-2 border-accent rounded-xl p-4 mb-3">
-          <h4 className="text-[15px] font-semibold text-accent mb-2">Opcoes de sedacao VO</h4>
+          <h4 className="text-[15px] font-semibold text-accent mb-2">Opções de sedação VO</h4>
           <div className="text-base font-semibold text-success mb-2">Midazolam 7,5-15mg VO</div>
           <div className="text-[13px] text-text-secondary">ou Clonazepam 0,5-1mg VO</div>
           <div className="text-[13px] text-text-secondary mt-2">Aguardar 20-30 minutos para efeito</div>
         </div>
 
         <AlertCard type="info" title="Se dor associada">
-          Considere reforco analgesico (dipirona, tramadol, morfina conforme intensidade)
+          Considere reforço analgésico (dipirona, tramadol, morfina conforme intensidade)
         </AlertCard>
 
-        <Collapsible title="Apos 20-30 minutos -- avalie a resposta">
+        <Collapsible title="Após 20-30 minutos — avalie a resposta">
           <OptionCard
             color="green"
             title="Suficiente"
             description="Paciente calmo, tolera procedimento"
-            onClick={() => goTo('sem-sedacao')}
+            onClick={() => goTo('sem-sedação')}
           />
           <OptionCard
             color="yellow"
             title="Insuficiente"
-            description="Escalonar para sedacao IV (Ketofol)"
+            description="Escalonar para sedação IV (Ketofol)"
             onClick={() => {
-              set('sedacaoPreviaVO', true)
-              set('sedacaoPrevia', true)
+              set('sedaçãoPreviaVO', true)
+              set('sedaçãoPrevia', true)
               goTo('preparo-iv')
             }}
           />
@@ -510,32 +515,32 @@ export default function SedaPath() {
   // ---- 2A. POUCO COLABORATIVO ----
   function ScreenPoucoColaborativo() {
     return (
-      <div className="animate-slide-left">
+      <div className="animate-slide-left pt-5">
         <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Pouco colaborativo</h2>
 
         <div className="bg-[#0A0A1A] border border-blue-500 rounded-lg p-4 mb-4">
           <h4 className="text-sm text-blue-300 mb-2.5 flex items-center gap-2 font-semibold">Primeiro: desescalonamento verbal</h4>
           <ul className="text-[13px] text-blue-200 pl-5 list-disc space-y-1.5">
             <li>Tom calmo e acolhedor, sem julgamentos</li>
-            <li>Reduza estimulos (som, pessoas)</li>
+            <li>Reduza estímulos (som, pessoas)</li>
             <li>Perguntas abertas: &quot;Como posso ajudar?&quot;</li>
           </ul>
         </div>
 
         <div className="bg-bg-elevated border border-border rounded-xl p-4 mb-4">
-          <h3 className="text-base font-semibold text-accent mb-3">Paciente ja recebeu sedacao nas ultimas 4h?</h3>
+          <h3 className="text-base font-semibold text-accent mb-3">Paciente já recebeu sedação nas últimas 4h?</h3>
           <Toggle
-            options={[{ value: 'nao', label: 'Nao' }, { value: 'sim', label: 'Sim' }]}
-            value={state.sedacaoPreviaPc ? 'sim' : 'nao'}
+            options={[{ value: 'nao', label: 'Não' }, { value: 'sim', label: 'Sim' }]}
+            value={state.sedaçãoPreviaPc ? 'sim' : 'nao'}
             onChange={(v) => {
               const com = v === 'sim'
-              set('sedacaoPreviaPc', com)
-              set('sedacaoPrevia', com)
+              set('sedaçãoPreviaPc', com)
+              set('sedaçãoPrevia', com)
             }}
           />
         </div>
 
-        {!state.sedacaoPreviaPc && (
+        {!state.sedaçãoPreviaPc && (
           <div>
             <div className="bg-[#1A0A0A] border-2 border-accent rounded-xl p-4 mb-3">
               <h4 className="text-[15px] font-semibold text-accent mb-2">Considere VO primeiro (se aceitar)</h4>
@@ -543,32 +548,32 @@ export default function SedaPath() {
               <div className="text-[13px] text-text-secondary">Aguardar 30 minutos. Se aceitar, pode ser suficiente.</div>
             </div>
             <AlertCard type="warning" title="Se falha da VO ou paciente recusa">
-              Avalie urgencia da intervencao abaixo
+              Avalie urgência da intervenção abaixo
             </AlertCard>
           </div>
         )}
 
-        {state.sedacaoPreviaPc && (
-          <AlertCard type="warning" title="Ja recebeu sedacao e nao foi suficiente">
-            Avalie urgencia da intervencao abaixo
+        {state.sedaçãoPreviaPc && (
+          <AlertCard type="warning" title="Já recebeu sedação e não foi suficiente">
+            Avalie urgência da intervenção abaixo
           </AlertCard>
         )}
 
         <div className="bg-bg-elevated border border-border rounded-xl p-4 mb-4">
-          <h3 className="text-base font-semibold text-accent mb-3">Urgencia da intervencao</h3>
+          <h3 className="text-base font-semibold text-accent mb-3">Urgência da intervenção</h3>
           <p className="text-[13px] text-text-secondary mb-3">
             O exame/procedimento precisa ser feito <strong>agora</strong>?
           </p>
           <OptionCard
             color="red"
-            title="Urgente -- preciso agora"
-            description="Trauma, suspeita de lesao aguda, TC imediata necessaria"
+            title="Urgente — preciso agora"
+            description="Trauma, suspeita de lesão aguda, TC imediata necessária"
             onClick={() => goTo('urgencia-alta-pc')}
           />
           <OptionCard
             color="yellow"
-            title="Nao urgente -- posso aguardar 20-40 min"
-            description="Situacao controlada, aguardar efeito do IM"
+            title="Não urgente — posso aguardar 20-40 min"
+            description="Situação controlada, aguardar efeito do IM"
             onClick={() => goTo('urgencia-baixa')}
           />
         </div>
@@ -581,25 +586,25 @@ export default function SedaPath() {
   // ---- URGENCIA ALTA ----
   function ScreenUrgenciaAlta() {
     return (
-      <div className="animate-slide-left">
-        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Urgente -- sedacao rapida</h2>
+      <div className="animate-slide-left pt-5">
+        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Urgente — sedação rápida</h2>
 
-        <AlertCard type="danger" title="Preciso de onset rapido">
-          Nao posso aguardar 20-40 min do Haloperidol IM
+        <AlertCard type="danger" title="Preciso de onset rápido">
+          Não posso aguardar 20-40 min do Haloperidol IM
         </AlertCard>
 
         <p className="text-sm text-text-secondary mb-4">Paciente tem acesso venoso?</p>
 
         <OptionCard
           color="green"
-          title="Sim -- tem acesso IV"
+          title="Sim — tem acesso IV"
           description="Usar Ketofol IV (onset 1-2 min)"
           onClick={() => goTo('preparo-iv')}
         />
         <OptionCard
           color="yellow"
-          title="Nao -- sem acesso IV"
-          description="Escolher sedacao IM de onset rapido"
+          title="Não — sem acesso IV"
+          description="Escolher sedação IM de onset rápido"
           onClick={() => goTo('escolha-im-urgente')}
         />
 
@@ -613,18 +618,18 @@ export default function SedaPath() {
     const ketResult = calcKetaminaIM(state.pesoKetUrg)
 
     return (
-      <div className="animate-slide-left">
-        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Sedacao IM -- onset rapido</h2>
+      <div className="animate-slide-left pt-5">
+        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Sedação IM — onset rápido</h2>
 
         <AlertCard type="info" title="Sem acesso IV">
-          Escolha a medicacao conforme indicacao e contraindicacoes
+          Escolha a medicação conforme indicação e contraindicações
         </AlertCard>
 
         <MedOption
           title="Ketamina IM"
           dose="5 mg/kg IM"
-          indicacao="Onset: 3-5 min | Duracao: 15-30 min"
-          extra="drogas sinteticas (K2, K9), falha de outras medicacoes, intoxicacao alcoolica"
+          indicação="Onset: 3-5 min | Duração: 15-30 min"
+          extra="drogas sintéticas (K2, K9), falha de outras medicações, intóxicação alcoólica"
           selected={state.medUrgente === 'ketamina'}
           onClick={() => set('medUrgente', 'ketamina')}
         />
@@ -632,13 +637,13 @@ export default function SedaPath() {
         <MedOption
           title="Midazolam IM"
           dose="7,5 mg IM"
-          indicacao="Onset: imediato | Meia-vida: 1-2h"
+          indicação="Onset: imediato | Meia-vida: 1-2h"
           selected={state.medUrgente === 'midazolam'}
           onClick={() => set('medUrgente', 'midazolam')}
         />
 
         <AlertCard type="danger" title="Evitar Midazolam se:">
-          Intoxicacao alcoolica / Risco de rebaixamento respiratorio / Gestante
+          Intóxicação alcoólica / Risco de rebaixamento respiratório / Gestante
         </AlertCard>
 
         {state.medUrgente === 'ketamina' && (
@@ -663,18 +668,18 @@ export default function SedaPath() {
         )}
 
         {state.medUrgente && (
-          <Collapsible title="Apos administracao">
-            <ChecklistItem id="urg-monitor" label="Monitorizacao continua (SpO2, FC)" checked={!!state.posImChecks['urg-monitor']} onChange={() => toggleCheck('posImChecks', 'urg-monitor')} />
-            <ChecklistItem id="urg-va" label="Material de via aerea disponivel" checked={!!state.posImChecks['urg-va']} onChange={() => toggleCheck('posImChecks', 'urg-va')} />
-            <ChecklistItem id="urg-acesso" label="Obter acesso IV assim que possivel" checked={!!state.posImChecks['urg-acesso']} onChange={() => toggleCheck('posImChecks', 'urg-acesso')} />
+          <Collapsible title="Após administração">
+            <ChecklistItem id="urg-monitor" label="Monitorização contínua (SpO2, FC)" checked={!!state.posImChecks['urg-monitor']} onChange={() => toggleCheck('posImChecks', 'urg-monitor')} />
+            <ChecklistItem id="urg-va" label="Material de via aérea disponível" checked={!!state.posImChecks['urg-va']} onChange={() => toggleCheck('posImChecks', 'urg-va')} />
+            <ChecklistItem id="urg-acesso" label="Obter acesso IV assim que possível" checked={!!state.posImChecks['urg-acesso']} onChange={() => toggleCheck('posImChecks', 'urg-acesso')} />
             <ChecklistItem id="urg-aguardar" label="Aguardar onset para procedimento" checked={!!state.posImChecks['urg-aguardar']} onChange={() => toggleCheck('posImChecks', 'urg-aguardar')} />
           </Collapsible>
         )}
 
         <div className="flex gap-3 mt-6">
-          <Button variant="secondary" onClick={goBack} className="flex-1">&#8592; Voltar</Button>
+          <button onClick={goBack} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           {state.medUrgente && (
-            <Button onClick={() => goTo('durante')} className="flex-1">Durante sedacao &#8594;</Button>
+            <Button onClick={() => goTo('durante')} className="flex-1">Durante sedação &#8594;</Button>
           )}
         </div>
       </div>
@@ -684,8 +689,8 @@ export default function SedaPath() {
   // ---- URGENCIA BAIXA ----
   function ScreenUrgenciaBaixa() {
     return (
-      <div className="animate-slide-left">
-        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Nao urgente -- Haloperidol + Prometazina IM</h2>
+      <div className="animate-slide-left pt-5">
+        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Não urgente — Haloperidol + Prometazina IM</h2>
 
         <div className="bg-[#1A0A0A] border-2 border-accent rounded-xl p-4 mb-3">
           <h4 className="text-[15px] font-semibold text-accent mb-2">Haloperidol + Prometazina IM</h4>
@@ -696,16 +701,16 @@ export default function SedaPath() {
         </div>
 
         <Collapsible title="Checklist enquanto aguarda" defaultOpen>
-          <ChecklistItem id="ub-perfusao" label="Verificar perfusao das extremidades (se contido)" checked={!!state.urgBaixaChecks['ub-perfusao']} onChange={() => toggleCheck('urgBaixaChecks', 'ub-perfusao')} />
+          <ChecklistItem id="ub-perfusao" label="Verificar perfusão das extremidades (se contido)" checked={!!state.urgBaixaChecks['ub-perfusao']} onChange={() => toggleCheck('urgBaixaChecks', 'ub-perfusao')} />
           <ChecklistItem id="ub-sv" label="Aferir sinais vitais a cada 15-30 min" checked={!!state.urgBaixaChecks['ub-sv']} onChange={() => toggleCheck('urgBaixaChecks', 'ub-sv')} />
-          <ChecklistItem id="ub-acesso" label="Obter acesso venoso quando possivel" checked={!!state.urgBaixaChecks['ub-acesso']} onChange={() => toggleCheck('urgBaixaChecks', 'ub-acesso')} />
+          <ChecklistItem id="ub-acesso" label="Obter acesso venoso quando possível" checked={!!state.urgBaixaChecks['ub-acesso']} onChange={() => toggleCheck('urgBaixaChecks', 'ub-acesso')} />
           <ChecklistItem id="ub-material" label="Preparar material para procedimento" checked={!!state.urgBaixaChecks['ub-material']} onChange={() => toggleCheck('urgBaixaChecks', 'ub-material')} />
         </Collapsible>
 
-        <Collapsible title="Apos 20-40 minutos -- avalie resposta">
+        <Collapsible title="Após 20-40 minutos — avalie resposta">
           <OptionCard
             color="green"
-            title="Sedacao adequada"
+            title="Sedação adequada"
             description="Pode realizar procedimento"
             onClick={() => goTo('durante')}
           />
@@ -727,26 +732,26 @@ export default function SedaPath() {
     const ketResult = calcKetaminaIM(state.pesoKetComb)
 
     return (
-      <div className="animate-slide-left">
-        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Combativo / Agitacao grave</h2>
+      <div className="animate-slide-left pt-5">
+        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Combativo / Agitação grave</h2>
 
         <div className="bg-[#1A0A0A] border-2 border-red-500 rounded-xl p-4 mb-4">
           <h4 className="text-[15px] font-bold text-red-300 mb-2">Risco imediato</h4>
           <ul className="text-sm text-red-300 pl-5 list-disc space-y-1">
-            <li>Reunir equipe e definir papeis</li>
-            <li>Preparar contencao mecanica</li>
+            <li>Reunir equipe e definir papéis</li>
+            <li>Preparar contenção mecânica</li>
             <li>Abordar em grupo</li>
-            <li>Nao conter mecanicamente sem contencao quimica</li>
+            <li>Não conter mecanicamente sem contenção química</li>
           </ul>
         </div>
 
-        <p className="text-sm text-text-secondary mb-4">Escolha a contencao quimica:</p>
+        <p className="text-sm text-text-secondary mb-4">Escolha a contenção química:</p>
 
         <MedOption
           title="Ketamina IM"
           dose="5 mg/kg IM"
-          indicacao="Onset: 3-5 min | Duracao: 15-30 min"
-          extra="drogas sinteticas (K2, K9), intoxicacao alcoolica, necessidade de onset rapido"
+          indicação="Onset: 3-5 min | Duração: 15-30 min"
+          extra="drogas sintéticas (K2, K9), intóxicação alcoólica, necessidade de onset rápido"
           selected={state.medCombativo === 'ketamina'}
           onClick={() => set('medCombativo', 'ketamina')}
         />
@@ -754,13 +759,13 @@ export default function SedaPath() {
         <MedOption
           title="Midazolam + Haloperidol + Prometazina IM"
           dose="Midazolam 7,5mg + Haloperidol 5mg + Prometazina 50mg IM"
-          indicacao="Onset midazolam: imediato | Onset haloperidol + prometazina: 20-40 min | Duracao: 4-6h"
+          indicação="Onset midazolam: imediato | Onset haloperidol + prometazina: 20-40 min | Duração: 4-6h"
           selected={state.medCombativo === 'mida-hf'}
           onClick={() => set('medCombativo', 'mida-hf')}
         />
 
-        <AlertCard type="danger" title="Contraindicacao ao Midazolam?">
-          Intoxicacao alcoolica, risco respiratorio, gestante &rarr; <strong>Usar apenas Ketamina IM</strong>
+        <AlertCard type="danger" title="Contraindicação ao Midazolam?">
+          Intóxicação alcoólica, risco respiratório, gestante &rarr; <strong>Usar apenas Ketamina IM</strong>
         </AlertCard>
 
         {state.medCombativo === 'ketamina' && (
@@ -786,24 +791,24 @@ export default function SedaPath() {
 
         {state.medCombativo && (
           <>
-            <Collapsible title="Checklist pos-contencao">
-              <ChecklistItem id="nc-perfusao" label="Verificar perfusao extremidades 30/30 min" checked={!!state.posCombativoChecks['nc-perfusao']} onChange={() => toggleCheck('posCombativoChecks', 'nc-perfusao')} />
+            <Collapsible title="Checklist pós-contenção">
+              <ChecklistItem id="nc-perfusao" label="Verificar perfusão extremidades 30/30 min" checked={!!state.posCombativoChecks['nc-perfusao']} onChange={() => toggleCheck('posCombativoChecks', 'nc-perfusao')} />
               <ChecklistItem id="nc-sv" label="Sinais vitais a cada 1 hora" checked={!!state.posCombativoChecks['nc-sv']} onChange={() => toggleCheck('posCombativoChecks', 'nc-sv')} />
-              <ChecklistItem id="nc-acesso" label="Obter acesso IV quando possivel" checked={!!state.posCombativoChecks['nc-acesso']} onChange={() => toggleCheck('posCombativoChecks', 'nc-acesso')} />
-              <ChecklistItem id="nc-reavaliar" label="Reavaliar necessidade de contencao mecanica" checked={!!state.posCombativoChecks['nc-reavaliar']} onChange={() => toggleCheck('posCombativoChecks', 'nc-reavaliar')} />
+              <ChecklistItem id="nc-acesso" label="Obter acesso IV quando possível" checked={!!state.posCombativoChecks['nc-acesso']} onChange={() => toggleCheck('posCombativoChecks', 'nc-acesso')} />
+              <ChecklistItem id="nc-reavaliar" label="Reavaliar necessidade de contenção mecânica" checked={!!state.posCombativoChecks['nc-reavaliar']} onChange={() => toggleCheck('posCombativoChecks', 'nc-reavaliar')} />
             </Collapsible>
 
-            <Collapsible title="Apos estabilizacao inicial">
-              <p className="text-sm mb-3">Precisa de sedacao adicional para procedimento?</p>
+            <Collapsible title="Após estabilização inicial">
+              <p className="text-sm mb-3">Precisa de sedação adicional para procedimento?</p>
               <OptionCard
                 color="green"
-                title="Contencao suficiente"
-                description="Paciente estavel, monitorar evolucao"
+                title="Contenção suficiente"
+                description="Paciente estável, monitorar evolução"
                 onClick={() => goTo('pos')}
               />
               <OptionCard
                 color="yellow"
-                title="Preciso de sedacao IV adicional"
+                title="Preciso de sedação IV adicional"
                 description="Escalonar para Ketofol IV"
                 onClick={() => goTo('preparo-iv')}
               />
@@ -818,33 +823,33 @@ export default function SedaPath() {
 
   // ---- 3. PREPARO IV ----
   function ScreenPreparoIV() {
-    const sedPrevia = state.sedacaoPrevia || state.sedacaoPreviaVO
+    const sedPrevia = state.sedaçãoPrevia || state.sedaçãoPreviaVO
 
     return (
-      <div className="animate-slide-left">
-        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Preparo para sedacao IV</h2>
+      <div className="animate-slide-left pt-5">
+        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Preparo para sedação IV</h2>
 
         <div className="bg-[#1A0A0A] border-2 border-red-500 rounded-xl p-4 mb-4">
-          <h4 className="text-[15px] font-bold text-red-300 mb-2">Ambiente obrigatorio</h4>
-          <p className="text-sm text-red-300">Sala de emergencia / ambiente critico, com monitor multiparametrico e recursos para intervencao de via aerea.</p>
-          <p className="text-sm text-red-300 mt-2"><strong>Responsavel: Emergencista</strong></p>
+          <h4 className="text-[15px] font-bold text-red-300 mb-2">Ambiente obrigatório</h4>
+          <p className="text-sm text-red-300">Sala de emergência / ambiente crítico, com monitor multiparamétrico e recursos para intervenção de via aérea.</p>
+          <p className="text-sm text-red-300 mt-2"><strong>Responsável: Emergencista</strong></p>
         </div>
 
-        {state.sedacaoPreviaVO && (
-          <AlertCard type="warning" title="Paciente ja recebeu sedacao VO">
+        {state.sedaçãoPreviaVO && (
+          <AlertCard type="warning" title="Paciente já recebeu sedação VO">
             Considere doses reduzidas de Ketofol e titule conforme resposta.
           </AlertCard>
         )}
 
-        {!state.sedacaoPreviaVO && (
+        {!state.sedaçãoPreviaVO && (
           <div className="bg-bg-elevated border border-border rounded-xl p-4 mb-4">
-            <h3 className="text-base font-semibold text-accent mb-3">Paciente recebeu sedacao nas ultimas 4h?</h3>
+            <h3 className="text-base font-semibold text-accent mb-3">Paciente recebeu sedação nas últimas 4h?</h3>
             <Toggle
-              options={[{ value: 'nao', label: 'Nao' }, { value: 'sim', label: 'Sim' }]}
-              value={state.sedacaoPrevia ? 'sim' : 'nao'}
-              onChange={(v) => set('sedacaoPrevia', v === 'sim')}
+              options={[{ value: 'nao', label: 'Não' }, { value: 'sim', label: 'Sim' }]}
+              value={state.sedaçãoPrevia ? 'sim' : 'nao'}
+              onChange={(v) => set('sedaçãoPrevia', v === 'sim')}
             />
-            {state.sedacaoPrevia && (
+            {state.sedaçãoPrevia && (
               <div className="mt-3">
                 <AlertCard type="info" title="Considere doses reduzidas de Ketofol">
                   Titular conforme resposta.
@@ -854,25 +859,25 @@ export default function SedaPath() {
           </div>
         )}
 
-        <Collapsible title="Red Flags -- clique para expandir">
-          <p className="text-[13px] text-text-secondary mb-3">Clique nas condicoes presentes para ver alertas especificos</p>
+        <Collapsible title="Red Flags — clique para expandir">
+          <p className="text-[13px] text-text-secondary mb-3">Clique nas condições presentes para ver alertas específicos</p>
 
-          <RedFlagCard id="rf-trauma" title="Trauma + suspeita de intoxicacao">
-            <strong className="text-red-300">Alto risco de broncoaspiracao</strong><br />
-            Gastroparesia do trauma, posicao supina, colar cervical.<br /><br />
-            <strong>Considere IOT programada antes da sedacao:</strong>
+          <RedFlagCard id="rf-trauma" title="Trauma + suspeita de intóxicação">
+            <strong className="text-red-300">Alto risco de broncoaspiração</strong><br />
+            Gastroparesia do trauma, posição supina, colar cervical.<br /><br />
+            <strong>Considere IOT programada antes da sedação:</strong>
             <ul className="mt-2 pl-4 list-disc space-y-1">
-              <li>Aspirador testado e a mao</li>
-              <li>Trendelenburg reverso se possivel</li>
-              <li>Equipe preparada para via aerea definitiva</li>
+              <li>Aspirador testado e à mão</li>
+              <li>Trendelenburg reverso se possível</li>
+              <li>Equipe preparada para via aérea definitiva</li>
             </ul>
           </RedFlagCard>
 
-          <RedFlagCard id="rf-vad" title="Via aerea dificil antecipada">
-            <strong>Sinais:</strong> obesidade, Mallampati &#8805;3, pescoco curto, barba cheia, limitacao de abertura bucal.<br /><br />
+          <RedFlagCard id="rf-vad" title="Via aérea difícil antecipada">
+            <strong>Sinais:</strong> obesidade, Mallampati &#8805;3, pescoço curto, barba cheia, limitação de abertura bucal.<br /><br />
             &rarr; Material de VAD preparado<br />
-            &rarr; Videolaringoscopio se disponivel<br />
-            &rarr; Considere IOT programada antes da sedacao<br /><br />
+            &rarr; Videolaringoscópio se disponível<br />
+            &rarr; Considere IOT programada antes da sedação<br /><br />
             <button
               onClick={(e) => { e.stopPropagation(); navigate('/airway') }}
               className="text-info text-[13px] underline bg-transparent border-none cursor-pointer p-0"
@@ -881,29 +886,29 @@ export default function SedaPath() {
             </button>
           </RedFlagCard>
 
-          <RedFlagCard id="rf-hemo" title="Instabilidade hemodinamica">
-            &rarr; Otimize antes da sedacao (volume, vasopressor)<br />
+          <RedFlagCard id="rf-hemo" title="Instabilidade hemodinâmica">
+            &rarr; Otimize antes da sedação (volume, vasopressor)<br />
             &rarr; Considere doses reduzidas<br />
-            &rarr; Cetamina isolada pode ser mais estavel hemodinamicamente
+            &rarr; Cetamina isolada pode ser mais estável hemodinâmicamente
           </RedFlagCard>
 
           <RedFlagCard id="rf-jejum" title="Jejum inadequado">
-            &rarr; Em emergencia, <strong>nao atrasar</strong> sedacao por jejum<br />
+            &rarr; Em emergência, <strong>não atrasar</strong> sedação por jejum<br />
             &rarr; Pondere risco-beneficio<br />
-            &rarr; Otimize protecao de via aerea
+            &rarr; Otimize proteção de via aérea
           </RedFlagCard>
         </Collapsible>
 
         <Collapsible title="Materiais">
           <ChecklistItem
             id="mat-monitor"
-            label="Monitorizacao (oximetro, PA, cardioscopio)"
+            label="Monitorização (oxímetro, PA, cardioscópio)"
             checked={!!state.materialChecks['mat-monitor']}
             onChange={() => toggleCheck('materialChecks', 'mat-monitor')}
           />
           <ChecklistItem
             id="mat-va"
-            label="Via aerea (BVM, canulas, laringoscopio, TOT)"
+            label="Via aérea (BVM, cânulas, laringoscópio, TOT)"
             checked={!!state.materialChecks['mat-va']}
             onChange={() => toggleCheck('materialChecks', 'mat-va')}
             extra={
@@ -923,13 +928,13 @@ export default function SedaPath() {
           />
           <ChecklistItem
             id="mat-acesso"
-            label="Acesso venoso calibroso e pervio"
+            label="Acesso venoso calibroso e pérvio"
             checked={!!state.materialChecks['mat-acesso']}
             onChange={() => toggleCheck('materialChecks', 'mat-acesso')}
           />
           <ChecklistItem
             id="mat-carro"
-            label="Acesso ao carro de emergencia"
+            label="Acesso ao carro de emergência"
             checked={!!state.materialChecks['mat-carro']}
             onChange={() => toggleCheck('materialChecks', 'mat-carro')}
           />
@@ -938,20 +943,20 @@ export default function SedaPath() {
         <Collapsible title="Equipe">
           <ChecklistItem
             id="eq-monitor"
-            label="Profissional dedicado a monitorizacao"
+            label="Profissional dedicado à monitorização"
             checked={!!state.equipeChecks['eq-monitor']}
             onChange={() => toggleCheck('equipeChecks', 'eq-monitor')}
           />
           <ChecklistItem
             id="eq-va"
-            label="Profissional capaz de manejar via aerea"
+            label="Profissional capaz de manejar via aérea"
             checked={!!state.equipeChecks['eq-va']}
             onChange={() => toggleCheck('equipeChecks', 'eq-va')}
           />
         </Collapsible>
 
         <div className="flex gap-3 mt-6">
-          <Button variant="secondary" onClick={goBack} className="flex-1">&#8592; Voltar</Button>
+          <button onClick={goBack} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button onClick={() => goTo('ketofol')} className="flex-1">Calcular Ketofol &#8594;</Button>
         </div>
       </div>
@@ -960,28 +965,28 @@ export default function SedaPath() {
 
   // ---- 4. CALCULADORA KETOFOL ----
   function ScreenKetofol() {
-    const sedPrevia = state.sedacaoPrevia || state.sedacaoPreviaVO
+    const sedPrevia = state.sedaçãoPrevia || state.sedaçãoPreviaVO
     const result = calcKetofol(state.pesoKetofol, sedPrevia)
 
     return (
-      <div className="animate-slide-left">
+      <div className="animate-slide-left pt-5">
         <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Ketofol 1:1</h2>
 
         <div className="bg-bg-elevated border border-border rounded-xl p-4 mb-4">
-          <h3 className="text-base font-semibold text-accent mb-3">Preparo da solucao</h3>
+          <h3 className="text-base font-semibold text-accent mb-3">Preparo da solução</h3>
           <div className="bg-bg-hover border-2 border-dashed border-accent rounded-lg p-4 font-mono text-sm leading-loose">
             <div className="flex justify-between"><span>Ketamina 50mg/mL</span><span>2 mL (100mg)</span></div>
             <div className="flex justify-between"><span>Propofol 1%</span><span>10 mL (100mg)</span></div>
-            <div className="flex justify-between"><span>Agua destilada</span><span>8 mL</span></div>
+            <div className="flex justify-between"><span>Água destilada</span><span>8 mL</span></div>
             <div className="flex justify-between border-t-2 border-accent mt-2 pt-2 font-bold"><span>Volume final</span><span>20 mL</span></div>
             <p className="text-center mt-2 text-xs text-text-secondary">
-              Concentracao: <strong>5mg/mL</strong> de cada componente
+              Concentração: <strong>5mg/mL</strong> de cada componente
             </p>
           </div>
         </div>
 
         <div className="bg-bg-elevated border border-border rounded-xl p-4 mb-4">
-          <h3 className="text-base font-semibold text-accent mb-4">Calculo de doses</h3>
+          <h3 className="text-base font-semibold text-accent mb-4">Cálculo de doses</h3>
           <label className="block text-sm font-medium text-text-primary mb-1.5">Peso do paciente (kg)</label>
           <input
             type="number"
@@ -996,24 +1001,24 @@ export default function SedaPath() {
             <div className="mt-4">
               {sedPrevia ? (
                 <AlertCard type="warning" title="Considere doses reduzidas (50%)">
-                  Sedacao previa nas ultimas 4h. Titular conforme resposta.
+                  Sedação prévia nas últimas 4h. Titular conforme resposta.
                 </AlertCard>
               ) : (
-                <AlertCard type="info" title="Dose padrao">
+                <AlertCard type="info" title="Dose padrão">
                   0,5 mg/kg de cada componente
                 </AlertCard>
               )}
 
               <div className="bg-bg-hover rounded-lg p-4 mt-3 border border-border">
-                <h4 className="text-accent font-semibold mb-3">Dose de inducao</h4>
+                <h4 className="text-accent font-semibold mb-3">Dose de indução</h4>
                 <ResultRow label="Ketamina + Propofol" value={`${fmt(result.doseInducao, 0)} mg de cada`} />
-                <ResultRow label="Volume da solucao" value={`${fmt(result.volumeInducao, 1)} mL`} highlight />
+                <ResultRow label="Volume da solução" value={`${fmt(result.volumeInducao, 1)} mL`} highlight />
               </div>
 
               <div className="bg-bg-hover rounded-lg p-4 mt-3 border border-border">
-                <h4 className="text-accent font-semibold mb-3">Manutencao (se necessario)</h4>
-                <ResultRow label="Dose" value={`${fmt(result.doseManutencao, 0)} mg de cada`} />
-                <ResultRow label="Volume" value={`${fmt(result.volumeManutencao, 1)} mL`} />
+                <h4 className="text-accent font-semibold mb-3">Manutenção (se necessário)</h4>
+                <ResultRow label="Dose" value={`${fmt(result.doseManutenção, 0)} mg de cada`} />
+                <ResultRow label="Volume" value={`${fmt(result.volumeManutenção, 1)} mL`} />
                 <p className="text-xs text-text-secondary mt-2">Repetir a cada 3-5 min conforme necessidade</p>
               </div>
             </div>
@@ -1021,8 +1026,8 @@ export default function SedaPath() {
         </div>
 
         <div className="flex gap-3 mt-6">
-          <Button variant="secondary" onClick={() => goTo('preparo-iv')} className="flex-1">&#8592; Voltar</Button>
-          <Button onClick={() => goTo('durante')} className="flex-1">Iniciar sedacao &#8594;</Button>
+          <button onClick={() => goTo('preparo-iv')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
+          <Button onClick={() => goTo('durante')} className="flex-1">Iniciar sedação &#8594;</Button>
         </div>
       </div>
     )
@@ -1031,33 +1036,33 @@ export default function SedaPath() {
   // ---- 5. DURANTE A SEDACAO ----
   function ScreenDurante() {
     return (
-      <div className="animate-slide-left">
-        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Durante a sedacao</h2>
+      <div className="animate-slide-left pt-5">
+        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Durante a sedação</h2>
 
-        <Collapsible title="Monitorizacao obrigatoria" defaultOpen>
-          <ParamCard icon="O2" iconBg="bg-[#0A1A0F] text-success" title="SpO2 continuo" description="Manter oximetro visivel e com alarme" />
+        <Collapsible title="Monitorização obrigatória" defaultOpen>
+          <ParamCard icon="O2" iconBg="bg-[#0A1A0F] text-success" title="SpO2 contínuo" description="Manter oxímetro visível e com alarme" />
           <ParamCard icon="PA" iconBg="bg-[#0A0A1A] text-info" title="PA e FC" description="Aferir a cada 3-5 minutos" />
-          <ParamCard icon="NC" iconBg="bg-[#0F0A1A] text-purple-400" title="Nivel de consciencia" description="Resposta a estimulos verbais e tateis" />
+          <ParamCard icon="NC" iconBg="bg-[#0F0A1A] text-purple-400" title="Nível de consciência" description="Resposta a estímulos verbais e táteis" />
         </Collapsible>
 
-        <Collapsible title="Intercorrencias">
-          <AlertCard type="warning" title="Hipotensao">
+        <Collapsible title="Intercorrências">
+          <AlertCard type="warning" title="Hipotensão">
             Fluidos, considere vasopressor
           </AlertCard>
-          <AlertCard type="warning" title="Dessaturacao">
+          <AlertCard type="warning" title="Dessaturação">
             <span>1. Reposicionar VA, chin lift/jaw thrust</span><br />
-            <span>2. O2 suplementar (mascara com reservatorio)</span><br />
+            <span>2. O2 suplementar (máscara com reservatório)</span><br />
             <span>3. Considere BVM</span><br />
-            <strong>4. Se nao reverter com medidas nao invasivas &rarr; considere IOT</strong>
+            <strong>4. Se não reverter com medidas não invasivas &rarr; considere IOT</strong>
           </AlertCard>
-          <AlertCard type="warning" title="Agitacao emergente">
+          <AlertCard type="warning" title="Agitação emergente">
             Dose adicional de ketofol
           </AlertCard>
         </Collapsible>
 
         <div className="flex gap-3 mt-6">
-          <Button variant="secondary" onClick={goBack} className="flex-1">&#8592; Voltar</Button>
-          <Button onClick={() => goTo('pos')} className="flex-1">Pos-sedacao &#8594;</Button>
+          <button onClick={goBack} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
+          <Button onClick={() => goTo('pos')} className="flex-1">Pós-sedação &#8594;</Button>
         </div>
       </div>
     )
@@ -1066,31 +1071,31 @@ export default function SedaPath() {
   // ---- 6. POS-SEDACAO ----
   function ScreenPos() {
     return (
-      <div className="animate-slide-left">
-        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Pos-sedacao</h2>
+      <div className="animate-slide-left pt-5">
+        <h2 className="text-xl font-bold text-accent mb-4 pb-3 border-b-2 border-accent">Pós-sedação</h2>
 
-        <Collapsible title="Criterios de alta da sedacao" defaultOpen>
+        <Collapsible title="Critérios de alta da sedação" defaultOpen>
           <ChecklistItem id="alta-alerta" label="Alerta e orientado" checked={!!state.altaChecks['alta-alerta']} onChange={() => toggleCheck('altaChecks', 'alta-alerta')} />
-          <ChecklistItem id="alta-sv" label="Sinais vitais estaveis" checked={!!state.altaChecks['alta-sv']} onChange={() => toggleCheck('altaChecks', 'alta-sv')} />
+          <ChecklistItem id="alta-sv" label="Sinais vitais estáveis" checked={!!state.altaChecks['alta-sv']} onChange={() => toggleCheck('altaChecks', 'alta-sv')} />
           <ChecklistItem id="alta-deambula" label="Deambulando sem apoio (ou baseline)" checked={!!state.altaChecks['alta-deambula']} onChange={() => toggleCheck('altaChecks', 'alta-deambula')} />
-          <ChecklistItem id="alta-nausea" label="Sem nausea ou vomito" checked={!!state.altaChecks['alta-nausea']} onChange={() => toggleCheck('altaChecks', 'alta-nausea')} />
+          <ChecklistItem id="alta-náusea" label="Sem náusea ou vômito" checked={!!state.altaChecks['alta-náusea']} onChange={() => toggleCheck('altaChecks', 'alta-náusea')} />
         </Collapsible>
 
-        <Collapsible title="Foi necessaria contencao mecanica?">
+        <Collapsible title="Foi necessária contenção mecânica?">
           <p className="text-sm text-text-secondary mb-3">
-            Se o paciente foi contido mecanicamente, siga a sequencia abaixo para retirada gradual:
+            Se o paciente foi contido mecanicamente, siga a sequência abaixo para retirada gradual:
           </p>
-          <AlertCard type="info" title="Aguardar 15 minutos entre cada liberacao.">
-            Reavaliar necessidade de retomar contencao a cada etapa.
+          <AlertCard type="info" title="Aguardar 15 minutos entre cada liberação.">
+            Reavaliar necessidade de retomar contenção a cada etapa.
           </AlertCard>
-          <ChecklistItem id="cont-torax" label="1. Liberar contencao toracica" checked={!!state.contencaoChecks['cont-torax']} onChange={() => toggleCheck('contencaoChecks', 'cont-torax')} />
-          <ChecklistItem id="cont-mi1" label="2. Liberar um membro inferior -- aguardar 15 min" checked={!!state.contencaoChecks['cont-mi1']} onChange={() => toggleCheck('contencaoChecks', 'cont-mi1')} />
-          <ChecklistItem id="cont-mi2" label="3. Liberar outro membro inferior -- aguardar 15 min" checked={!!state.contencaoChecks['cont-mi2']} onChange={() => toggleCheck('contencaoChecks', 'cont-mi2')} />
-          <ChecklistItem id="cont-ms" label="4. Liberar membros superiores por ultimo" checked={!!state.contencaoChecks['cont-ms']} onChange={() => toggleCheck('contencaoChecks', 'cont-ms')} />
+          <ChecklistItem id="cont-tórax" label="1. Liberar contenção torácica" checked={!!state.contençãoChecks['cont-tórax']} onChange={() => toggleCheck('contençãoChecks', 'cont-tórax')} />
+          <ChecklistItem id="cont-mi1" label="2. Liberar um membro inferior — aguardar 15 min" checked={!!state.contençãoChecks['cont-mi1']} onChange={() => toggleCheck('contençãoChecks', 'cont-mi1')} />
+          <ChecklistItem id="cont-mi2" label="3. Liberar outro membro inferior — aguardar 15 min" checked={!!state.contençãoChecks['cont-mi2']} onChange={() => toggleCheck('contençãoChecks', 'cont-mi2')} />
+          <ChecklistItem id="cont-ms" label="4. Liberar membros superiores por último" checked={!!state.contençãoChecks['cont-ms']} onChange={() => toggleCheck('contençãoChecks', 'cont-ms')} />
         </Collapsible>
 
         <div className="flex gap-3 mt-6">
-          <Button variant="secondary" onClick={() => goTo('durante')} className="flex-1">&#8592; Voltar</Button>
+          <button onClick={() => goTo('durante')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button onClick={reiniciar} className="flex-1">Novo paciente</Button>
         </div>
       </div>
@@ -1105,8 +1110,8 @@ export default function SedaPath() {
     switch (state.screen) {
       case 'triagem': return <ScreenTriagem />
       case 'colaborativo': return <ScreenColaborativo />
-      case 'sem-sedacao': return <ScreenSemSedacao />
-      case 'sedacao-vo': return <ScreenSedacaoVO />
+      case 'sem-sedação': return <ScreenSemSedação />
+      case 'sedação-vo': return <ScreenSedaçãoVO />
       case 'pouco-colaborativo': return <ScreenPoucoColaborativo />
       case 'urgencia-alta-pc': return <ScreenUrgenciaAlta />
       case 'escolha-im-urgente': return <ScreenEscolhaIMUrgente />
@@ -1127,12 +1132,12 @@ export default function SedaPath() {
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary">
       <Disclaimer />
-      <Header title="Seda Path" subtitle="Sedacao procedimental na emergencia" />
+      <Header title="SedaPath" subtitle="Guia de sedação procedimental" />
       <Breadcrumb />
-      <Container>
+      <Container className="px-5">
         {renderScreen()}
       </Container>
-      <Footer toolName="Seda Path" version="v2.0.0" />
+      <Footer toolName="Seda Path" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

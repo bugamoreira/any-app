@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Fundos OLED Pure */
+  /* Fundos OLED Pure — match v1 monolito */
   --color-bg-primary: #000000;
   --color-bg-card: #0A0A0A;
   --color-bg-elevated: #111111;
@@ -10,7 +10,7 @@
   /* Texto */
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #A0A0A0;
-  --color-text-muted: #666666;
+  --color-text-muted: #888888;
 
   /* Accent ANY App */
   --color-accent: #FF5252;
@@ -23,9 +23,9 @@
   --color-danger: #F44336;
   --color-info: #2196F3;
 
-  /* Bordas */
-  --color-border: #222222;
-  --color-border-card: #333333;
+  /* Bordas — match v1: #444 (mais visível) */
+  --color-border: #444444;
+  --color-border-card: #444444;
 
   /* Radius */
   --radius-default: 12px;
@@ -56,6 +56,16 @@ html, body, #root {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-border-card); border-radius: 4px; }
+
+/* Esconder spinner nativo de input number (Safari/Chrome) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 
 /* Input focus */
 input:focus, select:focus, textarea:focus {

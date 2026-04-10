@@ -10,7 +10,7 @@ import { Collapsible } from '../components/common/Collapsible'
 import { AlertCard } from '../components/common/AlertCard'
 import { Modal } from '../components/common/Modal'
 import { ToastContainer } from '../components/common/Toast'
-// Toast disponivel via ToastContainer global
+// Toast disponível via ToastContainer global
 
 import {
   spictIndicadoresGerais, spictCategorias,
@@ -18,19 +18,19 @@ import {
   redmapSteps, nurseSteps, frasesUteis, frasesEvitar, situacoesAlerta,
   dorLeve, dorModerada, dorIntensa,
   dispneiaFarma, dispneiaNaoFarma,
-  nauseaFarma,
+  náuseaFarma,
   deliriumFarma, deliriumNaoFarma,
-  sedacaoPreReq, sedacaoProtocolo, sedacaoAlternativas,
+  sedaçãoPreReq, sedaçãoProtocolo, sedaçãoAlternativas,
   sinaisMorteIminente, cuidadosFaseFinNaoFarma,
   ecogLevels, ppsLevels,
   ppiOptions, interpretPPI,
   opioidOptions, opioidFactors, opioidEquivalenceTable,
-  hipoIndicacoes, hipoContraindicacoes,
+  hipoIndicações, hipoContraindicações,
   volumesPorLocal, dispositivos, hipoProcedimento,
-  hipoMedicacoes, hipoSolucoes,
+  hipoMedicações, hipoSolucoes,
   compatHeaders, compatRows,
   mythsData,
-  referencias,
+  referências,
   type MedRow, type TechniqueStep, type MythData,
 } from '../data/paliaData'
 
@@ -38,10 +38,10 @@ import {
 // TIPOS
 // ==========================================
 
-type Screen = 'home' | 'identificar' | 'decidir' | 'comunicar' | 'manejar' | 'ferramentas' | 'mitos' | 'referencias'
-type ManejarTab = 'dor' | 'dispneia' | 'nausea' | 'delirium' | 'sedacao' | 'final'
+type Screen = 'home' | 'identificar' | 'decidir' | 'comunicar' | 'manejar' | 'ferramentas' | 'mitos' | 'referências'
+type ManejarTab = 'dor' | 'dispneia' | 'náusea' | 'delirium' | 'sedação' | 'final'
 type FerramentasTab = 'ecog' | 'pps' | 'ppi' | 'opioides' | 'hipo'
-type HipoSubTab = 'indicacoes' | 'tecnica' | 'medicacoes' | 'solucoes' | 'compat' | 'complic'
+type HipoSubTab = 'indicacoes' | 'técnica' | 'medicações' | 'solucoes' | 'compat' | 'complic'
 
 // ==========================================
 // SUB-COMPONENTES
@@ -49,12 +49,10 @@ type HipoSubTab = 'indicacoes' | 'tecnica' | 'medicacoes' | 'solucoes' | 'compat
 
 function BackButton({ onClick }: { onClick: () => void }) {
   return (
-    <Button variant="outline" size="sm" onClick={onClick} className="mb-4 gap-2">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M19 12H5M12 19l-7-7 7-7" />
-      </svg>
+    <button onClick={onClick} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-4 px-0 min-h-[44px]">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
       Voltar
-    </Button>
+    </button>
   )
 }
 
@@ -127,18 +125,18 @@ function BulletList({ items, color = '#10B981' }: { items: string[]; color?: str
 
 function TabBar({ tabs, active, onSelect }: { tabs: { id: string; label: string }[]; active: string; onSelect: (id: string) => void }) {
   return (
-    <div className="flex border-b-2 border-border-card mb-4 overflow-x-auto">
+    <div className="flex gap-4 border-b-2 border-border-card mb-4 overflow-x-auto">
       {tabs.map(t => (
         <button
           key={t.id}
           onClick={() => onSelect(t.id)}
-          className={`px-4 py-3 text-sm font-medium whitespace-nowrap relative transition-colors ${
-            active === t.id ? 'text-accent' : 'text-text-muted'
+          className={`px-3 py-3 text-sm whitespace-nowrap relative transition-colors ${
+            active === t.id ? 'text-text-primary font-bold' : 'text-text-muted font-medium'
           }`}
         >
           {t.label}
           {active === t.id && (
-            <div className="absolute bottom-[-2px] left-0 right-0 h-[3px] bg-accent rounded-t" />
+            <div className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-accent rounded-t" />
           )}
         </button>
       ))}
@@ -179,54 +177,91 @@ function HomeScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
   ]
 
   const extras = [
-    { id: 'ferramentas' as Screen, title: 'Ferramentas e Escalas', subtitle: 'ECOG, PPS, PPI, Conversao Opioides, Hipodermoclise', color: '#10B981', bgColor: 'rgba(16,185,129,0.15)' },
+    { id: 'ferramentas' as Screen, title: 'Ferramentas e Escalas', subtitle: 'ECOG, PPS, PPI, Conversão de Opioides, Hipodermóclise', color: '#10B981', bgColor: 'rgba(16,185,129,0.15)' },
     { id: 'mitos' as Screen, title: 'Mitos e Verdades', subtitle: '24 conceitos importantes desmistificados', color: '#EF4444', bgColor: 'rgba(239,68,68,0.15)' },
-    { id: 'referencias' as Screen, title: 'Referencias', subtitle: 'Fontes e literatura consultada', color: '#3B82F6', bgColor: 'rgba(59,130,246,0.15)' },
+    { id: 'referências' as Screen, title: 'Referências', subtitle: 'Fontes e literatura consultada', color: '#3B82F6', bgColor: 'rgba(59,130,246,0.15)' },
   ]
 
   return (
     <div className="animate-fade-in">
-      {/* Intro */}
-      <div className="text-center mb-6 p-4 bg-bg-elevated rounded-xl">
-        <h2 className="text-[#10B981] text-lg font-semibold mb-2">Cuidados Paliativos no DE</h2>
-        <p className="text-sm text-text-secondary">Ferramentas de apoio a decisao para identificacao, comunicacao e manejo de pacientes com necessidades paliativas.</p>
+      {/* Intro card */}
+      <div className="bg-bg-card border border-border-card rounded-xl p-5 text-center mb-6">
+        <h2 className="text-lg font-semibold" style={{ color: '#10B981' }}>Cuidados Paliativos no DE</h2>
+        <p className="text-sm text-text-secondary mt-2">Ferramentas de apoio à decisão para identificação, comunicação e manejo de pacientes com necessidades paliativas.</p>
       </div>
 
       {/* Grid de Modulos */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
         {modules.map(m => (
-          <Card key={m.id} borderColor={m.color} onClick={() => onNavigate(m.id)} className="text-center">
+          <div
+            key={m.id}
+            onClick={() => onNavigate(m.id)}
+            style={{ background: '#111111', border: '2px solid #333', borderLeft: `4px solid ${m.color}`, borderRadius: '12px', padding: '20px 16px', cursor: 'pointer', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '120px' }}
+          >
             <div
               className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
               style={{ background: m.bgColor, color: m.color }}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="4" />
-              </svg>
+              {m.id === 'identificar' && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+              )}
+              {m.id === 'decidir' && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22V8"/><path d="M21 3l-9 9"/><path d="M3 3l9 9"/>
+                </svg>
+              )}
+              {m.id === 'comunicar' && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+              )}
+              {m.id === 'manejar' && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/><path d="M12 13v4"/><path d="M10 15h4"/>
+                </svg>
+              )}
             </div>
             <h3 className="text-sm font-semibold text-text-primary mb-1">{m.title}</h3>
             <p className="text-xs text-text-muted">{m.subtitle}</p>
-          </Card>
+          </div>
         ))}
       </div>
 
       {/* Extras */}
-      <div className="space-y-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {extras.map(e => (
-          <Card key={e.id} onClick={() => onNavigate(e.id)} className="flex items-center gap-3">
+          <div
+            key={e.id}
+            onClick={() => onNavigate(e.id)}
+            style={{ background: '#111111', border: '2px solid #333', borderLeft: `4px solid ${e.color}`, borderRadius: '12px', padding: '20px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px' }}
+          >
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: e.bgColor, color: e.color }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="4" />
-              </svg>
+              {e.id === 'ferramentas' && (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/>
+                </svg>
+              )}
+              {e.id === 'mitos' && (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+              )}
+              {e.id === 'referências' && (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+                </svg>
+              )}
             </div>
             <div>
               <h4 className="text-sm font-semibold text-text-primary">{e.title}</h4>
               <p className="text-xs text-text-muted">{e.subtitle}</p>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
     </div>
@@ -237,13 +272,13 @@ function IdentificarScreen({ onBack }: { onBack: () => void }) {
   return (
     <div className="animate-fade-in">
       <BackButton onClick={onBack} />
-      <ModuleHeader title="Identificar" subtitle="SPICT-BR -- Ferramenta de Triagem para Cuidados Paliativos" color="#10B981" />
+      <ModuleHeader title="Identificar" subtitle="SPICT-BR — Ferramenta de Triagem para Cuidados Paliativos" color="#10B981" />
 
       <AlertCard type="success">
-        <strong>Quando usar:</strong> Pacientes com doencas cronicas avancadas ou deterioracao clinica progressiva. Se 2 ou mais indicadores positivos, considerar abordagem paliativa.
+        <strong>Quando usar:</strong> Pacientes com doenças crônicas avançadas ou deterioração clínica progressiva. Se 2 ou mais indicadores positivos, considerar abordagem paliativa.
       </AlertCard>
 
-      <Collapsible title="Indicadores gerais de deterioracao">
+      <Collapsible title="Indicadores gerais de deterioração">
         <BulletList items={spictIndicadoresGerais} />
       </Collapsible>
 
@@ -256,10 +291,10 @@ function IdentificarScreen({ onBack }: { onBack: () => void }) {
       <Card className="mt-4 bg-gradient-to-br from-bg-hover to-bg-elevated border border-border-card">
         <h4 className="text-sm font-semibold text-text-primary mb-2">Pergunta Surpresa</h4>
         <p className="text-sm text-text-secondary">
-          "Voce ficaria surpreso se este paciente morresse nos proximos 12 meses?"
+          "Você ficaria surpreso se este paciente morresse nos próximos 12 meses?"
         </p>
         <p className="text-sm text-text-secondary mt-2">
-          Se <strong className="text-text-primary">NAO</strong> ficaria surpreso, considerar cuidados paliativos.
+          Se <strong className="text-text-primary">NÃO</strong> ficaria surpreso, considerar cuidados paliativos.
         </p>
       </Card>
     </div>
@@ -272,10 +307,10 @@ function DecidirScreen({ onBack }: { onBack: () => void }) {
   return (
     <div className="animate-fade-in">
       <BackButton onClick={onBack} />
-      <ModuleHeader title="Decidir" subtitle="SAVED -- Framework para Decisao sobre Suporte de Vida" color="#3B82F6" />
+      <ModuleHeader title="Decidir" subtitle="SAVED — Framework para Decisão sobre Suporte de Vida" color="#3B82F6" />
 
       <AlertCard type="info">
-        <strong>Quando usar:</strong> Paciente critico/instavel com doenca avancada para auxiliar na tomada de decisao sobre medidas de suporte vital.
+        <strong>Quando usar:</strong> Paciente crítico/instável com doença avançada para auxiliar na tomada de decisão sobre medidas de suporte vital.
       </AlertCard>
 
       <div className="space-y-3 mt-4">
@@ -310,7 +345,7 @@ function DecidirScreen({ onBack }: { onBack: () => void }) {
                           {c.letter}
                         </div>
                         <h5 className="text-xs font-semibold text-text-primary mb-1">{c.title}</h5>
-                        <p className="text-[10px] text-text-muted">{c.desc}</p>
+                        <p className="text-xs text-text-muted">{c.desc}</p>
                       </div>
                     ))}
                   </div>
@@ -338,29 +373,29 @@ function ComunicarScreen({ onBack }: { onBack: () => void }) {
   return (
     <div className="animate-fade-in">
       <BackButton onClick={onBack} />
-      <ModuleHeader title="Comunicar" subtitle="Tecnicas para conversas dificeis e comunicacao de mas noticias" color="#A78BFA" />
+      <ModuleHeader title="Comunicar" subtitle="Técnicas para conversas difíceis e comunicação de más notícias" color="#A78BFA" />
 
       <Card className="mb-4 bg-bg-hover border border-border-card">
         <h4 className="text-sm font-semibold text-text-primary mb-1">Frase de Abertura</h4>
-        <p className="text-sm text-text-secondary italic">"O que voce gostaria de saber sobre sua condicao?"</p>
+        <p className="text-sm text-text-secondary italic">"O que você gostaria de saber sobre sua condição?"</p>
       </Card>
 
-      <Collapsible title="REDMAP -- Roteiro de Conversa">
+      <Collapsible title="REDMAP — Roteiro de Conversa">
         <StepsList steps={redmapSteps} />
       </Collapsible>
 
-      <Collapsible title="NURSE -- Resposta Empatica">
+      <Collapsible title="NURSE — Resposta Empática">
         <StepsList steps={nurseSteps} />
       </Collapsible>
 
-      <Collapsible title="Frases Uteis">
+      <Collapsible title="Frases Úteis">
         <AlertCard type="success"><strong>Use:</strong></AlertCard>
         <BulletList items={frasesUteis} color="#10B981" />
         <AlertCard type="danger" className="mt-4"><strong>Evite:</strong></AlertCard>
         <BulletList items={frasesEvitar} color="#EF4444" />
       </Collapsible>
 
-      <Collapsible title="Situacoes de Alerta">
+      <Collapsible title="Situações de Alerta">
         <BulletList items={situacoesAlerta} color="#F97316" />
       </Collapsible>
     </div>
@@ -372,9 +407,9 @@ function ManejarScreen({ onBack }: { onBack: () => void }) {
   const tabs = [
     { id: 'dor', label: 'Dor' },
     { id: 'dispneia', label: 'Dispneia' },
-    { id: 'nausea', label: 'Nausea' },
+    { id: 'náusea', label: 'Náusea' },
     { id: 'delirium', label: 'Delirium' },
-    { id: 'sedacao', label: 'Sedacao' },
+    { id: 'sedação', label: 'Sedação' },
     { id: 'final', label: 'Fase Final' },
   ]
 
@@ -388,20 +423,20 @@ function ManejarScreen({ onBack }: { onBack: () => void }) {
       {tab === 'dor' && (
         <div>
           <AlertCard type="warning">
-            <strong>Principio:</strong> Opioides sao a base do tratamento da dor moderada a grave em cuidados paliativos. Nao ha dose maxima -- titular ate alivio ou efeitos adversos intoleraveis.
+            <strong>Princípio:</strong> Opioides são a base do tratamento da dor moderada a grave em cuidados paliativos. Não há dose máxima — titular até alívio ou efeitos adversos intoleráveis.
           </AlertCard>
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Escada Analgesia (OMS modificada)</h4>
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Escada analgésica (OMS modificada)</h4>
           <Collapsible title="Dor Leve (1-3)" badge="1" badgeColor="#10B981">
-            <MedTable headers={['Medicacao', 'Dose']} rows={dorLeve} />
+            <MedTable headers={['Medicação', 'Dose']} rows={dorLeve} />
           </Collapsible>
           <Collapsible title="Dor Moderada (4-6)" badge="2" badgeColor="#FBBF24">
-            <MedTable headers={['Medicacao', 'Dose']} rows={dorModerada} />
-            <p className="text-xs text-text-muted mt-2">+ Analgesico simples</p>
+            <MedTable headers={['Medicação', 'Dose']} rows={dorModerada} />
+            <p className="text-xs text-text-muted mt-2">+ Analgésico simples</p>
           </Collapsible>
           <Collapsible title="Dor Intensa (7-10)" badge="3" badgeColor="#EF4444">
-            <MedTable headers={['Medicacao', 'Dose Inicial']} rows={dorIntensa} />
+            <MedTable headers={['Medicação', 'Dose Inicial']} rows={dorIntensa} />
             <AlertCard type="success" className="mt-2">
-              <strong>Dose de resgate:</strong> 10-15% da dose total diaria, a cada 1-2h se necessario.
+              <strong>Dose de resgate:</strong> 10-15% da dose total diária, a cada 1-2h se necessário.
             </AlertCard>
           </Collapsible>
         </div>
@@ -410,27 +445,27 @@ function ManejarScreen({ onBack }: { onBack: () => void }) {
       {tab === 'dispneia' && (
         <div>
           <AlertCard type="info">
-            <strong>Lembrar:</strong> Dispneia e subjetiva. Tratar mesmo com SpO2 normal se paciente refere desconforto. Morfina e primeira linha.
+            <strong>Lembrar:</strong> Dispneia é subjetiva. Tratar mesmo com SpO2 normal se paciente refere desconforto. Morfina é primeira linha.
           </AlertCard>
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Tratamento Farmacologico</h4>
-          <MedTable headers={['Medicacao', 'Dose', 'Obs']} rows={dispneiaFarma} />
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Tratamento Farmacológico</h4>
+          <MedTable headers={['Medicação', 'Dose', 'Obs']} rows={dispneiaFarma} />
           <AlertCard type="warning" className="mt-3">
-            <strong>Efeito teto:</strong> Morfina {'>'}20mg/24h geralmente nao traz alivio adicional para dispneia. Considerar midazolam associado.
+            <strong>Efeito teto:</strong> Morfina {'>'}20mg/24h geralmente não traz alívio adicional para dispneia. Considerar midazolam associado.
           </AlertCard>
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Medidas Nao Farmacologicas</h4>
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Medidas não farmacológicas</h4>
           <BulletList items={dispneiaNaoFarma} />
         </div>
       )}
 
-      {tab === 'nausea' && (
+      {tab === 'náusea' && (
         <div>
           <AlertCard type="success">
-            <strong>Avaliar causa:</strong> Constipacao? Obstrucao? Medicamentos? Hipertensao intracraniana? Metabolica?
+            <strong>Avaliar causa:</strong> Constipação? Obstrução? Medicamentos? Hipertensão intracraniana? Metabólica?
           </AlertCard>
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Tratamento por Mecanismo</h4>
-          <MedTable headers={['Causa/Medicacao', 'Dose', 'Obs']} rows={nauseaFarma.map(r => ({ med: r.obs ? `${r.obs} -- ${r.med}` : r.med, dose: r.dose, obs: undefined }))} />
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Tratamento por mecanismo</h4>
+          <MedTable headers={['Causa/Medicação', 'Dose', 'Obs']} rows={náuseaFarma.map(r => ({ med: r.obs ? `${r.obs} — ${r.med}` : r.med, dose: r.dose, obs: undefined }))} />
           <AlertCard type="warning" className="mt-3">
-            <strong>Obstrucao intestinal:</strong> Considerar octreotide 100-300mcg SC 8/8h para reduzir secrecoes.
+            <strong>Obstrução intestinal:</strong> Considerar octreotide 100-300mcg SC 8/8h para reduzir secreções.
           </AlertCard>
         </div>
       )}
@@ -438,39 +473,39 @@ function ManejarScreen({ onBack }: { onBack: () => void }) {
       {tab === 'delirium' && (
         <div>
           <AlertCard type="danger">
-            <strong>Investigar causas reversiveis:</strong> Dor, retencao urinaria, constipacao, infeccao, medicamentos (opioides, BZD), disturbios metabolicos, hipoxia.
+            <strong>Investigar causas reversíveis:</strong> Dor, retenção urinária, constipação, infecção, medicamentos (opioides, BZD), distúrbios metabólicos, hipóxia.
           </AlertCard>
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Tratamento Farmacologico</h4>
-          <MedTable headers={['Medicacao', 'Dose', 'Via']} rows={deliriumFarma.map(r => ({ med: r.med, dose: r.dose, obs: r.via }))} />
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Tratamento Farmacológico</h4>
+          <MedTable headers={['Medicação', 'Dose', 'Via']} rows={deliriumFarma.map(r => ({ med: r.med, dose: r.dose, obs: r.via }))} />
           <AlertCard type="success" className="mt-3">
-            <strong>Haloperidol:</strong> Iniciar 1mg SC/EV a cada 2h ate controle, depois manter 6/6h ou 8/8h.
+            <strong>Haloperidol:</strong> Iniciar 1mg SC/EV a cada 2h até controle, depois manter 6/6h ou 8/8h.
           </AlertCard>
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Medidas Nao Farmacologicas</h4>
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Medidas não farmacológicas</h4>
           <BulletList items={deliriumNaoFarma} />
         </div>
       )}
 
-      {tab === 'sedacao' && (
+      {tab === 'sedação' && (
         <div>
           <AlertCard type="danger">
-            <strong>Indicacao:</strong> Sintoma refratario (nao responde a tratamento convencional) em paciente com doenca terminal, causando sofrimento intoleravel.
+            <strong>Indicação:</strong> Sintoma refratário (não responde a tratamento convencional) em paciente com doença terminal, causando sofrimento intolerável.
           </AlertCard>
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Pre-requisitos (CFM)</h4>
-          <BulletList items={sedacaoPreReq} color="#EF4444" />
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Pré-requisitos (CFM)</h4>
+          <BulletList items={sedaçãoPreReq} color="#EF4444" />
           <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Protocolo (Midazolam)</h4>
-          <MedTable headers={['Etapa', 'Dose']} rows={sedacaoProtocolo} />
+          <MedTable headers={['Etapa', 'Dose']} rows={sedaçãoProtocolo} />
           <AlertCard type="warning" className="mt-3">
-            <strong>Alvo RASS:</strong> -3 a -4 (sedacao moderada a profunda). Reavaliar a cada 4h. Manter via SC se EV indisponivel.
+            <strong>Alvo RASS:</strong> -3 a -4 (sedação moderada a profunda). Reavaliar a cada 4h. Manter via SC se EV indisponível.
           </AlertCard>
           <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Alternativas</h4>
-          <MedTable headers={['Medicacao', 'Dose']} rows={sedacaoAlternativas} />
+          <MedTable headers={['Medicação', 'Dose']} rows={sedaçãoAlternativas} />
         </div>
       )}
 
       {tab === 'final' && (
         <div>
           <AlertCard type="success">
-            <strong>Definicao:</strong> Paciente cuja morte e inevitavel em curto periodo (dias a semanas), a despeito de todo cuidado medico.
+            <strong>Definição:</strong> Paciente cuja morte é inevitável em curto período (dias a semanas), a despeito de todo cuidado médico.
           </AlertCard>
           <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Sinais de Morte Iminente</h4>
           <div className="overflow-x-auto my-3 rounded-lg border border-border-card">
@@ -485,17 +520,17 @@ function ManejarScreen({ onBack }: { onBack: () => void }) {
               </tbody>
             </table>
           </div>
-          <p className="text-[10px] text-text-muted">Tempo medio ate obito (mediana)</p>
+          <p className="text-xs text-text-muted">Tempo médio até óbito (mediana)</p>
 
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Cuidados Nao Farmacologicos</h4>
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Cuidados não farmacológicos</h4>
           <BulletList items={cuidadosFaseFinNaoFarma} />
 
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Desprescricao</h4>
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Desprescrição</h4>
           <AlertCard type="success">
-            <strong>SUSPENDER:</strong> Estatinas, AAS, hipoglicemiantes, insulina, anti-hipertensivos (avaliar), medicacoes preventivas.
+            <strong>SUSPENDER:</strong> Estatinas, AAS, hipoglicemiantes, insulina, anti-hipertensivos (avaliar), medicações preventivas.
           </AlertCard>
           <AlertCard type="danger">
-            <strong>MANTER:</strong> Analgesicos, antiemeticos, antissecretivos, anticonvulsivantes. <strong>Cuidado:</strong> Betabloqueadores e clonidina -- reduzir gradualmente (risco de rebote).
+            <strong>MANTER:</strong> Analgésicos, antieméticos, antissecretivos, anticonvulsivantes. <strong>Cuidado:</strong> Betabloqueadores e clonidina — reduzir gradualmente (risco de rebote).
           </AlertCard>
         </div>
       )}
@@ -526,9 +561,9 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
   }, [opioidFrom, opioidTo, opioidDose])
 
   const filteredMeds = useMemo(() => {
-    if (!medSearch.trim()) return hipoMedicacoes
+    if (!medSearch.trim()) return hipoMedicações
     const q = medSearch.toLowerCase()
-    return hipoMedicacoes.filter(m => m.name.toLowerCase().includes(q))
+    return hipoMedicações.filter(m => m.name.toLowerCase().includes(q))
   }, [medSearch])
 
   const tabs = [
@@ -536,16 +571,16 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
     { id: 'pps', label: 'PPS' },
     { id: 'ppi', label: 'PPI' },
     { id: 'opioides', label: 'Opioides' },
-    { id: 'hipo', label: 'Hipodermoclise' },
+    { id: 'hipo', label: 'Hipodermóclise' },
   ]
 
   const hipoTabs = [
-    { id: 'indicacoes', label: 'Indicacoes' },
-    { id: 'tecnica', label: 'Tecnica' },
-    { id: 'medicacoes', label: 'Medicacoes' },
-    { id: 'solucoes', label: 'Solucoes' },
+    { id: 'indicacoes', label: 'Indicações' },
+    { id: 'técnica', label: 'Técnica' },
+    { id: 'medicações', label: 'Medicações' },
+    { id: 'solucoes', label: 'Soluções' },
     { id: 'compat', label: 'Compatibilidade' },
-    { id: 'complic', label: 'Complicacoes' },
+    { id: 'complic', label: 'Complicações' },
   ]
 
   return (
@@ -559,7 +594,7 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
       {tab === 'ecog' && (
         <div>
           <AlertCard type="success">
-            <strong>ECOG Performance Status:</strong> Avalia capacidade funcional do paciente oncologico.
+            <strong>ECOG Performance Status:</strong> Avalia capacidade funcional do paciente oncológico.
           </AlertCard>
           <div className="grid grid-cols-3 gap-2 mt-4">
             {ecogLevels.map(e => (
@@ -571,7 +606,7 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
                 }`}
               >
                 <div className="text-lg font-bold">{e.level}</div>
-                <div className="text-[10px] mt-1">{e.label}</div>
+                <div className="text-xs mt-1">{e.label}</div>
               </button>
             ))}
           </div>
@@ -580,7 +615,7 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
               <thead>
                 <tr className="bg-bg-hover">
                   <th className="px-2 py-2 text-left font-semibold text-text-primary">ECOG</th>
-                  <th className="px-2 py-2 text-left font-semibold text-text-primary">Descricao</th>
+                  <th className="px-2 py-2 text-left font-semibold text-text-primary">Descrição</th>
                 </tr>
               </thead>
               <tbody>
@@ -603,15 +638,15 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
             <strong>Palliative Performance Scale:</strong> Avalia funcionalidade em pacientes paliativos. Escala de 0-100%.
           </AlertCard>
           <div className="overflow-x-auto mt-4 rounded-lg border border-border-card">
-            <table className="w-full text-[10px]" style={{ minWidth: '500px' }}>
+            <table className="w-full text-xs" style={{ minWidth: '500px' }}>
               <thead>
                 <tr className="bg-bg-hover">
                   <th className="px-1.5 py-2 text-left font-semibold text-text-primary">PPS</th>
-                  <th className="px-1.5 py-2 text-left font-semibold text-text-primary">Deambulacao</th>
+                  <th className="px-1.5 py-2 text-left font-semibold text-text-primary">Deambulação</th>
                   <th className="px-1.5 py-2 text-left font-semibold text-text-primary">Atividade</th>
                   <th className="px-1.5 py-2 text-left font-semibold text-text-primary">Autocuidado</th>
                   <th className="px-1.5 py-2 text-left font-semibold text-text-primary">Ingesta</th>
-                  <th className="px-1.5 py-2 text-left font-semibold text-text-primary">Consciencia</th>
+                  <th className="px-1.5 py-2 text-left font-semibold text-text-primary">Consciência</th>
                 </tr>
               </thead>
               <tbody>
@@ -622,7 +657,7 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
                     <td className="px-1.5 py-2 text-text-secondary">{p.atividade}</td>
                     <td className="px-1.5 py-2 text-text-secondary">{p.autocuidado}</td>
                     <td className="px-1.5 py-2 text-text-secondary">{p.ingesta}</td>
-                    <td className="px-1.5 py-2 text-text-secondary">{p.consciencia}</td>
+                    <td className="px-1.5 py-2 text-text-secondary">{p.consciência}</td>
                   </tr>
                 ))}
               </tbody>
@@ -635,7 +670,7 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
       {tab === 'ppi' && (
         <div>
           <AlertCard type="info">
-            <strong>Palliative Prognostic Index:</strong> Prediz sobrevida em pacientes oncologicos usando apenas criterios clinicos.
+            <strong>Palliative Prognostic Index:</strong> Prediz sobrevida em pacientes oncológicos usando apenas critérios clínicos.
           </AlertCard>
           <div className="bg-bg-hover rounded-xl p-4 mt-4 border-2 border-border-card">
             <h4 className="text-sm font-semibold text-text-primary mb-4">Calculadora PPI</h4>
@@ -667,7 +702,7 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
             </div>
           </div>
           <AlertCard type="success" className="mt-4">
-            <strong>Interpretacao:</strong><br />
+            <strong>Interpretação:</strong><br />
             PPI {'<'}=2: ~155 dias | PPI {'>'}2 a {'<'}=4: ~89 dias | PPI {'>'}4 a {'<'}=6: ~18-21 dias | PPI {'>'}6: ~5 dias
           </AlertCard>
         </div>
@@ -680,7 +715,7 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
             <strong>Equianalgesia:</strong> Use esta tabela para converter entre opioides. Sempre iniciar com 75% da dose calculada ao trocar.
           </AlertCard>
           <div className="bg-bg-hover rounded-xl p-4 mt-4">
-            <h4 className="text-sm font-semibold text-text-primary mb-4">Calculadora de Conversao</h4>
+            <h4 className="text-sm font-semibold text-text-primary mb-4">Calculadora de Conversão</h4>
             <div className="mb-3">
               <label className="text-xs font-medium text-text-primary block mb-1">Opioide Atual</label>
               <select
@@ -721,7 +756,7 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
               </div>
             </div>
           </div>
-          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Tabela de Equivalencia (24h)</h4>
+          <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Tabela de Equivalência (24h)</h4>
           <div className="overflow-x-auto rounded-lg border border-border-card">
             <table className="w-full text-xs">
               <thead>
@@ -742,34 +777,34 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
               </tbody>
             </table>
           </div>
-          <p className="text-[10px] text-text-muted mt-2">*Metadona: conversao nao linear. Solicitar avaliacao especializada para doses altas.</p>
+          <p className="text-xs text-text-muted mt-2">*Metadona: conversão não linear. Solicitar avaliação especializada para doses altas.</p>
         </div>
       )}
 
-      {/* Hipodermoclise */}
+      {/* Hipodermóclise */}
       {tab === 'hipo' && (
         <div>
           <AlertCard type="success">
-            <strong>Hipodermoclise:</strong> Infusao de fluidos no tecido subcutaneo. Alternativa simples, segura, de baixo custo, com reacoes adversas raras e geralmente reversiveis. Pode ser realizada em domicilio, ILPI, enfermaria e pronto atendimento.
+            <strong>Hipodermóclise:</strong> Infusão de fluidos no tecido subcutâneo. Alternativa simples, segura, de baixo custo, com reações adversas raras e geralmente reversíveis. Pode ser realizada em domicílio, ILPI, enfermaria e pronto atendimento.
           </AlertCard>
 
           <PillTabs tabs={hipoTabs} active={hipoSub} onSelect={id => setHipoSub(id as HipoSubTab)} />
 
           {hipoSub === 'indicacoes' && (
             <div>
-              <h4 className="text-sm font-semibold text-text-primary mb-2">Indicacoes</h4>
-              <BulletList items={hipoIndicacoes} />
-              <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Contraindicacoes</h4>
-              <BulletList items={hipoContraindicacoes} color="#EF4444" />
+              <h4 className="text-sm font-semibold text-text-primary mb-2">Indicações</h4>
+              <BulletList items={hipoIndicações} />
+              <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Contraindicações</h4>
+              <BulletList items={hipoContraindicações} color="#EF4444" />
               <AlertCard type="warning" className="mt-3">
-                Evitar regioes irradiadas (radioterapia) e membros com esvaziamento ganglionar ou mastectomia.
+                Evitar regiões irradiadas (radioterapia) e membros com esvaziamento ganglionar ou mastectomia.
               </AlertCard>
             </div>
           )}
 
-          {hipoSub === 'tecnica' && (
+          {hipoSub === 'técnica' && (
             <div>
-              <h4 className="text-sm font-semibold text-text-primary mb-2">Volume por Local de Puncao (24h)</h4>
+              <h4 className="text-sm font-semibold text-text-primary mb-2">Volume por Local de Punção (24h)</h4>
               <div className="grid grid-cols-2 gap-2.5 mb-4">
                 {volumesPorLocal.map((v, i) => (
                   <div
@@ -787,7 +822,7 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
                   <thead><tr className="bg-bg-hover">
                     <th className="px-2 py-2 text-left font-semibold text-text-primary">Dispositivo</th>
                     <th className="px-2 py-2 text-left font-semibold text-text-primary">Calibre</th>
-                    <th className="px-2 py-2 text-left font-semibold text-text-primary">Permanencia</th>
+                    <th className="px-2 py-2 text-left font-semibold text-text-primary">Permanência</th>
                   </tr></thead>
                   <tbody>
                     {dispositivos.map((d, i) => (
@@ -800,15 +835,15 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
                   </tbody>
                 </table>
               </div>
-              <p className="text-[10px] text-text-muted mt-2">Cateter nao agulhado: menor risco de acidente perfurocortante e reacoes alergicas vs. escalpe (niquel).</p>
+              <p className="text-xs text-text-muted mt-2">Cateter não agulhado: menor risco de acidente perfurocortante e reações alérgicas vs. escalpe (níquel).</p>
               <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Procedimento</h4>
               <StepsList steps={hipoProcedimento} />
             </div>
           )}
 
-          {hipoSub === 'medicacoes' && (
+          {hipoSub === 'medicações' && (
             <div>
-              <h4 className="text-sm font-semibold text-text-primary mb-2">Medicacoes por Via Subcutanea</h4>
+              <h4 className="text-sm font-semibold text-text-primary mb-2">Medicações por Via Subcutânea</h4>
               <div className="relative mb-4">
                 <svg className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="18" height="18" viewBox="0 0 24 24" fill="#888">
                   <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
@@ -833,35 +868,35 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
                       <span className="text-text-primary text-right">{m.dose}</span>
                     </div>
                     <div className="flex justify-between py-1 border-b border-border-card text-xs">
-                      <span className="text-text-muted">Diluicao:</span>
+                      <span className="text-text-muted">Diluição:</span>
                       <span className="text-text-primary text-right">{m.dilution}</span>
                     </div>
                     {m.obs && (
-                      <p className="text-[11px] text-text-muted mt-1.5 pt-1.5 border-t border-border-card">{m.obs}</p>
+                      <p className="text-xs text-text-muted mt-1.5 pt-1.5 border-t border-border-card">{m.obs}</p>
                     )}
                   </div>
                 ))}
               </div>
-              <p className="text-[10px] text-text-muted mt-3">Fonte: Azevedo et al. / Manual de Cuidados Paliativos na Emergencia, USP 2021</p>
+              <p className="text-xs text-text-muted mt-3">Fonte: Azevedo et al. / Manual de Cuidados Paliativos na Emergência, USP 2021</p>
             </div>
           )}
 
           {hipoSub === 'solucoes' && (
             <div>
-              <h4 className="text-sm font-semibold text-text-primary mb-2">Solucoes por Via Subcutanea</h4>
+              <h4 className="text-sm font-semibold text-text-primary mb-2">Soluções por Via Subcutânea</h4>
               <div className="overflow-x-auto rounded-lg border border-border-card">
                 <table className="w-full text-xs">
                   <thead><tr className="bg-bg-hover">
-                    <th className="px-2 py-2 text-left font-semibold text-text-primary">Solucao</th>
+                    <th className="px-2 py-2 text-left font-semibold text-text-primary">Solução</th>
                     <th className="px-2 py-2 text-left font-semibold text-text-primary">Dose Max</th>
-                    <th className="px-2 py-2 text-left font-semibold text-text-primary">Orientacoes</th>
+                    <th className="px-2 py-2 text-left font-semibold text-text-primary">Orientações</th>
                   </tr></thead>
                   <tbody>
                     {hipoSolucoes.map((s, i) => (
                       <tr key={i} className="border-t border-border-card">
-                        <td className="px-2 py-2 text-text-primary">{s.solucao}</td>
+                        <td className="px-2 py-2 text-text-primary">{s.solução}</td>
                         <td className="px-2 py-2 text-text-secondary">{s.doseMax}</td>
-                        <td className="px-2 py-2 text-text-muted">{s.orientacoes}</td>
+                        <td className="px-2 py-2 text-text-muted">{s.orientações}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -872,10 +907,10 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
 
           {hipoSub === 'compat' && (
             <div>
-              <h4 className="text-sm font-semibold text-text-primary mb-2">Compatibilidade de Medicamentos em Mesma Infusao</h4>
-              <p className="text-[10px] text-text-muted mb-2">Deslize horizontalmente para ver a tabela completa</p>
+              <h4 className="text-sm font-semibold text-text-primary mb-2">Compatibilidade de Medicamentos em Mesma Infusão</h4>
+              <p className="text-xs text-text-muted mb-2">Deslize horizontalmente para ver a tabela completa</p>
               <div className="overflow-x-auto rounded-lg border border-border-card">
-                <table className="text-[10px]" style={{ minWidth: '700px' }}>
+                <table className="text-xs" style={{ minWidth: '700px' }}>
                   <thead>
                     <tr className="bg-bg-hover">
                       <th className="px-1 py-1.5 text-left font-semibold text-text-primary sticky left-0 bg-bg-primary z-10 min-w-[80px]" />
@@ -901,27 +936,27 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
                 </table>
               </div>
               <AlertCard type="danger" className="mt-3">
-                <strong>Dexametasona:</strong> incompativel com TODOS os medicamentos -- sempre usar sitio exclusivo.
+                <strong>Dexametasona:</strong> incompatível com TODOS os medicamentos — sempre usar sítio exclusivo.
               </AlertCard>
-              <p className="text-[10px] text-text-muted mt-2">C = compativel | I = incompativel. Fonte: Azevedo e Barbosa.</p>
+              <p className="text-xs text-text-muted mt-2">C = compatível | I = incompatível. Fonte: Azevedo e Barbosa.</p>
             </div>
           )}
 
           {hipoSub === 'complic' && (
             <div>
-              <h4 className="text-sm font-semibold text-text-primary mb-2">Complicacoes</h4>
+              <h4 className="text-sm font-semibold text-text-primary mb-2">Complicações</h4>
               <div className="space-y-2.5">
                 <Card>
-                  <h5 className="text-sm font-semibold text-accent mb-1">Relacionadas a tecnica e materiais</h5>
-                  <p className="text-xs text-text-muted">Puncoes {'>'} 72h favorecem reacoes locais (rubor, calor). Escalpe causa mais reacoes que cateter nao agulhado.</p>
+                  <h5 className="text-sm font-semibold text-accent mb-1">Relacionadas à técnica e materiais</h5>
+                  <p className="text-xs text-text-muted">Punções {'>'} 72h favorecem reações locais (rubor, calor). Escalpe causa mais reações que cateter não agulhado.</p>
                 </Card>
                 <Card>
-                  <h5 className="text-sm font-semibold text-accent mb-1">Relacionadas as medicacoes</h5>
-                  <p className="text-xs text-text-muted">Extremos de pH (acido {'<'} 2, alcalino {'>'} 11) aumentam risco de reacoes, podendo causar necrose tecidual.</p>
+                  <h5 className="text-sm font-semibold text-accent mb-1">Relacionadas às medicações</h5>
+                  <p className="text-xs text-text-muted">Extremos de pH (ácido {'<'} 2, alcalino {'>'} 11) aumentam risco de reações, podendo causar necrose tecidual.</p>
                 </Card>
                 <Card>
-                  <h5 className="text-sm font-semibold text-accent mb-1">Relacionadas as solucoes</h5>
-                  <p className="text-xs text-text-muted">Solucoes hipo/hipertonicas podem causar dor e rubor pela diferenca com tonicidade fisiologica. Preferir solucoes isotonicas.</p>
+                  <h5 className="text-sm font-semibold text-accent mb-1">Relacionadas às soluções</h5>
+                  <p className="text-xs text-text-muted">Soluções hipo/hipertônicas podem causar dor e rubor pela diferença com tonicidade fisiológica. Preferir soluções isotônicas.</p>
                 </Card>
               </div>
             </div>
@@ -937,16 +972,16 @@ function MitosScreen({ onBack }: { onBack: () => void }) {
 
   const categories: { key: MythData['category']; label: string }[] = [
     { key: 'conceito', label: 'Sobre o Conceito' },
-    { key: 'medicacoes', label: 'Sobre Medicacoes' },
-    { key: 'comunicacao', label: 'Sobre Comunicacao' },
-    { key: 'prognostico', label: 'Sobre Prognostico' },
+    { key: 'medicações', label: 'Sobre Medicações' },
+    { key: 'comunicação', label: 'Sobre Comunicação' },
+    { key: 'prognóstico', label: 'Sobre Prognóstico' },
   ]
 
   return (
     <div className="animate-fade-in">
       <BackButton onClick={onBack} />
       <ModuleHeader title="Mitos e Verdades" color="#EF4444" />
-      <p className="text-sm text-text-muted mb-4">Clique em um card para ver a explicacao</p>
+      <p className="text-sm text-text-muted mb-4">Clique em um card para ver a explicação</p>
 
       {categories.map(cat => {
         const myths = mythsData.filter(m => m.category === cat.key)
@@ -963,7 +998,7 @@ function MitosScreen({ onBack }: { onBack: () => void }) {
                   <div className="w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-xs mb-1.5">
                     {myth.id}
                   </div>
-                  <div className="text-[10px] text-text-primary leading-tight">{myth.title}</div>
+                  <div className="text-xs text-text-primary leading-tight">{myth.title}</div>
                 </button>
               ))}
             </div>
@@ -992,13 +1027,13 @@ function MitosScreen({ onBack }: { onBack: () => void }) {
   )
 }
 
-function ReferenciasScreen({ onBack }: { onBack: () => void }) {
+function ReferênciasScreen({ onBack }: { onBack: () => void }) {
   return (
     <div className="animate-fade-in">
       <BackButton onClick={onBack} />
-      <ModuleHeader title="Referencias" color="#3B82F6" />
+      <ModuleHeader title="Referências" color="#3B82F6" />
 
-      {referencias.map((cat, i) => (
+      {referências.map((cat, i) => (
         <Collapsible key={i} title={cat.title}>
           <BulletList items={cat.items} color={cat.color} />
         </Collapsible>
@@ -1020,7 +1055,7 @@ export default function PaliaPath() {
   }
 
   const fabItems = [
-    { label: 'Inicio', onClick: () => navigate('home') },
+    { label: 'Início', onClick: () => navigate('home') },
     { label: 'Identificar', onClick: () => navigate('identificar') },
     { label: 'Decidir', onClick: () => navigate('decidir') },
     { label: 'Comunicar', onClick: () => navigate('comunicar') },
@@ -1032,7 +1067,7 @@ export default function PaliaPath() {
     <div className="min-h-screen bg-bg-primary">
       <Disclaimer />
       <Header title="PaliaPath" subtitle="Cuidados Paliativos no DE" />
-      <Container>
+      <Container className="px-5">
         {screen === 'home' && <HomeScreen onNavigate={navigate} />}
         {screen === 'identificar' && <IdentificarScreen onBack={() => navigate('home')} />}
         {screen === 'decidir' && <DecidirScreen onBack={() => navigate('home')} />}
@@ -1040,9 +1075,9 @@ export default function PaliaPath() {
         {screen === 'manejar' && <ManejarScreen onBack={() => navigate('home')} />}
         {screen === 'ferramentas' && <FerramentasScreen onBack={() => navigate('home')} />}
         {screen === 'mitos' && <MitosScreen onBack={() => navigate('home')} />}
-        {screen === 'referencias' && <ReferenciasScreen onBack={() => navigate('home')} />}
+        {screen === 'referências' && <ReferênciasScreen onBack={() => navigate('home')} />}
       </Container>
-      <Footer toolName="Palia Path" version="v2.0.0" />
+      <Footer toolName="Palia Path" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>

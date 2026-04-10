@@ -23,7 +23,7 @@ interface BroselowEntry {
   altura: number
   tubo: number
   fixacao: number
-  lamina: string
+  lâmina: string
   lma: string
   bougie: string
   sondaAsp: number
@@ -91,15 +91,15 @@ type PedView = 'home' | 'pcr' | 'cenarios' | 'calculadoras'
 // ==========================================
 
 const BROSELOW_DATA: BroselowEntry[] = [
-  { key: 'gray', name: 'Cinza', peso: 3, idadeMeses: 1.5, altura: 52, tubo: 3.0, fixacao: 9, lamina: '0 reta', lma: '1', bougie: '5', sondaAsp: 6, min: 46, max: 59, dotClass: 'bg-gray-500', bgClass: 'bg-gray-500' },
-  { key: 'pink', name: 'Rosa', peso: 6, idadeMeses: 4.5, altura: 63, tubo: 3.0, fixacao: 9, lamina: '1 reta', lma: '1', bougie: '5', sondaAsp: 6, min: 60, max: 66, dotClass: 'bg-pink-500', bgClass: 'bg-pink-500' },
-  { key: 'red', name: 'Vermelho', peso: 8, idadeMeses: 7.5, altura: 70, tubo: 3.5, fixacao: 10, lamina: '1 reta', lma: '1.5', bougie: '6', sondaAsp: 8, min: 67, max: 74, dotClass: 'bg-red-600', bgClass: 'bg-red-600' },
-  { key: 'purple', name: 'Roxo', peso: 10, idadeMeses: 10, altura: 79, tubo: 3.5, fixacao: 11, lamina: '1-2', lma: '1.5', bougie: '6', sondaAsp: 8, min: 75, max: 83, dotClass: 'bg-purple-600', bgClass: 'bg-purple-600' },
-  { key: 'yellow', name: 'Amarelo', peso: 12, idadeMeses: 18, altura: 89, tubo: 4.0, fixacao: 12, lamina: '2', lma: '2', bougie: '10', sondaAsp: 8, min: 84, max: 95, dotClass: 'bg-amber-500', bgClass: 'bg-amber-500' },
-  { key: 'white', name: 'Branco', peso: 14, idadeMeses: 30, altura: 101, tubo: 4.5, fixacao: 13, lamina: '2', lma: '2', bougie: '10', sondaAsp: 10, min: 96, max: 106, dotClass: 'bg-gray-200', bgClass: 'bg-gray-200 text-black' },
-  { key: 'blue', name: 'Azul', peso: 18, idadeMeses: 54, altura: 113, tubo: 5.0, fixacao: 15, lamina: '2', lma: '2.5', bougie: '10', sondaAsp: 10, min: 107, max: 120, dotClass: 'bg-blue-500', bgClass: 'bg-blue-500' },
-  { key: 'orange', name: 'Laranja', peso: 24, idadeMeses: 78, altura: 126, tubo: 5.5, fixacao: 16, lamina: '2-3', lma: '3', bougie: '15', sondaAsp: 12, min: 121, max: 132, dotClass: 'bg-orange-500', bgClass: 'bg-orange-500' },
-  { key: 'green', name: 'Verde', peso: 32, idadeMeses: 108, altura: 139, tubo: 6.0, fixacao: 18, lamina: '3', lma: '3', bougie: '15', sondaAsp: 12, min: 133, max: 145, dotClass: 'bg-emerald-500', bgClass: 'bg-emerald-500' },
+  { key: 'gray', name: 'Cinza', peso: 3, idadeMeses: 1.5, altura: 52, tubo: 3.0, fixacao: 9, lâmina: '0 reta', lma: '1', bougie: '5', sondaAsp: 6, min: 46, max: 59, dotClass: 'bg-gray-500', bgClass: 'bg-gray-500' },
+  { key: 'pink', name: 'Rosa', peso: 6, idadeMeses: 4.5, altura: 63, tubo: 3.0, fixacao: 9, lâmina: '1 reta', lma: '1', bougie: '5', sondaAsp: 6, min: 60, max: 66, dotClass: 'bg-pink-500', bgClass: 'bg-pink-500' },
+  { key: 'red', name: 'Vermelho', peso: 8, idadeMeses: 7.5, altura: 70, tubo: 3.5, fixacao: 10, lâmina: '1 reta', lma: '1.5', bougie: '6', sondaAsp: 8, min: 67, max: 74, dotClass: 'bg-red-600', bgClass: 'bg-red-600' },
+  { key: 'purple', name: 'Roxo', peso: 10, idadeMeses: 10, altura: 79, tubo: 3.5, fixacao: 11, lâmina: '1-2', lma: '1.5', bougie: '6', sondaAsp: 8, min: 75, max: 83, dotClass: 'bg-purple-600', bgClass: 'bg-purple-600' },
+  { key: 'yellow', name: 'Amarelo', peso: 12, idadeMeses: 18, altura: 89, tubo: 4.0, fixacao: 12, lâmina: '2', lma: '2', bougie: '10', sondaAsp: 8, min: 84, max: 95, dotClass: 'bg-amber-500', bgClass: 'bg-amber-500' },
+  { key: 'white', name: 'Branco', peso: 14, idadeMeses: 30, altura: 101, tubo: 4.5, fixacao: 13, lâmina: '2', lma: '2', bougie: '10', sondaAsp: 10, min: 96, max: 106, dotClass: 'bg-gray-200', bgClass: 'bg-gray-200 text-black' },
+  { key: 'blue', name: 'Azul', peso: 18, idadeMeses: 54, altura: 113, tubo: 5.0, fixacao: 15, lâmina: '2', lma: '2.5', bougie: '10', sondaAsp: 10, min: 107, max: 120, dotClass: 'bg-blue-500', bgClass: 'bg-blue-500' },
+  { key: 'orange', name: 'Laranja', peso: 24, idadeMeses: 78, altura: 126, tubo: 5.5, fixacao: 16, lâmina: '2-3', lma: '3', bougie: '15', sondaAsp: 12, min: 121, max: 132, dotClass: 'bg-orange-500', bgClass: 'bg-orange-500' },
+  { key: 'green', name: 'Verde', peso: 32, idadeMeses: 108, altura: 139, tubo: 6.0, fixacao: 18, lâmina: '3', lma: '3', bougie: '15', sondaAsp: 12, min: 133, max: 145, dotClass: 'bg-emerald-500', bgClass: 'bg-emerald-500' },
 ]
 
 function formatIdade(meses: number): string {
@@ -127,28 +127,28 @@ function getColorFromWeight(w: number): BroselowEntry {
 const PCR_DRUGS: BolusDrug[] = [
   {
     id: 'epinefrina-iv', name: 'EPINEFRINA IV/IO', presentation: '1 mg/mL (1:1.000)', doseBadge: '0,01 mg/kg', highlight: true,
-    instruction: 'Diluicao 1:10.000: 1 mL + 9 mL Agua Destilada. Concentracao: 0,1 mg/mL. A cada 3-5 min.',
+    instruction: 'Diluição 1:10.000: 1 mL + 9 mL Água Destilada. Concentração: 0,1 mg/mL. A cada 3-5 min.',
     calc: (p) => ({ mg: (p * 0.01).toFixed(2), ml: (p * 0.1).toFixed(1), mlLabel: 'da sol. 1:10.000', unit: 'mg' }),
     prepKey: 'epinefrina',
   },
   {
     id: 'amiodarona', name: 'AMIODARONA', presentation: '50 mg/mL', doseBadge: '5 mg/kg',
-    instruction: 'FV/TV sem pulso refrataria. Max: 300 mg. Pode repetir ate 15 mg/kg.',
+    instruction: 'FV/TV sem pulso refratária. Max: 300 mg. Pode repetir até 15 mg/kg.',
     calc: (p) => { const d = Math.min(p * 5, 300); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' } },
   },
   {
-    id: 'bicarbonato', name: 'BICARBONATO DE SODIO 8,4%', presentation: '1 mEq/mL', doseBadge: '1 mEq/kg',
-    instruction: 'PCR prolongada, acidose documentada. Diluir 1:1 com Agua Destilada.',
+    id: 'bicarbonato', name: 'BICARBONATO DE SÓDIO 8,4%', presentation: '1 mEq/mL', doseBadge: '1 mEq/kg',
+    instruction: 'PCR prolongada, acidose documentada. Diluir 1:1 com Água Destilada.',
     calc: (p) => ({ mg: p.toFixed(0), ml: p.toFixed(0), mlLabel: '+ igual vol. AD', unit: 'mEq' }),
   },
   {
-    id: 'calcio', name: 'GLUCONATO DE CALCIO 10%', presentation: '100 mg/mL', doseBadge: '60-100 mg/kg',
+    id: 'cálcio', name: 'GLUCONATO DE CÁLCIO 10%', presentation: '100 mg/mL', doseBadge: '60-100 mg/kg',
     instruction: 'Hipocalcemia, Hipercalemia. Max: 2000 mg. Infundir lento.',
     calc: (p) => { const d = Math.min(p * 60, 2000); return { mg: d.toFixed(0), ml: (d / 100).toFixed(1), unit: 'mg' } },
   },
   {
     id: 'atropina', name: 'ATROPINA', presentation: '0,5 mg/mL', doseBadge: '0,02 mg/kg',
-    instruction: 'Bradicardia com pulso. Min: 0,1 mg. Max: 0,5 mg (crianca).',
+    instruction: 'Bradicardia com pulso. Min: 0,1 mg. Max: 0,5 mg (criança).',
     calc: (p) => { const d = Math.max(0.1, Math.min(p * 0.02, 0.5)); return { mg: d.toFixed(2), ml: (d / 0.5).toFixed(2), unit: 'mg' } },
   },
 ]
@@ -156,12 +156,12 @@ const PCR_DRUGS: BolusDrug[] = [
 const IOT_DRUGS: BolusDrug[] = [
   {
     id: 'cetamina', name: 'CETAMINA', presentation: '50 mg/mL', doseBadge: '1-2 mg/kg',
-    instruction: 'Inducao dissociativa. Mantem VA e drive respiratorio. Broncodilatador.',
+    instruction: 'Indução dissociativa. Mantém VA e drive respiratório. Broncodilatador.',
     calc: (p) => ({ mg: (p * 2).toFixed(0), ml: (p * 2 / 50).toFixed(2), unit: 'mg' }),
   },
   {
     id: 'midazolam', name: 'MIDAZOLAM', presentation: '5 mg/mL', doseBadge: '0,1-0,4 mg/kg',
-    instruction: 'Sedacao. ISR: 0,3 mg/kg. Max: 5 mg. Pode causar hipotensao.',
+    instruction: 'Sedação. ISR: 0,3 mg/kg. Max: 5 mg. Pode causar hipotensão.',
     calc: (p) => { const d = Math.min(p * 0.3, 5); return { mg: d.toFixed(1), ml: (d / 5).toFixed(2), unit: 'mg' } },
   },
   {
@@ -171,17 +171,17 @@ const IOT_DRUGS: BolusDrug[] = [
   },
   {
     id: 'propofol', name: 'PROPOFOL', presentation: '10 mg/mL', doseBadge: '1-2,5 mg/kg',
-    instruction: 'Inducao. Hipotensao dose-dependente. Evitar em choque.',
+    instruction: 'Indução. Hipotensão dose-dependente. Evitar em choque.',
     calc: (p) => ({ mg: (p * 2.5).toFixed(0), ml: (p * 2.5 / 10).toFixed(1), unit: 'mg' }),
   },
   {
     id: 'etomidato', name: 'ETOMIDATO', presentation: '2 mg/mL', doseBadge: '0,2-0,4 mg/kg',
-    instruction: 'Inducao. Estabilidade hemodinamica. Max: 20 mg. Evitar em sepse.',
+    instruction: 'Indução. Estabilidade hemodinâmica. Max: 20 mg. Evitar em sepse.',
     calc: (p) => { const d = Math.min(p * 0.3, 20); return { mg: d.toFixed(1), ml: (d / 2).toFixed(1), unit: 'mg' } },
   },
   {
     id: 'rocuronio', name: 'ROCURONIO', presentation: '10 mg/mL', doseBadge: '0,9-1,2 mg/kg',
-    instruction: 'Bloqueador neuromuscular. ISR: 1 mg/kg. Reversivel com Sugammadex.',
+    instruction: 'Bloqueador neuromuscular. ISR: 1 mg/kg. Reversível com Sugammadex.',
     calc: (p) => ({ mg: p.toFixed(0), ml: (p / 10).toFixed(1), unit: 'mg' }),
   },
   {
@@ -191,7 +191,7 @@ const IOT_DRUGS: BolusDrug[] = [
   },
   {
     id: 'cisatracurio', name: 'CISATRACURIO', presentation: '2 mg/mL', doseBadge: '0,1-0,15 mg/kg',
-    instruction: 'BNM nao despolarizante. Metabolismo de Hofmann.',
+    instruction: 'BNM não despolarizante. Metabolismo de Hofmann.',
     calc: (p) => ({ mg: (p * 0.15).toFixed(2), ml: (p * 0.15 / 2).toFixed(2), unit: 'mg' }),
   },
 ]
@@ -199,12 +199,12 @@ const IOT_DRUGS: BolusDrug[] = [
 const EMERGENCY_DRUGS: BolusDrug[] = [
   {
     id: 'epinefrina-im', name: 'EPINEFRINA IM (Anafilaxia)', presentation: '1 mg/mL - SEM DILUIR', doseBadge: '0,01 mg/kg', highlight: true,
-    instruction: 'Via INTRAMUSCULAR - Vasto lateral. Max: 0,3 mg (crianca) / 0,5 mg (adolescente). Repetir 5-15 min.',
+    instruction: 'Via INTRAMUSCULAR - Vasto lateral. Max: 0,3 mg (criança) / 0,5 mg (adolescente). Repetir 5-15 min.',
     calc: (p) => { const d = Math.min(p * 0.01, p < 30 ? 0.3 : 0.5); return { mg: d.toFixed(2), ml: d.toFixed(2), unit: 'mg' } },
   },
   {
     id: 'adenosina', name: 'ADENOSINA', presentation: '3 mg/mL', doseBadge: '0,1 - 0,2 mg/kg',
-    instruction: 'TSV com pulso. Bolus RAPIDO + flush 5-10 mL SF. Max: 6/12 mg.',
+    instruction: 'TSV com pulso. Bolus RÁPIDO + flush 5-10 mL SF. Max: 6/12 mg.',
     calc: (p) => {
       const d1 = Math.min(p * 0.1, 6), d2 = Math.min(p * 0.2, 12)
       return { mg: `${d1.toFixed(1)} / ${d2.toFixed(1)}`, ml: `${(d1 / 3).toFixed(2)} / ${(d2 / 3).toFixed(2)}`, unit: 'mg' }
@@ -212,16 +212,16 @@ const EMERGENCY_DRUGS: BolusDrug[] = [
   },
   {
     id: 'glicose', name: 'GLICOSE 50%', presentation: '500 mg/mL', doseBadge: '0,5-1 g/kg',
-    instruction: 'Hipoglicemia. Diluir em criancas pequenas (G10/G25).',
+    instruction: 'Hipoglicemia. Diluir em crianças pequenas (G10/G25).',
     calc: (p) => ({ mg: (p * 0.5).toFixed(1), ml: Math.min(p, 50).toFixed(0), unit: 'g' }),
   },
   {
     id: 'naloxona', name: 'NALOXONA', presentation: '0,4 mg/mL', doseBadge: '0,1 mg/kg',
-    instruction: 'Reversao de opioides. Via: IV, IO, IM, IN. Max: 2 mg.',
+    instruction: 'Reversão de opioides. Via: IV, IO, IM, IN. Max: 2 mg.',
     calc: (p) => { const d = Math.min(p * 0.1, 2); return { mg: d.toFixed(2), ml: (d / 0.4).toFixed(1), unit: 'mg' } },
   },
   {
-    id: 'tranexamico', name: 'ACIDO TRANEXAMICO', presentation: '50 mg/mL', doseBadge: '15 mg/kg',
+    id: 'tranexamico', name: 'ÁCIDO TRANEXÂMICO', presentation: '50 mg/mL', doseBadge: '15 mg/kg',
     instruction: 'Trauma com hemorragia. Bolus em 10 min. Max: 1000 mg.',
     calc: (p) => { const d = Math.min(p * 15, 1000); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' } },
   },
@@ -240,7 +240,7 @@ const EMERGENCY_DRUGS: BolusDrug[] = [
 const CONVULSION_DRUGS: BolusDrug[] = [
   {
     id: 'diazepam', name: 'DIAZEPAM', presentation: '5 mg/mL', doseBadge: '0,2-0,4 mg/kg',
-    instruction: 'Status epilepticus - 1a linha. Via: IV lento ou Retal (0,5 mg/kg). Max: 10 mg. Repetir ate 3x.',
+    instruction: 'Status epilepticus - 1ª linha. Via: IV lento ou Retal (0,5 mg/kg). Max: 10 mg. Repetir até 3x.',
     calc: (p) => { const d = Math.min(p * 0.3, 10); return { mg: d.toFixed(1), ml: (d / 5).toFixed(1), unit: 'mg' } },
   },
   {
@@ -250,17 +250,17 @@ const CONVULSION_DRUGS: BolusDrug[] = [
   },
   {
     id: 'fenitoina', name: 'FENITOINA', presentation: '50 mg/mL', doseBadge: '15-20 mg/kg',
-    instruction: 'Status epilepticus - 2a linha. Diluir em SF, infundir em 20 min. Monitorizar ECG.',
+    instruction: 'Status epilepticus - 2ª linha. Diluir em SF, infundir em 20 min. Monitorizar ECG.',
     calc: (p) => ({ mg: (p * 20).toFixed(0), ml: (p * 20 / 50).toFixed(1), unit: 'mg' }),
   },
   {
     id: 'fenobarbital', name: 'FENOBARBITAL', presentation: '100 mg/mL', doseBadge: '10-20 mg/kg',
-    instruction: 'Status refratario / Neonatal. Infundir em 15-20 min. Risco depressao respiratoria.',
+    instruction: 'Status refratário / Neonatal. Infundir em 15-20 min. Risco depressão respiratória.',
     calc: (p) => ({ mg: (p * 20).toFixed(0), ml: (p * 20 / 100).toFixed(1), unit: 'mg' }),
   },
   {
     id: 'levetiracetam', name: 'LEVETIRACETAM', presentation: '100 mg/mL', doseBadge: '40-60 mg/kg',
-    instruction: 'Status epilepticus - Alternativa 2a linha. Infundir em 15 min. Max: 3000 mg.',
+    instruction: 'Status epilepticus - Alternativa 2ª linha. Infundir em 15 min. Max: 3000 mg.',
     calc: (p) => { const d = Math.min(p * 60, 3000); return { mg: d.toFixed(0), ml: (d / 100).toFixed(1), unit: 'mg' } },
   },
 ]
@@ -268,11 +268,11 @@ const CONVULSION_DRUGS: BolusDrug[] = [
 const NEURO_DRUGS: BolusDrug[] = [
   {
     id: 'manitol', name: 'MANITOL 20%', presentation: '200 mg/mL', doseBadge: '0,25-1 g/kg',
-    instruction: 'Hipertensao intracraniana. Infundir em 15-30 min.',
+    instruction: 'Hipertensão intracraniana. Infundir em 15-30 min.',
     calc: (p) => ({ mg: (p * 0.5).toFixed(1), ml: (p * 0.5 * 5).toFixed(0), unit: 'g' }),
   },
   {
-    id: 'nacl', name: 'NaCl 3% (Salina Hipertonica)', presentation: '0,513 mEq Na/mL', doseBadge: '2-5 mL/kg',
+    id: 'nacl', name: 'NaCl 3% (Salina Hipertônica)', presentation: '0,513 mEq Na/mL', doseBadge: '2-5 mL/kg',
     instruction: 'HIC, hiponatremia grave. Infundir em 10-20 min.',
     calc: (p) => ({ mg: (p * 3 * 0.513).toFixed(1), ml: (p * 3).toFixed(0), unit: 'mEq' }),
     prepKey: 'nacl3',
@@ -280,7 +280,7 @@ const NEURO_DRUGS: BolusDrug[] = [
 ]
 
 // ==========================================
-// INFUSOES CONTINUAS PEDIATRICAS
+// INFUSÕES CONTÍNUAS PEDIÁTRICAS
 // ==========================================
 
 const INFUSION_DATA: Record<string, InfusionDrug> = {
@@ -394,7 +394,7 @@ const INFUSION_DATA: Record<string, InfusionDrug> = {
   },
   propofol_inf: {
     id: 'propofol_inf', name: 'PROPOFOL 1%', category: 'sedativos', color: '#F59E0B', unit: 'mg/kg/h', range: [1, 4], step: 0.5, defaultVal: 2,
-    presentation: '10 mg/mL', warning: 'Nao usar em criancas para sedacao prolongada',
+    presentation: '10 mg/mL', warning: 'Não usar em crianças para sedação prolongada',
     dilutions: {
       small: { drug: 20, diluent: 20, conc: 5, vol: 40, formula: 5 },
       medium: { drug: 50, diluent: 0, conc: 10, vol: 50, formula: 10 },
@@ -472,13 +472,13 @@ function calcDoseFromRate(inf: InfusionDrug, mlh: number, peso: number): number 
 const SCENARIO_CONFIGS: Record<string, ScenarioConfig> = {
   anafilaxia: {
     highlight: ['epinefrina-im', 'hidrocortisona', 'difenidramina'],
-    sections: ['emergencias'],
+    sections: ['emergências'],
     scrollTo: 'epinefrina-im',
     infusionHighlight: [],
   },
-  convulsao: {
+  convulsão: {
     highlight: ['diazepam', 'midazolam-conv', 'fenitoina', 'fenobarbital', 'levetiracetam'],
-    sections: ['convulsao'],
+    sections: ['convulsão'],
     scrollTo: 'diazepam',
     infusionHighlight: [],
   },
@@ -506,7 +506,7 @@ const SCENARIO_CONFIGS: Record<string, ScenarioConfig> = {
     scrollTo: null,
     infusionHighlight: ['amiodarona_inf', 'epinefrina_inf', 'norepinefrina'],
   },
-  sedacao: {
+  sedação: {
     highlight: [],
     sections: ['infusoes'],
     scrollTo: null,
@@ -523,19 +523,19 @@ const PREPARATIONS: Record<string, { title: string; steps: string[] }> = {
     title: 'Epinefrina 1:10.000',
     steps: [
       'Aspirar 1 mL de Epinefrina 1:1.000 (1 mg/mL)',
-      'Adicionar 9 mL de Agua Destilada',
+      'Adicionar 9 mL de Água Destilada',
       'Volume final: 10 mL',
-      'Concentracao: 0,1 mg/mL (1:10.000)',
-      'Dose: 0,1 mL/kg desta solucao',
+      'Concentração: 0,1 mg/mL (1:10.000)',
+      'Dose: 0,1 mL/kg desta solução',
     ],
   },
   nacl3: {
-    title: 'NaCl 3% (Salina Hipertonica)',
+    title: 'NaCl 3% (Salina Hipertônica)',
     steps: [
       'Aspirar 15 mL de NaCl 20%',
-      'Adicionar 85 mL de Agua Destilada',
+      'Adicionar 85 mL de Água Destilada',
       'Volume final: 100 mL de NaCl 3%',
-      'Concentracao: 0,513 mEq Na/mL',
+      'Concentração: 0,513 mEq Na/mL',
       'Alt: NaCl 10% 30 mL + AD 70 mL',
     ],
   },
@@ -546,26 +546,26 @@ const PREPARATIONS: Record<string, { title: string; steps: string[] }> = {
 // ==========================================
 
 const IOT_CHECKLIST_ITEMS = [
-  { text: 'Monitorizacao (SpO2, ECG, ETCO2, PA)', valueKey: null },
-  { text: 'Acesso venoso pervio', valueKey: null },
-  { text: 'Pre-oxigenacao (FiO2 100%, 3 min)', valueKey: null },
+  { text: 'Monitorização (SpO₂, ECG, ETCO2, PA)', valueKey: null },
+  { text: 'Acesso venoso pérvio', valueKey: null },
+  { text: 'Pré-oxigenação (FiO₂ 100%, 3 min)', valueKey: null },
   { text: 'Aspirador montado e testado', valueKey: null },
-  { text: 'Laringoscopio com luz testada', valueKey: 'lamina' },
+  { text: 'Laringoscópio com luz testada', valueKey: 'lâmina' },
   { text: 'Tubo traqueal + 1 menor', valueKey: 'tubo' },
   { text: 'Cuff testado', valueKey: null },
-  { text: 'Bougie / Guia disponivel', valueKey: 'bougie' },
-  { text: 'Mascara laringea disponivel', valueKey: 'lma' },
-  { text: 'Bolsa-valvula-mascara conectada O2', valueKey: null },
+  { text: 'Bougie / Guia disponível', valueKey: 'bougie' },
+  { text: 'Máscara laríngea disponível', valueKey: 'lma' },
+  { text: 'Bolsa-válvula-máscara conectada O2', valueKey: null },
   { text: 'Drogas preparadas e identificadas', valueKey: null },
-  { text: 'Plano VA dificil definido', valueKey: null },
+  { text: 'Plano VA difícil definido', valueKey: null },
 ]
 
 // ==========================================
 // 6H e 6T
 // ==========================================
 
-const CAUSES_6H = ['Hipoxia', 'Hipovolemia', 'Hidrogenio (Acidose)', 'Hipoglicemia', 'Hipo/Hipercalemia', 'Hipotermia']
-const CAUSES_6T = ['Tensao (Pneumotorax)', 'Tamponamento cardiaco', 'Toxinas', 'Trombose pulmonar (TEP)', 'Trombose coronariana', 'Trauma']
+const CAUSES_6H = ['Hipóxia', 'Hipovolemia', 'Hidrogênio (Acidose)', 'Hipoglicemia', 'Hipo/Hipercalemia', 'Hipotermia']
+const CAUSES_6T = ['Tensão (Pneumotórax)', 'Tamponamento cardíaco', 'Toxinas', 'Trombose pulmonar (TEP)', 'Trombose coronariana', 'Trauma']
 
 // ==========================================
 // SUBCOMPONENTES
@@ -794,18 +794,18 @@ export default function PedGuide() {
     return {
       tubo: eq.tubo.toFixed(1),
       fixacao: String(eq.fixacao),
-      lamina: eq.lamina,
+      lâmina: eq.lâmina,
       lma: eq.lma,
       bougie: eq.bougie,
       sondaAsp: String(eq.sondaAsp),
-      checkLamina: `Lamina ${eq.lamina}`,
+      checkLamina: `Lâmina ${eq.lâmina}`,
       checkTubo: `${eq.tubo} e ${(eq.tubo - 0.5).toFixed(1)}`,
       checkBougie: `${eq.bougie} Fr`,
       checkLma: `Tam. ${eq.lma}`,
     }
   }, [currentBroselow])
 
-  // Desfibrilacao
+  // Desfibrilação
   const defib = useMemo(() => {
     if (p <= 0) return null
     return {
@@ -822,7 +822,7 @@ export default function PedGuide() {
     return '5-6 cm'
   }, [p])
 
-  // Transfusao
+  // Transfusão
   const transfusion = useMemo(() => {
     if (p <= 0) return null
     return {
@@ -843,7 +843,7 @@ export default function PedGuide() {
     else m = 60 + (p - 20)
     return {
       bolus: (p * 20).toFixed(0),
-      manutencao: m.toFixed(0),
+      manutenção: m.toFixed(0),
       volemia: (p * 80).toFixed(0),
     }
   }, [p])
@@ -900,7 +900,7 @@ export default function PedGuide() {
     const cfg = SCENARIO_CONFIGS[key]
     if (!cfg) return
     setView('calculadoras')
-    setScenarioBackLabel('Voltar aos cenarios')
+    setScenarioBackLabel('Voltar aos cenários')
     setHighlightedDrugs(cfg.highlight)
     setHighlightedInfusions(cfg.infusionHighlight)
     setOpenSections(cfg.sections)
@@ -922,7 +922,7 @@ export default function PedGuide() {
   const fabItems = [
     { label: 'Home', onClick: () => showView('home') },
     { label: 'PCR', onClick: () => showView('pcr') },
-    { label: 'Cenarios', onClick: () => showView('cenarios') },
+    { label: 'Cenários', onClick: () => showView('cenarios') },
     { label: 'Calculadoras', onClick: () => showView('calculadoras') },
   ]
 
@@ -934,7 +934,7 @@ export default function PedGuide() {
   return (
     <div className="min-h-screen bg-bg-primary">
       <Disclaimer />
-      <Header title="PedGuide" subtitle="Calculadora pediatrica" />
+      <Header title="PedGuide" subtitle="Calculadora pediátrica" />
 
       {/* INPUT SECTION */}
       <div className="bg-bg-elevated px-4 py-5 border-b-4 border-accent">
@@ -1017,22 +1017,22 @@ export default function PedGuide() {
               onClick={() => showView('pcr')}
               className="bg-bg-hover border border-border-card rounded-xl p-5 mb-3 cursor-pointer active:bg-[#252525] border-l-4 border-l-danger transition-colors"
             >
-              <div className="text-lg font-semibold text-text-primary">PCR Pediatrica</div>
-              <div className="text-[0.8rem] text-text-muted mt-1">Guia rapido de parada cardiorrespiratoria</div>
+              <div className="text-lg font-semibold text-text-primary">PCR Pediátrica</div>
+              <div className="text-[0.8rem] text-text-muted mt-1">Guia rápido de parada cardiorrespiratória</div>
             </div>
             <div
               onClick={() => showView('cenarios')}
               className="bg-bg-hover border border-border-card rounded-xl p-5 mb-3 cursor-pointer active:bg-[#252525] border-l-4 border-l-accent transition-colors"
             >
-              <div className="text-lg font-semibold text-text-primary">Cenarios</div>
-              <div className="text-[0.8rem] text-text-muted mt-1">Anafilaxia, status, choque, IOT, sedacao</div>
+              <div className="text-lg font-semibold text-text-primary">Cenários</div>
+              <div className="text-[0.8rem] text-text-muted mt-1">Anafilaxia, status, choque, IOT, sedação</div>
             </div>
             <div
               onClick={() => showView('calculadoras')}
               className="bg-bg-hover border border-border-card rounded-xl p-5 mb-3 cursor-pointer active:bg-[#252525] border-l-4 border-l-info transition-colors"
             >
               <div className="text-lg font-semibold text-text-primary">Calculadoras</div>
-              <div className="text-[0.8rem] text-text-muted mt-1">Infusoes, doses por peso, equipamentos</div>
+              <div className="text-[0.8rem] text-text-muted mt-1">Infusões, doses por peso, equipamentos</div>
             </div>
           </div>
         )}
@@ -1043,30 +1043,30 @@ export default function PedGuide() {
             <button onClick={() => showView('home')} className="bg-transparent border border-border-card text-text-muted px-4 py-2 rounded-lg text-sm cursor-pointer mb-4 active:bg-bg-hover min-h-[44px]">
               ← Voltar
             </button>
-            <h2 className="text-xl font-bold text-text-primary mb-4">PCR Pediatrica</h2>
+            <h2 className="text-xl font-bold text-text-primary mb-4">PCR Pediátrica</h2>
 
             {/* CPR Parameters */}
             <div className="bg-bg-elevated rounded-2xl p-6 mb-5">
               <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
-                <div className="text-[0.8rem] font-bold uppercase text-text-muted">Parametros de RCP pediatrica</div>
-                <div className="text-[0.75rem] font-bold text-text-muted">Compressao:Ventilacao - 15:2</div>
+                <div className="text-[0.8rem] font-bold uppercase text-text-muted">Parâmetros de RCP pediátrica</div>
+                <div className="text-[0.75rem] font-bold text-text-muted">Compressão:Ventilação — 15:2</div>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="bg-bg-hover rounded-xl p-4 text-center">
-                  <div className="text-[0.6rem] font-semibold uppercase text-text-muted mb-1.5">Frequencia</div>
-                  <div className="font-mono text-xl font-bold text-accent">100-120/min</div>
+                <div className="rounded-xl p-4 text-center border-2" style={{ background: 'rgba(244,67,54,0.1)', borderColor: 'rgba(244,67,54,0.3)' }}>
+                  <div className="text-[11px] font-bold uppercase text-[#888] mb-1.5" style={{ letterSpacing: '1.5px' }}>FREQUÊNCIA</div>
+                  <div className="font-mono text-[28px] font-extrabold text-accent">100-120/min</div>
                 </div>
-                <div className="bg-bg-hover rounded-xl p-4 text-center">
-                  <div className="text-[0.6rem] font-semibold uppercase text-text-muted mb-1.5">Relacao C:V</div>
-                  <div className="font-mono text-xl font-bold text-accent">15:2</div>
+                <div className="rounded-xl p-4 text-center border-2" style={{ background: 'rgba(33,150,243,0.1)', borderColor: 'rgba(33,150,243,0.3)' }}>
+                  <div className="text-[11px] font-bold uppercase text-[#888] mb-1.5" style={{ letterSpacing: '1.5px' }}>RELAÇÃO C:V</div>
+                  <div className="font-mono text-[28px] font-extrabold text-accent">15:2</div>
                 </div>
-                <div className="bg-bg-hover rounded-xl p-4 text-center">
-                  <div className="text-[0.6rem] font-semibold uppercase text-text-muted mb-1.5">Profundidade</div>
-                  <div className="font-mono text-xl font-bold text-accent">{cprDepth}</div>
+                <div className="rounded-xl p-4 text-center border-2" style={{ background: 'rgba(76,175,80,0.1)', borderColor: 'rgba(76,175,80,0.3)' }}>
+                  <div className="text-[11px] font-bold uppercase text-[#888] mb-1.5" style={{ letterSpacing: '1.5px' }}>PROFUNDIDADE</div>
+                  <div className="font-mono text-[28px] font-extrabold text-accent">{cprDepth}</div>
                 </div>
-                <div className="bg-bg-hover rounded-xl p-4 text-center">
-                  <div className="text-[0.6rem] font-semibold uppercase text-text-muted mb-1.5">Com TOT</div>
-                  <div className="font-mono text-xl font-bold text-accent">1 a cada 2-3s</div>
+                <div className="rounded-xl p-4 text-center border-2" style={{ background: 'rgba(171,71,188,0.1)', borderColor: 'rgba(171,71,188,0.3)' }}>
+                  <div className="text-[11px] font-bold uppercase text-[#888] mb-1.5" style={{ letterSpacing: '1.5px' }}>COM TOT</div>
+                  <div className="font-mono text-[28px] font-extrabold text-accent">1 a cada 2-3s</div>
                 </div>
               </div>
             </div>
@@ -1074,31 +1074,31 @@ export default function PedGuide() {
             {/* Defibrillation */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
               <div className="bg-gradient-to-br from-accent to-red-800 text-white rounded-xl p-5 text-center">
-                <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">1a Desfibrilacao (2 J/kg)</div>
+                <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">1ª Desfibrilação (2 J/kg)</div>
                 <div className="font-mono text-3xl font-bold">{defib?.first ?? '--'}</div>
                 <div className="text-base opacity-80">Joules</div>
               </div>
               <div className="bg-gradient-to-br from-accent to-red-800 text-white rounded-xl p-5 text-center">
-                <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">2a Desfibrilacao (4 J/kg)</div>
+                <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">2ª Desfibrilação (4 J/kg)</div>
                 <div className="font-mono text-3xl font-bold">{defib?.second ?? '--'}</div>
                 <div className="text-base opacity-80">Joules</div>
               </div>
               <div className="bg-bg-hover text-white rounded-xl p-5 text-center">
-                <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">Cardioversao (0,5-1 J/kg)</div>
+                <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">Cardioversão (0,5-1 J/kg)</div>
                 <div className="font-mono text-3xl font-bold">{defib?.cardio ?? '--'}</div>
                 <div className="text-base opacity-80">Joules</div>
               </div>
             </div>
 
             {/* PCR Drugs */}
-            <Collapsible title="Drogas de parada cardiorrespiratoria" badge="PCR" badgeColor="#F44336">
+            <Collapsible title="Drogas de parada cardiorrespiratória" badge="PCR" badgeColor="#F44336">
               {PCR_DRUGS.map(drug => (
                 <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* 6H 6T */}
-            <Collapsible title="Causas reversiveis (6H e 6T)" badge="H/T" badgeColor="#FFC107">
+            <Collapsible title="Causas reversíveis (6H e 6T)" badge="H/T" badgeColor="#FFC107">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-bg-hover rounded-xl p-4">
                   <div className="text-[0.75rem] font-extrabold uppercase text-danger mb-3">6 H</div>
@@ -1124,15 +1124,15 @@ export default function PedGuide() {
             </Collapsible>
 
             {/* Equipamentos */}
-            <Collapsible title="Via aerea e equipamentos" badge="VA" badgeColor="#2196F3">
+            <Collapsible title="Via aérea e equipamentos" badge="VA" badgeColor="#2196F3">
               {equipment ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {[
                     { label: 'Tubo Traqueal', value: equipment.tubo, unit: 'mm (com cuff)' },
-                    { label: 'Fixacao', value: equipment.fixacao, unit: 'cm (gengiva)' },
-                    { label: 'Lamina', value: equipment.lamina },
-                    { label: 'Mascara Laringea', value: equipment.lma },
-                    { label: 'Sonda Aspiracao', value: equipment.sondaAsp, unit: 'French' },
+                    { label: 'Fixação', value: equipment.fixacao, unit: 'cm (gengiva)' },
+                    { label: 'Lâmina', value: equipment.lâmina },
+                    { label: 'Máscara Laríngea', value: equipment.lma },
+                    { label: 'Sonda Aspiração', value: equipment.sondaAsp, unit: 'French' },
                     { label: 'Bougie', value: equipment.bougie, unit: 'French' },
                   ].map(item => (
                     <div key={item.label} className="bg-bg-hover rounded-xl p-4 text-center border-2 border-border-card">
@@ -1155,21 +1155,22 @@ export default function PedGuide() {
             <button onClick={() => showView('home')} className="bg-transparent border border-border-card text-text-muted px-4 py-2 rounded-lg text-sm cursor-pointer mb-4 active:bg-bg-hover min-h-[44px]">
               ← Voltar
             </button>
-            <h2 className="text-xl font-bold text-text-primary mb-4">Cenarios</h2>
+            <h2 className="text-xl font-bold text-text-primary mb-4">Cenários</h2>
 
             {[
-              { key: 'anafilaxia', title: 'Anafilaxia', desc: 'Epinefrina IM, corticoide, anti-histaminico' },
-              { key: 'convulsao', title: 'Status Epilepticus', desc: 'Diazepam, midazolam, fenitoina, fenobarbital' },
-              { key: 'isr', title: 'IOT / ISR', desc: 'Checklist, cetamina, rocuronio, succinilcolina' },
-              { key: 'choque', title: 'Choque', desc: 'Fluidos, epinefrina, norepinefrina, dobutamina' },
-              { key: 'choque-cardio', title: 'Choque cardiogenico', desc: 'Dobutamina, milrinona, epinefrina' },
-              { key: 'pos-pcr', title: 'Pos-PCR / Arritmia', desc: 'Amiodarona, epinefrina, norepinefrina' },
-              { key: 'sedacao', title: 'Sedacao pos-IOT', desc: 'Fentanil, midazolam, dexmedetomidina, cetamina' },
+              { key: 'anafilaxia', title: 'Anafilaxia', desc: 'Epinefrina IM, corticoide, anti-histamínico', color: '#F44336' },
+              { key: 'convulsão', title: 'Status Epilepticus', desc: 'Diazepam, midazolam, fenitoína, fenobarbital', color: '#FFC107' },
+              { key: 'isr', title: 'IOT / ISR', desc: 'Checklist, cetamina, rocurônio, succinilcolina', color: '#2196F3' },
+              { key: 'choque', title: 'Choque', desc: 'Fluidos, epinefrina, norepinefrina, dobutamina', color: '#FF5252' },
+              { key: 'choque-cardio', title: 'Choque cardiogênico', desc: 'Dobutamina, milrinona, epinefrina', color: '#8B5CF6' },
+              { key: 'pos-pcr', title: 'Pós-PCR / Arritmia', desc: 'Amiodarona, epinefrina, norepinefrina', color: '#F97316' },
+              { key: 'sedação', title: 'Sedação pós-IOT', desc: 'Fentanil, midazolam, dexmedetomidina, cetamina', color: '#10B981' },
             ].map(s => (
               <div
                 key={s.key}
                 onClick={() => loadScenario(s.key)}
-                className="bg-bg-hover border border-border-card rounded-xl p-4 mb-2.5 cursor-pointer active:border-accent transition-colors"
+                className="bg-bg-hover border border-border-card rounded-xl p-4 mb-2.5 cursor-pointer active:border-accent transition-colors border-l-4"
+                style={{ borderLeftColor: s.color }}
               >
                 <div className="text-base font-semibold text-text-primary">{s.title}</div>
                 <div className="text-xs text-text-muted mt-1">{s.desc}</div>
@@ -1187,12 +1188,12 @@ export default function PedGuide() {
             <h2 className="text-xl font-bold text-text-primary mb-4">Calculadoras</h2>
 
             {/* IOT Checklist */}
-            <Collapsible title="Checklist de intubacao orotraqueal" badge="IOT" badgeColor="#4CAF50" defaultOpen={isSectionOpen('iot')}>
+            <Collapsible title="Checklist de intubação orotraqueal" badge="IOT" badgeColor="#4CAF50" defaultOpen={isSectionOpen('iot')}>
               <div className="bg-bg-hover rounded-xl p-4">
                 {IOT_CHECKLIST_ITEMS.map((item, i) => {
                   let value: string | undefined
                   if (item.valueKey && equipment) {
-                    if (item.valueKey === 'lamina') value = equipment.checkLamina
+                    if (item.valueKey === 'lâmina') value = equipment.checkLamina
                     else if (item.valueKey === 'tubo') value = equipment.checkTubo
                     else if (item.valueKey === 'bougie') value = equipment.checkBougie
                     else if (item.valueKey === 'lma') value = equipment.checkLma
@@ -1203,40 +1204,40 @@ export default function PedGuide() {
             </Collapsible>
 
             {/* IOT Drugs */}
-            <Collapsible title="Drogas de intubacao (ISR)" badge="ISR" badgeColor="#8B5CF6" defaultOpen={isSectionOpen('drogas-iot')}>
+            <Collapsible title="Drogas de intubação (ISR)" badge="ISR" badgeColor="#8B5CF6" defaultOpen={isSectionOpen('drogas-iot')}>
               {IOT_DRUGS.map(drug => (
                 <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Emergency Drugs */}
-            <Collapsible title="Outras drogas de emergencia" badge="SOS" badgeColor="#F44336" defaultOpen={isSectionOpen('emergencias')}>
+            <Collapsible title="Outras drogas de emergência" badge="SOS" badgeColor="#F44336" defaultOpen={isSectionOpen('emergências')}>
               {EMERGENCY_DRUGS.map(drug => (
                 <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Convulsion Drugs */}
-            <Collapsible title="Anticonvulsivantes" badge="SE" badgeColor="#FFC107" defaultOpen={isSectionOpen('convulsao')}>
+            <Collapsible title="Anticonvulsivantes" badge="SE" badgeColor="#FFC107" defaultOpen={isSectionOpen('convulsão')}>
               {CONVULSION_DRUGS.map(drug => (
                 <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Neuro Drugs */}
-            <Collapsible title="Neuroprotecao e Osmoterapia" badge="HIC" badgeColor="#2196F3" defaultOpen={isSectionOpen('neuro')}>
+            <Collapsible title="Neuroproteção e Osmoterapia" badge="HIC" badgeColor="#2196F3" defaultOpen={isSectionOpen('neuro')}>
               {NEURO_DRUGS.map(drug => (
                 <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Transfusion */}
-            <Collapsible title="Transfusao e Hemocomponentes" badge="TX" badgeColor="#F44336">
+            <Collapsible title="Transfusão e Hemocomponentes" badge="TX" badgeColor="#F44336">
               {transfusion ? (
                 <>
                   <div className="grid grid-cols-2 gap-3">
                     {[
-                      { name: 'Concentrado de Hemacias', dose: '10-15 mL/kg', value: transfusion.chad, blood: true },
+                      { name: 'Concentrado de Hemácias', dose: '10-15 mL/kg', value: transfusion.chad, blood: true },
                       { name: 'Plasma Fresco', dose: '10-15 mL/kg', value: transfusion.pfc, blood: false },
                       { name: 'Plaquetas', dose: '5-10 mL/kg', value: transfusion.plaq, blood: false },
                       { name: 'Crioprecipitado', dose: '5-10 mL/kg', value: transfusion.crio, blood: false },
@@ -1248,10 +1249,10 @@ export default function PedGuide() {
                       </div>
                     ))}
                   </div>
-                  <AlertCard type="warning" title="Protocolo de Transfusao Macica Pediatrica" className="mt-4">
+                  <AlertCard type="warning" title="Protocolo de Transfusão Maciça Pediátrica" className="mt-4">
                     <div className="text-[0.8rem]">
                       Quando ativar: perda {'>'} 40 mL/kg ou {'>'} 50% volemia<br />
-                      <strong className="text-text-primary">Proporcao alvo:</strong> CH:PFC:Plaq = 1:1:1<br />
+                      <strong className="text-text-primary">Proporção alvo:</strong> CH:PFC:Plaq = 1:1:1<br />
                       Volemia estimada (80 mL/kg): <strong className="text-text-primary">{transfusion.volemia} mL</strong>
                     </div>
                   </AlertCard>
@@ -1271,8 +1272,8 @@ export default function PedGuide() {
                     <div className="text-[0.75rem] text-text-muted mt-1">mL (20 mL/kg)</div>
                   </div>
                   <div className="bg-bg-hover rounded-xl p-4 text-center border-2 border-border-card">
-                    <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Manutencao/hora</div>
-                    <div className="font-mono text-2xl font-bold text-text-primary">{fluids.manutencao}</div>
+                    <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Manutenção/hora</div>
+                    <div className="font-mono text-2xl font-bold text-text-primary">{fluids.manutenção}</div>
                     <div className="text-[0.75rem] text-text-muted mt-1">mL/h (Holliday-Segar)</div>
                   </div>
                   <div className="bg-bg-hover rounded-xl p-4 text-center border-2 border-border-card">
@@ -1287,7 +1288,7 @@ export default function PedGuide() {
             </Collapsible>
 
             {/* Infusions */}
-            <Collapsible title="Infusoes continuas" badge={getWeightCategoryLabel(weightCat)} badgeColor="#8B5CF6" defaultOpen={isSectionOpen('infusoes')}>
+            <Collapsible title="Infusões contínuas" badge={getWeightCategoryLabel(weightCat)} badgeColor="#8B5CF6" defaultOpen={isSectionOpen('infusoes')}>
               <div className="bg-blue-500 text-white px-4 py-2 rounded-2xl text-[0.85rem] text-center mb-4 font-medium">
                 Faixa: <strong>{getWeightCategoryLabel(weightCat)}</strong>
               </div>
@@ -1341,7 +1342,7 @@ export default function PedGuide() {
       <Modal
         open={!!prepModal}
         onClose={() => setPrepModal(null)}
-        title={prepModal ? `Preparacao: ${PREPARATIONS[prepModal]?.title ?? ''}` : ''}
+        title={prepModal ? `Preparação: ${PREPARATIONS[prepModal]?.title ?? ''}` : ''}
       >
         {prepModal && PREPARATIONS[prepModal] && (
           <div>
@@ -1357,7 +1358,7 @@ export default function PedGuide() {
         )}
       </Modal>
 
-      <Footer toolName="Ped Guide" version="v2.0.0" />
+      <Footer toolName="Ped Guide" version="v2.0.0" updatedAt="Abril 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>
