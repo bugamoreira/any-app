@@ -664,7 +664,7 @@ export default function AirwayGuide() {
     return (
       <div>
         <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'home' })} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-4 px-0 min-h-[44px]">← Voltar</button>
-        <h2 className="text-xl font-extrabold mb-5">Checklist de IOT</h2>
+        <h2 className="text-xl font-bold mb-5">Checklist de IOT</h2>
 
         <Card borderColor="#FF5252" className="mb-4">
           <div className="font-bold text-sm text-accent mb-3">Paciente</div>
@@ -705,7 +705,7 @@ export default function AirwayGuide() {
     return (
       <div>
         <button onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'home' })} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-4 px-0 min-h-[44px]">← Voltar</button>
-        <h2 className="text-xl font-extrabold mb-5">Doses de medicações</h2>
+        <h2 className="text-xl font-bold mb-5">Doses de medicações</h2>
 
         <div className="mb-4">
           <label className="text-sm text-text-secondary block mb-1.5">Peso (kg)</label>
@@ -775,8 +775,7 @@ export default function AirwayGuide() {
   function renderStep1() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 1 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Indicação de IOT</h2>
+        <h2 className="text-xl font-bold mb-5">Indicação de IOT</h2>
         <Card className="mb-4">
           <div className="font-bold text-[15px] mb-3">Selecione a(s) indicação(oes)</div>
           {INDICATION_ITEMS.map((item, i) => (
@@ -808,8 +807,7 @@ export default function AirwayGuide() {
   function renderStep2() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 2 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">VAD Fisiológica — CRASH</h2>
+        <h2 className="text-xl font-bold mb-5">VAD Fisiológica — CRASH</h2>
         <Card className="mb-4">
           <div className="flex items-center gap-3 mb-4 pb-3 border-b border-border-card">
             <MnemonicDisplay letters={['C', 'R', 'A', 'S', 'H']} activeMap={state.crash} />
@@ -900,7 +898,7 @@ export default function AirwayGuide() {
           </AlertCard>
         )}
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <button onClick={() => goToStep(1)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(3)}>Continuar &#8594;</Button>
         </div>
@@ -911,8 +909,7 @@ export default function AirwayGuide() {
   function renderStep3() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 3 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">VAD Anatômica</h2>
+        <h2 className="text-xl font-bold mb-5">VAD Anatômica</h2>
 
         <Card className="mb-4">
           <div className="font-bold text-[15px] mb-2">Deseja avaliar preditores de VAD?</div>
@@ -979,7 +976,7 @@ export default function AirwayGuide() {
           </>
         )}
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <button onClick={() => goToStep(2)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           {state.vadOption === 'yes' && (
             <Button fullWidth onClick={() => goToStep(4)}>Continuar &#8594;</Button>
@@ -992,8 +989,7 @@ export default function AirwayGuide() {
   function renderStep4() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 4 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Dados do paciente</h2>
+        <h2 className="text-xl font-bold mb-5">Dados do paciente</h2>
 
         <Card className="mb-4">
           <div className="flex gap-3 mb-4">
@@ -1054,7 +1050,7 @@ export default function AirwayGuide() {
           )}
         </Card>
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <button onClick={() => goToStep(3)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth disabled={!patientDataValid} onClick={() => goToStep(5)}>Continuar &#8594;</Button>
         </div>
@@ -1065,8 +1061,7 @@ export default function AirwayGuide() {
   function renderStep5() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 5 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Triple Setup</h2>
+        <h2 className="text-xl font-bold mb-5">Triple Setup</h2>
 
         {(crashCount > 0 || isVADDifficult) && (
           <AlertCard type="danger" title="Risco elevado identificado">
@@ -1157,7 +1152,7 @@ export default function AirwayGuide() {
           )}
         </Card>
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <button onClick={() => goToStep(4)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(6)}>Continuar &#8594;</Button>
         </div>
@@ -1168,8 +1163,7 @@ export default function AirwayGuide() {
   function renderStep6() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 6 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Otimização</h2>
+        <h2 className="text-xl font-bold mb-5">Otimização</h2>
 
         {hasHemoInstability && (
           <AlertCard type="danger" title="Instabilidade hemodinâmica">
@@ -1194,7 +1188,7 @@ export default function AirwayGuide() {
           <SimpleCheckItem title="Cabeceira elevada 20-30 graus" desc="Head-up para obeso ou risco de aspiração" />
         </Card>
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <button onClick={() => goToStep(5)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(7)}>Continuar &#8594;</Button>
         </div>
@@ -1205,8 +1199,7 @@ export default function AirwayGuide() {
   function renderStep7() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 7 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Pré-oxigenação</h2>
+        <h2 className="text-xl font-bold mb-5">Pré-oxigenação</h2>
 
         <Card className="mb-4">
           <div className="font-bold text-[15px] mb-3">Meta: pré-oxigenação por 3 a 5 minutos com FiO2 de 100%</div>
@@ -1233,7 +1226,7 @@ export default function AirwayGuide() {
           <SimpleCheckItem title="Cateter nasal 15 L/min" desc="Manter durante toda laringoscopia" />
         </Card>
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <button onClick={() => goToStep(6)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(8)}>Continuar &#8594;</Button>
         </div>
@@ -1260,8 +1253,7 @@ export default function AirwayGuide() {
   function renderStep8() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 8 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Medicações</h2>
+        <h2 className="text-xl font-bold mb-5">Medicações</h2>
 
         {shouldReduceDose && (
           <AlertCard type="warning" title="Considere redução de dose">
@@ -1321,7 +1313,7 @@ export default function AirwayGuide() {
           ))}
         </Card>
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <button onClick={() => goToStep(7)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(9)}>Continuar &#8594;</Button>
         </div>
@@ -1332,8 +1324,7 @@ export default function AirwayGuide() {
   function renderStep9() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 9 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Procedimento</h2>
+        <h2 className="text-xl font-bold mb-5">Procedimento</h2>
 
         {isVADDifficult && (
           <AlertCard type="danger" title="Via aérea difícil identificada">
@@ -1461,7 +1452,7 @@ export default function AirwayGuide() {
           </AlertCard>
         )}
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <button onClick={() => goToStep(8)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={() => goToStep(10)}>Continuar &#8594;</Button>
         </div>
@@ -1472,8 +1463,7 @@ export default function AirwayGuide() {
   function renderStep10() {
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 10 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Resultado e confirmação</h2>
+        <h2 className="text-xl font-bold mb-5">Resultado e confirmação</h2>
 
         {/* Question: success? */}
         {state.intubationSuccess === null && (
@@ -1587,7 +1577,7 @@ export default function AirwayGuide() {
           </>
         )}
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <Button variant="secondary" fullWidth onClick={() => { dispatch({ type: 'SET_INTUBATION_SUCCESS', value: null }); goToStep(9) }}>
             ← Voltar
           </Button>
@@ -1638,8 +1628,7 @@ export default function AirwayGuide() {
 
     return (
       <div>
-        <div className="text-xs font-semibold text-accent uppercase tracking-wider mb-1">Passo 11 de 11</div>
-        <h2 className="text-xl font-extrabold mb-5">Resumo</h2>
+        <h2 className="text-xl font-bold mb-5">Resumo</h2>
 
         {sections.map((sec, i) => (
           <div key={i} className="mb-3 p-3.5 bg-bg-card border border-border-card rounded-xl">
@@ -1648,7 +1637,7 @@ export default function AirwayGuide() {
           </div>
         ))}
 
-        <div className="flex gap-2.5 mt-5">
+        <div className="flex gap-3 mt-5">
           <button onClick={() => goToStep(10)} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-2 px-0 min-h-[44px]">← Voltar</button>
           <Button fullWidth onClick={copyReport}>Copiar relatório</Button>
         </div>
