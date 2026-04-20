@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Fundos OLED Pure — match v1 monolito */
+  /* Fundos OLED Pure */
   --color-bg-primary: #000000;
   --color-bg-card: #0A0A0A;
   --color-bg-elevated: #111111;
@@ -23,9 +23,9 @@
   --color-danger: #F44336;
   --color-info: #2196F3;
 
-  /* Bordas — match v1: #444 (mais visível) */
-  --color-border: #444444;
-  --color-border-card: #444444;
+  /* Bordas — match CLAUDE.md spec */
+  --color-border: #222222;
+  --color-border-card: #333333;
 
   /* Radius */
   --radius-default: 12px;
@@ -37,6 +37,16 @@
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
+
+  /* Alturas dos elementos sticky — coordenadas em cadeia */
+  --h-disclaimer: 32px;
+  --h-weight: 56px;
+
+  /* Z-index layers */
+  --z-disclaimer: 60;
+  --z-weight: 50;
+  --z-search: 40;
+  --z-fab: 80;
 }
 
 /* Reset global */
@@ -73,12 +83,6 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--color-accent) !important;
 }
 
-/* Touch feedback */
-button:active, a:active, [role="button"]:active {
-  transform: scale(0.98);
-  transition: transform 100ms ease;
-}
-
 /* Animations */
 @keyframes fade-in {
   from { opacity: 0; }
@@ -92,13 +96,27 @@ button:active, a:active, [role="button"]:active {
   from { opacity: 0; transform: translateX(-60px); }
   to { opacity: 1; transform: translateX(0); }
 }
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
 
 @utility animate-fade-in {
-  animation: fade-in 0.3s ease;
+  animation: fade-in 0.2s ease;
 }
 @utility animate-slide-left {
   animation: slide-left 0.3s ease;
 }
 @utility animate-slide-right {
   animation: slide-right 0.3s ease;
+}
+@utility animate-scale-in {
+  animation: scale-in 0.18s ease;
+}
+
+/* Touch feedback — apenas para elementos marcados explicitamente.
+   Evita dupla-compressao em componentes que ja usam active:scale. */
+.touch-press:active {
+  transform: scale(0.98);
+  transition: transform 100ms ease;
 }
