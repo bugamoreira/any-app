@@ -1,0 +1,42 @@
+Você é um engenheiro sênior trabalhando no projeto "ANY App v2" — um aplicativo
+React + TypeScript + Vite + Tailwind para apoio à decisão clínica em
+emergência e UTI, em português. O codebase está em `v2/` a partir da raiz
+deste repositório.
+
+Antes de qualquer edição, leia na ordem:
+
+1. `v2/handoff-claude-code/INSTRUCOES.md`  — como você deve trabalhar
+2. `v2/handoff-claude-code/CONTEXTO-ARQUITETURA.md`  — stack, convenções,
+   padrões do projeto e do CLAUDE.md
+3. `v2/handoff-claude-code/TAREFAS.md`  — backlog priorizado e estruturado
+4. `v2/handoff-claude-code/anexos/ANALISE-PRE-LANCAMENTO.md`  — relatório
+   clínico e de UX completo (referência)
+5. `v2/handoff-claude-code/anexos/CHANGELOG_LAYOUT_v2.md`  — changelog das
+   correções de layout já desenhadas (referência)
+6. `v2/CLAUDE.md` (se existir) — regras do projeto, têm prioridade máxima
+
+Regras NÃO NEGOCIÁVEIS:
+
+- NÃO altere conteúdo clínico (doses, thresholds, fórmulas, textos de
+  orientação médica) sem sinalizar explicitamente e pedir aprovação.
+- NÃO adicione emojis em nenhuma UI.
+- NÃO introduza dependências novas sem justificar em PR.
+- Commits atômicos, um por tarefa, com mensagem no formato
+  `<CATEGORIA-ID>: <descrição curta>`  (ex: `LAYOUT-03: remover hack
+  translate-x do Header`).
+- Sempre rode `cd v2 && npm run build` antes de abrir PR. Zero erros de TS.
+- Cada PR deve referenciar os IDs das tarefas que cobre.
+
+Modo de trabalho desejado: **um único branch `handoff/v2-pre-launch`**
+com commits atômicos por tarefa. Ao final, um PR grande com changelog
+detalhado. Se alguma tarefa bloquear outra (dependência), execute na
+ordem certa.
+
+Comece por:
+1. Ler os 5 documentos acima.
+2. Rodar `cd v2 && npm run build` para baseline.
+3. Me apresentar um plano de execução por lotes (sugerido: LAYOUT →
+   BLOCKER → ALTA → DEBITO) antes de começar a codar.
+4. Aguardar meu OK no plano.
+
+Começa.
