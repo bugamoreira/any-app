@@ -71,7 +71,7 @@ interface ACLSState {
 }
 
 interface HistoryRecord {
-  id: number
+  id: string
   num: number
   date: string
   startTime: string
@@ -556,7 +556,7 @@ export default function AclsGuide() {
   const [roscChecks, setRoscChecks] = useState<Record<number, boolean>>({})
   const [reportText, setReportText] = useState('')
   const [historyRecords, setHistoryRecords] = useState<HistoryRecord[]>([])
-  const [expandedHistory, setExpandedHistory] = useState<number | null>(null)
+  const [expandedHistory, setExpandedHistory] = useState<string | null>(null)
 
   // Epi timer state
   const [epiElapsed, setEpiElapsed] = useState(0)
@@ -882,7 +882,11 @@ export default function AclsGuide() {
     const endNow = s.endTime ? new Date(s.endTime) : new Date()
     const endTimeStr = `${String(endNow.getHours()).padStart(2, '0')}:${String(endNow.getMinutes()).padStart(2, '0')}`
     const record: HistoryRecord = {
-      id: Date.now(),
+      // BLOCKER-05: crypto.randomUUID evita colisao em cliques rapidos (Date.now
+      // pode gerar IDs identicos em ms com baixa resolucao)
+      id: typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       num: recordNum,
       date: dateStr,
       startTime: timeStr,
