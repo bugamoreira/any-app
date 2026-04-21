@@ -599,14 +599,14 @@ export default function TepGuide() {
         break
       case 'noR':
         setHasModR(false)
-        showManagement()
+        goToPanel('step4')
         break
       case 'yesR':
         setHasModR(true)
-        showManagement()
+        goToPanel('step4')
         break
     }
-  }, [classState])
+  }, [classState, goToPanel])
 
   const showManagement = useCallback(() => {
     goToPanel('step4')
