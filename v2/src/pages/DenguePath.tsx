@@ -450,15 +450,16 @@ _Ferramenta de apoio à decisão clínica_`
           { id: 'altasegura' as Screen, label: 'Alta segura', desc: 'Critérios e orientações', icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> },
           { id: 'referências' as Screen, label: 'Referências', desc: 'Fontes e bibliografia', icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF5252" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> },
         ].map(item => (
-          <div
+          <Card
             key={item.id}
             onClick={() => goTo(item.id)}
-            style={{ background: '#0A0A0A', border: '1px solid #333', borderRadius: '12px', padding: '16px 12px', cursor: 'pointer', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '6px', minHeight: '100px' }}
+            spaced={false}
+            className="text-center flex flex-col items-center justify-center gap-1.5 min-h-[100px]"
           >
             {item.icon}
-            <div style={{ fontSize: '12px', fontWeight: 600, color: '#fff', lineHeight: 1.3 }}>{item.label}</div>
-            <div style={{ fontSize: '10px', color: '#666', lineHeight: 1.3 }}>{item.desc}</div>
-          </div>
+            <div className="text-[12px] font-semibold text-text-primary leading-tight">{item.label}</div>
+            <div className="text-[10px] text-text-muted leading-tight">{item.desc}</div>
+          </Card>
         ))}
       </div>
     </div>
