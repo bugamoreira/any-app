@@ -33,7 +33,7 @@ import {
   calcPmus, interpretPmus,
   calcMP, interpretMP,
   calcIA, interpretIA,
-  hacorTotal, interpretHACOR,
+  hacorTotal,
 } from '../data/vmData'
 import type { HacorEntry } from '../data/vmData'
 
@@ -610,8 +610,7 @@ function IACalc() {
 
 type HacorScores = Record<string, number | null>
 
-function HacorScoreForm({ label, scores, onSelect }: {
-  label: string
+function HacorScoreForm({ scores, onSelect }: {
   scores: HacorScores
   onSelect: (key: string, value: number) => void
 }) {
@@ -711,7 +710,7 @@ function HACORSection() {
       {screen === 'início' && (
         <div>
           <button onClick={() => setScreen('home')} className="text-sm text-accent bg-transparent border-none cursor-pointer mb-3 px-0">Voltar</button>
-          <HacorScoreForm label="início" scores={inícioScores} onSelect={handleInícioSelect} />
+          <HacorScoreForm scores={inícioScores} onSelect={handleInícioSelect} />
           {inícioTotal !== null && (
             <>
               <div className={`mt-3 p-4 rounded-xl border text-center ${
@@ -749,7 +748,7 @@ function HACORSection() {
             </div>
           )}
 
-          <HacorScoreForm label="reaval" scores={reavalScores} onSelect={handleReavalSelect} />
+          <HacorScoreForm scores={reavalScores} onSelect={handleReavalSelect} />
 
           {reavalTotal !== null && (
             <>

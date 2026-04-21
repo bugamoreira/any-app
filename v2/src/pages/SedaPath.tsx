@@ -122,7 +122,7 @@ export default function SedaPath() {
 
   // ---- Navigation ----
 
-  const goTo = useCallback((screen: Screen, direction: 'left' | 'right' = 'left') => {
+  const goTo = useCallback((screen: Screen, _direction: 'left' | 'right' = 'left') => {
     setState(prev => ({
       ...prev,
       screen,
