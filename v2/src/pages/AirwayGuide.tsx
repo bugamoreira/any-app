@@ -629,28 +629,19 @@ export default function AirwayGuide() {
   function renderHome() {
     return (
       <div>
-        <div
-          onClick={startPathway}
-          style={{ background: '#1A1A1A', border: '1px solid #333', borderLeft: '4px solid #FF5252', borderRadius: '12px', padding: '20px', marginBottom: '12px', cursor: 'pointer' }}
-        >
-          <div style={{ fontSize: '18px', fontWeight: 600, marginBottom: '4px' }}>Pathway de intubação</div>
-          <div style={{ fontSize: '13px', color: '#888' }}>Guia passo a passo para via aérea</div>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-          <div
-            onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'checklist' })}
-            style={{ background: '#1A1A1A', border: '1px solid #333', borderLeft: '4px solid #2196F3', borderRadius: '12px', padding: '20px', cursor: 'pointer' }}
-          >
-            <div style={{ fontSize: '18px', fontWeight: 600, marginBottom: '4px' }}>Checklist de IOT</div>
-            <div style={{ fontSize: '13px', color: '#888' }}>Materiais, equipe e planos</div>
-          </div>
-          <div
-            onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'doses' })}
-            style={{ background: '#1A1A1A', border: '1px solid #333', borderLeft: '4px solid #2196F3', borderRadius: '12px', padding: '20px', cursor: 'pointer' }}
-          >
-            <div style={{ fontSize: '18px', fontWeight: 600, marginBottom: '4px' }}>Doses de medicações</div>
-            <div style={{ fontSize: '13px', color: '#888' }}>Indutores e BNM</div>
-          </div>
+        <Card borderColor="#FF5252" onClick={startPathway} spaced>
+          <div className="text-[18px] font-semibold mb-1">Pathway de intubação</div>
+          <div className="text-[13px] text-text-muted">Guia passo a passo para via aérea</div>
+        </Card>
+        <div className="grid grid-cols-2 gap-3">
+          <Card borderColor="#2196F3" onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'checklist' })} spaced={false}>
+            <div className="text-[18px] font-semibold mb-1">Checklist de IOT</div>
+            <div className="text-[13px] text-text-muted">Materiais, equipe e planos</div>
+          </Card>
+          <Card borderColor="#2196F3" onClick={() => dispatch({ type: 'SET_SCREEN', screen: 'doses' })} spaced={false}>
+            <div className="text-[18px] font-semibold mb-1">Doses de medicações</div>
+            <div className="text-[13px] text-text-muted">Indutores e BNM</div>
+          </Card>
         </div>
       </div>
     )

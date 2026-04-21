@@ -191,12 +191,14 @@ function HomeScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
       </div>
 
       {/* Grid de Modulos */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+      <div className="grid grid-cols-2 gap-4 mb-6">
         {modules.map(m => (
-          <div
+          <Card
             key={m.id}
+            borderColor={m.color}
             onClick={() => onNavigate(m.id)}
-            style={{ background: '#111111', border: '2px solid #333', borderLeft: `4px solid ${m.color}`, borderRadius: '12px', padding: '20px 16px', cursor: 'pointer', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '120px' }}
+            spaced={false}
+            className="text-center flex flex-col items-center justify-center min-h-[120px]"
           >
             <div
               className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
@@ -225,17 +227,19 @@ function HomeScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
             </div>
             <h3 className="text-sm font-semibold text-text-primary mb-1">{m.title}</h3>
             <p className="text-xs text-text-muted">{m.subtitle}</p>
-          </div>
+          </Card>
         ))}
       </div>
 
       {/* Extras */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="flex flex-col gap-3">
         {extras.map(e => (
-          <div
+          <Card
             key={e.id}
+            borderColor={e.color}
             onClick={() => onNavigate(e.id)}
-            style={{ background: '#111111', border: '2px solid #333', borderLeft: `4px solid ${e.color}`, borderRadius: '12px', padding: '20px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px' }}
+            spaced={false}
+            className="flex items-center gap-3"
           >
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -261,7 +265,7 @@ function HomeScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
               <h4 className="text-sm font-semibold text-text-primary">{e.title}</h4>
               <p className="text-xs text-text-muted">{e.subtitle}</p>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>
