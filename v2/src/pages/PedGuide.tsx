@@ -985,7 +985,7 @@ export default function PedGuide() {
 
               {/* Dropdown */}
               {broselowOpen && (
-                <div className="absolute top-full left-0 right-0 bg-bg-hover rounded-xl shadow-2xl z-50 overflow-hidden mt-1 max-h-[300px] overflow-y-auto border border-border-card">
+                <div className="absolute top-full left-0 right-0 bg-bg-hover rounded-xl shadow-2xl z-[100] overflow-hidden mt-1 max-h-[300px] overflow-y-auto border border-border-card">
                   {BROSELOW_DATA.map(entry => (
                     <div
                       key={entry.key}
