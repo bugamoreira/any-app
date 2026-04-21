@@ -78,6 +78,12 @@ const blocks: BlockData[] = [
   // TODO: adicionar os outros 13 bloqueios extraindo do HTML atual
 ]
 
+// BLOCKER-01: bloqueios ainda nao implementados sao marcados como "Em breve"
+// para evitar dead-end de UX. Expandir o array `blocks` acima vai habilitar
+// automaticamente os itens correspondentes.
+const implementedBlockIds = new Set(blocks.map(b => b.id))
+const isImplemented = (id: string): boolean => implementedBlockIds.has(id)
+
 // Lista simplificada de todos os bloqueios para a tela de lista
 const blockList = [
   { region: 'Pescoço', items: [{ id: 'plexo-cervical', name: 'Plexo cervical superficial', volume: '5-10 mL' }] },
@@ -251,16 +257,26 @@ export default function BlockPath() {
               {topography.map(cat => (
                 <div key={cat.title} className="mb-4 last:mb-0">
                   <div className="bg-bg-hover text-accent rounded-lg px-4 py-3 font-semibold text-[15px] mb-2">{cat.title}</div>
-                  {cat.items.map(item => (
-                    <button
-                      key={item.blockId}
-                      onClick={() => setScreen(`block-${item.blockId}`)}
-                      className="flex items-center justify-between w-full px-4 py-[14px] rounded-lg bg-bg-hover mb-2 border-none text-left cursor-pointer active:bg-[#333] transition-colors min-h-[44px]"
-                    >
-                      <span className="text-sm text-text-primary">{item.lesion}</span>
-                      <span className="text-[13px] text-accent font-semibold">{item.blockName} →</span>
-                    </button>
-                  ))}
+                  {cat.items.map(item => {
+                    const ready = isImplemented(item.blockId)
+                    return (
+                      <button
+                        key={item.blockId}
+                        onClick={() => ready && setScreen(`block-${item.blockId}`)}
+                        disabled={!ready}
+                        aria-disabled={!ready}
+                        className={`flex items-center justify-between w-full px-4 py-[14px] rounded-lg bg-bg-hover mb-2 border-none text-left transition-colors min-h-[44px] ${
+                          ready ? 'cursor-pointer active:bg-[#333]' : 'opacity-50 cursor-not-allowed'
+                        }`}
+                      >
+                        <span className="text-sm text-text-primary">{item.lesion}</span>
+                        <span className="flex items-center gap-2">
+                          {!ready && <span className="text-[10px] font-semibold uppercase tracking-wider text-warning bg-warning/10 px-2 py-0.5 rounded-full">Em breve</span>}
+                          <span className={`text-[13px] font-semibold ${ready ? 'text-accent' : 'text-text-muted'}`}>{item.blockName}{ready && ' →'}</span>
+                        </span>
+                      </button>
+                    )
+                  })}
                 </div>
               ))}
             </div>
@@ -273,25 +289,36 @@ export default function BlockPath() {
             <button onClick={() => setScreen('home')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-5 px-0 min-h-[44px]"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>Início</button>
             <div className="bg-bg-elevated border-l-4 border-l-accent rounded-t-xl p-5 mb-0">
               <h2 className="text-xl font-semibold mb-1">Lista de bloqueios</h2>
-              <p className="text-sm text-text-secondary">14 bloqueios disponíveis</p>
+              <p className="text-sm text-text-secondary">{implementedBlockIds.size} de 14 disponível{implementedBlockIds.size === 1 ? '' : 's'} — outros em breve</p>
             </div>
             <div className="bg-[#111] border border-[#333] rounded-b-xl p-4">
               {blockList.map(cat => (
                 <div key={cat.region} className="mb-5 last:mb-0">
                   <div className="text-[13px] font-semibold text-[#999] uppercase tracking-wide mb-2 pl-1">{cat.region}</div>
-                  {cat.items.map(item => (
-                    <button
-                      key={item.id}
-                      onClick={() => setScreen(`block-${item.id}`)}
-                      className="flex items-center justify-between w-full px-4 py-[14px] bg-bg-elevated border border-border-card rounded-lg mb-2 text-left cursor-pointer hover:border-accent hover:bg-[rgba(16,185,129,0.1)] transition-all min-h-[44px]"
-                    >
-                      <div>
-                        <div className="text-[15px] font-medium text-accent">{item.name}</div>
-                        <div className="text-xs text-[#999]">{item.volume}</div>
-                      </div>
-                      <span className="text-[#999] text-[20px]">›</span>
-                    </button>
-                  ))}
+                  {cat.items.map(item => {
+                    const ready = isImplemented(item.id)
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => ready && setScreen(`block-${item.id}`)}
+                        disabled={!ready}
+                        aria-disabled={!ready}
+                        className={`flex items-center justify-between w-full px-4 py-[14px] bg-bg-elevated border border-border-card rounded-lg mb-2 text-left transition-all min-h-[44px] ${
+                          ready ? 'cursor-pointer hover:border-accent hover:bg-[rgba(16,185,129,0.1)]' : 'opacity-50 cursor-not-allowed'
+                        }`}
+                      >
+                        <div>
+                          <div className={`text-[15px] font-medium ${ready ? 'text-accent' : 'text-text-muted'}`}>{item.name}</div>
+                          <div className="text-xs text-[#999]">{item.volume}</div>
+                        </div>
+                        {ready ? (
+                          <span className="text-[#999] text-[20px]">›</span>
+                        ) : (
+                          <span className="text-[10px] font-semibold uppercase tracking-wider text-warning bg-warning/10 px-2 py-0.5 rounded-full">Em breve</span>
+                        )}
+                      </button>
+                    )
+                  })}
                 </div>
               ))}
             </div>
