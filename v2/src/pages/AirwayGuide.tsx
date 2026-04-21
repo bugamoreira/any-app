@@ -88,6 +88,7 @@ type AirwayAction =
   | { type: 'SET_STEP'; step: number }
   | { type: 'TOGGLE_INDICATION'; index: number }
   | { type: 'TOGGLE_CRASH'; letter: keyof CrashState }
+  | { type: 'SET_CRASH'; letter: keyof CrashState; value: boolean }
   | { type: 'SET_SI_FC'; value: number | null }
   | { type: 'SET_SI_PAS'; value: number | null }
   | { type: 'SET_SHOCK_INDEX'; value: number | null }
@@ -264,6 +265,12 @@ function airwayReducer(state: AirwayState, action: AirwayAction): AirwayState {
     }
     case 'TOGGLE_CRASH': {
       const newCrash = { ...state.crash, [action.letter]: !state.crash[action.letter] }
+      return { ...state, crash: newCrash }
+    }
+    case 'SET_CRASH': {
+      // Idempotente: se ja esta no valor desejado, nao muda state
+      if (state.crash[action.letter] === action.value) return state
+      const newCrash = { ...state.crash, [action.letter]: action.value }
       return { ...state, crash: newCrash }
     }
     case 'SET_SI_FC': return { ...state, siFC: action.value }
@@ -841,7 +848,11 @@ export default function AirwayGuide() {
                     if (v && state.siPAS && state.siPAS > 0) {
                       const si = v / state.siPAS
                       dispatch({ type: 'SET_SHOCK_INDEX', value: parseFloat(si.toFixed(2)) })
-                      if (si > 1.0 && !state.crash.H) dispatch({ type: 'TOGGLE_CRASH', letter: 'H' })
+                      // BLOCKER-03: SET_CRASH idempotente, so marca se ainda nao estava
+                      if (si > 1.0 && !state.crash.H) {
+                        dispatch({ type: 'SET_CRASH', letter: 'H', value: true })
+                        addToast('H (Hipotensao) marcado automaticamente — Shock Index > 1.0', 'info')
+                      }
                     }
                   }}
                   className="w-full p-2.5 bg-bg-card border border-border-card rounded-lg text-text-primary text-base text-center"
@@ -865,7 +876,11 @@ export default function AirwayGuide() {
                     if (state.siFC && v && v > 0) {
                       const si = state.siFC / v
                       dispatch({ type: 'SET_SHOCK_INDEX', value: parseFloat(si.toFixed(2)) })
-                      if (si > 1.0 && !state.crash.H) dispatch({ type: 'TOGGLE_CRASH', letter: 'H' })
+                      // BLOCKER-03: SET_CRASH idempotente, so marca se ainda nao estava
+                      if (si > 1.0 && !state.crash.H) {
+                        dispatch({ type: 'SET_CRASH', letter: 'H', value: true })
+                        addToast('H (Hipotensao) marcado automaticamente — Shock Index > 1.0', 'info')
+                      }
                     }
                   }}
                   className="w-full p-2.5 bg-bg-card border border-border-card rounded-lg text-text-primary text-base text-center"
