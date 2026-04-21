@@ -8,6 +8,7 @@ import { Card } from '../components/common/Card'
 import { Collapsible } from '../components/common/Collapsible'
 import { AlertCard } from '../components/common/AlertCard'
 import { useToast } from '../contexts/ToastContext'
+import { useWeight } from '../contexts/WeightContext'
 
 import {
   homeModules,
@@ -33,6 +34,61 @@ type Screen = 'home' | 'toxindromes' | 'descontaminação' | 'disposição' | 'a
 // ==========================================
 // SUB-COMPONENTES
 // ==========================================
+
+/**
+ * BLOCKER-04: dose de carvao ativado calculada a partir do peso do paciente.
+ * Formula: 1 g/kg, minimo 25 g (adolescente ~40 kg gera 40 g — OK; pediatrico
+ * menor recebe 25 g fixo), maximo 100 g (limita superdose em >100 kg).
+ * Referencia: Goldfrank's Toxicologic Emergencies 11th ed, 2019.
+ */
+function CarvaoAtivadoCalc() {
+  const { weight, setWeight } = useWeight()
+  const [localInput, setLocalInput] = useState('')
+
+  if (weight == null) {
+    return (
+      <Card className="!p-4">
+        <p className="text-sm font-bold text-text-primary mb-2">Dose de carvão ativado</p>
+        <p className="text-xs text-text-secondary mb-3">
+          Informe o peso do paciente para calcular a dose (1 g/kg, entre 25 g e 100 g).
+        </p>
+        <div className="flex items-center gap-2">
+          <input
+            type="number"
+            inputMode="decimal"
+            placeholder="Peso (kg)"
+            value={localInput}
+            onChange={e => setLocalInput(e.target.value)}
+            className="flex-1 bg-bg-elevated border border-border-card rounded-lg px-3 py-2 text-base text-text-primary outline-none focus:border-accent min-h-[44px]"
+            aria-label="Peso em kg"
+          />
+          <button
+            onClick={() => {
+              const v = parseFloat(localInput)
+              if (!isNaN(v) && v > 0 && v <= 300) setWeight(v)
+            }}
+            className="bg-accent text-white font-semibold rounded-lg px-4 py-2 min-h-[44px] border-0 cursor-pointer active:bg-accent-hover touch-press"
+          >
+            Calcular
+          </button>
+        </div>
+      </Card>
+    )
+  }
+
+  const dose = Math.min(100, Math.max(25, Math.round(weight * 1)))
+  return (
+    <Card className="!p-4">
+      <p className="text-sm font-bold text-text-primary mb-1">Dose de carvão ativado</p>
+      <p className="text-xs text-text-muted mb-3">Peso atual: {weight} kg</p>
+      <div className="bg-bg-elevated rounded-lg p-3 text-center">
+        <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">Dose recomendada</div>
+        <div className="text-2xl font-bold text-accent">{dose} g</div>
+        <div className="text-xs text-text-secondary mt-1">1 g/kg (min 25 g, max 100 g) — via oral ou SNG</div>
+      </div>
+    </Card>
+  )
+}
 
 function BackButton({ onClick }: { onClick: () => void }) {
   return (
@@ -488,11 +544,9 @@ function DescontaminaçãoView({ onBack }: { onBack: () => void }) {
                     : 'Todos os critérios de elegibilidade foram atendidos'}
                 </p>
               </div>
-              <Card className="!p-4">
-                <p className="text-sm font-bold text-text-primary mb-2">Dose de carvão ativado</p>
-                <p className="text-sm text-text-secondary">Adulto: <strong className="text-text-primary">50 g (1 g/kg)</strong> via oral ou SNG</p>
-                <p className="text-sm text-text-secondary mt-1">Pediátrico: <strong className="text-text-primary">1 g/kg</strong> (max 50 g)</p>
-                <p className="text-xs text-text-muted mt-3">Diluir em água ou SNG. Dose única na maioria dos casos.</p>
+              <CarvaoAtivadoCalc />
+              <Card className="!p-4 mt-3">
+                <p className="text-xs text-text-muted">Diluir em água ou SNG. Dose única na maioria dos casos.</p>
               </Card>
             </div>
           )}
