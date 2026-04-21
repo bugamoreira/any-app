@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import { WeightProvider } from './contexts/WeightContext'
 import { ToastProvider } from './contexts/ToastContext'
 import { MetronomeProvider } from './contexts/MetronomeContext'
+import { UnitProvider } from './contexts/UnitContext'
 import App from './App'
 import './index.css'
 
@@ -13,11 +14,13 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <AuthProvider>
         <WeightProvider>
-          <ToastProvider>
-            <MetronomeProvider>
-              <App />
-            </MetronomeProvider>
-          </ToastProvider>
+          <UnitProvider>
+            <ToastProvider>
+              <MetronomeProvider>
+                <App />
+              </MetronomeProvider>
+            </ToastProvider>
+          </UnitProvider>
         </WeightProvider>
       </AuthProvider>
     </BrowserRouter>
