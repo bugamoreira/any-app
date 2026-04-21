@@ -401,28 +401,28 @@ const huntHess: Calculator = {
   pearlsPitfalls: [
     'Graus I-III geralmente recebem tratamento precoce do aneurisma (< 72h).',
     'Graus IV-V tem mortalidade > 50% — decisão de tratamento deve ser individualizada.',
-    'A avaliação pode flutuar — reavaliar após estabilizacao hemodinâmica.',
+    'A avaliação pode flutuar — reavaliar após estabilização hemodinâmica.',
     'Comorbidades e idade influenciam prognóstico independentemente do grau.'
   ],
   reference: 'Hunt WE, Hess RM. Surgical risk as related to time of intervention in the repair of intracranial aneurysms. J Neurosurg. 1968;28(1):14-20.',
   items: [
     {
       id: 'grade',
-      label: 'Apresentacao clínica',
+      label: 'Apresentação clínica',
       options: [
         { label: 'Grau I — assintomático ou cefaleia mínima, rigidez de nuca leve', value: 1 },
         { label: 'Grau II — cefaleia moderada a intensa, rigidez de nuca, sem déficit focal (exceto paralisia de nervo craniano)', value: 2 },
-        { label: 'Grau III — sonolencia, confusao ou déficit focal leve', value: 3 },
+        { label: 'Grau III — sonolência, confusão ou déficit focal leve', value: 3 },
         { label: 'Grau IV — estupor, hemiparesia moderada a grave, possível rigidez de descerebração precoce', value: 4 },
-        { label: 'Grau V — coma profundo, rigidez de descerebracao, aparencia moribunda', value: 5 }
+        { label: 'Grau V — coma profundo, rigidez de descerebração, aparência moribunda', value: 5 }
       ]
     }
   ],
   interpret: (score: number) => {
     if (score === 1) return interp('Grau I', '#4CAF50', 'Mortalidade cirúrgica ~1%. Tratamento precoce do aneurisma recomendado.')
     if (score === 2) return interp('Grau II', '#4CAF50', 'Mortalidade cirúrgica ~5%. Tratamento precoce do aneurisma recomendado.')
-    if (score === 3) return interp('Grau III', '#FFC107', 'Mortalidade cirúrgica ~19%. Tratamento precoce geralmente indicado após estabilizacao.')
-    if (score === 4) return interp('Grau IV', '#F44336', 'Mortalidade cirúrgica ~42%. Decisão individualizada; considere estabilizacao clínica antes.')
+    if (score === 3) return interp('Grau III', '#FFC107', 'Mortalidade cirúrgica ~19%. Tratamento precoce geralmente indicado após estabilização.')
+    if (score === 4) return interp('Grau IV', '#F44336', 'Mortalidade cirúrgica ~42%. Decisão individualizada; considere estabilização clínica antes.')
     return interp('Grau V', '#F44336', 'Mortalidade cirúrgica ~77%. Prognostico reservado; tratamento conservador pode ser considerado.')
   }
 }
@@ -619,7 +619,7 @@ const hintsPlus: Calculator = {
 const camIcu: Calculator = {
   id: 'cam-icu',
   name: 'CAM-ICU',
-  aliases: ['cam', 'delirium', 'confusao', 'agitação', 'uti', 'rebaixamento'],
+  aliases: ['cam', 'delirium', 'confusão', 'agitação', 'uti', 'rebaixamento'],
   category: 'Neurologia',
   type: 'score',
   description: 'Diagnostico de delirium em pacientes críticos (intubados ou não).',
@@ -645,7 +645,7 @@ const camIcu: Calculator = {
     const f3 = values?.f3 || 0
     const f4 = values?.f4 || 0
     if (f1 && f2 && (f3 || f4)) {
-      return interp('CAM-ICU positivo — delirium presente', '#F44336', 'Delirium confirmado. Investigar causas reversíveis (infeccao, distúrbio metabólico, drogas). Considere medidas não farmacológicas.')
+      return interp('CAM-ICU positivo — delirium presente', '#F44336', 'Delirium confirmado. Investigar causas reversíveis (infecção, distúrbio metabólico, drogas). Considere medidas não farmacológicas.')
     }
     return interp('CAM-ICU negativo — delirium ausente', '#4CAF50', 'Sem critérios de delirium no momento. Reavaliar diariamente.')
   }
@@ -760,7 +760,7 @@ const gcs: Calculator = {
       { label: 'V5 — orientado', value: 5 }
     ]},
     { id: 'motor', label: 'Resposta motora (M)', options: [
-      { label: 'M1 — nenhuma', value: 1 }, { label: 'M2 — extensao a dor (descerebração)', value: 2 },
+      { label: 'M1 — nenhuma', value: 1 }, { label: 'M2 — extensão a dor (descerebração)', value: 2 },
       { label: 'M3 — flexao anormal (decorticação)', value: 3 }, { label: 'M4 — retirada a dor', value: 4 },
       { label: 'M5 — localização a dor', value: 5 }, { label: 'M6 — obedece comandos', value: 6 }
     ]}
@@ -3379,7 +3379,7 @@ export const CALCULATOR_CATEGORIES: CalculatorCategory[] = [
     calculators: [cormackLehane, mallampati]
   },
   {
-    id: 'infeccao',
+    id: 'infecção',
     name: 'Infecção',
     color: '#F472B6',
     calculators: [centorMcisaac]

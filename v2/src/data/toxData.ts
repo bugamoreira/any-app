@@ -559,7 +559,7 @@ export const enfermariaCriteria: DispositionCriterion[] = [
 
 export const checklistSections: ChecklistSection[] = [
   {
-    id: 'estabilizacao', letter: 'A', title: 'Estabilização inicial (ABCDE)', color: '#EF4444',
+    id: 'estabilização', letter: 'A', title: 'Estabilização inicial (ABCDE)', color: '#EF4444',
     items: [
       { label: 'Via aérea pérvia', hint: 'Verificar patência, secreções, estridor' },
       { label: 'Respiração adequada', hint: 'FR, SpO₂, padrão respiratório, ausculta' },
