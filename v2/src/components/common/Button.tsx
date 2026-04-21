@@ -26,7 +26,7 @@ const sizes = {
 export function Button({ variant = 'primary', size = 'md', fullWidth = true, align = 'center', children, className = '', ...props }: ButtonProps) {
   return (
     <button
-      className={`rounded-lg font-semibold cursor-pointer transition-all flex items-center gap-2 ${variants[variant]} ${sizes[size]} ${fullWidth ? 'w-full' : ''} ${align === 'left' ? 'justify-start' : 'justify-center'} disabled:opacity-40 disabled:cursor-not-allowed ${className}`}
+      className={`rounded-lg font-semibold cursor-pointer transition-all flex items-center gap-2 touch-press ${variants[variant]} ${sizes[size]} ${fullWidth ? 'w-full' : ''} ${align === 'left' ? 'justify-start' : 'justify-center'} disabled:opacity-40 disabled:cursor-not-allowed ${className}`}
       {...props}
     >
       {children}
