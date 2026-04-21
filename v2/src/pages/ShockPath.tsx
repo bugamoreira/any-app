@@ -1,4 +1,4 @@
-import { useReducer, useCallback, useMemo } from 'react'
+import { useReducer, useCallback, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Disclaimer } from '../components/layout/Disclaimer'
 import { Header } from '../components/layout/Header'
@@ -485,17 +485,22 @@ export default function ShockPath() {
   const handlePasChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const v = parseFloat(e.target.value)
     dispatch({ type: 'SET_PAS', value: isNaN(v) ? null : v })
-    if (!isNaN(v) && state.pad !== null) {
-      dispatch({ type: 'SET_PP', value: v - state.pad })
-    }
-  }, [state.pad])
+  }, [])
 
   const handlePadCalcChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const v = parseFloat(e.target.value)
-    if (!isNaN(v) && state.pas !== null) {
-      dispatch({ type: 'SET_PP', value: state.pas - v })
+    dispatch({ type: 'SET_PAD', value: isNaN(v) ? null : v })
+  }, [])
+
+  // BLOCKER-08: PP derivado quando em modo calculado — evita closure stale em
+  // handlers. A fonte da verdade em modo calculado é state.pas/pad.
+  useEffect(() => {
+    if (state.ppMode !== 'calculado') return
+    if (state.pas != null && state.pad != null) {
+      const derivedPp = state.pas - state.pad
+      if (state.pp !== derivedPp) dispatch({ type: 'SET_PP', value: derivedPp })
     }
-  }, [state.pas])
+  }, [state.ppMode, state.pas, state.pad, state.pp])
 
   // ==========================================
   // STEP 3 HANDLERS
