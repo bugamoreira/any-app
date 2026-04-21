@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type ReactNode } from 'react'
+import { useState, useRef, useEffect, useId, type ReactNode } from 'react'
 
 interface CollapsibleProps {
   title: string
@@ -10,10 +10,28 @@ interface CollapsibleProps {
   onToggle?: () => void
 }
 
-export function Collapsible({ title, badge, badgeColor, children, defaultOpen = false, isOpen, onToggle }: CollapsibleProps) {
+/**
+ * Collapsible refatorado:
+ * - Header e body agora são UM container com uma ÚNICA border.
+ *   Antes: header tinha border, body tinha border sem border-top — criava
+ *   uma "costura" horizontal feia quando aberto.
+ * - Divisor entre header e body usa border-t sutil no body quando aberto.
+ * - Padding simétrico (px-4 py-3 no header, p-4 no body).
+ * - A11y: aria-expanded + aria-controls + id no body.
+ */
+export function Collapsible({
+  title,
+  badge,
+  badgeColor,
+  children,
+  defaultOpen = false,
+  isOpen,
+  onToggle,
+}: CollapsibleProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen)
   const bodyRef = useRef<HTMLDivElement>(null)
   const open = isOpen !== undefined ? isOpen : internalOpen
+  const bodyId = useId()
 
   useEffect(() => {
     if (!open || !bodyRef.current) return
@@ -32,18 +50,18 @@ export function Collapsible({ title, badge, badgeColor, children, defaultOpen = 
   }
 
   return (
-    <div className="mb-3">
-      {/* Header — v1: bg #111, border #444, radius 8px, padding 14px, min-h 44px */}
+    <div className="mb-3 bg-bg-elevated border border-border-card rounded-lg overflow-hidden">
       <button
         onClick={handleToggle}
-        className="flex items-center justify-between w-full px-[14px] min-h-[44px] bg-bg-elevated border border-border-card rounded-lg cursor-pointer text-left transition-colors active:bg-bg-hover"
-        style={{ marginBottom: open ? '2px' : '0' }}
+        className="flex items-center justify-between w-full px-4 py-3 min-h-[48px] bg-transparent border-0 cursor-pointer text-left transition-colors active:bg-bg-hover"
+        aria-expanded={open}
+        aria-controls={bodyId}
       >
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <span className="text-[15px] font-semibold text-text-primary truncate">{title}</span>
           {badge && (
             <span
-              className="text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0"
+              className="text-[11px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 leading-none"
               style={{ background: `${badgeColor || '#FF5252'}22`, color: badgeColor || '#FF5252' }}
             >
               {badge}
@@ -58,13 +76,13 @@ export function Collapsible({ title, badge, badgeColor, children, defaultOpen = 
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
-      {/* Body — v1: bg #0A0A0A, border #444, no border-top, radius bottom 8px, padding 14px */}
       <div
+        id={bodyId}
         ref={bodyRef}
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${open ? 'border border-border-card border-t-0 rounded-b-lg' : ''}`}
-        style={{ maxHeight: open ? undefined : '0px', background: open ? '#0A0A0A' : 'transparent' }}
+        className="overflow-hidden transition-all duration-300 ease-in-out"
+        style={{ maxHeight: open ? undefined : '0px' }}
       >
-        <div className="px-[14px] pb-[14px] pt-[14px]">
+        <div className="p-4 border-t border-border-card bg-bg-card">
           {children}
         </div>
       </div>
