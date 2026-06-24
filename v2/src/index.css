@@ -27,6 +27,15 @@
   --color-border: #444444;
   --color-border-card: #444444;
 
+  /* Cores tematicas por modulo (BlockPath, PaliaPath, Hub) — match v1 */
+  --color-block-green: #10B981;
+  --color-block-blue: #3B82F6;
+  --color-block-purple: #A78BFA;
+  --color-block-orange: #F97316;
+
+  /* Tipografia monospace para resultados numericos clinicos (Ped, Acls, Infusion) */
+  --font-mono: 'SF Mono', 'Fira Code', 'Consolas', ui-monospace, monospace;
+
   /* Radius */
   --radius-default: 12px;
   --radius-sm: 8px;
@@ -92,6 +101,11 @@ button:active, a:active, [role="button"]:active {
   from { opacity: 0; transform: translateX(-60px); }
   to { opacity: 1; transform: translateX(0); }
 }
+/* Pulso de atencao — match v1 ACLS (.nudgePulse) */
+@keyframes nudge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
 
 @utility animate-fade-in {
   animation: fade-in 0.3s ease;
@@ -101,4 +115,14 @@ button:active, a:active, [role="button"]:active {
 }
 @utility animate-slide-right {
   animation: slide-right 0.3s ease;
+}
+@utility animate-nudge {
+  animation: nudge-pulse 2s ease-in-out infinite;
+}
+@utility animate-nudge-urgent {
+  animation: nudge-pulse 1s ease-in-out infinite;
+}
+@utility font-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
