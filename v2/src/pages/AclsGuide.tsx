@@ -1204,9 +1204,9 @@ export default function AclsGuide() {
             <div className="text-[56px] font-bold tabular-nums tracking-tighter leading-none">
               {formatElapsed(cycleRemaining)}
             </div>
-            <div className="h-1.5 bg-[#333] rounded-full mt-3 overflow-hidden">
+            <div className="h-1.5 bg-[#333] rounded-[3px] mt-3 overflow-hidden">
               <div
-                className="h-full bg-accent rounded-full transition-[width] duration-1000 ease-linear"
+                className="h-full bg-accent rounded-[3px] transition-[width] duration-1000 ease-linear"
                 style={{ width: `${cycleProgress}%` }}
               />
             </div>
@@ -1245,10 +1245,10 @@ export default function AclsGuide() {
           {nudges.map(nudge => (
             <div
               key={nudge.id}
-              className={`rounded-lg px-4 py-3 mb-3 text-[13px] flex items-center gap-2.5 animate-pulse ${
+              className={`rounded-lg px-4 py-3 mb-3 text-[13px] flex items-center gap-2.5 ${
                 nudge.urgent
-                  ? 'bg-red-500/15 border border-red-500/40 text-accent'
-                  : 'bg-yellow-500/12 border border-yellow-500/30 text-warning'
+                  ? 'bg-red-500/15 border border-red-500/40 text-accent animate-nudge-urgent'
+                  : 'bg-yellow-500/12 border border-yellow-500/30 text-warning animate-nudge'
               }`}
             >
               {nudge.text}
@@ -1399,7 +1399,7 @@ export default function AclsGuide() {
 
           {/* ===== CODE FOOTER BAR ===== */}
           <div className="fixed bottom-0 left-0 right-0 z-[100]">
-            <div className="bg-bg-card/95 backdrop-blur-sm border-t border-border-card flex justify-around items-center py-2.5 px-4 max-w-[500px] mx-auto">
+            <div className="bg-bg-card/95 backdrop-blur-sm border-t border-border-card flex justify-around items-center py-1.5 px-4 max-w-[500px] mx-auto">
               <div className="text-center tabular-nums">
                 <div className="text-xl font-bold">{formatElapsed(totalElapsed)}</div>
                 <div className="text-xs text-text-secondary uppercase tracking-wider">Total</div>
@@ -1411,7 +1411,7 @@ export default function AclsGuide() {
               {state.fctTracking && (
                 <button
                   onClick={() => dispatch({ type: 'TOGGLE_PAUSE' })}
-                  className={`px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer transition-all min-h-[48px] ${
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold cursor-pointer transition-all min-h-[48px] ${
                     state.pauseStart
                       ? 'bg-yellow-500/15 border-2 border-warning text-warning animate-pulse'
                       : 'bg-red-500/15 border-2 border-accent text-accent'
