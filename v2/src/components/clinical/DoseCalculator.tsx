@@ -20,7 +20,7 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
   const [doseValue, setDoseValue] = useState('')
 
   const mlh = weight ? doseToMlh(dose, weight, concentration, drug.factor, drug.usesWeight) : null
-  const status = getDoseStatus(dose, drug.doseMin, drug.doseMax, drug.criticalThreshold)
+  const status = getDoseStatus(dose, drug.doseMin, drug.doseMax, drug.cautionThreshold, drug.criticalThreshold)
   const colors = statusColors[status]
 
   useEffect(() => {

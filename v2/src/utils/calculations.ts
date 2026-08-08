@@ -46,13 +46,16 @@ export function getDoseStatus(
   dose: number,
   min: number,
   max: number,
+  cautionThreshold?: number | null,
   criticalThreshold?: number | null
 ): DoseStatus {
   if (dose < min) return 'critical'
-  if (dose > max) {
-    if (criticalThreshold && dose <= criticalThreshold) return 'caution'
-    return 'critical'
-  }
+  // Bandas do v1 (setStatus do monolito): acima de caution = amarelo, acima de critical = vermelho.
+  // Sem bandas definidas, o teto do range assume os dois papeis.
+  const caution = cautionThreshold ?? max
+  const critical = criticalThreshold ?? max
+  if (dose > critical) return 'critical'
+  if (dose > caution) return 'caution'
   return 'therapeutic'
 }
 
@@ -67,10 +70,11 @@ export function calculateDose(
   usesWeight: boolean,
   min: number,
   max: number,
+  cautionThreshold?: number | null,
   criticalThreshold?: number | null
 ): DoseResult {
   const mlh = doseToMlh(doseValue, weight, concentration, factor, usesWeight)
-  const status = getDoseStatus(doseValue, min, max, criticalThreshold)
+  const status = getDoseStatus(doseValue, min, max, cautionThreshold, criticalThreshold)
   return { dose: doseValue, mlh, status }
 }
 
