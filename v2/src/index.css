@@ -48,8 +48,13 @@
   --spacing-xl: 32px;
 }
 
-/* Reset global */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* Reset global — DENTRO de @layer base. Fora de camada, este seletor universal
+   vencia TODAS as utilities de padding/margin do Tailwind (regra de cascade
+   layers: estilo sem camada > estilo em @layer), matando o espacamento do app
+   inteiro. Causa-raiz do layout quebrado das v2/v2.2. */
+@layer base {
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+}
 
 html, body, #root {
   background: var(--color-bg-primary);
