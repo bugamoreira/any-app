@@ -10,6 +10,8 @@ interface CardProps {
   className?: string
   onClick?: () => void
   elevated?: boolean
+  /** mb-4 automático (padrão v1). false quando o pai gerencia o espaçamento (grids com gap). */
+  spaced?: boolean
 }
 
 // Converte #RRGGBB em rgba(r,g,b,a) para o fundo tingido
@@ -22,7 +24,7 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-export function Card({ children, borderColor, tint, tintOpacity = 0.08, className = '', onClick, elevated }: CardProps) {
+export function Card({ children, borderColor, tint, tintOpacity = 0.08, className = '', onClick, elevated, spaced = true }: CardProps) {
   // v1: bg #0A0A0A, border 1px #444, radius 12px, padding 16px
   // tint: border-left 4px solid [cor] + fundo rgba(cor, 0.08) — visual do monolito
   // borderColor: border-left 4px sem fundo (compat legado)
@@ -30,7 +32,7 @@ export function Card({ children, borderColor, tint, tintOpacity = 0.08, classNam
   const tinted = !!tint
   return (
     <div
-      className={`rounded-xl ${accent ? 'border-l-4 p-5' : 'border border-border-card p-4 bg-bg-card'} ${onClick ? 'cursor-pointer active:scale-[0.98] transition-all' : 'transition-colors'} mb-4 ${className}`}
+      className={`rounded-xl ${accent ? 'border-l-4 p-5' : 'border border-border-card p-4 bg-bg-card'} ${onClick ? 'cursor-pointer active:scale-[0.98] transition-all' : 'transition-colors'} ${spaced ? 'mb-4' : ''} ${className}`}
       style={accent ? {
         borderLeftColor: accent,
         borderTop: '1px solid #444',
