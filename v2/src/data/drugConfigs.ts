@@ -11,7 +11,7 @@ export const drugConfigs: DrugConfig[] = [
   {
     id: 'noradrenalina', name: 'Noradrenalina', aliases: ['norepinefrina', 'nora', 'ne', 'levophed'],
     category: 'vasopressors',
-    presentation: '16 mg (4 amp 4mL — 4mg/mL) + SF 0,9% 234 mL = 250 mL',
+    presentation: '16 mg (4 amp 4mL — 4mg/4mL) + SF 0,9% 234 mL = 250 mL',
     concentration: 64, concentrationUnit: 'mcg/mL',
     doseUnit: 'mcg/kg/min', resultUnit: 'mL/h',
     doseMin: 0.01, doseMax: 3.0, doseStep: 0.01, doseDefault: 0.1,
@@ -80,10 +80,11 @@ export const drugConfigs: DrugConfig[] = [
   {
     id: 'midazolam', name: 'Midazolam', aliases: ['mida', 'dormonid', 'dormicum'],
     category: 'sedation',
-    presentation: '250 mg (50 amp 5mL — 5mg/mL) + SF 0,9% 200 mL = 250 mL',
-    concentration: 1000, concentrationUnit: 'mcg/mL',
+    presentation: '250 mg (5 amp 10mL — 5mg/mL) + SF 0,9% 200 mL = 250 mL',
+    concentration: 1, concentrationUnit: 'mg/mL',
     doseUnit: 'mg/kg/h', resultUnit: 'mL/h',
     doseMin: 0.04, doseMax: 0.2, doseStep: 0.01, doseDefault: 0.1,
+    cautionThreshold: 0.15, criticalThreshold: 0.2,
     factor: 1, usesWeight: true,
   },
   {
@@ -128,10 +129,11 @@ export const drugConfigs: DrugConfig[] = [
   {
     id: 'cisatracurio', name: 'Cisatracúrio', aliases: ['cisa', 'nimbex'],
     category: 'neuromuscular',
-    presentation: '50 mg (5 amp 10mL — 2mg/mL) + SF 0,9% 200 mL = 250 mL',
-    concentration: 200, concentrationUnit: 'mcg/mL',
+    presentation: '100 mg (5 amp 10mL — 2mg/mL) + SF 0,9% qsp 100 mL',
+    concentration: 1000, concentrationUnit: 'mcg/mL',
     doseUnit: 'mcg/kg/min', resultUnit: 'mL/h',
     doseMin: 1, doseMax: 3, doseStep: 0.5, doseDefault: 2,
+    cautionThreshold: 2.5, criticalThreshold: 3,
     factor: 60, usesWeight: true,
   },
   {
