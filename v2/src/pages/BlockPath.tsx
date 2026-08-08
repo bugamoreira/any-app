@@ -599,7 +599,7 @@ export default function BlockPath() {
         )}
 
       </Container>
-      <Footer toolName="Block Path" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="Block Path" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>

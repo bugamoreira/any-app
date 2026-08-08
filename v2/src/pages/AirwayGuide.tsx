@@ -552,10 +552,10 @@ export default function AirwayGuide() {
   // DEG size
   const degText = useMemo(() => {
     const ml = getDEGSize(w)
-    let text = `Mascara laríngea: tamanho ${ml}`
+    let text = `Máscara laríngea: tamanho ${ml}`
     if (state.height) {
       const tl = getTLSize(state.height)
-      text += ` | Tubo laringeo: tamanho ${tl}`
+      text += ` | Tubo laríngeo: tamanho ${tl}`
     }
     return text
   }, [w, state.height])
@@ -789,7 +789,7 @@ export default function AirwayGuide() {
 
         {hasIndication && (
           <AlertCard type="info" title="PCR ou PCR iminente?">
-            Considere intubação sem RSI (sem drogas). Priorizar compressoes.
+            Considere intubação sem RSI (sem drogas). Priorizar compressões.
           </AlertCard>
         )}
 
@@ -851,7 +851,7 @@ export default function AirwayGuide() {
                       // BLOCKER-03: SET_CRASH idempotente, so marca se ainda nao estava
                       if (si > 1.0 && !state.crash.H) {
                         dispatch({ type: 'SET_CRASH', letter: 'H', value: true })
-                        addToast('H (Hipotensao) marcado automaticamente — Shock Index > 1.0', 'info')
+                        addToast('H (Hipotensão) marcado automaticamente — Shock Index > 1.0', 'info')
                       }
                     }
                   }}
@@ -879,7 +879,7 @@ export default function AirwayGuide() {
                       // BLOCKER-03: SET_CRASH idempotente, so marca se ainda nao estava
                       if (si > 1.0 && !state.crash.H) {
                         dispatch({ type: 'SET_CRASH', letter: 'H', value: true })
-                        addToast('H (Hipotensao) marcado automaticamente — Shock Index > 1.0', 'info')
+                        addToast('H (Hipotensão) marcado automaticamente — Shock Index > 1.0', 'info')
                       }
                     }
                   }}
@@ -1477,7 +1477,7 @@ export default function AirwayGuide() {
             <div className="text-base font-semibold mb-4">Intubou com sucesso?</div>
             <div className="flex gap-3">
               <Button variant="success" fullWidth onClick={() => dispatch({ type: 'SET_INTUBATION_SUCCESS', value: true })}>Sim</Button>
-              <Button variant="danger" fullWidth onClick={() => dispatch({ type: 'SET_INTUBATION_SUCCESS', value: false })}>Nao</Button>
+              <Button variant="danger" fullWidth onClick={() => dispatch({ type: 'SET_INTUBATION_SUCCESS', value: false })}>Não</Button>
             </div>
           </Card>
         )}
@@ -1510,7 +1510,7 @@ export default function AirwayGuide() {
               onClick={() => goToInfusion()}
             >
               <div className="font-bold text-sm text-info">Sedação em infusão contínua</div>
-              <div className="text-[13px] text-text-secondary">Abrir calculadora de infusoes</div>
+              <div className="text-[13px] text-text-secondary">Abrir calculadora de infusões</div>
               <div className="text-xs text-text-muted mt-1">Fentanil - Propofol - Midazolam - Dexmedetomidina</div>
             </Card>
           </>
@@ -1536,7 +1536,7 @@ export default function AirwayGuide() {
               onClick={() => goToInfusion()}
             >
               <div className="font-bold text-sm text-info">Sedação em infusão contínua</div>
-              <div className="text-[13px] text-text-secondary">Abrir calculadora de infusoes</div>
+              <div className="text-[13px] text-text-secondary">Abrir calculadora de infusões</div>
             </Card>
           </>
         )}
@@ -1547,7 +1547,7 @@ export default function AirwayGuide() {
             <Card borderColor="#FF5252" className="mb-4">
               <div className="font-bold text-sm text-accent mb-2">Plano B — Dispositivo extraglótico</div>
               <div className="text-[13px] text-text-secondary leading-relaxed">
-                - Mascara laríngea (ML) ou dispositivo supraglotico de 2a geracao<br />
+                - Máscara laríngea (ML) ou dispositivo supraglótico de 2a geração<br />
                 - Inserir conforme técnica padrão, insuflar cuff<br />
                 - Confirmar ventilação: EtCO2 + ausculta<br />
                 - Se ventilação adequada: considere intubação atraves do DEG com fibroscopio
@@ -1695,7 +1695,7 @@ export default function AirwayGuide() {
         {state.screen === 'checklist' && renderChecklist()}
         {state.screen === 'doses' && renderStandaloneDoses()}
       </Container>
-      <Footer toolName="Airway Guide" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="Airway Guide" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

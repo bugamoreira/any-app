@@ -676,6 +676,10 @@ const volumeCetamina = doseCetamina / 50
 
 Todas as configurações de drogas, steps de pathway e dados de scores devem ser tipados. Usar `DrugConfig` para calculadoras, `PathwayStep` para navegação stepper.
 
+### 12.5 Engineering Playbook
+
+Boas práticas gerais de engenharia do Gustavo vivem em `~/Library/CloudStorage/OneDrive-Pessoal/Engineering Playbook/` (20 documentos: manifesto, princípios não-negociáveis, anti-patterns, service layer, testes, CI/CD, segurança, a11y, git workflow, checklist D-zero). **Toda sessão de desenvolvimento deve ler ao menos `04-principios-nao-negociaveis.md` e `06-anti-patterns.md`.** Em conflito, este CLAUDE.md (regras clínicas/do produto) prevalece; o Playbook cobre o resto. Princípios já aplicados no v4: env fail-fast sem secrets no código, ErrorBoundary, conventional commits, `.env.example`, zero código comentado morto.
+
 ---
 
 ## 13. Segurança clínica

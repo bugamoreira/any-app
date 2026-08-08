@@ -922,7 +922,7 @@ export default function AclsGuide() {
             <div className="text-xs text-text-secondary">Histórico de códigos anteriores</div>
           </div>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
+          <Footer toolName="ACLS Guide" version="v4.0.0" updatedAt="Agosto 2026" />
         </Container>
       )}
 
@@ -1043,7 +1043,7 @@ export default function AclsGuide() {
             </>
           )}
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
+          <Footer toolName="ACLS Guide" version="v4.0.0" updatedAt="Agosto 2026" />
         </Container>
       )}
 
@@ -1405,7 +1405,7 @@ export default function AclsGuide() {
             Gerar relatório
           </Button>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
+          <Footer toolName="ACLS Guide" version="v4.0.0" updatedAt="Agosto 2026" />
         </Container>
       )}
 
@@ -1429,7 +1429,7 @@ export default function AclsGuide() {
             Gerar relatório
           </Button>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
+          <Footer toolName="ACLS Guide" version="v4.0.0" updatedAt="Agosto 2026" />
         </Container>
       )}
 
@@ -1452,7 +1452,7 @@ export default function AclsGuide() {
             Iniciar novo código
           </Button>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
+          <Footer toolName="ACLS Guide" version="v4.0.0" updatedAt="Agosto 2026" />
         </Container>
       )}
 
@@ -1515,7 +1515,7 @@ export default function AclsGuide() {
             Limpar histórico
           </Button>
 
-          <Footer toolName="ACLS Guide" version="v2.0.0" updatedAt="Abril 2026" />
+          <Footer toolName="ACLS Guide" version="v4.0.0" updatedAt="Agosto 2026" />
         </Container>
       )}
 

@@ -91,7 +91,7 @@ export default function InfusionGuide() {
             )}
           </div>
         </Container>
-        <Footer toolName="Infusion Guide" version="v2.0.0" updatedAt="Abril 2026" />
+        <Footer toolName="Infusion Guide" version="v4.0.0" updatedAt="Agosto 2026" />
         <ToastContainer />
       </div>
     )
@@ -169,7 +169,7 @@ export default function InfusionGuide() {
           </div>
         )}
       </Container>
-      <Footer toolName="Infusion Guide" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="Infusion Guide" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>

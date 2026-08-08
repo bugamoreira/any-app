@@ -1009,7 +1009,7 @@ export default function VmGuide() {
         </div>
       </Container>
 
-      <Footer toolName="VM Guide" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="VM Guide" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>

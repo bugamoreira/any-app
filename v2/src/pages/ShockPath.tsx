@@ -1117,7 +1117,7 @@ export default function ShockPath() {
                 )}
                 {state.fluidMethod === 'challenge' && (
                   <InfoCard title="Fluid challenge">
-                    Administrar 250-500 mL em 10-15 min e avaliar resposta hemodinâmica. Preferir quando outros métodos não estão disponíveis.
+                    Considere 250-500 mL em 10-15 min e avaliar resposta hemodinâmica. Preferir quando outros métodos não estão disponíveis.
                   </InfoCard>
                 )}
 
@@ -2538,7 +2538,7 @@ export default function ShockPath() {
         )}
       </Container>
 
-      <Footer toolName="Shock Path" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="Shock Path" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

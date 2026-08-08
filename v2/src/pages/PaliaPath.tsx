@@ -1081,7 +1081,7 @@ export default function PaliaPath() {
         {screen === 'mitos' && <MitosScreen onBack={() => navigate('home')} />}
         {screen === 'referências' && <ReferênciasScreen onBack={() => navigate('home')} />}
       </Container>
-      <Footer toolName="Palia Path" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="Palia Path" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>

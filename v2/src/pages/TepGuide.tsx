@@ -1785,7 +1785,7 @@ export default function TepGuide() {
         {view === 'calc' && renderCalc()}
         {view === 'ref' && renderRef()}
       </Container>
-      <Footer toolName="TEP Guide" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="TEP Guide" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

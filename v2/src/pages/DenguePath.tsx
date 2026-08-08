@@ -861,7 +861,7 @@ _Ferramenta de apoio à decisão clínica_`
             </AlertCard>
             <div className="flex gap-2 mt-2">
               <Button variant="secondary" size="sm" className="flex-1 border-warning" onClick={() => goTo('grupoB')}>Sim → Grupo B</Button>
-              <Button variant="success" size="sm" className="flex-1" onClick={() => goTo('grupoA')}>Nao → Grupo A</Button>
+              <Button variant="success" size="sm" className="flex-1" onClick={() => goTo('grupoA')}>Não → Grupo A</Button>
             </div>
           </div>
         )}
@@ -1013,7 +1013,7 @@ _Ferramenta de apoio à decisão clínica_`
       </Collapsible>
 
       <Collapsible title="Reavaliação após 2h" badge="Decisão" badgeColor="#FFC107">
-        <p className="text-sm text-text-secondary mb-3">Reavaliar clínicamente e repetir hematócrito:</p>
+        <p className="text-sm text-text-secondary mb-3">Reavaliar clinicamente e repetir hematócrito:</p>
         <AlertCard type="success" title="Melhora clínica + Ht em queda">
           Reduzir para fase de manutenção: 25 mL/kg em 6h. Reavaliar em 6h. Se mantiver melhora, passar para 25 mL/kg em 8h (etapa final).
         </AlertCard>
@@ -1735,7 +1735,7 @@ _Ferramenta de apoio à decisão clínica_`
       <Container>
         {screenMap[screen]()}
       </Container>
-      <Footer toolName="Dengue Path" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="Dengue Path" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

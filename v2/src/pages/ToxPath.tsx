@@ -151,7 +151,7 @@ function HomeView({ onNavigate }: { onNavigate: (s: Screen) => void }) {
           </svg>
         </div>
         <div className="flex-1">
-          <h3 className="text-sm font-bold mb-0.5">Disque-Intóxicação</h3>
+          <h3 className="text-sm font-bold mb-0.5">Disque-Intoxicação</h3>
           <p className="text-xs opacity-90">Plantão 24h — Toque para ligar</p>
         </div>
         <div className="bg-[#1A1A1A] text-text-primary border border-accent px-3 py-2.5 rounded-lg font-bold text-sm flex items-center gap-1.5 whitespace-nowrap">
@@ -353,7 +353,7 @@ function ToxindromesView({ onBack, onNavigate }: { onBack: () => void; onNavigat
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                   </svg>
-                  Disque-Intóxicação
+                  Disque-Intoxicação
                 </a>
               </div>
             </div>
@@ -484,7 +484,7 @@ function DescontaminaçãoView({ onBack }: { onBack: () => void }) {
           <h2 className="text-lg font-bold text-text-primary mb-2">Quando considerar descontaminação gastrointestinal?</h2>
           <p className="text-sm text-text-secondary mb-4">Este fluxo auxilia na decisão sobre carvão ativado ou lavagem gástrica em intoxicações agudas.</p>
           <AlertCard type="info" title="Princípio geral">A descontaminação GI apresenta benefício limitado na maioria dos casos. A decisão deve considerar tempo, substância e estado clínico do paciente.</AlertCard>
-          <AlertCard type="warning">Este fluxo é um auxílio à decisão. A conduta final deve ser individualizada e, em caso de dúvida, recomenda-se contato com o Disque-Intóxicação (0800 722 6001).</AlertCard>
+          <AlertCard type="warning">Este fluxo é um auxílio à decisão. A conduta final deve ser individualizada e, em caso de dúvida, recomenda-se contato com o Disque-Intoxicação (0800 722 6001).</AlertCard>
           <button onClick={() => setStep(1)} className="w-full mt-4 py-3.5 bg-accent text-white rounded-xl font-semibold text-[15px] border-none cursor-pointer min-h-[48px]">
             Iniciar avaliação
           </button>
@@ -521,7 +521,7 @@ function DescontaminaçãoView({ onBack }: { onBack: () => void }) {
           )}
           {resultType === 'incerto' && (
             <AlertCard type="warning" title="Recomenda-se contatar o CIATox">
-              Na dúvida sobre a substância ingerida, entre em contato com o Disque-Intóxicação para orientação específica.
+              Na dúvida sobre a substância ingerida, entre em contato com o Disque-Intoxicação para orientação específica.
             </AlertCard>
           )}
           {resultType === 'naoIndicado' && (
@@ -553,7 +553,7 @@ function DescontaminaçãoView({ onBack }: { onBack: () => void }) {
 
           <div className="flex flex-col gap-2.5 mt-4">
             <a href="tel:08007226001" className="w-full py-3.5 text-white rounded-xl font-semibold text-[15px] text-center no-underline flex items-center justify-center gap-2 min-h-[48px]" style={{ background: 'linear-gradient(135deg, #FF5252, #FF7272)' }}>
-              Disque-Intóxicação: 0800 722 6001
+              Disque-Intoxicação: 0800 722 6001
             </a>
             <button onClick={restart} className="w-full text-text-secondary text-sm underline bg-transparent border-none cursor-pointer py-3">
               Recomeçar avaliação
@@ -779,7 +779,7 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
                     {nomogramaResult && (
                       <AlertCard type={nomogramaResult.acima ? 'danger' : 'success'} title={nomogramaResult.acima ? 'ACIMA DA LINHA DE TRATAMENTO' : 'ABAIXO DA LINHA DE TRATAMENTO'}>
                         Nível atual: {nomogramaResult.nível} ug/mL | Linha em {nomogramaResult.tempo}h: {nomogramaResult.linha} ug/mL.
-                        {nomogramaResult.acima ? ' INICIAR NAC IMEDIATAMENTE.' : ' NAC não indicado pelo nomograma.'}
+                        {nomogramaResult.acima ? ' Recomenda-se iniciar NAC imediatamente.' : ' NAC não indicado pelo nomograma.'}
                       </AlertCard>
                     )}
                     <p className="text-xs text-text-muted">* Válido apenas para ingestões agudas únicas.</p>
@@ -857,7 +857,7 @@ function AntidotosView({ onBack }: { onBack: () => void }) {
         <p className="text-white font-bold text-sm mb-1">Dúvidas sobre doses ou indicações?</p>
         <p className="text-white/90 text-xs mb-3">Plantão 24 horas para profissionais de saúde</p>
         <a href="tel:08007226001" className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-lg font-semibold text-sm no-underline">
-          Disque-Intóxicação: 0800 722 6001
+          Disque-Intoxicação: 0800 722 6001
         </a>
       </div>
     </>
@@ -1222,7 +1222,7 @@ export default function ToxPath() {
     { label: 'Toxindromes', onClick: () => navigate('toxindromes') },
     { label: 'Descontaminação', onClick: () => navigate('descontaminação') },
     { label: 'Disposição', onClick: () => navigate('disposição') },
-    { label: 'Antidotos', onClick: () => navigate('antídotos') },
+    { label: 'Antídotos', onClick: () => navigate('antídotos') },
     { label: 'Checklist', onClick: () => navigate('checklist') },
     { label: 'Tabelas', onClick: () => navigate('tabelas') },
   ]
@@ -1239,7 +1239,7 @@ export default function ToxPath() {
         {screen === 'checklist' && <ChecklistView onBack={() => navigate('home')} onNavigate={navigate} />}
         {screen === 'tabelas' && <TabelasView onBack={() => navigate('home')} />}
       </Container>
-      <Footer toolName="Tox Path" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="Tox Path" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
     </div>
   )

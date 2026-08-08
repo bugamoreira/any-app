@@ -109,7 +109,7 @@ export default function Hub() {
           ))}
         </div>
       </Container>
-      <Footer toolName="Hub" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="Hub" version="v4.0.0" updatedAt="Agosto 2026" />
       <ToastContainer />
     </div>
   )

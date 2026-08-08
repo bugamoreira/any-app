@@ -166,7 +166,7 @@ const IOT_DRUGS: BolusDrug[] = [
   },
   {
     id: 'fentanil', name: 'FENTANIL', presentation: '50 mcg/mL', doseBadge: '1-2 mcg/kg',
-    instruction: 'Analgesia. Administrar lento. Max: 100 mcg.',
+    instruction: 'Analgesia. Infusão lenta. Max: 100 mcg.',
     calc: (p) => { const d = Math.min(p * 2, 100); return { mg: d.toFixed(0), ml: (d / 50).toFixed(2), unit: 'mcg' } },
   },
   {
@@ -1358,7 +1358,7 @@ export default function PedGuide() {
         )}
       </Modal>
 
-      <Footer toolName="Ped Guide" version="v2.0.0" updatedAt="Abril 2026" />
+      <Footer toolName="Ped Guide" version="v4.0.0" updatedAt="Agosto 2026" />
       <FABMenu items={fabItems} />
       <ToastContainer />
     </div>
