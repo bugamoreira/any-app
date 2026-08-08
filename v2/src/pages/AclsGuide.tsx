@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useReducer } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Disclaimer } from '../components/layout/Disclaimer'
 // Header disponível se necessário
@@ -507,10 +507,19 @@ function useMetronome() {
       if (silentSourceRef.current) {
         try { silentSourceRef.current.stop() } catch (_) { /* noop */ }
       }
+      if (audioCtxRef.current) {
+        try { audioCtxRef.current.close() } catch (_) { /* noop */ }
+        audioCtxRef.current = null
+      }
     }
   }, [])
 
-  return { start, stop, updateVent, playAlert, playTick, isPlaying: isPlayingRef }
+  // Identidade estavel: sem useMemo, o objeto novo a cada render fazia o effect
+  // de cleanup do consumidor disparar a cada re-render e matar os timers.
+  return useMemo(
+    () => ({ start, stop, updateVent, playAlert, playTick, isPlaying: isPlayingRef }),
+    [start, stop, updateVent, playAlert, playTick]
+  )
 }
 
 /** Hook for Wake Lock API */
@@ -536,7 +545,7 @@ function useWakeLock() {
     return () => { release() }
   }, [release])
 
-  return { request, release }
+  return useMemo(() => ({ request, release }), [request, release])
 }
 
 // ==========================================
@@ -945,6 +954,12 @@ export default function AclsGuide() {
     }
   }
 
+  // Mesmo guard para navegacao a partir dos links de referencia (H's/T's)
+  function navigateGuarded(path: string) {
+    if (state.running && !window.confirm('Atendimento em andamento. Deseja encerrar e sair?')) return
+    navigate(path)
+  }
+
   // ==========================================
   // COMPUTED VALUES
   // ==========================================
@@ -963,7 +978,14 @@ export default function AclsGuide() {
   // ==========================================
 
   const fabItems: FABItem[] = [
-    { label: 'Iniciar', onClick: () => { handleResetAndRestart(); setScreen('start') } },
+    {
+      label: 'Iniciar',
+      onClick: () => {
+        if (state.running && !window.confirm('Atendimento em andamento. Encerrar e iniciar um novo?')) return
+        handleResetAndRestart()
+        setScreen('start')
+      },
+    },
     { label: 'Atendimentos', onClick: handleShowHistory },
   ]
 
@@ -1362,11 +1384,11 @@ export default function AclsGuide() {
           <Collapsible title="Causas reversíveis (H's e T's)">
             <div className="text-xs text-text-muted uppercase tracking-wider mb-2">Hs</div>
             {HS_CAUSES.map((cause, i) => (
-              <HTCard key={`h-${i}`} cause={cause} navigate={navigate} />
+              <HTCard key={`h-${i}`} cause={cause} navigate={navigateGuarded} />
             ))}
             <div className="text-xs text-text-muted uppercase tracking-wider mt-4 mb-2">Ts</div>
             {TS_CAUSES.map((cause, i) => (
-              <HTCard key={`t-${i}`} cause={cause} navigate={navigate} />
+              <HTCard key={`t-${i}`} cause={cause} navigate={navigateGuarded} />
             ))}
           </Collapsible>
 
