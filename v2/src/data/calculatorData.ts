@@ -1636,21 +1636,22 @@ const tempoO2: Calculator = {
   why: 'Essencial para planejar transporte intra e inter-hospitalar com segurança.',
   whenToUse: 'Antes de transporte de paciente em uso de O2 suplementar com torpedo.',
   pearlsPitfalls: [
-    'Fórmula: (Volume cilindro x Pressão) / Fluxo. Volume em litros, pressão em bar ou psi.',
-    'Torpedo padrão D: 340 L. Torpedo E: 680 L.',
+    'Fórmula: capacidade × (pressão no manômetro ÷ 200) ÷ fluxo. Ex.: torpedo D cheio (340 L a 200 bar) em 5 L/min ≈ 68 min.',
+    'Capacidade total com cilindro cheio — torpedo padrão D: 340 L. Torpedo E: 680 L.',
     'Cilindro cheio = ~200 bar. Reserva de segurança: não usar abaixo de 30 bar.',
     'Sempre superestimar o fluxo necessário (pacientes podem precisar de mais O2 durante transporte).',
     'Considere margem de segurança de 30% no cálculo.'
   ],
   reference: 'Standard respiratory therapy and transport oxygen calculations.',
   inputs: [
-    { id: 'volume', label: 'Volume do cilindro', unit: 'litros', min: 1, max: 10000, step: 1, inputMode: 'numeric' },
-    { id: 'pressure', label: 'Pressão atual', unit: 'bar', min: 1, max: 300, step: 1, inputMode: 'numeric' },
+    { id: 'volume', label: 'Capacidade do cilindro cheio', unit: 'litros', min: 1, max: 10000, step: 1, inputMode: 'numeric' },
+    { id: 'pressure', label: 'Pressão no manômetro', unit: 'bar', min: 1, max: 300, step: 1, inputMode: 'numeric' },
     { id: 'flow', label: 'Fluxo de O2', unit: 'L/min', min: 0.5, max: 60, step: 0.5, inputMode: 'decimal' }
   ],
   formula: (v: Record<string, number>) => {
-    const totalLiters = v.volume * v.pressure
-    const minutes = totalLiters / v.flow
+    // Gás disponível = capacidade total × fração da pressão de cilindro cheio (~200 bar)
+    const litersAvailable = v.volume * (v.pressure / 200)
+    const minutes = litersAvailable / v.flow
     return Math.round(minutes)
   },
   interpret: (score: number) => {
@@ -2904,8 +2905,9 @@ const nomogramaRumack: Calculator = {
   ],
   formula: (v: Record<string, number>) => {
     // Linha de tratamento (Rumack-Matthew): log-linear de 150 mcg/mL em 4h até ~4.7 mcg/mL em 24h
-    // Fórmula: threshold = 150 * 10^(-0.048 * (hours - 4)) [aproximação da linha de tratamento]
-    const threshold = 150 * Math.pow(10, -0.048 * (v.hours - 4))
+    // Linha de tratamento com meia-vida de 4h (150 em 4h → 4,7 em 24h), igual ao v1:
+    // threshold = 150 * e^(-0.173 * (hours - 4)), onde 0.173 = ln(2)/4
+    const threshold = 150 * Math.exp(-0.173 * (v.hours - 4))
     return Math.round(threshold * 10) / 10
   },
   interpret: (score: number, values?: Record<string, number>) => {
