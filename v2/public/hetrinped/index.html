@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0E8A80">
-<title>Emergência pediátrica — HETRIN</title>
+<title>Ped Guide — HETRIN</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <style>
@@ -336,10 +336,20 @@ button{font-family:inherit}
 /* Footer */
 footer{
   position:fixed;bottom:0;left:0;right:0;z-index:150;
-  background:var(--card);border-top:1px solid var(--border);
-  padding:10px 16px;text-align:center;font-size:11px;color:var(--muted);line-height:1.6;
+  background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-top:1px solid var(--border);
+  padding:12px 16px 14px;text-align:center;line-height:1.5;
 }
-footer strong{color:var(--text-2)}
+.ft-dev{font-size:12px;color:var(--text-2);display:flex;align-items:center;justify-content:center;gap:8px}
+.ft-dev strong{
+  font-family:ui-rounded,'SF Pro Rounded','Arial Rounded MT Bold',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  color:var(--teal-dark);font-weight:700;
+}
+.ft-sep{width:3px;height:3px;border-radius:50%;background:var(--border-strong);display:inline-block}
+.ft-meta{
+  font-size:10px;color:var(--muted);margin-top:3px;
+  text-transform:uppercase;letter-spacing:.8px;font-weight:600;
+}
 </style>
 </head>
 <body>
@@ -351,7 +361,7 @@ footer strong{color:var(--text-2)}
   <div class="brand-sub">Walda Ferreira dos Santos</div>
   <div class="brand-tool">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>
-    Emergência pediátrica
+    Ped Guide
   </div>
 </header>
 
@@ -409,9 +419,8 @@ footer strong{color:var(--text-2)}
 </div>
 
 <footer>
-  <div>Desenvolvido por <strong>Gustavo Moreira</strong> — Médico emergencista</div>
-  <div>Departamento de Emergência — HETRIN</div>
-  <div>Versão 1.0.0 · Última atualização: 8 de agosto de 2026</div>
+  <div class="ft-dev">Desenvolvido por <strong>Gustavo Moreira</strong><span class="ft-sep"></span>Médico emergencista</div>
+  <div class="ft-meta">Ped Guide v1.0.0 · atualizado em agosto de 2026</div>
 </footer>
 
 <script>
