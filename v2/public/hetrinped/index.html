@@ -1,0 +1,1271 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0E8A80">
+<title>Emergência pediátrica — HETRIN</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{
+  --teal:#0E8A80;
+  --teal-dark:#0A6B60;
+  --teal-soft:#E3F1EF;
+  --bg:#F4F7F6;
+  --card:#FFFFFF;
+  --border:#DCE6E4;
+  --border-strong:#C2D3D0;
+  --text:#16302C;
+  --text-2:#4E6662;
+  --muted:#7E938F;
+  --danger:#C62828;
+  --danger-bg:#FBEAEA;
+  --warning:#9A6700;
+  --warning-bg:#FFF4D6;
+  --success:#2E7D32;
+  --success-bg:#E8F3E9;
+  --info:#1565C0;
+  --info-bg:#E7F0FB;
+  --radius:12px;
+  --radius-sm:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  line-height:1.5;background:var(--bg);color:var(--text);
+  padding-bottom:150px;
+}
+button{font-family:inherit}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+/* Disclaimer */
+.disclaimer{
+  position:sticky;top:0;z-index:200;
+  background:var(--warning-bg);color:var(--warning);
+  font-size:12px;font-weight:600;text-align:center;
+  padding:8px 16px;border-bottom:1px solid #EAD9A8;
+}
+
+/* Brand header */
+.rounded-font{font-family:ui-rounded,'SF Pro Rounded','Arial Rounded MT Bold',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.brand{
+  background:linear-gradient(180deg,#FFFFFF 0%,#F0F7F6 100%);
+  padding:28px 16px 24px;text-align:center;border-bottom:1px solid var(--border);
+}
+.brand-name{
+  font-family:ui-rounded,'SF Pro Rounded','Arial Rounded MT Bold',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  color:var(--teal);font-weight:800;font-size:31px;line-height:1.08;
+  letter-spacing:-0.8px;
+}
+.brand-sub{
+  font-family:ui-rounded,'SF Pro Rounded','Arial Rounded MT Bold',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  color:var(--teal);font-weight:700;font-size:15px;margin-top:6px;letter-spacing:-0.2px;
+}
+.brand-tool{
+  display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:8px 18px;border-radius:999px;
+  background:var(--teal);color:#fff;font-weight:700;font-size:14px;
+  box-shadow:0 4px 14px rgba(14,138,128,.3);
+}
+.brand-tool svg{flex-shrink:0}
+
+/* Input bar */
+.input-bar{background:var(--card);padding:16px;border-bottom:4px solid var(--teal)}
+.input-grid{max-width:500px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.input-card{border:2px solid var(--border);border-radius:var(--radius);padding:12px 14px;background:var(--bg);transition:border-color .2s,background .2s;position:relative}
+.input-card.active{border-color:var(--teal);background:var(--teal-soft)}
+.input-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.input-label{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:.5px}
+.src-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--teal);color:#fff}
+.peso-row{display:flex;align-items:center;gap:6px}
+.peso-row input{
+  flex:1;width:100%;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:1.4rem;font-weight:700;background:transparent;border:none;outline:none;color:var(--text);
+}
+.peso-unit{font-size:.85rem;font-weight:600;color:var(--muted)}
+.peso-hint{font-size:10px;color:var(--muted);margin-top:2px}
+.bro-btn{
+  display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--radius-sm);
+  cursor:pointer;min-height:44px;color:#fff;font-weight:700;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;
+  background:#6B7280;border:none;width:100%;text-align:left;
+}
+.bro-btn .dot{width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,255,255,.35);flex-shrink:0}
+.bro-menu{
+  position:absolute;top:100%;left:0;right:0;margin-top:4px;z-index:150;
+  background:var(--card);border:1px solid var(--border-strong);border-radius:var(--radius);
+  box-shadow:0 12px 32px rgba(22,48,44,.18);max-height:300px;overflow-y:auto;
+}
+.bro-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border)}
+.bro-item:last-child{border-bottom:none}
+.bro-item:active{background:var(--teal-soft)}
+.bro-item .sw{width:30px;height:30px;border-radius:8px;flex-shrink:0}
+.bro-item .nm{font-weight:700;font-size:.9rem;color:var(--text)}
+.bro-item .dt{font-size:.78rem;color:var(--muted)}
+.backdrop{position:fixed;inset:0;z-index:100}
+
+/* Container */
+.container{max-width:500px;margin:0 auto;padding:0 16px}
+
+/* Nav cards (home) */
+.nav-card{
+  background:var(--card);border:1px solid var(--border);border-left:4px solid var(--teal);
+  border-radius:var(--radius);padding:20px;margin-bottom:12px;cursor:pointer;transition:background .15s;
+  box-shadow:0 2px 10px rgba(22,48,44,.06);
+}
+.nav-card:active{background:var(--teal-soft)}
+.nav-card .t{
+  font-family:ui-rounded,'SF Pro Rounded','Arial Rounded MT Bold',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-size:18px;font-weight:700;color:var(--text);
+}
+.nav-card .d{font-size:.8rem;color:var(--muted);margin-top:4px}
+.nav-card.red{border-left-color:var(--danger)}
+.nav-card.blue{border-left-color:var(--info)}
+
+/* Back button */
+.btn-back{
+  background:transparent;border:1px solid var(--border-strong);color:var(--text-2);
+  padding:8px 16px;border-radius:var(--radius-sm);font-size:14px;cursor:pointer;
+  margin-bottom:16px;min-height:44px;
+}
+.btn-back:active{background:var(--teal-soft)}
+.view-title{
+  font-family:ui-rounded,'SF Pro Rounded','Arial Rounded MT Bold',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-size:21px;font-weight:800;margin-bottom:16px;color:var(--teal-dark);letter-spacing:-0.3px;
+}
+.pt{padding-top:20px}
+
+/* Collapsible */
+.col{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+.col-head{
+  width:100%;display:flex;align-items:center;gap:10px;padding:14px 16px;background:none;border:none;
+  cursor:pointer;text-align:left;min-height:44px;
+}
+.col-head .ct{flex:1;font-size:15px;font-weight:600;color:var(--text)}
+.col-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;color:#fff}
+.chev{transition:transform .3s;flex-shrink:0;color:var(--muted)}
+.col.open .chev{transform:rotate(180deg)}
+.col-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.col-inner{padding:4px 14px 16px}
+
+/* Drug cards */
+.drug{border:2px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;background:var(--card)}
+.drug.hl{border-color:var(--danger)}
+.drug-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:var(--teal-soft)}
+.drug.hl .drug-head{background:var(--danger)}
+.drug-name{font-weight:700;font-size:.95rem;color:var(--teal-dark)}
+.drug.hl .drug-name{color:#fff}
+.drug-pres{font-size:.8rem;margin-top:2px;color:var(--text-2)}
+.drug.hl .drug-pres{color:rgba(255,255,255,.85)}
+.drug-badge{font-family:ui-monospace,Menlo,monospace;font-size:.75rem;font-weight:600;padding:6px 10px;background:var(--card);color:var(--text);border-radius:6px;border:1px solid var(--border)}
+.drug-body{padding:16px}
+.drug-instr{font-size:.8rem;color:var(--text-2);line-height:1.5;margin-bottom:12px}
+.drug-res{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.res{display:flex;flex-direction:column;align-items:center;gap:4px}
+.res-l{font-size:.6rem;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:.5px}
+.res-v{
+  font-family:ui-monospace,Menlo,monospace;font-size:1.25rem;font-weight:700;color:var(--teal-dark);
+  background:var(--bg);padding:10px 16px;border-radius:var(--radius-sm);border:2px solid var(--border);
+  text-align:center;min-width:90px;
+}
+.res-v span{font-size:.8rem;color:var(--muted);font-weight:400}
+.res-note{text-align:center;font-size:.75rem;color:var(--muted);margin-top:8px}
+.need-weight{text-align:center;font-size:.8rem;color:var(--warning);padding:8px 0}
+.btn-prep{
+  margin-top:12px;padding:10px 14px;background:var(--teal-soft);color:var(--teal-dark);
+  border:none;border-radius:var(--radius-sm);font-size:.8rem;font-weight:700;cursor:pointer;min-height:44px;
+}
+
+/* PCR params */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.panel-label{font-size:.8rem;font-weight:700;text-transform:uppercase;color:var(--muted)}
+.param-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(min-width:480px){.param-grid{grid-template-columns:repeat(4,1fr)}}
+.param{border-radius:var(--radius);padding:14px 8px;text-align:center;border:2px solid}
+.param .pl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.param .pv{font-family:ui-monospace,Menlo,monospace;font-size:18px;font-weight:800}
+.param.red{background:var(--danger-bg);border-color:#EBB6B6}.param.red .pv{color:var(--danger)}
+.param.blue{background:var(--info-bg);border-color:#B7CFEC}.param.blue .pv{color:var(--info)}
+.param.green{background:var(--success-bg);border-color:#BBD8BD}.param.green .pv{color:var(--success)}
+.param.purple{background:#F1EAF9;border-color:#D4C3EA}.param.purple .pv{color:#6A3FA0}
+
+/* Defib */
+.defib-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:16px}
+@media(min-width:480px){.defib-grid{grid-template-columns:repeat(3,1fr)}}
+.defib{border-radius:var(--radius);padding:18px;text-align:center;color:#fff}
+.defib.shock{background:linear-gradient(135deg,#C62828,#8E1B1B)}
+.defib.cardio{background:linear-gradient(135deg,#37474F,#263238)}
+.defib .dl{font-size:.72rem;font-weight:700;text-transform:uppercase;opacity:.85;margin-bottom:8px}
+.defib .dv{font-family:ui-monospace,Menlo,monospace;font-size:1.9rem;font-weight:700}
+.defib .du{font-size:.95rem;opacity:.85}
+
+/* 6H 6T */
+.ht-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:480px){.ht-grid{grid-template-columns:1fr 1fr}}
+.ht-box{background:var(--bg);border-radius:var(--radius);padding:14px}
+.ht-box .htt{font-size:.75rem;font-weight:800;text-transform:uppercase;margin-bottom:10px}
+.ht-box .htt.h{color:var(--danger)}
+.ht-box .htt.t{color:#6A3FA0}
+.ht-box ul{list-style:none}
+.ht-box li{font-size:.85rem;padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.ht-box li:last-child{border-bottom:none}
+.ht-box li b{font-family:ui-monospace,Menlo,monospace;color:var(--muted)}
+
+/* Equipment */
+.eq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(min-width:480px){.eq-grid{grid-template-columns:repeat(3,1fr)}}
+.eq{background:var(--bg);border:2px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center}
+.eq .el{font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.eq .ev{font-family:ui-monospace,Menlo,monospace;font-size:1.4rem;font-weight:700;color:var(--text)}
+.eq .eu{font-size:.72rem;color:var(--muted);margin-top:4px}
+
+/* Scenario cards */
+.scn{background:var(--card);border:1px solid var(--border);border-left:4px solid;border-radius:var(--radius);padding:16px;margin-bottom:10px;cursor:pointer}
+.scn:active{background:var(--teal-soft)}
+.scn .st{font-size:16px;font-weight:600}
+.scn .sd{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* Checklist */
+.chk-box{background:var(--bg);border-radius:var(--radius);padding:6px 14px}
+.chk{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.chk:last-child{border-bottom:none}
+.chk .cb{
+  width:24px;height:24px;border-radius:6px;border:2px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,border-color .15s;
+}
+.chk.done .cb{background:var(--success);border-color:var(--success)}
+.chk .cb svg{display:none}
+.chk.done .cb svg{display:block}
+.chk .cl{flex:1;font-size:.85rem}
+.chk .cv{font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--teal-dark);font-size:.85rem}
+
+/* Transfusion */
+.tx-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tx{border:2px solid var(--border);border-radius:var(--radius);padding:14px;background:var(--bg)}
+.tx.blood{border-color:#EBB6B6;background:var(--danger-bg)}
+.tx .tn{font-weight:700;font-size:.85rem;margin-bottom:2px}
+.tx .td{font-size:.75rem;color:var(--muted);margin-bottom:10px}
+.tx .tv{font-family:ui-monospace,Menlo,monospace;font-size:1.35rem;font-weight:700;color:var(--danger)}
+
+/* Alert */
+.alert{border-left:4px solid;border-radius:var(--radius-sm);padding:12px 14px;margin-top:16px;font-size:.8rem}
+.alert.warn{background:var(--warning-bg);border-color:#D9A420}
+.alert .at{font-weight:700;color:var(--warning);margin-bottom:6px;font-size:.85rem}
+
+/* Infusion */
+.inf-band{background:var(--teal);color:#fff;padding:8px 16px;border-radius:16px;font-size:.85rem;text-align:center;margin-bottom:16px;font-weight:500}
+.inf-search{
+  width:100%;padding:12px 16px;background:var(--bg);border:2px solid var(--border);border-radius:var(--radius);
+  font-size:.9rem;color:var(--text);outline:none;margin-bottom:16px;font-family:inherit;
+}
+.inf-search:focus{border-color:var(--teal)}
+.inf-cat{font-weight:700;font-size:.9rem;color:var(--text-2);margin:4px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.inf{border:2px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;background:var(--card);transition:border-color .2s,box-shadow .2s}
+.inf.hl{border-color:var(--info);box-shadow:0 0 0 3px rgba(21,101,192,.25)}
+.inf-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:12px 16px;color:#fff}
+.inf-head .in{font-weight:700;font-size:.9rem}
+.inf-head .ir{font-family:ui-monospace,Menlo,monospace;font-size:.78rem;background:rgba(255,255,255,.22);padding:4px 10px;border-radius:6px}
+.inf-body{padding:14px}
+.prep-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px}
+.prep-box .pt2{font-size:.75rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.prep-box .pd{font-size:.8rem;line-height:1.6;color:var(--text-2)}
+.prep-box .pd b{color:var(--muted);font-weight:600}
+.inf-warn{background:var(--warning-bg);color:var(--warning);font-size:.75rem;padding:6px 10px;border-radius:6px;margin-top:8px;font-weight:600}
+.dose-row{display:flex;align-items:center;gap:12px}
+.dose-row input[type=range]{flex:1;height:6px;accent-color:var(--teal)}
+.dose-num{
+  font-family:ui-monospace,Menlo,monospace;font-size:1rem;font-weight:700;width:72px;padding:6px 4px;
+  background:var(--bg);border:2px solid var(--border-strong);border-radius:var(--radius-sm);
+  text-align:center;color:var(--text);outline:none;
+}
+.dose-num.oor{border-color:var(--danger);color:var(--danger)}
+.dose-unit{font-size:.78rem;color:var(--muted);white-space:nowrap}
+.oor-msg{font-size:12px;color:var(--danger);text-align:center;margin-top:4px;min-height:0}
+.rate-wrap{display:flex;justify-content:center;margin-top:12px}
+.rate{
+  background:linear-gradient(135deg,var(--teal),#0B5E58);color:#fff;border-radius:var(--radius);
+  padding:14px 24px;text-align:center;min-width:150px;
+}
+.rate .rl{font-size:.72rem;font-weight:600;text-transform:uppercase;opacity:.9;margin-bottom:4px}
+.rate input{
+  font-family:ui-monospace,Menlo,monospace;font-size:1.6rem;font-weight:700;background:transparent;
+  border:none;text-align:center;width:100%;color:#fff;outline:none;
+}
+.rate input::placeholder{color:rgba(255,255,255,.5)}
+.rate .ru{font-size:.72rem;opacity:.9}
+.sec-label{font-size:.75rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin:12px 0 8px}
+
+/* Fluids */
+.fl-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(min-width:480px){.fl-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* Modal */
+.modal-ov{position:fixed;inset:0;background:rgba(22,48,44,.5);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-ov[hidden]{display:none}
+.modal-box{background:var(--card);border-radius:16px;max-width:420px;width:100%;max-height:80vh;overflow-y:auto;padding:20px}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.modal-head .mt{font-size:17px;font-weight:700}
+.modal-close{background:var(--bg);border:none;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2)}
+.prep-step{display:flex;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.prep-step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.prep-step .n{
+  width:28px;height:28px;background:var(--teal);color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;
+}
+.prep-step .s{font-size:.9rem;line-height:1.5}
+
+/* FAB */
+.fab-btn{
+  position:fixed;bottom:88px;right:20px;z-index:250;width:56px;height:56px;border-radius:50%;
+  background:var(--teal);color:#fff;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 18px rgba(14,138,128,.4);
+}
+.fab-menu{
+  position:fixed;bottom:152px;right:20px;z-index:250;display:none;flex-direction:column;gap:8px;
+}
+.fab-menu.open{display:flex}
+.fab-item{
+  background:var(--card);border:1px solid var(--border-strong);color:var(--text);
+  padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;
+  box-shadow:0 4px 14px rgba(22,48,44,.15);text-align:right;min-height:44px;
+}
+.fab-item:active{background:var(--teal-soft)}
+
+/* Footer */
+footer{
+  position:fixed;bottom:0;left:0;right:0;z-index:150;
+  background:var(--card);border-top:1px solid var(--border);
+  padding:10px 16px;text-align:center;font-size:11px;color:var(--muted);line-height:1.6;
+}
+footer strong{color:var(--text-2)}
+</style>
+</head>
+<body>
+
+<div class="disclaimer">Ferramenta de apoio em teste — não substitui o julgamento clínico.</div>
+
+<header class="brand">
+  <div class="brand-name">Hospital Estadual<br>de Trindade</div>
+  <div class="brand-sub">Walda Ferreira dos Santos</div>
+  <div class="brand-tool">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>
+    Emergência pediátrica
+  </div>
+</header>
+
+<div class="input-bar">
+  <div class="input-grid">
+    <div class="input-card" id="peso-card">
+      <div class="input-card-top">
+        <span class="input-label">Peso</span>
+        <span class="src-tag" id="peso-src" hidden>FONTE</span>
+      </div>
+      <div class="peso-row">
+        <input type="number" inputmode="decimal" id="peso-input" placeholder="--" min="0.5" max="50" step="0.1">
+        <span class="peso-unit">kg</span>
+      </div>
+      <div class="peso-hint">0,5 a 50 kg</div>
+    </div>
+    <div class="input-card" id="bro-card">
+      <div class="input-card-top">
+        <span class="input-label">Cor Broselow</span>
+        <span class="src-tag" id="bro-src" hidden>FONTE</span>
+      </div>
+      <button class="bro-btn" id="bro-btn">
+        <span class="dot" id="bro-dot" hidden></span>
+        <span id="bro-label">Selecione</span>
+      </button>
+      <div class="bro-menu" id="bro-menu" hidden></div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="backdrop" hidden></div>
+
+<main id="app" class="container"></main>
+
+<div class="modal-ov" id="modal" hidden>
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="mt" id="modal-title"></span>
+      <button class="modal-close" data-action="modal-close" aria-label="Fechar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<button class="fab-btn" id="fab-btn" aria-label="Menu">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+</button>
+<div class="fab-menu" id="fab-menu">
+  <button class="fab-item" data-view="home">Início</button>
+  <button class="fab-item" data-view="pcr">PCR</button>
+  <button class="fab-item" data-view="cenarios">Cenários</button>
+  <button class="fab-item" data-view="calculadoras">Calculadoras</button>
+</div>
+
+<footer>
+  <div>Desenvolvido por <strong>Gustavo Moreira</strong> — Médico emergencista</div>
+  <div>Departamento de Emergência — HETRIN</div>
+  <div>Versão 1.0.0 · Última atualização: 8 de agosto de 2026</div>
+</footer>
+
+<script>
+'use strict';
+
+// ==========================================
+// FORMATACAO
+// ==========================================
+const fN = (x, n) => x.toFixed(n).replace('.', ',');
+
+// ==========================================
+// DADOS BROSELOW
+// ==========================================
+const BROSELOW = [
+  { key:'gray',   name:'Cinza',    peso:3,  idadeMeses:1.5, altura:52,  tubo:3.0, fixacao:9,  lamina:'0 reta', lma:'1',   bougie:'5',  sondaAsp:6,  min:46,  max:59,  color:'#6B7280', dark:false },
+  { key:'pink',   name:'Rosa',     peso:6,  idadeMeses:4.5, altura:63,  tubo:3.0, fixacao:9,  lamina:'1 reta', lma:'1',   bougie:'5',  sondaAsp:6,  min:60,  max:66,  color:'#EC4899', dark:false },
+  { key:'red',    name:'Vermelho', peso:8,  idadeMeses:7.5, altura:70,  tubo:3.5, fixacao:10, lamina:'1 reta', lma:'1.5', bougie:'6',  sondaAsp:8,  min:67,  max:74,  color:'#DC2626', dark:false },
+  { key:'purple', name:'Roxo',     peso:10, idadeMeses:10,  altura:79,  tubo:3.5, fixacao:11, lamina:'1-2',    lma:'1.5', bougie:'6',  sondaAsp:8,  min:75,  max:83,  color:'#9333EA', dark:false },
+  { key:'yellow', name:'Amarelo',  peso:12, idadeMeses:18,  altura:89,  tubo:4.0, fixacao:12, lamina:'2',      lma:'2',   bougie:'10', sondaAsp:8,  min:84,  max:95,  color:'#F59E0B', dark:false },
+  { key:'white',  name:'Branco',   peso:14, idadeMeses:30,  altura:101, tubo:4.5, fixacao:13, lamina:'2',      lma:'2',   bougie:'10', sondaAsp:10, min:96,  max:106, color:'#E5E7EB', dark:true },
+  { key:'blue',   name:'Azul',     peso:18, idadeMeses:54,  altura:113, tubo:5.0, fixacao:15, lamina:'2',      lma:'2.5', bougie:'10', sondaAsp:10, min:107, max:120, color:'#3B82F6', dark:false },
+  { key:'orange', name:'Laranja',  peso:24, idadeMeses:78,  altura:126, tubo:5.5, fixacao:16, lamina:'2-3',    lma:'3',   bougie:'15', sondaAsp:12, min:121, max:132, color:'#F97316', dark:false },
+  { key:'green',  name:'Verde',    peso:32, idadeMeses:108, altura:139, tubo:6.0, fixacao:18, lamina:'3',      lma:'3',   bougie:'15', sondaAsp:12, min:133, max:145, color:'#10B981', dark:false },
+];
+
+function formatIdade(m){ return m < 12 ? m + ' meses' : Math.round(m/12) + ' anos'; }
+
+function colorFromWeight(w){
+  let best = BROSELOW[0], minDiff = Infinity;
+  for (const e of BROSELOW) {
+    const d = Math.abs(e.peso - w);
+    if (d < minDiff) { minDiff = d; best = e; }
+  }
+  return best;
+}
+
+// ==========================================
+// DROGAS EM BOLUS
+// ==========================================
+const PCR_DRUGS = [
+  { id:'epinefrina-iv', name:'EPINEFRINA IV/IO', presentation:'1 mg/mL (1:1.000)', doseBadge:'0,01 mg/kg', highlight:true, prepKey:'epinefrina',
+    instruction:'Diluição 1:10.000: 1 mL + 9 mL Água Destilada. Concentração: 0,1 mg/mL. A cada 3-5 min.',
+    calc:p => ({ mg:fN(p*0.01,2), ml:fN(p*0.1,1), mlLabel:'da sol. 1:10.000', unit:'mg' }) },
+  { id:'amiodarona', name:'AMIODARONA', presentation:'50 mg/mL', doseBadge:'5 mg/kg',
+    instruction:'FV/TV sem pulso refratária. Max: 300 mg. Pode repetir até 15 mg/kg.',
+    calc:p => { const d=Math.min(p*5,300); return { mg:fN(d,0), ml:fN(d/50,1), unit:'mg' }; } },
+  { id:'bicarbonato', name:'BICARBONATO DE SÓDIO 8,4%', presentation:'1 mEq/mL', doseBadge:'1 mEq/kg',
+    instruction:'PCR prolongada, acidose documentada. Diluir 1:1 com Água Destilada.',
+    calc:p => ({ mg:fN(p,0), ml:fN(p,0), mlLabel:'+ igual vol. AD', unit:'mEq' }) },
+  { id:'calcio', name:'GLUCONATO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'60-100 mg/kg',
+    instruction:'Hipocalcemia, Hipercalemia. Max: 2000 mg. Infundir lento.',
+    calc:p => { const d=Math.min(p*60,2000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
+  { id:'atropina', name:'ATROPINA', presentation:'0,5 mg/mL', doseBadge:'0,02 mg/kg',
+    instruction:'Bradicardia com pulso. Min: 0,1 mg. Max: 0,5 mg (criança).',
+    calc:p => { const d=Math.max(0.1,Math.min(p*0.02,0.5)); return { mg:fN(d,2), ml:fN(d/0.5,2), unit:'mg' }; } },
+];
+
+const IOT_DRUGS = [
+  { id:'cetamina', name:'CETAMINA', presentation:'50 mg/mL', doseBadge:'1-2 mg/kg',
+    instruction:'Indução dissociativa. Mantém VA e drive respiratório. Broncodilatador.',
+    calc:p => ({ mg:fN(p*2,0), ml:fN(p*2/50,2), unit:'mg' }) },
+  { id:'midazolam', name:'MIDAZOLAM', presentation:'5 mg/mL', doseBadge:'0,1-0,4 mg/kg',
+    instruction:'Sedação. ISR: 0,3 mg/kg. Max: 5 mg. Pode causar hipotensão.',
+    calc:p => { const d=Math.min(p*0.3,5); return { mg:fN(d,1), ml:fN(d/5,2), unit:'mg' }; } },
+  { id:'fentanil', name:'FENTANIL', presentation:'50 mcg/mL', doseBadge:'1-2 mcg/kg',
+    instruction:'Analgesia. Administrar lento. Max: 100 mcg.',
+    calc:p => { const d=Math.min(p*2,100); return { mg:fN(d,0), ml:fN(d/50,2), unit:'mcg' }; } },
+  { id:'propofol', name:'PROPOFOL', presentation:'10 mg/mL', doseBadge:'1-2,5 mg/kg',
+    instruction:'Indução. Hipotensão dose-dependente. Evitar em choque.',
+    calc:p => ({ mg:fN(p*2.5,0), ml:fN(p*2.5/10,1), unit:'mg' }) },
+  { id:'etomidato', name:'ETOMIDATO', presentation:'2 mg/mL', doseBadge:'0,2-0,4 mg/kg',
+    instruction:'Indução. Estabilidade hemodinâmica. Max: 20 mg. Evitar em sepse.',
+    calc:p => { const d=Math.min(p*0.3,20); return { mg:fN(d,1), ml:fN(d/2,1), unit:'mg' }; } },
+  { id:'rocuronio', name:'ROCURONIO', presentation:'10 mg/mL', doseBadge:'0,9-1,2 mg/kg',
+    instruction:'Bloqueador neuromuscular. ISR: 1 mg/kg. Reversível com Sugammadex.',
+    calc:p => ({ mg:fN(p,0), ml:fN(p/10,1), unit:'mg' }) },
+  { id:'succinil', name:'SUCCINILCOLINA', presentation:'10 mg/mL', doseBadge:'1-2 mg/kg',
+    instruction:'BNM despolarizante. Contraindicado: hipercalemia, queimados. Max: 150 mg.',
+    calc:p => { const d=Math.min(p*1.5,150); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; } },
+  { id:'cisatracurio', name:'CISATRACURIO', presentation:'2 mg/mL', doseBadge:'0,1-0,15 mg/kg',
+    instruction:'BNM não despolarizante. Metabolismo de Hofmann.',
+    calc:p => ({ mg:fN(p*0.15,2), ml:fN(p*0.15/2,2), unit:'mg' }) },
+];
+
+const EMERGENCY_DRUGS = [
+  { id:'epinefrina-im', name:'EPINEFRINA IM (Anafilaxia)', presentation:'1 mg/mL - SEM DILUIR', doseBadge:'0,01 mg/kg', highlight:true,
+    instruction:'Via INTRAMUSCULAR - Vasto lateral. Max: 0,3 mg (criança) / 0,5 mg (adolescente). Repetir 5-15 min.',
+    calc:p => { const d=Math.min(p*0.01, p<30?0.3:0.5); return { mg:fN(d,2), ml:fN(d,2), unit:'mg' }; } },
+  { id:'adenosina', name:'ADENOSINA', presentation:'3 mg/mL', doseBadge:'0,1 - 0,2 mg/kg',
+    instruction:'TSV com pulso. Bolus RÁPIDO + flush 5-10 mL SF. Max: 6/12 mg.',
+    calc:p => { const d1=Math.min(p*0.1,6), d2=Math.min(p*0.2,12);
+      return { mg:fN(d1,1)+' / '+fN(d2,1), ml:fN(d1/3,2)+' / '+fN(d2/3,2), unit:'mg' }; } },
+  { id:'glicose', name:'GLICOSE 50%', presentation:'500 mg/mL', doseBadge:'0,5-1 g/kg',
+    instruction:'Hipoglicemia. Diluir em crianças pequenas (G10/G25).',
+    calc:p => ({ mg:fN(p*0.5,1), ml:fN(Math.min(p,50),0), unit:'g' }) },
+  { id:'naloxona', name:'NALOXONA', presentation:'0,4 mg/mL', doseBadge:'0,1 mg/kg',
+    instruction:'Reversão de opioides. Via: IV, IO, IM, IN. Max: 2 mg.',
+    calc:p => { const d=Math.min(p*0.1,2); return { mg:fN(d,2), ml:fN(d/0.4,1), unit:'mg' }; } },
+  { id:'tranexamico', name:'ÁCIDO TRANEXÂMICO', presentation:'50 mg/mL', doseBadge:'15 mg/kg',
+    instruction:'Trauma com hemorragia. Bolus em 10 min. Max: 1000 mg.',
+    calc:p => { const d=Math.min(p*15,1000); return { mg:fN(d,0), ml:fN(d/50,1), unit:'mg' }; } },
+  { id:'hidrocortisona', name:'HIDROCORTISONA', presentation:'100 mg/2mL', doseBadge:'2-4 mg/kg',
+    instruction:'Anafilaxia / Choque / Asma. Max: 200 mg. Infundir em bolus.',
+    calc:p => { const d=Math.min(p*4,200); return { mg:fN(d,0), ml:fN(d/50,1), unit:'mg' }; } },
+  { id:'difenidramina', name:'DIFENIDRAMINA', presentation:'50 mg/mL', doseBadge:'1-1,25 mg/kg',
+    instruction:'Anafilaxia (adjuvante). Via: IV lento ou IM. Max: 50 mg.',
+    calc:p => { const d=Math.min(p*1.25,50); return { mg:fN(d,0), ml:fN(d/50,1), unit:'mg' }; } },
+];
+
+const CONVULSION_DRUGS = [
+  { id:'diazepam', name:'DIAZEPAM', presentation:'5 mg/mL', doseBadge:'0,2-0,4 mg/kg',
+    instruction:'Status epilepticus - 1ª linha. Via: IV lento ou Retal (0,5 mg/kg). Max: 10 mg. Repetir até 3x.',
+    calc:p => { const d=Math.min(p*0.3,10); return { mg:fN(d,1), ml:fN(d/5,1), unit:'mg' }; } },
+  { id:'midazolam-conv', name:'MIDAZOLAM (Status)', presentation:'5 mg/mL', doseBadge:'0,1-0,2 mg/kg',
+    instruction:'Status epilepticus - Alternativa. Via: IV, IM, IN (0,2 mg/kg), Bucal. Max: 10 mg.',
+    calc:p => { const d=Math.min(p*0.2,10); return { mg:fN(d,1), ml:fN(d/5,1), unit:'mg' }; } },
+  { id:'fenitoina', name:'FENITOINA', presentation:'50 mg/mL', doseBadge:'15-20 mg/kg',
+    instruction:'Status epilepticus - 2ª linha. Diluir em SF, infundir em 20 min. Monitorizar ECG.',
+    calc:p => ({ mg:fN(p*20,0), ml:fN(p*20/50,1), unit:'mg' }) },
+  { id:'fenobarbital', name:'FENOBARBITAL', presentation:'100 mg/mL', doseBadge:'10-20 mg/kg',
+    instruction:'Status refratário / Neonatal. Infundir em 15-20 min. Risco depressão respiratória.',
+    calc:p => ({ mg:fN(p*20,0), ml:fN(p*20/100,1), unit:'mg' }) },
+  { id:'levetiracetam', name:'LEVETIRACETAM', presentation:'100 mg/mL', doseBadge:'40-60 mg/kg',
+    instruction:'Status epilepticus - Alternativa 2ª linha. Infundir em 15 min. Max: 3000 mg.',
+    calc:p => { const d=Math.min(p*60,3000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
+];
+
+const NEURO_DRUGS = [
+  { id:'manitol', name:'MANITOL 20%', presentation:'200 mg/mL', doseBadge:'0,25-1 g/kg',
+    instruction:'Hipertensão intracraniana. Infundir em 15-30 min.',
+    calc:p => ({ mg:fN(p*0.5,1), ml:fN(p*0.5*5,0), unit:'g' }) },
+  { id:'nacl', name:'NaCl 3% (Salina Hipertônica)', presentation:'0,513 mEq Na/mL', doseBadge:'2-5 mL/kg', prepKey:'nacl3',
+    instruction:'HIC, hiponatremia grave. Infundir em 10-20 min.',
+    calc:p => ({ mg:fN(p*3*0.513,1), ml:fN(p*3,0), unit:'mEq' }) },
+];
+
+// ==========================================
+// INFUSOES CONTINUAS
+// ==========================================
+const INFUSIONS = [
+  { id:'dobutamina', name:'DOBUTAMINA', category:'vasoativos', color:'#F97316', unit:'mcg/kg/min', range:[2.5,20], step:0.5, defaultVal:5,
+    presentation:'12,5 mg/mL',
+    dilutions:{ small:{drug:10,diluent:60,conc:1785,vol:70}, medium:{drug:20,diluent:120,conc:1785,vol:140}, large:{drug:50,diluent:200,conc:2500,vol:250} } },
+  { id:'dopamina', name:'DOPAMINA', category:'vasoativos', color:'#EAB308', unit:'mcg/kg/min', range:[2,20], step:1, defaultVal:5,
+    presentation:'5 mg/mL',
+    dilutions:{ small:{drug:20,diluent:30,conc:2000,vol:50}, medium:{drug:40,diluent:60,conc:2000,vol:100}, large:{drug:100,diluent:150,conc:2000,vol:250} } },
+  { id:'epinefrina_inf', name:'EPINEFRINA', category:'vasoativos', color:'#EF4444', unit:'mcg/kg/min', range:[0.01,1], step:0.01, defaultVal:0.1,
+    presentation:'1 mg/mL',
+    dilutions:{ small:{drug:1,diluent:30,conc:32.3,vol:31}, medium:{drug:5,diluent:150,conc:32.3,vol:155}, large:{drug:6,diluent:200,conc:29.1,vol:206} } },
+  { id:'norepinefrina', name:'NOREPINEFRINA', category:'vasoativos', color:'#8B5CF6', unit:'mcg/kg/min', range:[0.05,2], step:0.05, defaultVal:0.1,
+    presentation:'1 mg/mL', warning:'Diluir em SG 5%',
+    dilutions:{ small:{drug:4,diluent:60,conc:62.5,vol:64}, medium:{drug:8,diluent:120,conc:62.5,vol:128}, large:{drug:16,diluent:250,conc:60,vol:266} } },
+  { id:'vasopressina', name:'VASOPRESSINA', category:'vasoativos', color:'#D946EF', unit:'mU/kg/min', range:[0.2,2], step:0.1, defaultVal:0.5,
+    presentation:'20 U/mL',
+    dilutions:{ small:{drug:1,diluent:99,conc:200,vol:100}, medium:{drug:1,diluent:99,conc:200,vol:100}, large:{drug:2,diluent:98,conc:400,vol:100} } },
+  { id:'milrinona', name:'MILRINONA', category:'vasoativos', color:'#10B981', unit:'mcg/kg/min', range:[0.25,0.75], step:0.05, defaultVal:0.5,
+    presentation:'1 mg/mL',
+    dilutions:{ small:{drug:10,diluent:40,conc:200,vol:50}, medium:{drug:20,diluent:80,conc:200,vol:100}, large:{drug:30,diluent:120,conc:200,vol:150} } },
+  { id:'amiodarona_inf', name:'AMIODARONA', category:'vasoativos', color:'#6366F1', unit:'mcg/kg/min', range:[5,15], step:1, defaultVal:10,
+    presentation:'50 mg/mL', warning:'Diluir em SG 5%',
+    dilutions:{ small:{drug:3,diluent:47,conc:3000,vol:50}, medium:{drug:6,diluent:95,conc:2970,vol:101}, large:{drug:9,diluent:140,conc:3020,vol:149} } },
+  { id:'fentanil_inf', name:'FENTANIL', category:'sedativos', color:'#F97316', unit:'mcg/kg/h', range:[0.5,4], step:0.5, defaultVal:1,
+    presentation:'50 mcg/mL',
+    dilutions:{ small:{drug:10,diluent:40,conc:10,vol:50}, medium:{drug:20,diluent:80,conc:10,vol:100}, large:{drug:60,diluent:90,conc:20,vol:150} } },
+  { id:'midazolam_inf', name:'MIDAZOLAM', category:'sedativos', color:'#3B82F6', unit:'mcg/kg/min', range:[1,18], step:1, defaultVal:2,
+    presentation:'5 mg/mL',
+    dilutions:{ small:{drug:10,diluent:40,conc:1000,vol:50}, medium:{drug:20,diluent:80,conc:1000,vol:100}, large:{drug:60,diluent:90,conc:2000,vol:150} } },
+  { id:'cetamina_inf', name:'CETAMINA', category:'sedativos', color:'#8B5CF6', unit:'mcg/kg/min', range:[5,40], step:5, defaultVal:10,
+    presentation:'50 mg/mL',
+    dilutions:{ small:{drug:6,diluent:54,conc:5000,vol:60}, medium:{drug:6,diluent:54,conc:5000,vol:60}, large:{drug:20,diluent:180,conc:5000,vol:200} } },
+  { id:'dexmedetomidina', name:'DEXMEDETOMIDINA', category:'sedativos', color:'#06B6D4', unit:'mcg/kg/h', range:[0.2,1.4], step:0.1, defaultVal:0.5,
+    presentation:'100 mcg/mL',
+    dilutions:{ small:{drug:2,diluent:48,conc:4,vol:50}, medium:{drug:4,diluent:96,conc:4,vol:100}, large:{drug:8,diluent:192,conc:4,vol:200} } },
+  { id:'morfina', name:'MORFINA', category:'sedativos', color:'#EC4899', unit:'mcg/kg/h', range:[10,40], step:5, defaultVal:20,
+    presentation:'10 mg/mL',
+    dilutions:{ small:{drug:1,diluent:49,conc:200,vol:50}, medium:{drug:2,diluent:98,conc:200,vol:100}, large:{drug:4,diluent:96,conc:400,vol:100} } },
+  { id:'propofol_inf', name:'PROPOFOL 1%', category:'sedativos', color:'#F59E0B', unit:'mg/kg/h', range:[1,4], step:0.5, defaultVal:2,
+    presentation:'10 mg/mL', warning:'Não usar em crianças para sedação prolongada',
+    dilutions:{ small:{drug:20,diluent:20,conc:5,vol:40}, medium:{drug:50,diluent:0,conc:10,vol:50}, large:{drug:50,diluent:0,conc:10,vol:50} } },
+  { id:'rocuronio_inf', name:'ROCURONIO', category:'outros', color:'#14B8A6', unit:'mcg/kg/min', range:[5,15], step:1, defaultVal:10,
+    presentation:'10 mg/mL',
+    dilutions:{ small:{drug:10,diluent:40,conc:2000,vol:50}, medium:{drug:20,diluent:80,conc:2000,vol:100}, large:{drug:50,diluent:200,conc:2000,vol:250} } },
+  { id:'cisatracurio_inf', name:'CISATRACURIO', category:'outros', color:'#64748B', unit:'mcg/kg/min', range:[1,4], step:0.5, defaultVal:2,
+    presentation:'2 mg/mL',
+    dilutions:{ small:{drug:10,diluent:40,conc:400,vol:50}, medium:{drug:15,diluent:60,conc:400,vol:75}, large:{drug:50,diluent:200,conc:400,vol:250} } },
+];
+
+function weightCat(p){ if (p < 15) return 'small'; if (p <= 40) return 'medium'; return 'large'; }
+function weightCatLabel(c){ return c === 'small' ? '< 15 kg' : c === 'medium' ? '15-40 kg' : '> 40 kg'; }
+
+function formatConc(conc, unit){
+  if (unit.includes('mU/')) return conc >= 1000 ? fN(conc/1000,1)+' U/mL' : conc+' mU/mL';
+  if (unit.includes('mcg')) return conc >= 1000 ? fN(conc/1000,1)+' mg/mL' : conc+' mcg/mL';
+  return conc+' mg/mL';
+}
+
+function calcRate(inf, dose, p){
+  const dil = inf.dilutions[weightCat(p)];
+  if (inf.unit === 'mcg/kg/min') return (dose*p*60)/dil.conc;
+  if (inf.unit === 'mcg/kg/h')   return (dose*p)/dil.conc;
+  if (inf.unit === 'mg/kg/h')    return (dose*p)/dil.conc;
+  if (inf.unit === 'mU/kg/min')  return (dose*p*60)/dil.conc;
+  return 0;
+}
+
+function calcDoseFromRate(inf, mlh, p){
+  const dil = inf.dilutions[weightCat(p)];
+  if (inf.unit === 'mcg/kg/min') return (mlh*dil.conc)/(p*60);
+  if (inf.unit === 'mcg/kg/h')   return (mlh*dil.conc)/p;
+  if (inf.unit === 'mg/kg/h')    return (mlh*dil.conc)/p;
+  if (inf.unit === 'mU/kg/min')  return (mlh*dil.conc)/(p*60);
+  return 0;
+}
+
+// ==========================================
+// CENARIOS
+// ==========================================
+const SCENARIOS = [
+  { key:'anafilaxia',    title:'Anafilaxia',          desc:'Epinefrina IM, corticoide, anti-histamínico',       color:'#C62828' },
+  { key:'convulsao',     title:'Status epilepticus',  desc:'Diazepam, midazolam, fenitoína, fenobarbital',      color:'#D9A420' },
+  { key:'isr',           title:'IOT / ISR',           desc:'Checklist, cetamina, rocurônio, succinilcolina',    color:'#1565C0' },
+  { key:'choque',        title:'Choque',              desc:'Fluidos, epinefrina, norepinefrina, dobutamina',    color:'#E53935' },
+  { key:'choque-cardio', title:'Choque cardiogênico', desc:'Dobutamina, milrinona, epinefrina',                 color:'#8B5CF6' },
+  { key:'pos-pcr',       title:'Pós-PCR / Arritmia',  desc:'Amiodarona, epinefrina, norepinefrina',             color:'#F97316' },
+  { key:'sedacao',       title:'Sedação pós-IOT',     desc:'Fentanil, midazolam, dexmedetomidina, cetamina',    color:'#10B981' },
+];
+
+const SCENARIO_CONFIGS = {
+  'anafilaxia':    { highlight:['epinefrina-im','hidrocortisona','difenidramina'], sections:['emergencias'], scrollTo:'epinefrina-im', infusionHighlight:[] },
+  'convulsao':     { highlight:['diazepam','midazolam-conv','fenitoina','fenobarbital','levetiracetam'], sections:['convulsao'], scrollTo:'diazepam', infusionHighlight:[] },
+  'isr':           { highlight:['cetamina','midazolam','fentanil','rocuronio'], sections:['iot','drogas-iot'], scrollTo:'cetamina', infusionHighlight:[] },
+  'choque':        { highlight:[], sections:['fluidos','infusoes'], scrollTo:null, infusionHighlight:['epinefrina_inf','norepinefrina','dobutamina'] },
+  'choque-cardio': { highlight:[], sections:['infusoes'], scrollTo:null, infusionHighlight:['dobutamina','milrinona','epinefrina_inf'] },
+  'pos-pcr':       { highlight:[], sections:['infusoes'], scrollTo:null, infusionHighlight:['amiodarona_inf','epinefrina_inf','norepinefrina'] },
+  'sedacao':       { highlight:[], sections:['infusoes'], scrollTo:null, infusionHighlight:['fentanil_inf','midazolam_inf','dexmedetomidina','cetamina_inf'] },
+};
+
+// ==========================================
+// PREPAROS
+// ==========================================
+const PREPARATIONS = {
+  epinefrina: {
+    title:'Epinefrina 1:10.000',
+    steps:[
+      'Aspirar 1 mL de Epinefrina 1:1.000 (1 mg/mL)',
+      'Adicionar 9 mL de Água Destilada',
+      'Volume final: 10 mL',
+      'Concentração: 0,1 mg/mL (1:10.000)',
+      'Dose: 0,1 mL/kg desta solução',
+    ],
+  },
+  nacl3: {
+    title:'NaCl 3% (Salina Hipertônica)',
+    steps:[
+      'Aspirar 15 mL de NaCl 20%',
+      'Adicionar 85 mL de Água Destilada',
+      'Volume final: 100 mL de NaCl 3%',
+      'Concentração: 0,513 mEq Na/mL',
+      'Alt: NaCl 10% 30 mL + AD 70 mL',
+    ],
+  },
+};
+
+// ==========================================
+// CHECKLIST IOT / 6H 6T
+// ==========================================
+const IOT_CHECKLIST = [
+  { text:'Monitorização (SpO₂, ECG, ETCO2, PA)', valueKey:null },
+  { text:'Acesso venoso pérvio', valueKey:null },
+  { text:'Pré-oxigenação (FiO₂ 100%, 3 min)', valueKey:null },
+  { text:'Aspirador montado e testado', valueKey:null },
+  { text:'Laringoscópio com luz testada', valueKey:'lamina' },
+  { text:'Tubo traqueal + 1 menor', valueKey:'tubo' },
+  { text:'Cuff testado', valueKey:null },
+  { text:'Bougie / Guia disponível', valueKey:'bougie' },
+  { text:'Máscara laríngea disponível', valueKey:'lma' },
+  { text:'Bolsa-válvula-máscara conectada O2', valueKey:null },
+  { text:'Drogas preparadas e identificadas', valueKey:null },
+  { text:'Plano VA difícil definido', valueKey:null },
+];
+
+const CAUSES_6H = ['Hipóxia','Hipovolemia','Hidrogênio (Acidose)','Hipoglicemia','Hipo/Hipercalemia','Hipotermia'];
+const CAUSES_6T = ['Tensão (Pneumotórax)','Tamponamento cardíaco','Toxinas','Trombose pulmonar (TEP)','Trombose coronariana','Trauma'];
+
+// ==========================================
+// ESTADO
+// ==========================================
+const state = {
+  peso: null,
+  source: null,       // 'peso' | 'broselow'
+  broKey: null,
+  view: 'home',
+  scenarioBack: false,
+  hlDrugs: [],
+  hlInf: [],
+  openSections: {},   // secKey -> true
+  doses: {},          // infId -> dose
+  checklist: {},      // index -> true
+  infSearch: '',
+  pendingScroll: null,
+};
+
+const $ = s => document.querySelector(s);
+
+function getPeso(){ return state.peso ?? 0; }
+
+function currentBroselow(){
+  if (state.source === 'broselow' && state.broKey) return BROSELOW.find(b => b.key === state.broKey);
+  if (getPeso() > 0) return colorFromWeight(getPeso());
+  return null;
+}
+
+function getEquipment(){
+  const b = currentBroselow();
+  if (!b) return null;
+  return {
+    tubo: b.tubo.toFixed(1), fixacao: String(b.fixacao), lamina: b.lamina,
+    lma: b.lma, bougie: b.bougie, sondaAsp: String(b.sondaAsp),
+    checkLamina: 'Lâmina ' + b.lamina,
+    checkTubo: b.tubo.toFixed(1) + ' e ' + (b.tubo - 0.5).toFixed(1),
+    checkBougie: b.bougie + ' Fr',
+    checkLma: 'Tam. ' + b.lma,
+  };
+}
+
+// ==========================================
+// TEMPLATES
+// ==========================================
+function chevron(){
+  return '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+}
+
+function collapsible(key, title, badge, badgeColor, inner){
+  const open = !!state.openSections[key];
+  return '<section class="col' + (open ? ' open' : '') + '" data-sec="' + key + '">' +
+    '<button class="col-head" data-action="toggle-sec" data-sec-key="' + key + '">' +
+      '<span class="ct">' + title + '</span>' +
+      (badge ? '<span class="col-badge" style="background:' + badgeColor + '">' + badge + '</span>' : '') +
+      chevron() +
+    '</button>' +
+    '<div class="col-body"' + (open ? ' style="max-height:none"' : '') + '><div class="col-inner">' + inner + '</div></div>' +
+  '</section>';
+}
+
+function drugCard(d){
+  const p = getPeso();
+  const r = p > 0 ? d.calc(p) : null;
+  const hl = d.highlight || state.hlDrugs.includes(d.id);
+  let body = '<div class="drug-instr">' + d.instruction + '</div>';
+  if (r) {
+    body += '<div class="drug-res">' +
+      '<div class="res"><div class="res-l">Dose</div><div class="res-v">' + r.mg + ' <span>' + r.unit + '</span></div></div>' +
+      '<div class="res"><div class="res-l">Volume</div><div class="res-v">' + r.ml + ' <span>mL</span></div></div>' +
+    '</div>';
+    if (r.mlLabel) body += '<div class="res-note">' + r.mlLabel + '</div>';
+  } else {
+    body += '<div class="need-weight">Informe o peso para calcular</div>';
+  }
+  if (d.prepKey) body += '<button class="btn-prep" data-action="prep" data-prep="' + d.prepKey + '">Como preparar</button>';
+  return '<div class="drug' + (hl ? ' hl' : '') + '" data-drug="' + d.id + '">' +
+    '<div class="drug-head"><div><div class="drug-name">' + d.name + '</div><div class="drug-pres">' + d.presentation + '</div></div>' +
+    '<div class="drug-badge">' + d.doseBadge + '</div></div>' +
+    '<div class="drug-body">' + body + '</div></div>';
+}
+
+function infDecimals(inf){ return inf.step < 0.1 ? 2 : inf.step < 1 ? 1 : 0; }
+
+function infCard(inf){
+  const p = getPeso();
+  const cat = weightCat(p || 10);
+  const dil = inf.dilutions[cat];
+  const dose = state.doses[inf.id] ?? inf.defaultVal;
+  const dec = infDecimals(inf);
+  const rate = p > 0 ? calcRate(inf, dose, p) : null;
+  const oor = dose < inf.range[0] || dose > inf.range[1];
+  const hl = state.hlInf.includes(inf.id);
+  const clamped = Math.min(inf.range[1], Math.max(inf.range[0], dose));
+  const rateTxt = rate !== null ? (rate < 0.1 ? fN(rate,2) : fN(rate,1)) : '';
+  return '<div class="inf' + (hl ? ' hl' : '') + '" data-inf-card="' + inf.id + '">' +
+    '<div class="inf-head" style="background:' + inf.color + '">' +
+      '<span class="in">' + inf.name + '</span>' +
+      '<span class="ir">' + inf.range[0] + '-' + inf.range[1] + ' ' + inf.unit + '</span>' +
+    '</div>' +
+    '<div class="inf-body">' +
+      '<div class="prep-box">' +
+        '<div class="pt2">Preparo</div>' +
+        '<div class="pd"><b>Ampola:</b> ' + inf.presentation + '<br>' +
+        '<b>Droga:</b> ' + dil.drug + ' mL + <b>Diluente:</b> ' + dil.diluent + ' mL<br>' +
+        '<b>Volume final:</b> ' + dil.vol + ' mL | <b>Conc.:</b> ' + formatConc(dil.conc, inf.unit) + '</div>' +
+        (inf.warning ? '<div class="inf-warn">' + inf.warning + '</div>' : '') +
+      '</div>' +
+      '<div class="sec-label">Dose</div>' +
+      '<div class="dose-row">' +
+        '<input type="range" min="' + inf.range[0] + '" max="' + inf.range[1] + '" step="' + inf.step + '" value="' + clamped + '" data-inf-slider="' + inf.id + '">' +
+        '<input type="number" inputmode="decimal" class="dose-num' + (oor ? ' oor' : '') + '" value="' + dose.toFixed(dec) + '" step="' + inf.step + '" data-inf-dose="' + inf.id + '">' +
+        '<span class="dose-unit">' + inf.unit + '</span>' +
+      '</div>' +
+      '<div class="oor-msg" data-inf-oor="' + inf.id + '">' + (oor ? 'Fora do range (' + inf.range[0] + '-' + inf.range[1] + ')' : '') + '</div>' +
+      '<div class="rate-wrap"><div class="rate">' +
+        '<div class="rl">Velocidade</div>' +
+        '<input type="text" inputmode="decimal" value="' + rateTxt + '" placeholder="' + (p > 0 ? '--' : 'Peso?') + '" data-inf-rate="' + inf.id + '">' +
+        '<div class="ru">mL/h</div>' +
+      '</div></div>' +
+    '</div></div>';
+}
+
+// ==========================================
+// VIEWS
+// ==========================================
+function viewHome(){
+  return '<div class="pt">' +
+    '<div class="nav-card red" data-action="nav" data-view="pcr"><div class="t">PCR pediátrica</div><div class="d">Guia rápido de parada cardiorrespiratória</div></div>' +
+    '<div class="nav-card" data-action="nav" data-view="cenarios"><div class="t">Cenários</div><div class="d">Anafilaxia, status, choque, IOT, sedação</div></div>' +
+    '<div class="nav-card blue" data-action="nav" data-view="calculadoras"><div class="t">Calculadoras</div><div class="d">Infusões, doses por peso, equipamentos</div></div>' +
+  '</div>';
+}
+
+function viewPcr(){
+  const p = getPeso();
+  const cprDepth = p < 10 ? '1/3 AP (~4cm)' : p < 30 ? '1/3 AP (~5cm)' : '5-6 cm';
+  const defib = p > 0 ? { first: Math.round(p*2), second: Math.round(p*4), cardio: Math.round(p*0.5) + '-' + Math.round(p) } : null;
+  const eq = getEquipment();
+
+  let html = '<div class="pt">' +
+    '<button class="btn-back" data-action="nav" data-view="home">← Voltar</button>' +
+    '<h2 class="view-title">PCR pediátrica</h2>';
+
+  html += '<div class="panel">' +
+    '<div class="panel-head"><span class="panel-label">Parâmetros de RCP pediátrica</span><span class="panel-label">Compressão:Ventilação — 15:2</span></div>' +
+    '<div class="param-grid">' +
+      '<div class="param red"><div class="pl">Frequência</div><div class="pv">100-120/min</div></div>' +
+      '<div class="param blue"><div class="pl">Relação C:V</div><div class="pv">15:2</div></div>' +
+      '<div class="param green"><div class="pl">Profundidade</div><div class="pv">' + cprDepth + '</div></div>' +
+      '<div class="param purple"><div class="pl">Com TOT</div><div class="pv">1 a cada 2-3s</div></div>' +
+    '</div></div>';
+
+  html += '<div class="defib-grid">' +
+    '<div class="defib shock"><div class="dl">1ª Desfibrilação (2 J/kg)</div><div class="dv">' + (defib ? defib.first : '--') + '</div><div class="du">Joules</div></div>' +
+    '<div class="defib shock"><div class="dl">2ª Desfibrilação (4 J/kg)</div><div class="dv">' + (defib ? defib.second : '--') + '</div><div class="du">Joules</div></div>' +
+    '<div class="defib cardio"><div class="dl">Cardioversão (0,5-1 J/kg)</div><div class="dv">' + (defib ? defib.cardio : '--') + '</div><div class="du">Joules</div></div>' +
+  '</div>';
+
+  html += collapsible('pcr-drogas', 'Drogas de parada cardiorrespiratória', 'PCR', '#C62828',
+    PCR_DRUGS.map(drugCard).join(''));
+
+  html += collapsible('ht', 'Causas reversíveis (6H e 6T)', 'H/T', '#D9A420',
+    '<div class="ht-grid">' +
+      '<div class="ht-box"><div class="htt h">6 H</div><ul>' + CAUSES_6H.map(c => '<li><b>H</b> ' + c + '</li>').join('') + '</ul></div>' +
+      '<div class="ht-box"><div class="htt t">6 T</div><ul>' + CAUSES_6T.map(c => '<li><b>T</b> ' + c + '</li>').join('') + '</ul></div>' +
+    '</div>');
+
+  const eqInner = eq
+    ? '<div class="eq-grid">' + [
+        { l:'Tubo traqueal', v:eq.tubo, u:'mm (com cuff)' },
+        { l:'Fixação', v:eq.fixacao, u:'cm (gengiva)' },
+        { l:'Lâmina', v:eq.lamina, u:'' },
+        { l:'Máscara laríngea', v:eq.lma, u:'' },
+        { l:'Sonda aspiração', v:eq.sondaAsp, u:'French' },
+        { l:'Bougie', v:eq.bougie, u:'French' },
+      ].map(i => '<div class="eq"><div class="el">' + i.l + '</div><div class="ev">' + i.v + '</div>' + (i.u ? '<div class="eu">' + i.u + '</div>' : '') + '</div>').join('') + '</div>'
+    : '<div class="need-weight">Informe o peso para ver equipamentos</div>';
+  html += collapsible('va', 'Via aérea e equipamentos', 'VA', '#1565C0', eqInner);
+
+  return html + '</div>';
+}
+
+function viewCenarios(){
+  return '<div class="pt">' +
+    '<button class="btn-back" data-action="nav" data-view="home">← Voltar</button>' +
+    '<h2 class="view-title">Cenários</h2>' +
+    SCENARIOS.map(s =>
+      '<div class="scn" style="border-left-color:' + s.color + '" data-action="scenario" data-key="' + s.key + '">' +
+        '<div class="st">' + s.title + '</div><div class="sd">' + s.desc + '</div></div>'
+    ).join('') +
+  '</div>';
+}
+
+function viewCalculadoras(){
+  const p = getPeso();
+  const eq = getEquipment();
+  const cat = weightCat(p || 10);
+
+  let html = '<div class="pt">' +
+    '<button class="btn-back" data-action="back-calc">← ' + (state.scenarioBack ? 'Voltar aos cenários' : 'Voltar') + '</button>' +
+    '<h2 class="view-title">Calculadoras</h2>';
+
+  // Checklist IOT
+  const chkInner = '<div class="chk-box">' + IOT_CHECKLIST.map((item, i) => {
+    let value = '';
+    if (item.valueKey && eq) {
+      if (item.valueKey === 'lamina') value = eq.checkLamina;
+      else if (item.valueKey === 'tubo') value = eq.checkTubo;
+      else if (item.valueKey === 'bougie') value = eq.checkBougie;
+      else if (item.valueKey === 'lma') value = eq.checkLma;
+    }
+    return '<div class="chk' + (state.checklist[i] ? ' done' : '') + '" data-action="check" data-idx="' + i + '">' +
+      '<div class="cb"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg></div>' +
+      '<span class="cl">' + item.text + '</span>' +
+      (value ? '<span class="cv">' + value + '</span>' : '') +
+    '</div>';
+  }).join('') + '</div>';
+  html += collapsible('iot', 'Checklist de intubação orotraqueal', 'IOT', '#2E7D32', chkInner);
+
+  html += collapsible('drogas-iot', 'Drogas de intubação (ISR)', 'ISR', '#8B5CF6', IOT_DRUGS.map(drugCard).join(''));
+  html += collapsible('emergencias', 'Outras drogas de emergência', 'SOS', '#C62828', EMERGENCY_DRUGS.map(drugCard).join(''));
+  html += collapsible('convulsao', 'Anticonvulsivantes', 'SE', '#D9A420', CONVULSION_DRUGS.map(drugCard).join(''));
+  html += collapsible('neuro', 'Neuroproteção e osmoterapia', 'HIC', '#1565C0', NEURO_DRUGS.map(drugCard).join(''));
+
+  // Transfusao
+  let txInner;
+  if (p > 0) {
+    const tx = {
+      chad: (p*10).toFixed(0) + '-' + (p*15).toFixed(0),
+      pfc:  (p*10).toFixed(0) + '-' + (p*15).toFixed(0),
+      plaq: (p*5).toFixed(0)  + '-' + (p*10).toFixed(0),
+      crio: (p*5).toFixed(0)  + '-' + (p*10).toFixed(0),
+      volemia: (p*80).toFixed(0),
+    };
+    txInner = '<div class="tx-grid">' + [
+      { n:'Concentrado de hemácias', d:'10-15 mL/kg', v:tx.chad, blood:true },
+      { n:'Plasma fresco', d:'10-15 mL/kg', v:tx.pfc, blood:false },
+      { n:'Plaquetas', d:'5-10 mL/kg', v:tx.plaq, blood:false },
+      { n:'Crioprecipitado', d:'5-10 mL/kg', v:tx.crio, blood:false },
+    ].map(i => '<div class="tx' + (i.blood ? ' blood' : '') + '"><div class="tn">' + i.n + '</div><div class="td">' + i.d + '</div><div class="tv">' + i.v + ' mL</div></div>').join('') + '</div>' +
+    '<div class="alert warn"><div class="at">Protocolo de transfusão maciça pediátrica</div>' +
+      'Quando ativar: perda &gt; 40 mL/kg ou &gt; 50% volemia<br>' +
+      '<strong>Proporção alvo:</strong> CH:PFC:Plaq = 1:1:1<br>' +
+      'Volemia estimada (80 mL/kg): <strong>' + tx.volemia + ' mL</strong></div>';
+  } else {
+    txInner = '<div class="need-weight">Informe o peso para calcular</div>';
+  }
+  html += collapsible('tx', 'Transfusão e hemocomponentes', 'TX', '#C62828', txInner);
+
+  // Fluidos
+  let flInner;
+  if (p > 0) {
+    let m;
+    if (p <= 10) m = p*4;
+    else if (p <= 20) m = 40 + (p-10)*2;
+    else m = 60 + (p-20);
+    flInner = '<div class="fl-grid">' + [
+      { l:'Bolus cristaloide', v:(p*20).toFixed(0), u:'mL (20 mL/kg)' },
+      { l:'Manutenção/hora', v:m.toFixed(0), u:'mL/h (Holliday-Segar)' },
+      { l:'Volemia estimada', v:(p*80).toFixed(0), u:'mL (80 mL/kg)' },
+    ].map(i => '<div class="eq"><div class="el">' + i.l + '</div><div class="ev">' + i.v + '</div><div class="eu">' + i.u + '</div></div>').join('') + '</div>';
+  } else {
+    flInner = '<div class="need-weight">Informe o peso para calcular</div>';
+  }
+  html += collapsible('fluidos', 'Fluidos e volumes', 'IV', '#2E7D32', flInner);
+
+  // Infusoes
+  const byCat = { vasoativos: [], sedativos: [], outros: [] };
+  for (const inf of INFUSIONS) byCat[inf.category].push(inf);
+  const catTitles = { vasoativos:'Vasoativos', sedativos:'Sedativos e analgesia', outros:'Outros' };
+  let infInner = '<div class="inf-band">Faixa: <strong>' + weightCatLabel(cat) + '</strong></div>' +
+    '<input type="text" class="inf-search" id="inf-search" placeholder="Buscar medicamento..." value="' + state.infSearch.replace(/"/g,'&quot;') + '">';
+  for (const c of ['vasoativos','sedativos','outros']) {
+    infInner += '<div class="inf-group" data-inf-group="' + c + '">' +
+      '<div class="inf-cat">' + catTitles[c] + '</div>' +
+      byCat[c].map(infCard).join('') +
+    '</div>';
+  }
+  html += collapsible('infusoes', 'Infusões contínuas', weightCatLabel(cat), '#8B5CF6', infInner);
+
+  return html + '</div>';
+}
+
+// ==========================================
+// RENDER
+// ==========================================
+function renderView(){
+  const app = $('#app');
+  if (state.view === 'home') app.innerHTML = viewHome();
+  else if (state.view === 'pcr') app.innerHTML = viewPcr();
+  else if (state.view === 'cenarios') app.innerHTML = viewCenarios();
+  else app.innerHTML = viewCalculadoras();
+
+  if (state.infSearch) applyInfFilter();
+
+  if (state.pendingScroll) {
+    const el = document.querySelector('[data-drug="' + state.pendingScroll + '"]');
+    state.pendingScroll = null;
+    if (el) setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'center' }), 150);
+  }
+}
+
+function updateBroselowChip(){
+  const b = currentBroselow();
+  const btn = $('#bro-btn'), dot = $('#bro-dot'), label = $('#bro-label');
+  if (b) {
+    btn.style.background = b.color;
+    btn.style.color = b.dark ? '#16302C' : '#fff';
+    dot.hidden = false;
+    dot.style.background = b.color;
+    dot.style.borderColor = b.dark ? 'rgba(0,0,0,.2)' : 'rgba(255,255,255,.35)';
+    label.textContent = b.name + ' (' + b.peso + 'kg)';
+  } else {
+    btn.style.background = '#6B7280';
+    btn.style.color = '#fff';
+    dot.hidden = true;
+    label.textContent = 'Selecione';
+  }
+  $('#peso-src').hidden = state.source !== 'peso';
+  $('#bro-src').hidden = state.source !== 'broselow';
+  $('#peso-card').classList.toggle('active', state.source === 'peso');
+  $('#bro-card').classList.toggle('active', state.source === 'broselow');
+}
+
+// ==========================================
+// COLLAPSIBLE ANIMATION
+// ==========================================
+function toggleSection(key){
+  const sec = document.querySelector('[data-sec="' + key + '"]');
+  if (!sec) return;
+  const body = sec.querySelector('.col-body');
+  const isOpen = sec.classList.contains('open');
+  if (isOpen) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    void body.offsetHeight;
+    body.style.maxHeight = '0px';
+    sec.classList.remove('open');
+    delete state.openSections[key];
+  } else {
+    sec.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+    state.openSections[key] = true;
+    body.addEventListener('transitionend', function h(e){
+      if (e.propertyName === 'max-height' && sec.classList.contains('open')) body.style.maxHeight = 'none';
+      body.removeEventListener('transitionend', h);
+    });
+  }
+}
+
+// ==========================================
+// INFUSION UPDATES (sem re-render, preserva foco)
+// ==========================================
+function updateInfCard(id, origin){
+  const inf = INFUSIONS.find(x => x.id === id);
+  const card = document.querySelector('[data-inf-card="' + id + '"]');
+  if (!inf || !card) return;
+  const p = getPeso();
+  const dose = state.doses[id] ?? inf.defaultVal;
+  const dec = infDecimals(inf);
+  const oor = dose < inf.range[0] || dose > inf.range[1];
+
+  const slider = card.querySelector('[data-inf-slider]');
+  const doseIn = card.querySelector('[data-inf-dose]');
+  const rateIn = card.querySelector('[data-inf-rate]');
+  const oorMsg = card.querySelector('[data-inf-oor]');
+
+  if (origin !== 'slider') slider.value = Math.min(inf.range[1], Math.max(inf.range[0], dose));
+  if (origin !== 'dose') doseIn.value = dose.toFixed(dec);
+  doseIn.classList.toggle('oor', oor);
+  oorMsg.textContent = oor ? 'Fora do range (' + inf.range[0] + '-' + inf.range[1] + ')' : '';
+
+  if (origin !== 'rate') {
+    if (p > 0) {
+      const rate = calcRate(inf, dose, p);
+      rateIn.value = rate < 0.1 ? fN(rate,2) : fN(rate,1);
+    } else {
+      rateIn.value = '';
+    }
+  }
+}
+
+function applyInfFilter(){
+  const q = state.infSearch.toLowerCase().trim();
+  document.querySelectorAll('[data-inf-card]').forEach(card => {
+    const id = card.getAttribute('data-inf-card');
+    const inf = INFUSIONS.find(x => x.id === id);
+    card.style.display = (!q || inf.name.toLowerCase().includes(q)) ? '' : 'none';
+  });
+  document.querySelectorAll('[data-inf-group]').forEach(g => {
+    const visible = Array.from(g.querySelectorAll('[data-inf-card]')).some(c => c.style.display !== 'none');
+    g.style.display = visible ? '' : 'none';
+  });
+  const openBody = document.querySelector('[data-sec="infusoes"].open .col-body');
+  if (openBody) openBody.style.maxHeight = 'none';
+}
+
+// ==========================================
+// NAVEGACAO
+// ==========================================
+function showView(v){
+  state.view = v;
+  state.scenarioBack = false;
+  state.hlDrugs = [];
+  state.hlInf = [];
+  state.openSections = {};
+  renderView();
+  window.scrollTo(0, 0);
+}
+
+function loadScenario(key){
+  const cfg = SCENARIO_CONFIGS[key];
+  if (!cfg) return;
+  state.view = 'calculadoras';
+  state.scenarioBack = true;
+  state.hlDrugs = cfg.highlight;
+  state.hlInf = cfg.infusionHighlight;
+  state.openSections = {};
+  for (const s of cfg.sections) state.openSections[s] = true;
+  state.pendingScroll = cfg.scrollTo;
+  renderView();
+  if (!cfg.scrollTo) window.scrollTo(0, 0);
+}
+
+// ==========================================
+// MODAL
+// ==========================================
+function openPrep(key){
+  const prep = PREPARATIONS[key];
+  if (!prep) return;
+  $('#modal-title').textContent = 'Preparação: ' + prep.title;
+  $('#modal-body').innerHTML = prep.steps.map((s, i) =>
+    '<div class="prep-step"><div class="n">' + (i+1) + '</div><div class="s">' + s + '</div></div>'
+  ).join('');
+  $('#modal').hidden = false;
+}
+
+// ==========================================
+// EVENTOS
+// ==========================================
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-action]');
+
+  // FAB
+  const fabBtn = e.target.closest('#fab-btn');
+  const fabItem = e.target.closest('.fab-item');
+  const fabMenu = $('#fab-menu');
+  if (fabBtn) { fabMenu.classList.toggle('open'); return; }
+  if (fabItem) { fabMenu.classList.remove('open'); showView(fabItem.getAttribute('data-view')); return; }
+  if (!e.target.closest('#fab-menu')) fabMenu.classList.remove('open');
+
+  // Broselow dropdown
+  if (e.target.closest('#bro-btn')) {
+    const menu = $('#bro-menu');
+    menu.hidden = !menu.hidden;
+    $('#backdrop').hidden = menu.hidden;
+    return;
+  }
+  const broItem = e.target.closest('[data-bro]');
+  if (broItem) {
+    const key = broItem.getAttribute('data-bro');
+    const entry = BROSELOW.find(b => b.key === key);
+    state.broKey = key;
+    state.peso = entry.peso;
+    state.source = 'broselow';
+    $('#peso-input').value = entry.peso;
+    $('#bro-menu').hidden = true;
+    $('#backdrop').hidden = true;
+    updateBroselowChip();
+    renderView();
+    return;
+  }
+  if (e.target.closest('#backdrop')) {
+    $('#bro-menu').hidden = true;
+    $('#backdrop').hidden = true;
+    return;
+  }
+
+  // Modal fecha clicando fora
+  if (e.target.id === 'modal') { $('#modal').hidden = true; return; }
+
+  if (!t) return;
+  const action = t.getAttribute('data-action');
+  if (action === 'nav') showView(t.getAttribute('data-view'));
+  else if (action === 'back-calc') showView(state.scenarioBack ? 'cenarios' : 'home');
+  else if (action === 'scenario') loadScenario(t.getAttribute('data-key'));
+  else if (action === 'toggle-sec') toggleSection(t.getAttribute('data-sec-key'));
+  else if (action === 'prep') openPrep(t.getAttribute('data-prep'));
+  else if (action === 'modal-close') $('#modal').hidden = true;
+  else if (action === 'check') {
+    const idx = t.getAttribute('data-idx');
+    state.checklist[idx] = !state.checklist[idx];
+    t.classList.toggle('done', !!state.checklist[idx]);
+  }
+});
+
+document.addEventListener('input', e => {
+  const el = e.target;
+
+  if (el.id === 'peso-input') {
+    const v = parseFloat(el.value.replace(',', '.'));
+    if (!isNaN(v) && v >= 0.5 && v <= 50) {
+      state.peso = v;
+      state.source = 'peso';
+      state.broKey = null;
+    } else if (el.value === '') {
+      state.peso = null;
+      state.source = null;
+      state.broKey = null;
+    } else {
+      return;
+    }
+    updateBroselowChip();
+    renderView();
+    return;
+  }
+
+  if (el.id === 'inf-search') {
+    state.infSearch = el.value;
+    applyInfFilter();
+    return;
+  }
+
+  const sliderId = el.getAttribute('data-inf-slider');
+  if (sliderId) {
+    state.doses[sliderId] = parseFloat(el.value);
+    updateInfCard(sliderId, 'slider');
+    return;
+  }
+
+  const doseId = el.getAttribute('data-inf-dose');
+  if (doseId) {
+    const v = parseFloat(el.value.replace(',', '.'));
+    if (!isNaN(v)) {
+      state.doses[doseId] = v;
+      updateInfCard(doseId, 'dose');
+    }
+    return;
+  }
+
+  const rateId = el.getAttribute('data-inf-rate');
+  if (rateId) {
+    const mlh = parseFloat(el.value.replace(',', '.'));
+    const p = getPeso();
+    if (!isNaN(mlh) && mlh > 0 && p > 0) {
+      const inf = INFUSIONS.find(x => x.id === rateId);
+      state.doses[rateId] = calcDoseFromRate(inf, mlh, p);
+      updateInfCard(rateId, 'rate');
+    }
+    return;
+  }
+});
+
+// ==========================================
+// INIT
+// ==========================================
+(function init(){
+  $('#bro-menu').innerHTML = BROSELOW.map(b =>
+    '<div class="bro-item" data-bro="' + b.key + '">' +
+      '<div class="sw" style="background:' + b.color + (b.dark ? ';border:1px solid #C2D3D0' : '') + '"></div>' +
+      '<div><div class="nm">' + b.name + '</div>' +
+      '<div class="dt">' + b.peso + ' kg - ' + formatIdade(b.idadeMeses) + ' - ' + b.min + '-' + b.max + ' cm</div></div>' +
+    '</div>'
+  ).join('');
+  updateBroselowChip();
+  renderView();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+})();
+</script>
+</body>
+</html>
