@@ -1,0 +1,13 @@
+# Config de deploy do app v4 (SPA React em v2/).
+# Deploy via CLI: netlify deploy --dir v2/dist --site <site-do-v4>
+# Se o site for conectado ao git, usar base = v2 na UI (nao versionar toml na raiz:
+# o site do v1 publica deploy/ do mesmo repositorio).
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

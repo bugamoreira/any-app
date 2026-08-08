@@ -1,30 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import obfuscatorPlugin from 'rollup-plugin-obfuscator'
 
+// Ofuscacao removida (decisao 08/08/2026): as formulas sao conhecimento medico
+// publico; ofuscar so quebrava stack traces e complicava o debug em producao.
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  build: {
-    rollupOptions: {
-      plugins: [
-        obfuscatorPlugin({
-          options: {
-            compact: true,
-            controlFlowFlattening: false, // performance — desligar para app clinico
-            deadCodeInjection: false,
-            debugProtection: false,
-            disableConsoleOutput: false, // manter console para debug
-            identifierNamesGenerator: 'hexadecimal',
-            renameGlobals: false,
-            rotateStringArray: true,
-            selfDefending: false,
-            stringArray: true,
-            stringArrayThreshold: 0.5, // 50% das strings obfuscadas
-            unicodeEscapeSequence: false,
-          }
-        })
-      ]
-    }
-  }
 })
