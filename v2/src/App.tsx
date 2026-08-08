@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './contexts/AuthContext'
 import { Splash } from './components/layout/Splash'
+import { ErrorBoundary } from './components/common/ErrorBoundary'
 
 // Hub carrega eager (primeira tela)
 import Hub from './pages/Hub'
@@ -30,17 +31,19 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function LazyPage({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<Splash />}>
-      {children}
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<Splash />}>
+        {children}
+      </Suspense>
+    </ErrorBoundary>
   )
 }
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<ProtectedRoute><Hub /></ProtectedRoute>} />
+      <Route path="/login" element={<ErrorBoundary><LoginPage /></ErrorBoundary>} />
+      <Route path="/" element={<ProtectedRoute><ErrorBoundary><Hub /></ErrorBoundary></ProtectedRoute>} />
       <Route path="/block" element={<ProtectedRoute><LazyPage><BlockPath /></LazyPage></ProtectedRoute>} />
       <Route path="/infusion" element={<ProtectedRoute><LazyPage><InfusionGuide /></LazyPage></ProtectedRoute>} />
       <Route path="/palia" element={<ProtectedRoute><LazyPage><PaliaPath /></LazyPage></ProtectedRoute>} />

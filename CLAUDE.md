@@ -590,7 +590,7 @@ const NomeTool = lazy(() => import('./pages/NomeTool'))
 | Context | Arquivo | Responsabilidade |
 |---------|---------|-----------------|
 | `AuthContext` | `contexts/AuthContext.tsx` | Google OAuth via Supabase. `useAuth()` retorna `session`, `loading`, `signIn()`, `signOut()`. |
-| `WeightContext` | `contexts/WeightContext.tsx` | Peso do paciente compartilhado entre ferramentas. Persiste no localStorage. |
+| `WeightContext` | `contexts/WeightContext.tsx` | Peso do paciente compartilhado entre ferramentas. Inicia sempre vazio (segurança: evita peso do paciente anterior); grava no localStorage e a recuperação do último peso é manual, via botão (padrão v1). |
 | `ToastContext` | `contexts/ToastContext.tsx` | Notificações globais (sucesso, erro, info). `useToast()` retorna `showToast()`. |
 | `MetronomeContext` | `contexts/MetronomeContext.tsx` | Metrônomo global (ACLS). Persiste entre navegação. Banner vermelho quando ativo. AudioContext + silent audio loop para iOS. |
 

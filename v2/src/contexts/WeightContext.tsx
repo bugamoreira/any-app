@@ -8,12 +8,16 @@ interface WeightContextType {
 const WeightContext = createContext<WeightContextType | null>(null)
 
 export function WeightProvider({ children }: { children: ReactNode }) {
+  // Inicia SEMPRE vazio, por seguranca clinica: auto-restaurar arriscaria usar o
+  // peso do paciente anterior. Recuperacao e manual (botao), padrao do v1.
   const [weight, setWeightState] = useState<number | null>(null)
 
   function setWeight(w: number | null) {
     setWeightState(w)
-    if (w) {
-      localStorage.setItem('anyapp-peso', String(w))
+    try {
+      if (w) localStorage.setItem('anyapp-peso', String(w))
+    } catch (_) {
+      // localStorage indisponivel (ex.: Safari privado) — segue so em memoria
     }
   }
 
