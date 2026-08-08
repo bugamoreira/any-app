@@ -1,6 +1,6 @@
 {
-  "name": "Emergência pediátrica — HETRIN",
-  "short_name": "HETRIN Ped",
+  "name": "Ped Guide — HETRIN",
+  "short_name": "Ped Guide",
   "description": "Ferramenta de apoio à decisão em emergência pediátrica — Hospital Estadual de Trindade",
   "start_url": ".",
   "display": "standalone",
