@@ -31,6 +31,12 @@ export function getGuidelinesForTool(tool: string): Guideline[] {
   return GUIDELINES.filter(g => g.tool.toLowerCase() === tool.toLowerCase())
 }
 
+/** Match por contencao — aceita nomes de exibicao ("Airway Guide" encontra "Airway") */
+export function findGuidelinesFor(toolName: string): Guideline[] {
+  const t = toolName.toLowerCase()
+  return GUIDELINES.filter(g => t.includes(g.tool.toLowerCase()))
+}
+
 export function getAllGuidelineNames(): string[] {
   return GUIDELINES.map(g => `${g.name} (${g.year})`)
 }

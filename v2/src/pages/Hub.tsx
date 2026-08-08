@@ -4,6 +4,7 @@ import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Container } from '../components/layout/Container'
 import { ToastContainer } from '../components/common/Toast'
+import { isEnabled, type FeatureKey } from '../config'
 import type { ReactNode } from 'react'
 
 interface ToolCard {
@@ -86,7 +87,7 @@ export default function Hub() {
         </div>
         {/* v1: .main-grid { grid-template-columns:repeat(2,1fr); gap:12px } */}
         <div className="grid grid-cols-2 gap-3">
-          {tools.map(tool => (
+          {tools.filter(tool => isEnabled(tool.key as FeatureKey)).map(tool => (
             <div
               key={tool.key}
               onClick={() => navigate(tool.path)}

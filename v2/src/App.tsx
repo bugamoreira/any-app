@@ -1,8 +1,9 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from './contexts/AuthContext'
 import { Splash } from './components/layout/Splash'
 import { ErrorBoundary } from './components/common/ErrorBoundary'
+import { usePageview } from './hooks/usePageview'
 
 // Hub carrega eager (primeira tela)
 import Hub from './pages/Hub'
@@ -39,8 +40,18 @@ function LazyPage({ children }: { children: React.ReactNode }) {
   )
 }
 
+function PageviewTracker() {
+  const { pathname } = useLocation()
+  const { session } = useAuth()
+  const tool = pathname.replace(/^\//, '') || 'hub'
+  usePageview(session ? tool : 'login')
+  return null
+}
+
 export default function App() {
   return (
+    <>
+    <PageviewTracker />
     <Routes>
       <Route path="/login" element={<ErrorBoundary><LoginPage /></ErrorBoundary>} />
       <Route path="/" element={<ProtectedRoute><ErrorBoundary><Hub /></ErrorBoundary></ProtectedRoute>} />
@@ -59,6 +70,7 @@ export default function App() {
       <Route path="/calculadoras" element={<ProtectedRoute><LazyPage><Calculators /></LazyPage></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   )
 }
 

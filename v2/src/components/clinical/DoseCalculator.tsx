@@ -1,6 +1,7 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import type { DrugConfig } from '../../types/clinical'
 import { useWeight } from '../../contexts/WeightContext'
+import { useServerCalc } from '../../hooks/useServerCalc'
 import { doseToMlh, mlhToDose, getDoseStatus } from '../../utils/calculations'
 import { fmt } from '../../utils/formatters'
 import { statusColors } from '../../utils/formatters'
@@ -22,6 +23,22 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
   const mlh = weight ? doseToMlh(dose, weight, concentration, drug.factor, drug.usesWeight) : null
   const status = getDoseStatus(dose, drug.doseMin, drug.doseMax, drug.cautionThreshold, drug.criticalThreshold)
   const colors = statusColors[status]
+
+  // Verificacao de consistencia servidor x local (1 chamada por droga, sem impacto no slider).
+  // O calculo em tempo real e SEMPRE o local; o servidor so denuncia drift de formula.
+  const { calcDose: serverCalcDose } = useServerCalc()
+  const consistencyChecked = useRef<Set<string>>(new Set())
+  useEffect(() => {
+    if (!weight || consistencyChecked.current.has(drug.id)) return
+    consistencyChecked.current.add(drug.id)
+    serverCalcDose(drug.id, drug.doseDefault, weight).then(server => {
+      if (!server) return
+      const local = doseToMlh(drug.doseDefault, weight, drug.concentration, drug.factor, drug.usesWeight)
+      if (local > 0 && Math.abs(server.mlh - local) / local > 0.005) {
+        console.error('calc_divergencia_servidor_local', { drugId: drug.id, local, server: server.mlh })
+      }
+    })
+  }, [drug, weight, serverCalcDose])
 
   useEffect(() => {
     if (!editingDose) setDoseValue(fmt(dose, 2))

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMetronome } from '../contexts/MetronomeContext'
 import { Disclaimer } from '../components/layout/Disclaimer'
 // Header disponível se necessário
 import { Footer } from '../components/layout/Footer'
@@ -382,145 +383,6 @@ function formatElapsed(sec: number): string {
 // HOOKS
 // ==========================================
 
-/** Hook for metronome audio (110 BPM compressions + ventilation) */
-function useMetronome() {
-  const audioCtxRef = useRef<AudioContext | null>(null)
-  const compIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const ventIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  // Silent audio to keep iOS audio session alive
-  const silentSourceRef = useRef<AudioBufferSourceNode | null>(null)
-  const isPlayingRef = useRef(false)
-
-  const getAudioCtx = useCallback(() => {
-    if (!audioCtxRef.current) {
-      audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
-    }
-    return audioCtxRef.current
-  }, [])
-
-  const playTick = useCallback((freq: number, dur: number, type: OscillatorType = 'sine') => {
-    const ctx = getAudioCtx()
-    if (ctx.state === 'suspended') ctx.resume()
-    const osc = ctx.createOscillator()
-    const gain = ctx.createGain()
-    osc.type = type
-    osc.frequency.value = freq
-    gain.gain.setValueAtTime(0.5, ctx.currentTime)
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur)
-    osc.connect(gain)
-    gain.connect(ctx.destination)
-    osc.start()
-    osc.stop(ctx.currentTime + dur)
-  }, [getAudioCtx])
-
-  const playVentSound = useCallback(() => {
-    const ctx = getAudioCtx()
-    if (ctx.state === 'suspended') ctx.resume()
-    const osc1 = ctx.createOscillator()
-    const gain1 = ctx.createGain()
-    osc1.type = 'sine'
-    osc1.frequency.value = 1200
-    gain1.gain.setValueAtTime(0.6, ctx.currentTime)
-    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15)
-    osc1.connect(gain1)
-    gain1.connect(ctx.destination)
-    osc1.start()
-    osc1.stop(ctx.currentTime + 0.15)
-    setTimeout(() => {
-      const ctx2 = getAudioCtx()
-      const osc2 = ctx2.createOscillator()
-      const gain2 = ctx2.createGain()
-      osc2.type = 'sine'
-      osc2.frequency.value = 1500
-      gain2.gain.setValueAtTime(0.6, ctx2.currentTime)
-      gain2.gain.exponentialRampToValueAtTime(0.001, ctx2.currentTime + 0.15)
-      osc2.connect(gain2)
-      gain2.connect(ctx2.destination)
-      osc2.start()
-      osc2.stop(ctx2.currentTime + 0.15)
-    }, 180)
-  }, [getAudioCtx])
-
-  const playAlert = useCallback(() => {
-    playTick(600, 0.15, 'square')
-    setTimeout(() => playTick(600, 0.15, 'square'), 200)
-  }, [playTick])
-
-  const startSilentAudio = useCallback(() => {
-    try {
-      const ctx = getAudioCtx()
-      const buffer = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate)
-      const source = ctx.createBufferSource()
-      source.buffer = buffer
-      source.loop = true
-      const gain = ctx.createGain()
-      gain.gain.value = 0.001
-      source.connect(gain)
-      gain.connect(ctx.destination)
-      source.start()
-      silentSourceRef.current = source
-    } catch (_) {
-      // Silent audio not critical
-    }
-  }, [getAudioCtx])
-
-  const start = useCallback((advancedAirway: boolean) => {
-    if (isPlayingRef.current) return
-    isPlayingRef.current = true
-    startSilentAudio()
-    // 110 BPM = 545ms interval
-    compIntervalRef.current = setInterval(() => {
-      playTick(880, 0.08, 'sine')
-    }, 545)
-    if (advancedAirway) {
-      ventIntervalRef.current = setInterval(() => {
-        playVentSound()
-      }, 6000)
-    }
-  }, [playTick, playVentSound, startSilentAudio])
-
-  const stop = useCallback(() => {
-    isPlayingRef.current = false
-    if (compIntervalRef.current) { clearInterval(compIntervalRef.current); compIntervalRef.current = null }
-    if (ventIntervalRef.current) { clearInterval(ventIntervalRef.current); ventIntervalRef.current = null }
-    if (silentSourceRef.current) {
-      try { silentSourceRef.current.stop() } catch (_) { /* noop */ }
-      silentSourceRef.current = null
-    }
-  }, [])
-
-  const updateVent = useCallback((advancedAirway: boolean) => {
-    if (!isPlayingRef.current) return
-    if (ventIntervalRef.current) { clearInterval(ventIntervalRef.current); ventIntervalRef.current = null }
-    if (advancedAirway) {
-      ventIntervalRef.current = setInterval(() => {
-        playVentSound()
-      }, 6000)
-    }
-  }, [playVentSound])
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (compIntervalRef.current) clearInterval(compIntervalRef.current)
-      if (ventIntervalRef.current) clearInterval(ventIntervalRef.current)
-      if (silentSourceRef.current) {
-        try { silentSourceRef.current.stop() } catch (_) { /* noop */ }
-      }
-      if (audioCtxRef.current) {
-        try { audioCtxRef.current.close() } catch (_) { /* noop */ }
-        audioCtxRef.current = null
-      }
-    }
-  }, [])
-
-  // Identidade estavel: sem useMemo, o objeto novo a cada render fazia o effect
-  // de cleanup do consumidor disparar a cada re-render e matar os timers.
-  return useMemo(
-    () => ({ start, stop, updateVent, playAlert, playTick, isPlaying: isPlayingRef }),
-    [start, stop, updateVent, playAlert, playTick]
-  )
-}
 
 /** Hook for Wake Lock API */
 function useWakeLock() {
@@ -584,12 +446,15 @@ export default function AclsGuide() {
   // CLEANUP HELPER
   // ==========================================
 
+  // Depender de metronome.stop (estavel), nunca do objeto metronome inteiro:
+  // o value do contexto muda quando isPlaying muda, e o cleanup dispararia fora de hora.
+  const { stop: stopMetronome } = metronome
   const clearAllIntervals = useCallback(() => {
     if (cycleTimerRef.current) { clearInterval(cycleTimerRef.current); cycleTimerRef.current = null }
     if (mainTickRef.current) { clearInterval(mainTickRef.current); mainTickRef.current = null }
     if (epiTimerRef.current) { clearInterval(epiTimerRef.current); epiTimerRef.current = null }
-    metronome.stop()
-  }, [metronome])
+    stopMetronome()
+  }, [stopMetronome])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -808,7 +673,7 @@ export default function AclsGuide() {
     const newVal = !state.metronomeOn
     dispatch({ type: 'SET_METRONOME', value: newVal })
     if (newVal) {
-      metronome.start(state.advancedAirway)
+      metronome.start({ ventEnabled: state.advancedAirway })
     } else {
       metronome.stop()
     }

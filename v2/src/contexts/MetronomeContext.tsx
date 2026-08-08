@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useRef, useCallback, useEffect, type ReactNode } from 'react'
+import { createContext, useContext, useState, useRef, useCallback, useMemo, useEffect, type ReactNode } from 'react'
+import { useLocation } from 'react-router-dom'
 
 interface MetronomeConfig {
   bpm: number
@@ -12,6 +13,10 @@ interface MetronomeContextType {
   start: (config?: Partial<MetronomeConfig>) => void
   stop: () => void
   toggle: (config?: Partial<MetronomeConfig>) => void
+  /** Liga/desliga o beep de ventilacao sem reiniciar as compressoes */
+  updateVent: (ventEnabled: boolean) => void
+  /** Dois bipes graves (600 Hz square) — alerta de fim de ciclo */
+  playAlert: () => void
 }
 
 const defaultConfig: MetronomeConfig = { bpm: 110, ventEnabled: false, ventIntervalMs: 6000 }
@@ -25,6 +30,7 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
   const intervalRef = useRef<number | null>(null)
   const ventIntervalRef = useRef<number | null>(null)
   const silentAudioRef = useRef<HTMLAudioElement | null>(null)
+  const { pathname } = useLocation()
 
   function getAudioCtx() {
     if (!audioCtxRef.current) {
@@ -36,12 +42,13 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
     return audioCtxRef.current
   }
 
+  // 880 Hz / 0,08s sine — mesmo tick do v1
   function playClick() {
     const ctx = getAudioCtx()
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
     osc.type = 'sine'
-    osc.frequency.value = 800
+    osc.frequency.value = 880
     gain.gain.setValueAtTime(0.5, ctx.currentTime)
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08)
     osc.connect(gain)
@@ -85,7 +92,7 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
       audio.volume = 0.01
       audio.play().catch(() => {})
       silentAudioRef.current = audio
-    } catch {}
+    } catch { /* nao critico */ }
   }
 
   function stopSilentAudio() {
@@ -97,27 +104,22 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
   }
 
   const start = useCallback((overrides?: Partial<MetronomeConfig>) => {
-    const cfg = { ...config, ...overrides }
-    setConfig(cfg)
+    setConfig(prev => {
+      const cfg = { ...prev, ...overrides }
 
-    // Clear existing
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    if (ventIntervalRef.current) clearInterval(ventIntervalRef.current)
+      if (intervalRef.current) clearInterval(intervalRef.current)
+      if (ventIntervalRef.current) clearInterval(ventIntervalRef.current)
 
-    // Start silent audio for iOS
-    startSilentAudio()
-
-    // Compression clicks
-    const msPerBeat = 60000 / cfg.bpm
-    intervalRef.current = window.setInterval(playClick, msPerBeat)
-
-    // Ventilation beeps
-    if (cfg.ventEnabled) {
-      ventIntervalRef.current = window.setInterval(playVentBeep, cfg.ventIntervalMs)
-    }
-
+      startSilentAudio()
+      intervalRef.current = window.setInterval(playClick, 60000 / cfg.bpm)
+      if (cfg.ventEnabled) {
+        ventIntervalRef.current = window.setInterval(playVentBeep, cfg.ventIntervalMs)
+      }
+      return cfg
+    })
     setIsPlaying(true)
-  }, [config])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const stop = useCallback(() => {
     if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null }
@@ -127,9 +129,41 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const toggle = useCallback((overrides?: Partial<MetronomeConfig>) => {
-    if (isPlaying) stop()
+    if (intervalRef.current) stop()
     else start(overrides)
-  }, [isPlaying, start, stop])
+  }, [start, stop])
+
+  const updateVent = useCallback((ventEnabled: boolean) => {
+    setConfig(prev => {
+      if (intervalRef.current) {
+        if (ventIntervalRef.current) { clearInterval(ventIntervalRef.current); ventIntervalRef.current = null }
+        if (ventEnabled) {
+          ventIntervalRef.current = window.setInterval(playVentBeep, prev.ventIntervalMs)
+        }
+      }
+      return { ...prev, ventEnabled }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const playAlert = useCallback(() => {
+    const beep = () => {
+      const ctx = getAudioCtx()
+      const osc = ctx.createOscillator()
+      const gain = ctx.createGain()
+      osc.type = 'square'
+      osc.frequency.value = 600
+      gain.gain.setValueAtTime(0.5, ctx.currentTime)
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15)
+      osc.connect(gain)
+      gain.connect(ctx.destination)
+      osc.start()
+      osc.stop(ctx.currentTime + 0.15)
+    }
+    beep()
+    setTimeout(beep, 200)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -139,16 +173,22 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
       stopSilentAudio()
       if (audioCtxRef.current) audioCtxRef.current.close()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const value = useMemo(
+    () => ({ isPlaying, config, start, stop, toggle, updateVent, playAlert }),
+    [isPlaying, config, start, stop, toggle, updateVent, playAlert]
+  )
+
   return (
-    <MetronomeContext.Provider value={{ isPlaying, config, start, stop, toggle }}>
+    <MetronomeContext.Provider value={value}>
       {children}
-      {/* Banner global quando metronomo ativo */}
-      {isPlaying && (
+      {/* Banner global — so fora do /acls (la o proprio guide mostra o estado) */}
+      {isPlaying && pathname !== '/acls' && (
         <div className="fixed top-0 left-0 right-0 z-[9998] bg-accent text-white text-center py-2 px-4 text-sm font-semibold flex items-center justify-center gap-3">
           <span className="animate-pulse">Metrônomo ativo — {config.bpm} BPM</span>
-          <button onClick={stop} className="bg-white/20 px-3 py-1 rounded-lg text-xs font-bold border-none cursor-pointer text-white">Parar</button>
+          <button onClick={stop} className="bg-white/20 px-3 py-1 rounded-lg text-xs font-bold border-none cursor-pointer text-white" aria-label="Parar metrônomo">Parar</button>
         </div>
       )}
     </MetronomeContext.Provider>
