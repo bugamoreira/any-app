@@ -89,13 +89,13 @@ const heartScore: Calculator = {
     'O componente "History" e o mais subjetivo — considere se a história e altamente, moderadamente ou levemente sugestiva de SCA.',
     'Troponina deve ser interpretada conforme o ensaio local (convencional vs alta sensibilidade).',
     'Score <= 3 com troponina negativa seriada tem valor preditivo negativo > 99%.',
-    'Não substitui o julgamento clínico em apresentações atipicas.'
+    'Não substitui o julgamento clínico em apresentações atípicas.'
   ],
   reference: 'Six AJ et al. Chest pain in the emergency room: value of the HEART score. Neth Heart J. 2008;16(6):191-6.',
   items: [
     {
       id: 'history',
-      label: 'Historia clínica',
+      label: 'História clínica',
       options: [
         { label: 'Levemente suspeita', value: 0 },
         { label: 'Moderadamente suspeita', value: 1 },
@@ -107,7 +107,7 @@ const heartScore: Calculator = {
       label: 'ECG',
       options: [
         { label: 'Normal', value: 0 },
-        { label: 'Alteração inespecífica de repolarizacao', value: 1 },
+        { label: 'Alteração inespecífica de repolarização', value: 1 },
         { label: 'Desvio significativo de ST', value: 2 }
       ]
     },
@@ -153,13 +153,13 @@ const timiNstemi: Calculator = {
   category: 'Cardiologia / SCA',
   type: 'score',
   description: 'Risco de eventos adversos em 14 dias no IAMSSST/angina instável.',
-  why: 'Validado no estudo TIMI 11B e ESSENCE, prediz morte, IAM e revascularizacao urgente em 14 dias.',
+  why: 'Validado no estudo TIMI 11B e ESSENCE, prediz morte, IAM e revascularização urgente em 14 dias.',
   whenToUse: 'Pacientes com diagnóstico de IAMSSST ou angina instável. Menos útil como triagem inicial no DE (preferir HEART).',
   pearlsPitfalls: [
-    'Originalmente derivado de populacao de ensaio clínico — pode subestimar risco em populacoes de DE.',
+    'Originalmente derivado de população de ensaio clínico — pode subestimar risco em populações de DE.',
     'Uso de AAS nos últimos 7 dias e um item — reflete doença crônica.',
     'Estenose >= 50% exige conhecimento prévio de cateterismo.',
-    'Não inclui função renal ou insuficiência cardíaca, que sao preditores independentes.'
+    'Não inclui função renal ou insuficiência cardíaca, que são preditores independentes.'
   ],
   reference: 'Antman EM et al. The TIMI risk score for unstable angina/non-ST elevation MI. JAMA. 2000;284(7):835-42.',
   items: [
@@ -189,9 +189,9 @@ const graceScore: Calculator = {
   whenToUse: 'Apos diagnóstico de SCA (IAMCSST ou IAMSSST) para guiar tempo de cateterismo e nível de cuidado.',
   pearlsPitfalls: [
     'A versão 2.0 permite cálculo mesmo sem todas as variaveis (usando imputacao).',
-    'Killip III-IV e PCR na admissão sao os maiores preditores de mortalidade.',
+    'Killip III-IV e PCR na admissão são os maiores preditores de mortalidade.',
     'O calculador original usa um nomograma não-linear — a versão simplificada aqui e uma aproximação.',
-    'Creatinina elevada pode refletir doença renal crônica previa, não apenas disfunção aguda.'
+    'Creatinina elevada pode refletir doença renal crônica prévia, não apenas disfunção aguda.'
   ],
   reference: 'Fox KA et al. Prediction of risk of death and myocardial infarction in the six months after presentation with acute coronary syndrome: prospective multinational observational study (GRACE). BMJ. 2006;333(7578):1091.',
   inputs: [
@@ -332,14 +332,14 @@ const egsys: Calculator = {
   aliases: ['egsys', 'sincope', 'sincope cardíaca', 'perda de consciência'],
   category: 'Cardiologia / SCA',
   type: 'score',
-  description: 'Probabilidade de sincope de causa cardíaca.',
+  description: 'Probabilidade de síncope de causa cardíaca.',
   why: 'Permite identificar rápidamente sincopes de alto risco no DE, que necessitam investigação e internação.',
-  whenToUse: 'Pacientes com sincope no DE para diferenciar causa cardíaca de não cardíaca.',
+  whenToUse: 'Pacientes com síncope no DE para diferenciar causa cardíaca de não cardíaca.',
   pearlsPitfalls: [
-    'Score >= 3 tem sensibilidade de 92% e especificidade de 69% para sincope cardíaca.',
-    'Palpitacao antes da sincope e o maior preditor positivo.',
+    'Score >= 3 tem sensibilidade de 92% e especificidade de 69% para síncope cardíaca.',
+    'Palpitação antes da síncope e o maior preditor positivo.',
     'Predromos neurovegetativos (náusea, calor) reduzem a probabilidade de causa cardíaca.',
-    'Não exclui causas potêncialmente graves não cardíacas (ex: embolia pulmonar).'
+    'Não exclui causas potencialmente graves não cardíacas (ex: embolia pulmonar).'
   ],
   reference: 'Del Rosso A et al. Clinical predictors of cardiac syncope at initial evaluation in patients referred urgently to a general hospital. Heart. 2008;94(12):1620-6.',
   items: [
@@ -351,8 +351,8 @@ const egsys: Calculator = {
     { id: 'precipitant', label: 'Fatores predisponentes/precipitantes (quente, ortostatismo prolongado, medo, dor, emoção)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: -1 }] }
   ],
   interpret: (score: number) => {
-    if (score < 3) return interp('Baixa probabilidade de sincope cardíaca', '#4CAF50', 'Causa cardíaca improvável. Considere causas reflexas ou ortostaticas.')
-    return interp('Alta probabilidade de sincope cardíaca', '#F44336', 'Investigacao cardiologica recomendada. Considere monitoramento, ecocardiograma e internação.')
+    if (score < 3) return interp('Baixa probabilidade de síncope cardíaca', '#4CAF50', 'Causa cardíaca improvável. Considere causas reflexas ou ortostaticas.')
+    return interp('Alta probabilidade de síncope cardíaca', '#F44336', 'Investigacao cardiologica recomendada. Considere monitoramento, ecocardiograma e internação.')
   }
 }
 
@@ -362,9 +362,9 @@ const sfSyncope: Calculator = {
   aliases: ['sfsyncope', 'chess', 'san francisco', 'sincope', 'alto risco sincope'],
   category: 'Cardiologia / SCA',
   type: 'score',
-  description: 'Identifica pacientes com sincope de alto risco no DE (regra CHESS).',
-  why: 'Regra simples para triagem rápida de sincope no DE — qualquer critério positivo indica risco de evento grave em 30 dias.',
-  whenToUse: 'Triagem de pacientes com sincope no DE para decisão de alta vs investigação.',
+  description: 'Identifica pacientes com síncope de alto risco no DE (regra CHESS).',
+  why: 'Regra simples para triagem rápida de síncope no DE — qualquer critério positivo indica risco de evento grave em 30 dias.',
+  whenToUse: 'Triagem de pacientes com síncope no DE para decisão de alta vs investigação.',
   pearlsPitfalls: [
     'CHESS: Congestive heart failure, Hematocrit < 30%, ECG abnormal, Shortness of breath, Systolic BP < 90.',
     'Sensibilidade ~ 96-98%, mas especificidade baixa (~ 56%).',
@@ -396,7 +396,7 @@ const huntHess: Calculator = {
   category: 'Neurologia',
   type: 'classification',
   description: 'Classificação clínica de gravidade da hemorragia subaracnoidea.',
-  why: 'Prediz mortalidade e desfecho funcional. Guia urgencia do tratamento do aneurisma.',
+  why: 'Prediz mortalidade e desfecho funcional. Guia urgência do tratamento do aneurisma.',
   whenToUse: 'Pacientes com HSA confirmada para estratificação de gravidade e comunicação entre equipes.',
   pearlsPitfalls: [
     'Graus I-III geralmente recebem tratamento precoce do aneurisma (< 72h).',
@@ -423,7 +423,7 @@ const huntHess: Calculator = {
     if (score === 2) return interp('Grau II', '#4CAF50', 'Mortalidade cirúrgica ~5%. Tratamento precoce do aneurisma recomendado.')
     if (score === 3) return interp('Grau III', '#FFC107', 'Mortalidade cirúrgica ~19%. Tratamento precoce geralmente indicado após estabilização.')
     if (score === 4) return interp('Grau IV', '#F44336', 'Mortalidade cirúrgica ~42%. Decisão individualizada; considere estabilização clínica antes.')
-    return interp('Grau V', '#F44336', 'Mortalidade cirúrgica ~77%. Prognostico reservado; tratamento conservador pode ser considerado.')
+    return interp('Grau V', '#F44336', 'Mortalidade cirúrgica ~77%. Prognóstico reservado; tratamento conservador pode ser considerado.')
   }
 }
 
@@ -476,9 +476,9 @@ const fourScore: Calculator = {
   whenToUse: 'Pacientes com rebaixamento de consciência, especialmente intubados. Complementar ou substituir a GCS na UTI.',
   pearlsPitfalls: [
     'Vantagem principal: não depende de resposta verbal (utilizavel em intubados).',
-    'Escore 0 em todos os 4 componentes sugere morte encefalica — iniciar protocolo.',
-    'O componente respiratório detecta padrão de Cheyne-Stokes e respiracao ataxica.',
-    'E0 + M0 + B0 + R0 = considerar investigação de morte encefalica.'
+    'Escore 0 em todos os 4 componentes sugere morte encefálica — iniciar protocolo.',
+    'O componente respiratório detecta padrão de Cheyne-Stokes e respiração ataxica.',
+    'E0 + M0 + B0 + R0 = considerar investigação de morte encefálica.'
   ],
   reference: 'Wijdicks EF et al. Validation of a new coma scale: The FOUR score. Ann Neurol. 2005;58(4):585-93.',
   items: [
@@ -515,16 +515,16 @@ const fourScore: Calculator = {
     {
       id: 'respiration', label: 'Padrão respiratório (R)',
       options: [
-        { label: 'R0 — apneia ou respiracao com frequência de backup do ventilador', value: 0 },
+        { label: 'R0 — apneia ou respiração com frequência de backup do ventilador', value: 0 },
         { label: 'R1 — frequência acima do ventilador', value: 1 },
-        { label: 'R2 — não intubado, respiracao irregular', value: 2 },
+        { label: 'R2 — não intubado, respiração irregular', value: 2 },
         { label: 'R3 — não intubado, padrão de Cheyne-Stokes', value: 3 },
         { label: 'R4 — não intubado, padrão respiratório regular', value: 4 }
       ]
     }
   ],
   interpret: (score: number) => {
-    if (score === 0) return interp('Pontuacao 0 — considere investigação de morte encefalica', '#F44336', 'Todos os componentes zerados. Iniciar protocolo de morte encefalica se aplicável.')
+    if (score === 0) return interp('Pontuação 0 — considere investigação de morte encefálica', '#F44336', 'Todos os componentes zerados. Iniciar protocolo de morte encefálica se aplicável.')
     if (score <= 6) return interp('Gravemente comprometido', '#F44336', 'Coma profundo. Considere prognóstico reservado, avaliar causa tratavel.')
     if (score <= 11) return interp('Moderadamente comprometido', '#FFC107', 'Rebaixamento significativo. Monitoramento em UTI recomendado.')
     return interp('Levemente comprometido', '#4CAF50', 'Nivel de consciência relativamente preservado.')
@@ -538,7 +538,7 @@ const ottawaHsa: Calculator = {
   category: 'Neurologia',
   type: 'score',
   description: 'Critérios para exclusao de HSA em cefaleia aguda não traumatica no DE.',
-  why: 'Sensibilidade de 100% para HSA quando todos os critérios sao negativos, potêncialmente evitando punção lombar.',
+  why: 'Sensibilidade de 100% para HSA quando todos os critérios são negativos, potencialmente evitando punção lombar.',
   whenToUse: 'Pacientes alertas (GCS 15) com cefaleia aguda não traumatica atingindo intensidade máxima em 1 hora.',
   pearlsPitfalls: [
     'So aplicável se GCS 15 e cefaleia aguda não traumatica.',
@@ -558,7 +558,7 @@ const ottawaHsa: Calculator = {
   ],
   interpret: (score: number) => {
     if (score === 0) return interp('Todos os critérios negativos', '#4CAF50', 'Sensibilidade ~100% para excluir HSA. Investigacao adicional pode não ser necessária se clínica compativel.')
-    return interp('Pelo menos 1 critério positivo', '#F44336', 'HSA não pode ser excluida clínicamente. Investigar com TC de cranio +/- punção lombar ou angioTC.')
+    return interp('Pelo menos 1 critério positivo', '#F44336', 'HSA não pode ser excluida clinicamente. Investigar com TC de cranio +/- punção lombar ou angioTC.')
   }
 }
 
@@ -670,8 +670,8 @@ const nihss: Calculator = {
   reference: 'Brott T et al. Measurements of acute cerebral infarction: a clinical examination scale. Stroke. 1989;20(7):864-70.',
   items: [
     { id: '1a', label: '1a. Nivel de consciência', options: [
-      { label: 'Alerta', value: 0 }, { label: 'Não alerta, despertavel com estimulo mínimo', value: 1 },
-      { label: 'Não alerta, requer estimulacao repetida', value: 2 }, { label: 'Coma / sem resposta', value: 3 }
+      { label: 'Alerta', value: 0 }, { label: 'Não alerta, despertável com estimulo mínimo', value: 1 },
+      { label: 'Não alerta, requer estimulação repetida', value: 2 }, { label: 'Coma / sem resposta', value: 3 }
     ]},
     { id: '1b', label: '1b. Perguntas de orientação (mes e idade)', options: [
       { label: 'Ambas corretas', value: 0 }, { label: 'Uma correta', value: 1 }, { label: 'Nenhuma correta', value: 2 }
@@ -728,7 +728,7 @@ const nihss: Calculator = {
     if (score <= 4) return interp('Deficit menor', '#4CAF50', 'AVC menor. Trombólise pode não ser indicada se déficit não incapacitante.')
     if (score <= 15) return interp('Deficit moderado', '#FFC107', 'AVC moderado. Considere trombólise IV. Se oclusão de grande vaso, considere trombectomia.')
     if (score <= 20) return interp('Deficit moderado-grave', '#F44336', 'AVC grave. Trombólise IV e trombectomia mecânica fortemente recomendadas se dentro da janela.')
-    return interp('Deficit grave', '#F44336', 'AVC muito grave. Trombólise IV +/- trombectomia. Prognostico reservado. Risco de transformacao hemorragica.')
+    return interp('Deficit grave', '#F44336', 'AVC muito grave. Trombólise IV +/- trombectomia. Prognóstico reservado. Risco de transformação hemorragica.')
   }
 }
 
@@ -740,12 +740,12 @@ const gcs: Calculator = {
   type: 'score',
   description: 'Avaliação padronizada do nível de consciência.',
   why: 'Escala universal para comunicação rápida sobre nível de consciência entre equipes.',
-  whenToUse: 'Todo paciente com alteração de consciência — trauma, AVC, intóxicação, pos-PCR.',
+  whenToUse: 'Todo paciente com alteração de consciência — trauma, AVC, intoxicação, pos-PCR.',
   pearlsPitfalls: [
     'Sempre reportar os componentes individuais (ex: E3V4M6 = 13).',
     'GCS <= 8 = via aérea desprotegida — considere intubação.',
     'Resposta motora e o componente com maior valor prognóstico isolado.',
-    'Fatores confundidores: intóxicação, sedação, paralisia, afasia, edema palpebral.',
+    'Fatores confundidores: intoxicação, sedação, paralisia, afasia, edema palpebral.',
     'Reatividade pupilar deve ser avaliada em conjunto (GCS-P).'
   ],
   reference: 'Teasdale G, Jennett B. Assessment of coma and impaired consciousness. Lancet. 1974;2(7872):81-4.',
@@ -761,12 +761,12 @@ const gcs: Calculator = {
     ]},
     { id: 'motor', label: 'Resposta motora (M)', options: [
       { label: 'M1 — nenhuma', value: 1 }, { label: 'M2 — extensão a dor (descerebração)', value: 2 },
-      { label: 'M3 — flexao anormal (decorticação)', value: 3 }, { label: 'M4 — retirada a dor', value: 4 },
+      { label: 'M3 — flexão anormal (decorticação)', value: 3 }, { label: 'M4 — retirada a dor', value: 4 },
       { label: 'M5 — localização a dor', value: 5 }, { label: 'M6 — obedece comandos', value: 6 }
     ]}
   ],
   interpret: (score: number) => {
-    if (score <= 8) return interp('Grave (GCS 3-8)', '#F44336', 'Via aérea desprotegida. Considere intubação. Investigar causa e imagem de urgencia.')
+    if (score <= 8) return interp('Grave (GCS 3-8)', '#F44336', 'Via aérea desprotegida. Considere intubação. Investigar causa e imagem de urgência.')
     if (score <= 12) return interp('Moderado (GCS 9-12)', '#FFC107', 'Monitoramento próximo. Considere TC e causa reversivel.')
     return interp('Leve (GCS 13-15)', '#4CAF50', 'Nivel de consciência levemente rebaixado ou preservado.')
   }
@@ -779,12 +779,12 @@ const abcd2: Calculator = {
   category: 'Neurologia',
   type: 'score',
   description: 'Risco de AVC em 2-7-90 dias após um ataque isquemico transitorio.',
-  why: 'Estratifica urgencia de investigação e internação após AIT. Score alto indica necessidade de avaliação vascular rápida.',
+  why: 'Estratifica urgência de investigação e internação após AIT. Score alto indica necessidade de avaliação vascular rápida.',
   whenToUse: 'Pacientes com diagnóstico clínico de AIT no DE.',
   pearlsPitfalls: [
     'Score >= 4 sugere internação ou investigação acelerada (imagem vascular em < 24h).',
     'Não substitui imagem vascular — mesmo scores baixos podem ter estenose carotidea significativa.',
-    'Duração >= 60 min e déficit motor sao os maiores preditores.',
+    'Duração >= 60 min e déficit motor são os maiores preditores.',
     'AIT com RM positiva (lesão isquemica) = risco ainda maior que o score sugere.'
   ],
   reference: 'Johnston SC et al. Validation and refinement of scores to predict very early stroke risk after transient ischaemic attack. Lancet. 2007;369(9558):283-92.',
@@ -924,7 +924,7 @@ const rockall: Calculator = {
     { id: 'comorbidity', label: 'Comorbidades', options: [
       { label: 'Nenhuma comorbidade maior', value: 0 },
       { label: 'IC, DCI ou outra comorbidade maior', value: 2 },
-      { label: 'Insuficiencia renal, insuficiência hepática ou cancer disseminado', value: 3 }
+      { label: 'Insuficiência renal, insuficiência hepática ou cancer disseminado', value: 3 }
     ]},
     { id: 'diagnosis', label: 'Diagnostico endoscópico (se disponível)', options: [
       { label: 'Não avaliado / sem EDA', value: 0 },
@@ -957,7 +957,7 @@ const glasgowBlatchford: Calculator = {
     'Score 0 = risco muito baixo; considere alta com EDA ambulatorial.',
     'Superior ao Rockall pré-endoscópico para prever necessidade de intervenção.',
     'Inclui hemoglobina e ureia, que devem ser coletadas na admissão.',
-    'Melena e sincope sao avaliadas clínicamente.'
+    'Melena e síncope são avaliadas clinicamente.'
   ],
   reference: 'Blatchford O et al. A risk score to predict need for treatment for upper-gastrointestinal haemorrhage. Lancet. 2000;356(9238):1318-21.',
   items: [
@@ -1051,7 +1051,7 @@ const childPugh: Calculator = {
   whenToUse: 'Pacientes com cirrose hepática para estratificação de gravidade e prognóstico.',
   pearlsPitfalls: [
     'Child A (5-6) = sobrevida 1 ano ~100%. Child C (10-15) = sobrevida 1 ano ~45%.',
-    'Encefalopatia e ascite sao avaliações clínicas subjetivas — pode haver variabilidade.',
+    'Encefalopatia e ascite são avaliações clínicas subjetivas — pode haver variabilidade.',
     'MELD e preferido para lista de transplante; Child-Pugh para prognóstico geral.',
     'Albumina e tempo de protrombina refletem função sintética hepática.'
   ],
@@ -1117,7 +1117,7 @@ const meldNa: Calculator = {
     if (score <= 9) return interp('MELD-Na <= 9', '#4CAF50', 'Mortalidade em 3 meses: ~2%. Acompanhamento ambulatorial.')
     if (score <= 19) return interp('MELD-Na 10-19', '#FFC107', 'Mortalidade em 3 meses: ~6%. Monitoramento regular. Listar se MELD >= 15.')
     if (score <= 29) return interp('MELD-Na 20-29', '#F44336', 'Mortalidade em 3 meses: ~20%. Prioridade na lista de transplante.')
-    if (score <= 39) return interp('MELD-Na 30-39', '#F44336', 'Mortalidade em 3 meses: ~52%. Urgencia para transplante.')
+    if (score <= 39) return interp('MELD-Na 30-39', '#F44336', 'Mortalidade em 3 meses: ~52%. Urgência para transplante.')
     return interp('MELD-Na >= 40', '#F44336', 'Mortalidade em 3 meses: ~71%. Maxima prioridade para transplante.')
   }
 }
@@ -1208,14 +1208,14 @@ const pecarn: Calculator = {
   category: 'Trauma',
   type: 'score',
   description: 'Necessidade de TC de cranio em TCE leve pediátrico.',
-  why: 'Reduz TC desnecessárias em criancas com TCE leve, evitando radiação sem perder lesões clínicamente importantes.',
+  why: 'Reduz TC desnecessárias em criancas com TCE leve, evitando radiação sem perder lesões clinicamente importantes.',
   whenToUse: 'Criancas com GCS 14-15 após trauma craniano. Duas versoes: < 2 anos e >= 2 anos.',
   pearlsPitfalls: [
     'GCS < 14 = TC indicada independentemente do PECARN.',
     'Critérios diferentes para < 2 anos e >= 2 anos.',
-    '< 2 anos: hematoma parietal/temporal não frontal e mecanismo grave sao preditores.',
-    '≥ 2 anos: cefaleia intensa e sinais de fratura de base de cranio sao preditores.',
-    'Risco muito baixo (todos negativos) = VPN > 99,9% para lesão intracraniana clínicamente importante.'
+    '< 2 anos: hematoma parietal/temporal não frontal e mecanismo grave são preditores.',
+    '≥ 2 anos: cefaleia intensa e sinais de fratura de base de cranio são preditores.',
+    'Risco muito baixo (todos negativos) = VPN > 99,9% para lesão intracraniana clinicamente importante.'
   ],
   reference: 'Kuppermann N et al. Identification of children at very low risk of clinically-important brain injuries after head trauma: a prospective cohort study. Lancet. 2009;374(9696):1160-70.',
   items: [
@@ -1234,9 +1234,9 @@ const pecarn: Calculator = {
     { id: 'behavior', label: 'Comportamento não habitual segundo os pais', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] }
   ],
   interpret: (score: number) => {
-    if (score === 0) return interp('Risco muito baixo', '#4CAF50', 'Risco de lesão intracraniana clínicamente importante < 0,02%. TC geralmente não recomendada. Observação e orientações de alta.')
+    if (score === 0) return interp('Risco muito baixo', '#4CAF50', 'Risco de lesão intracraniana clinicamente importante < 0,02%. TC geralmente não recomendada. Observação e orientações de alta.')
     if (score <= 2) return interp('Risco intermediário', '#FFC107', 'Considere observação por 4-6h vs TC de cranio, conforme clínica e preferência familiar.')
-    return interp('Alto risco', '#F44336', 'TC de cranio recomendada. Risco de lesão intracraniana clínicamente importante elevado.')
+    return interp('Alto risco', '#F44336', 'TC de cranio recomendada. Risco de lesão intracraniana clinicamente importante elevado.')
   }
 }
 
@@ -1317,7 +1317,7 @@ const parkland: Calculator = {
   whenToUse: 'Queimaduras >= 20% SCQ em adultos ou >= 10% SCQ em criancas, nas primeiras 24h.',
   pearlsPitfalls: [
     'Fórmula: 4 mL x peso (kg) x %SCQ. Metade nas primeiras 8h, metade nas 16h seguintes.',
-    'Conta a partir da hora da queimadura, NAO da chegada ao hospital.',
+    'Conta a partir da hora da queimadura, NÃO da chegada ao hospital.',
     'Guiar reposição por diurese: adulto 0,5-1 mL/kg/h, crianca 1 mL/kg/h.',
     'Superestima volume em queimaduras > 50% SCQ — usar 50% como máximo.',
     'Queimadura por inalação pode exigir 30-40% mais volume.'
@@ -1348,7 +1348,7 @@ const parkland: Calculator = {
 
 const dcVti: Calculator = {
   id: 'dc-vti',
-  name: 'Débito Cardiaco por VTI',
+  name: 'Débito Cardíaco por VTI',
   aliases: ['vti', 'débito cardíaco', 'lvot', 'ecocardiograma', 'cardiac output'],
   category: 'Hemodinâmica',
   type: 'formula',
@@ -1418,7 +1418,7 @@ const gradienteAa: Calculator = {
 
 const deltaGap: Calculator = {
   id: 'delta-gap',
-  name: 'Delta Gap e Razao Delta/Delta',
+  name: 'Delta Gap e Razão Delta/Delta',
   aliases: ['delta gap', 'delta delta', 'razao delta', 'anion gap', 'acidose metabólica', 'gasometria'],
   category: 'Hemodinâmica',
   type: 'formula',
@@ -1427,9 +1427,9 @@ const deltaGap: Calculator = {
   whenToUse: 'Pacientes com acidose metabólica e anion gap elevado para detectar distúrbios mistos.',
   pearlsPitfalls: [
     'Delta Gap = (AG - 12) - (24 - HCO3). Se positivo, alcalose metabólica associada. Se negativo, acidose hiperclorêmica associada.',
-    'Razao Delta = (AG - 12) / (24 - HCO3). Normal: 1-2.',
-    'Razao > 2: alcalose metabólica coexistente.',
-    'Razao < 1: acidose hiperclorêmica (AG normal) coexistente.',
+    'Razão Delta = (AG - 12) / (24 - HCO3). Normal: 1-2.',
+    'Razão > 2: alcalose metabólica coexistente.',
+    'Razão < 1: acidose hiperclorêmica (AG normal) coexistente.',
     'AG corrigido para albumina: AG + 2,5 x (4,0 - albumina).'
   ],
   reference: 'Emmett M, Narins RG. Clinical use of the anion gap. Medicine (Baltimore). 1977;56(1):38-54.',
@@ -1448,9 +1448,9 @@ const deltaGap: Calculator = {
     const hco3 = values?.hco3 || 24
     const deltaGap = (ag - 12) - (24 - hco3)
     if (score === 999) return interp('HCO3 normal', '#4CAF50', 'Bicarbonato normal. Calcular apenas se HCO3 reduzido.')
-    if (score < 1) return interp(`Razao ${score} — acidose hiperclorêmica concomitante`, '#FFC107', `Delta Gap: ${deltaGap.toFixed(1)}. Razao < 1 sugere acidose metabólica com AG normal associada (hiperclorêmica).`)
-    if (score <= 2) return interp(`Razao ${score} — acidose AG elevado pura`, '#4CAF50', `Delta Gap: ${deltaGap.toFixed(1)}. Razao entre 1-2 sugere acidose com AG elevado sem distúrbio misto significativo.`)
-    return interp(`Razao ${score} — alcalose metabólica concomitante`, '#FFC107', `Delta Gap: ${deltaGap.toFixed(1)}. Razao > 2 sugere alcalose metabólica associada.`)
+    if (score < 1) return interp(`Razão ${score} — acidose hiperclorêmica concomitante`, '#FFC107', `Delta Gap: ${deltaGap.toFixed(1)}. Razão < 1 sugere acidose metabólica com AG normal associada (hiperclorêmica).`)
+    if (score <= 2) return interp(`Razão ${score} — acidose AG elevado pura`, '#4CAF50', `Delta Gap: ${deltaGap.toFixed(1)}. Razão entre 1-2 sugere acidose com AG elevado sem distúrbio misto significativo.`)
+    return interp(`Razão ${score} — alcalose metabólica concomitante`, '#FFC107', `Delta Gap: ${deltaGap.toFixed(1)}. Razão > 2 sugere alcalose metabólica associada.`)
   }
 }
 
@@ -1479,7 +1479,7 @@ const shockIndex: Calculator = {
     if (score < 0.7) return interp(`IC: ${score} — normal`, '#4CAF50', 'Índice de choque dentro da faixa normal.')
     if (score < 0.9) return interp(`IC: ${score} — limítrofe`, '#FFC107', 'Índice de choque no limite. Monitorar de perto.')
     if (score < 1.3) return interp(`IC: ${score} — choque provável`, '#F44336', 'Instabilidade hemodinâmica provável. Avaliar causa e iniciar ressuscitação.')
-    return interp(`IC: ${score} — choque grave`, '#F44336', 'Choque grave. Ressuscitacao agressiva imediata. Considere transfusão maciça em trauma.')
+    return interp(`IC: ${score} — choque grave`, '#F44336', 'Choque grave. Ressuscitação agressiva imediata. Considere transfusão maciça em trauma.')
   }
 }
 
@@ -1557,7 +1557,7 @@ const qsofa: Calculator = {
   whenToUse: 'Triagem a beira-leito de pacientes com infecção suspeitada fora da UTI.',
   pearlsPitfalls: [
     'qSOFA >= 2 = investigar disfunção orgânica (SOFA completo).',
-    'NAO e critério diagnóstico de sepse — e ferramenta de triagem.',
+    'NÃO e critério diagnóstico de sepse — e ferramenta de triagem.',
     'Sensibilidade moderada — não usar para excluir sepse.',
     'Tres critérios: FR >= 22, PAS <= 100, alteração do nível de consciência (GCS < 15).'
   ],
@@ -1579,12 +1579,12 @@ const sofa: Calculator = {
   aliases: ['sofa', 'sequential organ failure', 'sepse', 'disfunção orgânica', 'mortalidade uti'],
   category: 'Respiratório / Sepse',
   type: 'score',
-  description: 'Avaliação sequencial de disfunção orgânica — 6 orgaos, 0-24 pontos.',
+  description: 'Avaliação sequencial de disfunção orgânica — 6 órgãos, 0-24 pontos.',
   why: 'Define sepse (Sepsis-3): infecção + aumento >= 2 pontos no SOFA. Prediz mortalidade na UTI.',
   whenToUse: 'Pacientes com infecção suspeitada ou confirmada na UTI. Monitorar diariamente.',
   pearlsPitfalls: [
     'Variação do SOFA (delta-SOFA) >= 2 em relação ao basal sugere sepse.',
-    'SOFA basal presume-se 0 se sem disfunção orgânica previa.',
+    'SOFA basal presume-se 0 se sem disfunção orgânica prévia.',
     'Inclui: PaO₂/FiO₂, plaquetas, bilirrubina, PAM/vasopressores, GCS, creatinina/diurese.',
     'SOFA >= 10 = mortalidade > 50%.',
     'Utero de cada sistema: avaliar o pior valor do dia.'
@@ -1681,7 +1681,7 @@ const ciwaAr: Calculator = {
     'CIWA >= 8: considere benzodiazepínico.',
     'CIWA >= 20: abstinência grave — risco de convulsão e delirium tremens.',
     'Não e aplicável em pacientes intubados ou não cooperativos.',
-    'Diazepam ou lorazepam sao as opções mais comuns para tratar.'
+    'Diazepam ou lorazepam são as opções mais comuns para tratar.'
   ],
   reference: 'Sullivan JT et al. Assessment of alcohol withdrawal: the revised Clinical Institute Withdrawal Assessment for Alcohol scale (CIWA-Ar). Br J Addict. 1989;84(11):1353-7.',
   availableIn: { tool: 'Tox Path', route: '/tox' },
@@ -1860,7 +1860,7 @@ const correçãoNa: Calculator = {
   },
   interpret: (score: number) => {
     return interp(
-      `Variacao estimada: ${score} mEq/L por litro de infusato`,
+      `Variação estimada: ${score} mEq/L por litro de infusato`,
       '#2196F3',
       `Cada litro de infusato eleva o sódio sérico em ~${score} mEq/L. Meta: não ultrapassar 8-10 mEq/L em 24h. NaCl 3% = 513 mEq/L. SF 0,9% = 154 mEq/L.`
     )
@@ -1910,13 +1910,13 @@ const osmolaridade: Calculator = {
   type: 'formula',
   description: 'Calcula osmolaridade sérica e gap osmolar.',
   why: 'Gap osmolar elevado sugere presença de osmol não medido (metanol, etilenoglicol, etanol).',
-  whenToUse: 'Suspeita de intóxicação por alcool toxico, avaliação de distúrbios osmolares.',
+  whenToUse: 'Suspeita de intoxicação por alcool toxico, avaliação de distúrbios osmolares.',
   pearlsPitfalls: [
     'Fórmula: 2 x Na + glicose/18 + ureia/6 (em mg/dL).',
     'Gap osmolar = osmolaridade medida - osmolaridade calculada.',
     'Gap > 10 mOsm/kg: considere alcool toxico (metanol, etilenoglicol).',
     'Etanol contribui: cada 100 mg/dL de etanol = ~22 mOsm.',
-    'Acidose metabólica AG elevado + gap osmolar elevado = intóxicação por alcool toxico até que se prove o contrário.'
+    'Acidose metabólica AG elevado + gap osmolar elevado = intoxicação por alcool toxico até que se prove o contrário.'
   ],
   reference: 'Kraut JA, Kurtz I. Toxic alcohol ingestions: clinical features, diagnosis, and management. Clin J Am Soc Nephrol. 2008;3(1):208-25.',
   inputs: [
@@ -1985,7 +1985,7 @@ const caprini: Calculator = {
   pearlsPitfalls: [
     'Score 0-1: deambulação precoce. Score 2: profilaxia mecânica (meias ou compressão). Score 3-4: farmacológica. Score >= 5: farmacológica estendida.',
     'Cada fator pontua 1-5 pontos conforme gravidade.',
-    'Incluir comorbidades, tipo de cirurgia, mobilidade e história previa.',
+    'Incluir comorbidades, tipo de cirurgia, mobilidade e história prévia.',
     'Profilaxia estendida (4 semanas) em cirurgias oncológicas de grande porte.'
   ],
   reference: 'Caprini JA. Thrombosis risk assessment as a guide to quality patient care. Dis Mon. 2005;51(2-3):70-8.',
@@ -2092,7 +2092,7 @@ const cormackLehane: Calculator = {
   items: [
     {
       id: 'grade',
-      label: 'Visualizacao laringoscopica',
+      label: 'Visualização laringoscopica',
       options: [
         { label: 'Grau I — cordas vocais completamente visíveis', value: 1 },
         { label: 'Grau II — visualização parcial das cordas vocais (comissura posterior)', value: 2 },
@@ -2103,7 +2103,7 @@ const cormackLehane: Calculator = {
   ],
   interpret: (score: number) => {
     if (score === 1) return interp('Grau I — visualização completa', '#4CAF50', 'Cordas vocais completamente visíveis. Intubação geralmente fácil.')
-    if (score === 2) return interp('Grau II — visualização parcial', '#4CAF50', 'Visualizacao parcial das cordas vocais. Intubação geralmente possível; considere bougie se dificuldade.')
+    if (score === 2) return interp('Grau II — visualização parcial', '#4CAF50', 'Visualização parcial das cordas vocais. Intubação geralmente possível; considere bougie se dificuldade.')
     if (score === 3) return interp('Grau III — apenas epiglote', '#FFC107', 'Apenas epiglote visível. Considere bougie, videolaringoscópio ou dispositivo supraglotico.')
     return interp('Grau IV — sem visualização', '#F44336', 'Nem epiglote visível. Via aérea difícil. Considere dispositivo supraglotico, cricotireoidostomia se emergência.')
   }
@@ -2142,7 +2142,7 @@ const mallampati: Calculator = {
   interpret: (score: number) => {
     if (score === 1) return interp('Classe I — baixo risco', '#4CAF50', 'Via aérea provávelmente fácil. Uvula e pilares completamente visíveis.')
     if (score === 2) return interp('Classe II — risco baixo a moderado', '#4CAF50', 'Via aérea geralmente sem dificuldade significativa.')
-    if (score === 3) return interp('Classe III — risco moderado a alto', '#FFC107', 'Visualizacao limitada. Considere videolaringoscópio e bougie disponível.')
+    if (score === 3) return interp('Classe III — risco moderado a alto', '#FFC107', 'Visualização limitada. Considere videolaringoscópio e bougie disponível.')
     return interp('Classe IV — alto risco', '#F44336', 'Alta probabilidade de via aérea difícil. Planejar abordagem alternativa. Ter dispositivo supraglotico e cricotireoidostomia acessíveis.')
   }
 }
@@ -2161,7 +2161,7 @@ const centorMcisaac: Calculator = {
   why: 'Reduz uso desnecessário de antibióticos em faringite, orientando solicitação de teste rápido ou cultura.',
   whenToUse: 'Pacientes com faringite aguda para decidir entre tratamento empírico, teste rápido ou observação.',
   pearlsPitfalls: [
-    '0-1 ponto: risco de Strep A < 10%. Nao testar, não tratar.',
+    '0-1 ponto: risco de Strep A < 10%. Não testar, não tratar.',
     '2-3 pontos: risco 15-30%. Considere teste rápido; tratar se positivo.',
     '4-5 pontos: risco 50-60%. Considere tratamento empírico ou teste rápido.',
     'McIsaac adicionou ajuste por idade (bonus < 15 anos, penalidade >= 45 anos).',
@@ -2222,7 +2222,7 @@ const rass: Calculator = {
         { label: '-2 Sedação leve — desperta brevemente ao estimulo verbal, contato visual (< 10s)', value: -2 },
         { label: '-3 Sedação moderada — movimento ou abertura ocular ao estimulo verbal, sem contato visual', value: -3 },
         { label: '-4 Sedação profunda — sem resposta ao estimulo verbal, movimento ou abertura ocular ao estimulo físico', value: -4 },
-        { label: '-5 Nao despertavel — sem resposta a estimulo verbal ou físico', value: -5 }
+        { label: '-5 Não despertável — sem resposta a estimulo verbal ou físico', value: -5 }
       ]
     }
   ],
@@ -2232,7 +2232,7 @@ const rass: Calculator = {
     if (score === 0) return interp('RASS 0 — alerta e calmo', '#4CAF50', 'Estado ideal na maioria dos cenários. Meta atingida.')
     if (score >= -2) return interp(`RASS ${score} — sedação leve`, '#4CAF50', 'Sedação leve. Meta habitual para maioria dos pacientes em VM (-2 a 0).')
     if (score === -3) return interp('RASS -3 — sedação moderada', '#FFC107', 'Sedação moderada. Aplicavel o CAM-ICU. Considere reduzir sedação se possível.')
-    return interp(`RASS ${score} — sedação profunda`, '#F44336', 'Sedação profunda. Nao aplicar CAM-ICU. Considere reduzir sedação se não houver indicação de sedação profunda.')
+    return interp(`RASS ${score} — sedação profunda`, '#F44336', 'Sedação profunda. Não aplicar CAM-ICU. Considere reduzir sedação se não houver indicação de sedação profunda.')
   }
 }
 
@@ -2331,7 +2331,7 @@ const evaNrs: Calculator = {
 
 const dppDum: Calculator = {
   id: 'dpp-dum',
-  name: 'Data Provavel do Parto (DPP)',
+  name: 'Data Provável do Parto (DPP)',
   aliases: ['dpp', 'dum', 'data provável parto', 'idade gestacional', 'gestacao', 'naegele'],
   category: 'Obstetrícia',
   type: 'formula',
@@ -2361,7 +2361,7 @@ const dppDum: Calculator = {
     return weeks * 100 + days + dpp.getDate() / 1000 + dpp.getMonth() / 100000 + dpp.getFullYear() / 10000000
   },
   interpret: (_score: number, values?: Record<string, number>) => {
-    if (!values) return interp('Preencha os campos', '#2196F3', 'Insira a data da ultima menstruacao.')
+    if (!values) return interp('Preencha os campos', '#2196F3', 'Insira a data da ultima menstruação.')
     const dum = new Date(values.dum_year, values.dum_month - 1, values.dum_day)
     const dpp = new Date(dum.getTime() + 280 * 24 * 60 * 60 * 1000)
     const today = new Date()
@@ -2414,7 +2414,7 @@ const bishopScore: Calculator = {
   ],
   interpret: (score: number) => {
     if (score < 6) return interp('Colo desfavoravel', '#F44336', 'Bishop < 6. Considere preparo cervical antes de indução (misoprostol, sonda de Foley ou dilatadores osmóticos).')
-    if (score < 8) return interp('Colo intermediário', '#FFC107', 'Bishop 6-7. Inducao pode ser tentada; preparo cervical pode beneficiar.')
+    if (score < 8) return interp('Colo intermediário', '#FFC107', 'Bishop 6-7. Indução pode ser tentada; preparo cervical pode beneficiar.')
     return interp('Colo favoravel', '#4CAF50', 'Bishop >= 8. Alta probabilidade de sucesso de indução com ocitocina.')
   }
 }
@@ -2436,7 +2436,7 @@ const alvaradoScore: Calculator = {
     'MANTRELS: Migration, Anorexia, Náusea, Tenderness RLQ, Rebound, Elevation temp, Leukocytosis, Shift left.',
     'Score <= 4: apendicite improvável. Score 5-6: possível (considere imagem). Score >= 7: provável.',
     'Não substitui imagem (TC ou ultrassom) em casos duvidosos.',
-    'Sensibilidade varia conforme populacao — menor em mulheres e idosos.',
+    'Sensibilidade varia conforme população — menor em mulheres e idosos.',
     'Score 9-10 tem valor preditivo positivo > 90%.'
   ],
   reference: 'Alvarado A. A practical score for the early diagnosis of acute appendicitis. Ann Emerg Med. 1986;15(5):557-64.',
@@ -2499,7 +2499,7 @@ const correçãoNaAdrogueMadias: Calculator = {
   },
   interpret: (score: number) => {
     return interp(
-      `Variacao estimada: ${score} mEq/L por litro de infusato`,
+      `Variação estimada: ${score} mEq/L por litro de infusato`,
       '#2196F3',
       `Cada litro do infusato eleva o sódio sérico em ~${score} mEq/L. Meta: não ultrapassar 8 mEq/L em 24h (hiponatremia crônica). NaCl 3% = 513 mEq/L. SF 0,9% = 154 mEq/L.`
     )
@@ -2540,11 +2540,11 @@ const cockcroftGault: Calculator = {
     return Math.round(clcr * 10) / 10
   },
   interpret: (score: number) => {
-    if (score >= 90) return interp(`ClCr: ${score} mL/min — normal`, '#4CAF50', 'Funcao renal normal. Ajuste de dose geralmente desnecessário.')
+    if (score >= 90) return interp(`ClCr: ${score} mL/min — normal`, '#4CAF50', 'Função renal normal. Ajuste de dose geralmente desnecessário.')
     if (score >= 60) return interp(`ClCr: ${score} mL/min — redução leve`, '#4CAF50', 'Redução leve. Verificar necessidade de ajuste conforme cada medicamento.')
     if (score >= 30) return interp(`ClCr: ${score} mL/min — redução moderada`, '#FFC107', 'Redução moderada. Ajuste de dose recomendado para muitos medicamentos.')
     if (score >= 15) return interp(`ClCr: ${score} mL/min — redução grave`, '#F44336', 'Redução grave. Ajuste de dose obrigatório. Considere avaliação nefrológica.')
-    return interp(`ClCr: ${score} mL/min — falencia renal`, '#F44336', 'Falencia renal. Considere terapia de substituicao renal. Consultar nefrologia.')
+    return interp(`ClCr: ${score} mL/min — falencia renal`, '#F44336', 'Falência renal. Considere terapia de substituição renal. Consultar nefrologia.')
   }
 }
 
@@ -2555,10 +2555,10 @@ const ckdEpi: Calculator = {
   category: 'Renal / Metabólico',
   type: 'formula',
   description: 'Taxa de filtracao glomerular estimada pela equacao CKD-EPI 2021 (sem ajuste racial).',
-  why: 'Padrão atual para estimar TFG e estadiar doença renal crônica. Versao 2021 não utiliza raca.',
+  why: 'Padrão atual para estimar TFG e estadiar doença renal crônica. Versao 2021 não utiliza raça.',
   whenToUse: 'Avaliação de função renal em adultos para estadiamento e acompanhamento de DRC.',
   pearlsPitfalls: [
-    'CKD-EPI 2021 não inclui ajuste por raca (recomendação NKF/ASN 2021).',
+    'CKD-EPI 2021 não inclui ajuste por raça (recomendação NKF/ASN 2021).',
     'Fórmula: 142 x min(Cr/k, 1)^a x max(Cr/k, 1)^-1.2 x 0.9938^idade x 1.012 (se feminino).',
     'k = 0,7 (F) ou 0,9 (M). a = -0,241 (F) ou -0,302 (M).',
     'TFG < 60 por >= 3 meses = doença renal crônica.',
@@ -2585,12 +2585,12 @@ const ckdEpi: Calculator = {
     return Math.round(gfr * 10) / 10
   },
   interpret: (score: number) => {
-    if (score >= 90) return interp(`TFG: ${score} mL/min/1,73m2 — G1`, '#4CAF50', 'Funcao renal normal ou elevada (G1). Monitorar se fatores de risco.')
+    if (score >= 90) return interp(`TFG: ${score} mL/min/1,73m2 — G1`, '#4CAF50', 'Função renal normal ou elevada (G1). Monitorar se fatores de risco.')
     if (score >= 60) return interp(`TFG: ${score} mL/min/1,73m2 — G2`, '#4CAF50', 'Redução leve (G2). Monitorar anualmente.')
     if (score >= 45) return interp(`TFG: ${score} mL/min/1,73m2 — G3a`, '#FFC107', 'Redução leve a moderada (G3a). Acompanhamento nefrologico recomendado.')
     if (score >= 30) return interp(`TFG: ${score} mL/min/1,73m2 — G3b`, '#FFC107', 'Redução moderada a grave (G3b). Nefrologia e ajuste de medicamentos.')
-    if (score >= 15) return interp(`TFG: ${score} mL/min/1,73m2 — G4`, '#F44336', 'Redução grave (G4). Preparar para terapia de substituicao renal.')
-    return interp(`TFG: ${score} mL/min/1,73m2 — G5`, '#F44336', 'Falencia renal (G5). Considere dialise ou transplante.')
+    if (score >= 15) return interp(`TFG: ${score} mL/min/1,73m2 — G4`, '#F44336', 'Redução grave (G4). Preparar para terapia de substituição renal.')
+    return interp(`TFG: ${score} mL/min/1,73m2 — G5`, '#F44336', 'Falência renal (G5). Considere dialise ou transplante.')
   }
 }
 
@@ -2601,12 +2601,12 @@ const correçãoCalcio: Calculator = {
   category: 'Renal / Metabólico',
   type: 'formula',
   description: 'Cálculo do cálcio corrigido pela albumina sérica.',
-  why: 'Calcio total e influenciado pela albumina. A correção evita diagnósticos falsos de hipo ou hipercalcemia.',
+  why: 'Cálcio total e influenciado pela albumina. A correção evita diagnósticos falsos de hipo ou hipercalcemia.',
   whenToUse: 'Pacientes com hipoalbuminemia para interpretar corretamente o cálcio sérico total.',
   pearlsPitfalls: [
     'Fórmula: Ca corrigido = Ca medido + 0,8 x (4,0 - albumina).',
     'Cada 1 g/dL de redução na albumina abaixo de 4 reduz o cálcio total em ~0,8 mg/dL.',
-    'Calcio ionizado e o padrão-ouro, mas nem sempre esta disponível.',
+    'Cálcio ionizado e o padrão-ouro, mas nem sempre esta disponível.',
     'Não e preciso em acidose ou alcalose graves (alteram ligacao cálcio-albumina).',
     'Albumina de referência: 4,0 g/dL.'
   ],
@@ -2619,9 +2619,9 @@ const correçãoCalcio: Calculator = {
     return Math.round((v.calcium + 0.8 * (4.0 - v.albumin)) * 100) / 100
   },
   interpret: (score: number) => {
-    if (score < 8.5) return interp(`Ca corrigido: ${score} mg/dL — hipocalcemia`, '#FFC107', 'Calcio corrigido abaixo do normal (8,5-10,5). Investigar causa e considere reposição.')
-    if (score <= 10.5) return interp(`Ca corrigido: ${score} mg/dL — normal`, '#4CAF50', 'Calcio corrigido dentro da faixa normal (8,5-10,5 mg/dL).')
-    return interp(`Ca corrigido: ${score} mg/dL — hipercalcemia`, '#F44336', 'Calcio corrigido elevado. Investigar causa (hiperparatireoidismo, neoplasia). Hidratação.')
+    if (score < 8.5) return interp(`Ca corrigido: ${score} mg/dL — hipocalcemia`, '#FFC107', 'Cálcio corrigido abaixo do normal (8,5-10,5). Investigar causa e considere reposição.')
+    if (score <= 10.5) return interp(`Ca corrigido: ${score} mg/dL — normal`, '#4CAF50', 'Cálcio corrigido dentro da faixa normal (8,5-10,5 mg/dL).')
+    return interp(`Ca corrigido: ${score} mg/dL — hipercalcemia`, '#F44336', 'Cálcio corrigido elevado. Investigar causa (hiperparatireoidismo, neoplasia). Hidratação.')
   }
 }
 
@@ -2638,7 +2638,7 @@ const correçãoPotassio: Calculator = {
     'Regra pratica: cada 0,3 mEq/L abaixo de 4,0 mEq/L = ~100 mEq de déficit corporal total.',
     'Reposição máxima IV: 10-20 mEq/h em veia periferica, 40 mEq/h em acesso central (com monitoramento).',
     'Não esquecer de corrigir magnésio simultaneamente — hipomagnesemia impede correção do potássio.',
-    'Potassio < 2,5 mEq/L: reposição agressiva, ECG contínuo.',
+    'Potássio < 2,5 mEq/L: reposição agressiva, ECG contínuo.',
     'Esta fórmula e uma estimativa — o déficit real pode ser maior (potássio intracelular).'
   ],
   reference: 'Gennari FJ. Hypokalemia. N Engl J Med. 1998;339(7):451-8.',
@@ -2652,7 +2652,7 @@ const correçãoPotassio: Calculator = {
   },
   interpret: (score: number, values?: Record<string, number>) => {
     const k = values?.k || 4.0
-    if (k >= 4.0) return interp('Potassio normal', '#4CAF50', 'Potassio >= 4,0 mEq/L. Sem déficit estimado.')
+    if (k >= 4.0) return interp('Potássio normal', '#4CAF50', 'Potássio >= 4,0 mEq/L. Sem déficit estimado.')
     if (k >= 3.5) return interp(`Deficit estimado: ~${score} mEq`, '#FFC107', `K+ ${k} mEq/L. Hipocalemia leve. Considere reposição oral (KCl 600 mg = 8 mEq). Corrigir magnésio.`)
     if (k >= 3.0) return interp(`Deficit estimado: ~${score} mEq`, '#FFC107', `K+ ${k} mEq/L. Hipocalemia moderada. Reposição oral ou IV. Verificar magnésio.`)
     if (k >= 2.5) return interp(`Deficit estimado: ~${score} mEq`, '#F44336', `K+ ${k} mEq/L. Hipocalemia grave. Reposição IV recomendada. ECG. Monitoramento.`)
@@ -2672,7 +2672,7 @@ const anionGap: Calculator = {
   pearlsPitfalls: [
     'AG = Na - (Cl + HCO3). Normal: 12 +/- 2 mEq/L.',
     'Corrigir por albumina: AG corrigido = AG + 2,5 x (4,0 - albumina).',
-    'AG elevado: cetoacidose, acidose latica, uremia, intóxicação (metanol, etilenoglicol, salicilato).',
+    'AG elevado: cetoacidose, acidose latica, uremia, intoxicação (metanol, etilenoglicol, salicilato).',
     'AG normal com acidose: perda de HCO3 (diarreia, acidose tubular renal, salina excessiva).',
     'Sempre calcular delta gap (delta/delta) quando AG elevado.'
   ],
@@ -2692,7 +2692,7 @@ const anionGap: Calculator = {
     const rawAg = (values?.na || 140) - ((values?.cl || 100) + (values?.hco3 || 24))
     if (score <= 14) return interp(`AG corrigido: ${score} mEq/L — normal`, '#4CAF50', `AG bruto: ${rawAg.toFixed(1)}. AG corrigido normal (<=14). Se acidose presente, considere causa com AG normal (hiperclorêmica).`)
     if (score <= 20) return interp(`AG corrigido: ${score} mEq/L — elevado`, '#FFC107', `AG bruto: ${rawAg.toFixed(1)}. AG elevado. Investigar: lactato, cetonas, função renal, toxicos. Calcular delta gap.`)
-    return interp(`AG corrigido: ${score} mEq/L — muito elevado`, '#F44336', `AG bruto: ${rawAg.toFixed(1)}. AG muito elevado. Causas: cetoacidose, acidose latica, uremia, intóxicação (metanol, etilenoglicol, salicilato). Investigar e tratar urgentemente.`)
+    return interp(`AG corrigido: ${score} mEq/L — muito elevado`, '#F44336', `AG bruto: ${rawAg.toFixed(1)}. AG muito elevado. Causas: cetoacidose, acidose latica, uremia, intoxicação (metanol, etilenoglicol, salicilato). Investigar e tratar urgentemente.`)
   }
 }
 
@@ -2706,13 +2706,13 @@ const fórmulaWinters: Calculator = {
   aliases: ['winters', 'pco2 esperada', 'compensacao respiratoria', 'acidose metabólica', 'gasometria'],
   category: 'Hemodinâmica',
   type: 'formula',
-  description: 'Calcula a pCO2 esperada na compensacao respiratoria de acidose metabólica.',
+  description: 'Calcula a pCO2 esperada na compensação respiratória de acidose metabólica.',
   why: 'Permite identificar distúrbio respiratório concomitante em pacientes com acidose metabólica.',
-  whenToUse: 'Pacientes com acidose metabólica primaria para verificar se a compensacao respiratoria e adequada.',
+  whenToUse: 'Pacientes com acidose metabólica primaria para verificar se a compensação respiratória e adequada.',
   pearlsPitfalls: [
     'pCO2 esperada = 1,5 x HCO3 + 8 (+/- 2).',
-    'Se pCO2 medida > esperada: acidose respiratoria concomitante.',
-    'Se pCO2 medida < esperada: alcalose respiratoria concomitante.',
+    'Se pCO2 medida > esperada: acidose respiratória concomitante.',
+    'Se pCO2 medida < esperada: alcalose respiratória concomitante.',
     'So valida para acidose metabólica primaria.',
     'O limite inferior da pCO2 compensatoria e ~10 mmHg.'
   ],
@@ -2729,12 +2729,12 @@ const fórmulaWinters: Calculator = {
     const lower = score - 2
     const upper = score + 2
     if (pco2 >= lower && pco2 <= upper) {
-      return interp(`pCO2 esperada: ${score} mmHg (+/- 2) — compensacao adequada`, '#4CAF50', `pCO2 medida (${pco2}) dentro da faixa esperada (${lower}-${upper}). Acidose metabólica simples com compensacao respiratoria adequada.`)
+      return interp(`pCO2 esperada: ${score} mmHg (+/- 2) — compensação adequada`, '#4CAF50', `pCO2 medida (${pco2}) dentro da faixa esperada (${lower}-${upper}). Acidose metabólica simples com compensação respiratória adequada.`)
     }
     if (pco2 > upper) {
-      return interp(`pCO2 esperada: ${score} mmHg (+/- 2) — acidose respiratoria concomitante`, '#F44336', `pCO2 medida (${pco2}) acima do esperado (${lower}-${upper}). Acidose respiratoria concomitante. Investigar causa respiratoria.`)
+      return interp(`pCO2 esperada: ${score} mmHg (+/- 2) — acidose respiratória concomitante`, '#F44336', `pCO2 medida (${pco2}) acima do esperado (${lower}-${upper}). Acidose respiratória concomitante. Investigar causa respiratória.`)
     }
-    return interp(`pCO2 esperada: ${score} mmHg (+/- 2) — alcalose respiratoria concomitante`, '#FFC107', `pCO2 medida (${pco2}) abaixo do esperado (${lower}-${upper}). Alcalose respiratoria concomitante.`)
+    return interp(`pCO2 esperada: ${score} mmHg (+/- 2) — alcalose respiratória concomitante`, '#FFC107', `pCO2 medida (${pco2}) abaixo do esperado (${lower}-${upper}). Alcalose respiratória concomitante.`)
   }
 }
 
@@ -2754,8 +2754,8 @@ const news2: Calculator = {
   pearlsPitfalls: [
     'Inclui 7 parâmetros: FR, SpO₂, O2 suplementar, temperatura, PAS, FC, consciência (ACVPU).',
     'NEWS >= 5 (ou 3 em parametro unico): considere revisao medica urgente.',
-    'NEWS >= 7: emergência clínica, considere transferencia para UTI.',
-    'Escala 2 de SpO2 para pacientes com insuficiência respiratoria hipercapnica crônica (meta SpO₂ 88-92%).',
+    'NEWS >= 7: emergência clínica, considere transferência para UTI.',
+    'Escala 2 de SpO2 para pacientes com insuficiência respiratória hipercapnica crônica (meta SpO₂ 88-92%).',
     'Frequência de monitoramento deve aumentar conforme o score.'
   ],
   reference: 'Royal College of Physicians. National Early Warning Score (NEWS) 2: Standardising the assessment of acute-illness severity in the NHS. Updated report of a working party. London: RCP, 2017.',
@@ -2785,7 +2785,7 @@ const news2: Calculator = {
     ]},
     { id: 'consciousness', label: 'Nivel de consciência', options: [
       { label: 'Alerta (A)', value: 0 },
-      { label: 'Confusao nova (C)', value: 3 },
+      { label: 'Confusão nova (C)', value: 3 },
       { label: 'Responde a voz (V)', value: 3 },
       { label: 'Responde a dor (P)', value: 3 },
       { label: 'Não responsivo (U)', value: 3 }
@@ -2794,7 +2794,7 @@ const news2: Calculator = {
   interpret: (score: number) => {
     if (score <= 4) return interp('Baixo risco', '#4CAF50', `NEWS2: ${score}. Monitoramento de rotina (mínimo a cada 12h). Manter vigilância clínica.`)
     if (score <= 6) return interp('Risco médio', '#FFC107', `NEWS2: ${score}. Monitoramento a cada 4-6h. Considere revisao medica urgente.`)
-    return interp('Alto risco', '#F44336', `NEWS2: ${score}. Emergencia clínica. Revisao medica imediata. Considere transferencia para UTI. Monitoramento contínuo.`)
+    return interp('Alto risco', '#F44336', `NEWS2: ${score}. Emergência clínica. Revisao medica imediata. Considere transferência para UTI. Monitoramento contínuo.`)
   }
 }
 
@@ -2834,7 +2834,7 @@ const critériosLight: Calculator = {
     if (score === 0) {
       return interp('Transudato', '#4CAF50', `Nenhum critério de Light positivo. Prot LP/soro: ${protRatio}. LDH LP/soro: ${ldhRatio}. Causas comuns: IC, cirrose, síndrome nefrotica.`)
     }
-    return interp(`Exsudato (${score}/3 critérios positivos)`, '#FFC107', `Prot LP/soro: ${protRatio}. LDH LP/soro: ${ldhRatio}. Exsudato: investigar causa (infeccao, neoplasia, TEP, colagenose, pancreatite). Se suspeita de transudato classificado erroneamente: calcular gradiente albumina soro-LP.`)
+    return interp(`Exsudato (${score}/3 critérios positivos)`, '#FFC107', `Prot LP/soro: ${protRatio}. LDH LP/soro: ${ldhRatio}. Exsudato: investigar causa (infecção, neoplasia, TEP, colagenose, pancreatite). Se suspeita de transudato classificado erroneamente: calcular gradiente albumina soro-LP.`)
   }
 }
 
@@ -2848,27 +2848,27 @@ const pss: Calculator = {
   aliases: ['pss', 'intóxicação', 'envenenamento', 'gravidade', 'toxicologia'],
   category: 'Toxicologia',
   type: 'classification',
-  description: 'Classificação de gravidade da intóxicação aguda em 4 graus.',
-  why: 'Padrão internacional para classificar gravidade de intóxicações, fácilitando comunicação e pesquisa.',
-  whenToUse: 'Pacientes com intóxicação aguda para classificar gravidade e guiar nível de cuidado.',
+  description: 'Classificação de gravidade da intoxicação aguda em 4 graus.',
+  why: 'Padrão internacional para classificar gravidade de intoxicações, fácilitando comunicação e pesquisa.',
+  whenToUse: 'Pacientes com intoxicação aguda para classificar gravidade e guiar nível de cuidado.',
   pearlsPitfalls: [
     'Grau 0 (nenhum): sem sinais ou sintomas.',
     'Grau 1 (leve): sintomas leves e transitórios, resolvem espontaneamente.',
-    'Grau 2 (moderado): sintomas pronunciados ou prolongados, potêncialmente ameacadores.',
-    'Grau 3 (grave): sintomas graves ou potêncialmente fatais.',
+    'Grau 2 (moderado): sintomas pronunciados ou prolongados, potencialmente ameacadores.',
+    'Grau 3 (grave): sintomas graves ou potencialmente fatais.',
     'Avaliar no pior momento clínico. Pode ser retrospectivo.'
   ],
   reference: 'Persson HE et al. Poisoning severity score. Grading of acute poisoning. J Toxicol Clin Toxicol. 1998;36(3):205-13.',
   items: [
     {
       id: 'grade',
-      label: 'Gravidade da intóxicação',
+      label: 'Gravidade da intoxicação',
       options: [
-        { label: 'Grau 0 — nenhum: sem sinais ou sintomas relacionados a intóxicação', value: 0 },
+        { label: 'Grau 0 — nenhum: sem sinais ou sintomas relacionados a intoxicação', value: 0 },
         { label: 'Grau 1 — leve: sintomas leves, transitórios, resolvem espontaneamente', value: 1 },
         { label: 'Grau 2 — moderado: sintomas pronunciados ou prolongados', value: 2 },
-        { label: 'Grau 3 — grave: sintomas graves ou potêncialmente fatais', value: 3 },
-        { label: 'Fatal — óbito causado diretamente pela intóxicação ou suas complicações', value: 4 }
+        { label: 'Grau 3 — grave: sintomas graves ou potencialmente fatais', value: 3 },
+        { label: 'Fatal — óbito causado diretamente pela intoxicação ou suas complicações', value: 4 }
       ]
     }
   ],
@@ -2877,7 +2877,7 @@ const pss: Calculator = {
     if (score === 1) return interp('PSS 1 — leve', '#4CAF50', 'Intóxicação leve. Sintomas transitórios. Observação e tratamento de suporte. Alta provável.')
     if (score === 2) return interp('PSS 2 — moderado', '#FFC107', 'Intóxicação moderada. Monitoramento próximo. Tratamento de suporte e considere antídoto específico.')
     if (score === 3) return interp('PSS 3 — grave', '#F44336', 'Intóxicação grave. UTI recomendada. Tratamento agressivo de suporte e antídoto.')
-    return interp('Fatal', '#F44336', 'Óbito relacionado a intóxicação.')
+    return interp('Fatal', '#F44336', 'Óbito relacionado a intoxicação.')
   }
 }
 
@@ -2887,7 +2887,7 @@ const nomogramaRumack: Calculator = {
   aliases: ['rumack', 'matthew', 'paracetamol', 'acetaminofeno', 'intóxicação', 'nac', 'n-acetilcisteina'],
   category: 'Toxicologia',
   type: 'formula',
-  description: 'Avalia necessidade de N-acetilcisteina em intóxicação por paracetamol.',
+  description: 'Avalia necessidade de N-acetilcisteina em intoxicação por paracetamol.',
   why: 'Identifica pacientes com risco de hepatotoxicidade que necessitam tratamento com NAC.',
   whenToUse: 'Pacientes com ingestao aguda de paracetamol com nível sérico disponível 4-24h pos-ingestao.',
   pearlsPitfalls: [
@@ -2928,7 +2928,7 @@ const qtcCorrigido: Calculator = {
   type: 'formula',
   description: 'Calcula intervalo QT corrigido pela frequência cardíaca.',
   why: 'QTc prolongado (> 500 ms) associado a risco de torsades de pointes e morte subita.',
-  whenToUse: 'Avaliação de ECG em pacientes com medicamentos que prolongam QT ou suspeita de intóxicação.',
+  whenToUse: 'Avaliação de ECG em pacientes com medicamentos que prolongam QT ou suspeita de intoxicação.',
   pearlsPitfalls: [
     'Bazett: QTc = QT / raiz quadrada de RR (intervalo em segundos). Mais usado, mas impreciso em FC extremas.',
     'Fridericia: QTc = QT / raiz cubica de RR. Mais preciso em taquicardia e bradicardia.',
@@ -2967,14 +2967,14 @@ const intervaloOsmolar: Calculator = {
   type: 'formula',
   description: 'Diferença entre osmolaridade medida e calculada para detectar osmois não medidos.',
   why: 'Gap osmolar > 10 sugere presenca de soluto não medido (metanol, etilenoglicol, etanol).',
-  whenToUse: 'Suspeita de intóxicação por alcool toxico ou avaliação de distúrbios osmolares.',
+  whenToUse: 'Suspeita de intoxicação por alcool toxico ou avaliação de distúrbios osmolares.',
   pearlsPitfalls: [
     'Gap = osmolaridade medida - osmolaridade calculada.',
     'Calculada: 2 x Na + glicose/18 + ureia/6.',
     'Normal: < 10 mOsm/kg.',
     'Gap elevado + acidose AG elevado = alcool toxico até prova em contrário.',
     'Etanol contribui: cada 100 mg/dL ~22 mOsm. Subtrair se etanol medido.',
-    'Gap normal não exclui intóxicação em fase tardia (metabolizado).'
+    'Gap normal não exclui intoxicação em fase tardia (metabolizado).'
   ],
   reference: 'Kraut JA, Kurtz I. Toxic alcohol ingestions: clinical features, diagnosis, and management. Clin J Am Soc Nephrol. 2008;3(1):208-25.',
   inputs: [
@@ -3004,7 +3004,7 @@ const idadeGestacional: Calculator = {
   aliases: ['ig', 'idade gestacional', 'dum', 'data ultima menstruacao', 'semanas gestacao'],
   category: 'Obstetrícia',
   type: 'formula',
-  description: 'Calcula idade gestacional atual em semanas e dias a partir da data da ultima menstruacao.',
+  description: 'Calcula idade gestacional atual em semanas e dias a partir da data da ultima menstruação.',
   why: 'Estimativa rápida da idade gestacional para classificar trimestre e planejar cuidados.',
   whenToUse: 'Gestantes atendidas na emergência para estimar idade gestacional rápidamente.',
   pearlsPitfalls: [
@@ -3028,7 +3028,7 @@ const idadeGestacional: Calculator = {
     return totalDays
   },
   interpret: (_score: number, values?: Record<string, number>) => {
-    if (!values) return interp('Preencha os campos', '#2196F3', 'Insira a data da ultima menstruacao.')
+    if (!values) return interp('Preencha os campos', '#2196F3', 'Insira a data da ultima menstruação.')
     const dum = new Date(values.dum_year, values.dum_month - 1, values.dum_day)
     const today = new Date()
     const diffMs = today.getTime() - dum.getTime()
@@ -3083,7 +3083,7 @@ const hellpCriteria: Calculator = {
     const plat = values?.platelets || 0
     const ldh = values?.ldh || 0
     const tgo = values?.tgo || 0
-    if (plat === 0) return interp('Sem critério de HELLP (plaquetas normais)', '#4CAF50', 'Plaquetas >= 150.000. Nao preenche critério de HELLP. Investigar outras causas se clínica sugestiva.')
+    if (plat === 0) return interp('Sem critério de HELLP (plaquetas normais)', '#4CAF50', 'Plaquetas >= 150.000. Não preenche critério de HELLP. Investigar outras causas se clínica sugestiva.')
     if (ldh === 0 && tgo === 0) return interp('HELLP incompleta', '#FFC107', 'Plaquetopenia isolada sem elevação de LDH ou TGO. Considere HELLP incompleta. Monitorar laboratório seriado.')
     if (plat === 3) return interp('HELLP — Mississippi Classe 1 (mais grave)', '#F44336', 'Plaquetas <= 50.000. Classe mais grave. Considere parto imediato. Risco de CIVD. Suporte transfusional.')
     if (plat === 2) return interp('HELLP — Mississippi Classe 2', '#F44336', 'Plaquetas 50.000-100.000. Considere parto. Corticoide se < 34 semanas. Monitoramento intensivo.')
@@ -3097,15 +3097,15 @@ const mgso4Dose: Calculator = {
   aliases: ['magnésio', 'sulfato de magnésio', 'mgso4', 'eclampsia', 'pre-eclampsia', 'zuspan', 'pritchard'],
   category: 'Obstetrícia',
   type: 'classification',
-  description: 'Esquemas de sulfato de magnésio para prevencao e tratamento de eclampsia.',
-  why: 'Sulfato de magnésio e o padrão-ouro para prevencao e tratamento de convulsões eclampsicas.',
+  description: 'Esquemas de sulfato de magnésio para prevenção e tratamento de eclampsia.',
+  why: 'Sulfato de magnésio e o padrão-ouro para prevenção e tratamento de convulsões eclampsicas.',
   whenToUse: 'Gestantes com pre-eclampsia grave ou eclampsia para anticonvulsoterapia.',
   pearlsPitfalls: [
     'Zuspan (IV puro): ataque 4 g IV em 20 min + manutenção 1-2 g/h IV.',
-    'Pritchard (IV + IM): ataque 4 g IV + 10 g IM (5 g cada gluteo) + manutenção 5 g IM 4/4h.',
-    'Monitorar: reflexo patelar, frequência respiratoria (>= 16), diurese (>= 25 mL/h).',
+    'Pritchard (IV + IM): ataque 4 g IV + 10 g IM (5 g cada glúteo) + manutenção 5 g IM 4/4h.',
+    'Monitorar: reflexo patelar, frequência respiratória (>= 16), diurese (>= 25 mL/h).',
     'Nivel terapêutico: 4-7 mEq/L. Nivel toxico: > 7 mEq/L.',
-    'Antidoto: gluconato de cálcio 1 g IV em 3-5 min se toxicidade.',
+    'Antídoto: gluconato de cálcio 1 g IV em 3-5 min se toxicidade.',
     'Manter por 24h após parto ou 24h após ultima convulsão.'
   ],
   reference: 'MAGPIE Trial. Do women with pre-eclampsia, and their babies, benefit from magnesium sulphate? The Magpie Trial: a randomised placebo-controlled trial. Lancet. 2002;359(9321):1877-90.',
@@ -3122,10 +3122,10 @@ const mgso4Dose: Calculator = {
   interpret: (score: number) => {
     if (score === 1) {
       return interp('Zuspan — IV puro', '#2196F3',
-        'ATAQUE: MgSO4 4 g IV em 20 min (diluir 8 mL de MgSO4 50% em 100 mL SF 0,9%). MANUTENCAO: 1-2 g/h IV (bomba de infusão). Monitorar reflexo patelar, FR >= 16 irpm, diurese >= 25 mL/h. Manter por 24h pos-parto. Antidoto: gluconato de cálcio 1 g IV se toxicidade.')
+        'ATAQUE: MgSO4 4 g IV em 20 min (diluir 8 mL de MgSO4 50% em 100 mL SF 0,9%). MANUTENÇÃO: 1-2 g/h IV (bomba de infusão). Monitorar reflexo patelar, FR >= 16 irpm, diurese >= 25 mL/h. Manter por 24h pos-parto. Antídoto: gluconato de cálcio 1 g IV se toxicidade.')
     }
     return interp('Pritchard — IV + IM', '#2196F3',
-      'ATAQUE: MgSO4 4 g IV em 20 min + 10 g IM (5 g em cada gluteo, agulha 20G). MANUTENCAO: 5 g IM a cada 4h (alternando gluteos). Antes de cada dose IM: verificar reflexo patelar, FR >= 16 irpm, diurese >= 25 mL/h nas últimas 4h. Manter por 24h pos-parto. Antidoto: gluconato de cálcio 1 g IV se toxicidade.')
+      'ATAQUE: MgSO4 4 g IV em 20 min + 10 g IM (5 g em cada glúteo, agulha 20G). MANUTENÇÃO: 5 g IM a cada 4h (alternando gluteos). Antes de cada dose IM: verificar reflexo patelar, FR >= 16 irpm, diurese >= 25 mL/h nas últimas 4h. Manter por 24h pos-parto. Antídoto: gluconato de cálcio 1 g IV se toxicidade.')
   }
 }
 
@@ -3139,7 +3139,7 @@ const percRule: Calculator = {
   aliases: ['perc', 'tep', 'embolia pulmonar', 'tromboembolismo', 'd-dimero', 'exclusao'],
   category: 'Vascular',
   type: 'score',
-  description: 'Exclui tromboembolismo pulmonar sem necessidade de D-dímero quando todos os critérios sao negativos.',
+  description: 'Exclui tromboembolismo pulmonar sem necessidade de D-dímero quando todos os critérios são negativos.',
   why: 'Em pacientes com probabilidade pre-teste baixa, PERC totalmente negativo exclui TEP sem D-dímero.',
   whenToUse: 'Pacientes com suspeita de TEP e probabilidade pre-teste baixa (Wells < 2 ou gestalt < 15%).',
   pearlsPitfalls: [
@@ -3147,7 +3147,7 @@ const percRule: Calculator = {
     'Qualquer critério positivo = não passa no PERC, solicitar D-dímero.',
     'So aplicar em pacientes com probabilidade pre-teste BAIXA.',
     'Não usar em pacientes com alta probabilidade clínica de TEP.',
-    'Sensibilidade ~97%. Taxa de TEP perdido < 2% (aceitável clínicamente).'
+    'Sensibilidade ~97%. Taxa de TEP perdido < 2% (aceitável clinicamente).'
   ],
   reference: 'Kline JA et al. Clinical criteria to prevent unnecessary diagnostic testing in emergency department patients with suspected pulmonary embolism. J Thromb Haemost. 2004;2(8):1247-55.',
   items: [
@@ -3183,7 +3183,7 @@ const apacheII: Calculator = {
     'Usar os piores valores das primeiras 24h de UTI.',
     'Score total: APS (0-60) + pontos por idade (0-6) + pontos por doença crônica (0-5).',
     'APACHE II 0-4: ~4% mortalidade. APACHE II >= 35: ~88% mortalidade.',
-    'Limitacao: não inclui diagnóstico de admissão (APACHE III e IV incluem).',
+    'Limitação: não inclui diagnóstico de admissão (APACHE III e IV incluem).',
     'Versao simplificada: aqui usamos os parâmetros mais impactantes para uma estimativa rápida.'
   ],
   reference: 'Knaus WA et al. APACHE II: a severity of disease classification system. Crit Care Med. 1985;13(10):818-29.',
@@ -3252,7 +3252,7 @@ const apacheII: Calculator = {
     if (score <= 24) return interp('APACHE II 20-24', '#F44336', 'Mortalidade estimada ~40%.')
     if (score <= 29) return interp('APACHE II 25-29', '#F44336', 'Mortalidade estimada ~55%.')
     if (score <= 34) return interp('APACHE II 30-34', '#F44336', 'Mortalidade estimada ~73%.')
-    return interp(`APACHE II >= 35`, '#F44336', 'Mortalidade estimada ~85-88%. Prognostico muito reservado. Considere discussao de cuidados paliativos.')
+    return interp(`APACHE II >= 35`, '#F44336', 'Mortalidade estimada ~85-88%. Prognóstico muito reservado. Considere discussão de cuidados paliativos.')
   }
 }
 

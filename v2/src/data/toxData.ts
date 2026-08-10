@@ -165,7 +165,7 @@ export const toxQuestions: ToxQuestion[] = [
     hint: 'Especialmente em membros inferiores',
     options: [
       { text: 'Sim', value: 'sim', result: 'serotoninergico' },
-      { text: 'Não', value: 'nao', result: 'simpaticomimetico' },
+      { text: 'Não', value: 'não', result: 'simpaticomimetico' },
     ],
   },
   {
@@ -174,7 +174,7 @@ export const toxQuestions: ToxQuestion[] = [
     hint: 'Ausculte abdome, pergunte sobre diurese',
     options: [
       { text: 'Sim', value: 'sim', result: 'anticolinergico' },
-      { text: 'Não', value: 'nao', result: 'simpaticomimetico' },
+      { text: 'Não', value: 'não', result: 'simpaticomimetico' },
     ],
   },
   {
@@ -183,7 +183,7 @@ export const toxQuestions: ToxQuestion[] = [
     hint: 'Verifique FC > 100, PA elevada',
     options: [
       { text: 'Sim', value: 'sim', next: 4 },
-      { text: 'Não', value: 'nao', result: 'misto' },
+      { text: 'Não', value: 'não', result: 'misto' },
     ],
   },
   {
@@ -192,7 +192,7 @@ export const toxQuestions: ToxQuestion[] = [
     hint: 'Sinais colinérgicos clássicos',
     options: [
       { text: 'Sim', value: 'sim', result: 'colinergico' },
-      { text: 'Não', value: 'nao', result: 'misto' },
+      { text: 'Não', value: 'não', result: 'misto' },
     ],
   },
   {
@@ -210,7 +210,7 @@ export const toxQuestions: ToxQuestion[] = [
     hint: 'Conte frequência respiratória por 1 minuto',
     options: [
       { text: 'Sim', value: 'sim', result: 'opioide' },
-      { text: 'Não', value: 'nao', next: 12 },
+      { text: 'Não', value: 'não', next: 12 },
     ],
   },
   {
@@ -219,16 +219,16 @@ export const toxQuestions: ToxQuestion[] = [
     hint: 'Sinais colinérgicos típicos de organofosforados',
     options: [
       { text: 'Sim', value: 'sim', result: 'colinergico' },
-      { text: 'Não', value: 'nao', result: 'sedativo' },
+      { text: 'Não', value: 'não', result: 'sedativo' },
     ],
   },
   {
     id: 20,
-    text: 'Há algum sinal ou sintoma sugestivo de intóxicação?',
+    text: 'Há algum sinal ou sintoma sugestivo de intoxicação?',
     hint: 'Náuseas, vômitos, alterações de ECG, distúrbios metabólicos',
     options: [
       { text: 'Sim, investigar', value: 'sim', result: 'misto' },
-      { text: 'Não, paciente estável', value: 'nao', result: 'normal' },
+      { text: 'Não, paciente estável', value: 'não', result: 'normal' },
     ],
   },
 ]
@@ -354,7 +354,7 @@ export const toxindromes: Record<string, Toxindrome> = {
       pupilas: { valor: 'Variável', classe: 'normal' },
       pele: { valor: 'Variável', classe: 'normal' },
     },
-    agentes: 'Considerar: poliintóxicação, intóxicação em evolução, agentes atípicos, metais pesados, álcoois tóxicos, salicilatos, paracetamol',
+    agentes: 'Considerar: poliintóxicação, intoxicação em evolução, agentes atípicos, metais pesados, álcoois tóxicos, salicilatos, paracetamol',
     antídoto: 'Recomenda-se investigação com exames complementares — considere contatar CIATox',
   },
   normal: {
@@ -471,7 +471,7 @@ export const antidotes: Antidote[] = [
     id: 'hidroxocobalâmina', name: 'Hidroxocobalâmina', indication: 'Intóxicação por cianeto', available: true,
     searchTerms: 'hidroxocobalâmina cianokit cianeto fumaca incendio acido cianidrico',
     sections: [
-      { title: 'Indicação', lines: ['Suspeita de intóxicação por cianeto (vítima de incêndio + acidose lática + rebaixamento)'] },
+      { title: 'Indicação', lines: ['Suspeita de intoxicação por cianeto (vítima de incêndio + acidose lática + rebaixamento)'] },
       { title: 'Dose', lines: ['5 g IV em 15 minutos (adultos)', 'Pediátrico: 70 mg/kg', 'Repetir 5 g se necessário'] },
     ],
     warnings: ['Colore fluidos corporais em vermelho (interfere com exames laboratoriais).'],
@@ -480,7 +480,7 @@ export const antidotes: Antidote[] = [
     id: 'fomepizol', name: 'Fomepizol / Etanol', indication: 'Álcoois tóxicos (metanol, etilenoglicol)', available: true,
     searchTerms: 'fomepizol etanol metanol etilenoglicol alcool toxico antifreeze',
     sections: [
-      { title: 'Indicação', lines: ['Suspeita de intóxicação por metanol ou etilenoglicol', 'Gap osmótico > 10 ou acidose com ânion gap'] },
+      { title: 'Indicação', lines: ['Suspeita de intoxicação por metanol ou etilenoglicol', 'Gap osmótico > 10 ou acidose com ânion gap'] },
       { title: 'Fomepizol (se disponível)', lines: ['Ataque: 15 mg/kg IV', 'Manutenção: 10 mg/kg a cada 12h', 'Após 48h: 15 mg/kg a cada 12h'] },
       { title: 'Etanol IV (alternativa)', lines: ['Ataque: 0,6-0,8 g/kg IV', 'Manutenção: 66-154 mg/kg/h', 'Meta: alcoolemia 100-150 mg/dL'] },
     ],
@@ -490,7 +490,7 @@ export const antidotes: Antidote[] = [
     id: 'lipídica', name: 'Emulsão Lipídica 20%', indication: 'Toxicidade por anestésicos locais (LAST)', available: true,
     searchTerms: 'emulsao lipídica intralipid anestésico local bupivacaina lidocaina last lipid rescue',
     sections: [
-      { title: 'Indicação', lines: ['Toxicidade sistêmica por anestésicos locais (LAST)', 'Considerar em intóxicações graves por lipofílicos'] },
+      { title: 'Indicação', lines: ['Toxicidade sistêmica por anestésicos locais (LAST)', 'Considerar em intoxicações graves por lipofílicos'] },
       { title: 'Dose', lines: ['Bolus: 1,5 mL/kg IV em 1 minuto', 'Infusão: 0,25 mL/kg/min por 30-60 min', 'Repetir bolus 1-2x se instabilidade persistir'] },
     ],
     warnings: ['Dose máxima total: 12 mL/kg. Não usar propofol como substituto.'],
@@ -534,7 +534,7 @@ export const utiCriteria: DispositionCriterion[] = [
   { text: 'Rebaixamento de consciência / Coma', detail: 'Paciente não responsivo a estímulos verbais ou com Glasgow <= 8', example: 'Letargia significativa, estupor, coma profundo', level: 'uti' },
   { text: 'Necessidade de IOT / Via aérea avançada', detail: 'Intubação orotraqueal de emergência realizada ou indicada', example: 'Falha em proteger via aérea, apneia, Glasgow <= 8', level: 'uti' },
   { text: 'Depressão respiratória (PaCO2 > 45 mmHg)', detail: 'Hipoventilação com retenção de CO2 ou FR < 10 irpm', example: 'Bradipneia por opioides, insuficiência respiratória', level: 'uti' },
-  { text: 'Hipotensão (PAS <= 80 mmHg)', detail: 'Pressão arterial sistólica <= 80 mmHg ou choque', example: 'Choque distributivo, vasoplegia por intóxicação', level: 'uti' },
+  { text: 'Hipotensão (PAS <= 80 mmHg)', detail: 'Pressão arterial sistólica <= 80 mmHg ou choque', example: 'Choque distributivo, vasoplegia por intoxicação', level: 'uti' },
   { text: 'Convulsões prolongadas ou recorrentes', detail: 'Crise convulsiva pós-ingestão ou status epilepticus', example: 'Convulsões por ADT, isoniazida, cocaína', level: 'uti' },
   { text: 'Arritmia não sinusal', detail: 'Ritmo diferente de sinusal ao monitor ou ECG', example: 'TV, FV, FA, flutter, ritmos idioventriculares', level: 'uti' },
   { text: 'BAV 2o ou 3o grau', detail: 'Bloqueio atrioventricular de segundo ou terceiro grau', example: 'Intóxicação por betabloqueadores, BCC, digoxina', level: 'uti' },

@@ -117,7 +117,7 @@ export function getVNERiZone(vneri: number): {
     label: 'Resposta parcial',
     color: '#FF9800',
     mortality: '28-40%',
-    description: 'Titular noradrenalina. Avaliar resposta a fluidos e perfusao'
+    description: 'Titular noradrenalina. Avaliar resposta a fluidos e perfusão'
   }
   if (vneri < 10.8) return {
     label: 'Resposta adequada',
@@ -126,7 +126,7 @@ export function getVNERiZone(vneri: number): {
     description: 'Manter conduta atual. Reavaliar periodicamente'
   }
   return {
-    label: 'Tonus preservado',
+    label: 'Tônus preservado',
     color: '#2196F3',
     mortality: '~39%',
     description: 'Considere reduzir NE progressivamente. Mortalidade em J (curva ascendente)'
@@ -156,15 +156,15 @@ export function getQuadrant(gapCO2: number, scvO2: number): {
   }
   if (scvO2 >= 70 && gapCO2 > 6) return {
     id: 'micro',
-    label: 'Microcirculacao inadequada',
+    label: 'Microcirculação inadequada',
     color: '#FFC107',
-    description: 'Considere otimizar perfusao periferica. Avaliar TEC e lactato.'
+    description: 'Considere otimizar perfusão periferica. Avaliar TEC e lactato.'
   }
   return {
     id: 'cytopathic',
     label: 'Hipóxia citopatica',
     color: '#2196F3',
-    description: 'Disfunção mitocondrial. Suporte de orgao. Sem intervenção hemodinâmica adicional.'
+    description: 'Disfunção mitocondrial. Suporte de órgão. Sem intervenção hemodinâmica adicional.'
   }
 }
 

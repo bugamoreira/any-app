@@ -322,18 +322,18 @@ export interface DeathSign {
 }
 
 export const sinaisMorteIminente: DeathSign[] = [
-  { sign: 'Secrecao respiratoria (sororoca)', time: '~23h' },
+  { sign: 'Secreção respiratória (sororoca)', time: '~23h' },
   { sign: 'Respiração mandibular', time: '~2,5h' },
   { sign: 'Cianose de extremidades', time: '~1h' },
   { sign: 'Ausência de pulso radial', time: '~1h' },
 ]
 
 export const cuidadosFaseFinNaoFarma: string[] = [
-  'Reduzir frequência de afericao de sinais vitais',
+  'Reduzir frequência de aferição de sinais vitais',
   'Mudanca de decubito suave (usar coxins)',
   'Suspender dieta quando RNC (comunicar família antes)',
-  'Secrecao oral: posicionar cabeça, NAO aspirar',
-  'Hidratacao labial com gaze umidificada',
+  'Secreção oral: posicionar cabeça, NÃO aspirar',
+  'Hidratação labial com gaze umidificada',
   'Permitir presenca de familiar',
 ]
 
@@ -501,11 +501,11 @@ export interface VolumeLocal {
 }
 
 export const volumesPorLocal: VolumeLocal[] = [
-  { region: 'Subclavícular', volume: 'ate 250 mL' },
+  { region: 'Subclavicular', volume: 'ate 250 mL' },
   { region: 'Deltoidea', volume: 'ate 250 mL' },
   { region: 'Abdominal', volume: 'ate 1.000 mL' },
   { region: 'Interescapular', volume: 'ate 1.000 mL' },
-  { region: 'Anterolateral da Coxa', volume: 'ate 1.500 mL (preferêncial para volumes maiores)', fullWidth: true },
+  { region: 'Anterolateral da Coxa', volume: 'ate 1.500 mL (preferencial para volumes maiores)', fullWidth: true },
 ]
 
 export interface DeviceInfo {
@@ -552,7 +552,7 @@ export const hipoMedicações: HipoMed[] = [
   { name: 'Fentanil', dose: 'A critério médico', dilution: '4 amp (50 mcg/mL) em SF 0,9% 210 mL', obs: 'Infusao continua a criterio medico' },
   { name: 'Furosemida', dose: '20-140 mg/24h', dilution: 'SF 0,9% 2 mL (bolus) ou volumes maiores (infusão contínua)' },
   { name: 'Haloperidol', dose: '0,5-30 mg/24h', dilution: 'SF 0,9% 5 mL', obs: 'Idosos frágeis: menor dose possível. Se concentração >= 1 mg/mL, usar AD como diluente (risco de precipitação com SF)' },
-  { name: 'Metadona', dose: '50% da dose oral habitual', dilution: 'SF 0,9% 10 mL', obs: 'Velocidade: 60 mL/h. Mudar local de punção a cada 24h (alto potêncial de irritação cutânea)' },
+  { name: 'Metadona', dose: '50% da dose oral habitual', dilution: 'SF 0,9% 10 mL', obs: 'Velocidade: 60 mL/h. Mudar local de punção a cada 24h (alto potencial de irritação cutânea)' },
   { name: 'Metoclopramida', dose: '30-120 mg/dia', dilution: 'SF 0,9% 2 mL (bolus)', obs: 'Pode causar irritação local' },
   { name: 'Midazolam', dose: '1-5 mg (bolus) / 10-120 mg/dia (BIC)', dilution: 'SF 0,9% 5 mL (bolus); SF 0,9% 100 mL (BIC)', obs: 'Pode causar irritação local' },
   { name: 'Morfina', dose: '2-3 mg 4/4h (bolus) ou 10-20 mg/24h (BIC)', dilution: 'Não requer diluição (bolus); SF 0,9% 100 mL (BIC)', obs: 'Sem dose máxima. Menor dose possível em idosos frágeis, DRC ou hepatopatas. Intervalo pode ser aumentado em insuficiência renal/hepática' },
@@ -569,9 +569,9 @@ export interface HipoSolucao {
 }
 
 export const hipoSolucoes: HipoSolucao[] = [
-  { solução: 'SF 0,9%', doseMax: '1.500 mL/24h por sitio', orientações: 'SF 0,45% segue as mesmas recomendações. Max 62,5 mL/h. Coxa preferêncial para volumes maiores' },
-  { solução: 'Soro glicofisiologico (2/3 SG 5% + 1/3 SF 0,9%)', doseMax: '1.500 mL/24h por sitio', orientações: 'Max 62,5 mL/h. Coxa preferêncial para volumes maiores' },
-  { solução: 'SG 5%', doseMax: '1.000 mL/24h por sitio', orientações: 'Max 62,5 mL/h. Coxa preferêncial para volumes maiores' },
+  { solução: 'SF 0,9%', doseMax: '1.500 mL/24h por sitio', orientações: 'SF 0,45% segue as mesmas recomendações. Max 62,5 mL/h. Coxa preferencial para volumes maiores' },
+  { solução: 'Soro glicofisiologico (2/3 SG 5% + 1/3 SF 0,9%)', doseMax: '1.500 mL/24h por sitio', orientações: 'Max 62,5 mL/h. Coxa preferencial para volumes maiores' },
+  { solução: 'SG 5%', doseMax: '1.000 mL/24h por sitio', orientações: 'Max 62,5 mL/h. Coxa preferencial para volumes maiores' },
 ]
 
 // --- Mitos e Verdades ---
@@ -638,7 +638,7 @@ export const referências: ReferenceCategory[] = [
       'UpToDate: Palliative care in the emergency department, 2024.',
       'UpToDate: Overview of managing common symptoms in palliative care, 2024.',
       'Protocolo de Sedação Paliativa — ANCP, 2023.',
-      'Cuidados Paliativos na Emergencia — USP, 2021.',
+      'Cuidados Paliativos na Emergência — USP, 2021.',
     ],
   },
   {
