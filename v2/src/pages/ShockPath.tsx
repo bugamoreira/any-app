@@ -10,6 +10,7 @@ import { Button } from '../components/common/Button'
 import { Collapsible } from '../components/common/Collapsible'
 import { AlertCard } from '../components/common/AlertCard'
 import { Toggle } from '../components/common/Toggle'
+import { useUnits } from '../contexts/UnitContext'
 import { useWeight } from '../contexts/WeightContext'
 import { useToast } from '../contexts/ToastContext'
 import { calcVNERi, getVNERiZone, getQuadrant, fmt, lactatoConvert } from '../utils/calculations'
@@ -398,6 +399,12 @@ function QuadrantGrid({ activeId, pristine = true }: QuadrantGridProps) {
 
 export default function ShockPath() {
   const [state, dispatch] = useReducer(shockReducer, initialState)
+  // Unidade de lactato vem do UnitContext (preferencia global persistida).
+  // Default mg/dL — predominante no Brasil.
+  const { lactateUnit, setLactateUnit } = useUnits()
+  useEffect(() => {
+    dispatch({ type: 'SET_LACTATO_UNIT', unit: lactateUnit === 'mmol/L' ? 'mmol' : 'mgdl' })
+  }, [lactateUnit])
   const { weight, setWeight } = useWeight()
   const { addToast } = useToast()
   const navigate = useNavigate()
@@ -935,7 +942,7 @@ export default function ShockPath() {
                     { value: 'mgdl', label: 'mg/dL' },
                   ]}
                   value={state.lactatoUnit}
-                  onChange={(v) => dispatch({ type: 'SET_LACTATO_UNIT', unit: v as 'mmol' | 'mgdl' })}
+                  onChange={(v) => setLactateUnit(v === 'mmol' ? 'mmol/L' : 'mg/dL')}
                   className="flex-shrink-0 w-[160px]"
                 />
               </div>
