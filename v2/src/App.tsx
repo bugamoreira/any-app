@@ -25,6 +25,10 @@ const Calculators = lazy(() => import('./pages/Calculators'))
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { session, loading } = useAuth()
+  // Bypass exclusivo de dev para validacao visual (VITE_DEV_BYPASS_AUTH=1 em
+  // .env.local, gitignored). import.meta.env.DEV garante que nunca vale em build
+  // de producao.
+  if (import.meta.env.DEV && import.meta.env.VITE_DEV_BYPASS_AUTH === '1') return <>{children}</>
   if (loading) return <Splash />
   if (!session) return <Navigate to="/login" replace />
   return <>{children}</>

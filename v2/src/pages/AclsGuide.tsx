@@ -448,7 +448,7 @@ export default function AclsGuide() {
 
   // Depender de metronome.stop (estavel), nunca do objeto metronome inteiro:
   // o value do contexto muda quando isPlaying muda, e o cleanup dispararia fora de hora.
-  const { stop: stopMetronome } = metronome
+  const { stop: stopMetronome, playAlert } = metronome
   const clearAllIntervals = useCallback(() => {
     if (cycleTimerRef.current) { clearInterval(cycleTimerRef.current); cycleTimerRef.current = null }
     if (mainTickRef.current) { clearInterval(mainTickRef.current); mainTickRef.current = null }
@@ -519,14 +519,16 @@ export default function AclsGuide() {
           // Trigger check rhythm
           dispatch({ type: 'INCREMENT_CYCLE' })
           if (navigator.vibrate) navigator.vibrate(500)
-          metronome.playAlert()
+          playAlert()
           setCheckRhythmOpen(true)
           return 0
         }
         return prev - 1
       })
     }, 1000)
-  }, [metronome])
+    // playAlert e estavel (useCallback do contexto); depender do objeto metronome
+    // inteiro trocaria a identidade a cada mudanca de isPlaying.
+  }, [playAlert])
 
   // ==========================================
   // GUIDE LOGIC
