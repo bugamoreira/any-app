@@ -80,7 +80,7 @@ export default function Hub() {
       <Header title="" subtitle="" />
       <Container>
         {/* v1: .section-title { font-size:11px; letter-spacing:2px; margin:16px 0 } */}
-        <div className="my-4 text-center">
+        <div className="my-4">
           <span className="text-[11px] font-semibold uppercase tracking-[2px] text-text-muted">
             FERRAMENTAS DISPONÍVEIS
           </span>
@@ -91,7 +91,7 @@ export default function Hub() {
             <div
               key={tool.key}
               onClick={() => navigate(tool.path)}
-              className="relative overflow-hidden bg-bg-card border border-[#333] rounded-2xl pt-6 pb-6 px-4 flex flex-col items-center text-center cursor-pointer active:scale-[0.98] active:bg-bg-hover transition-all min-h-[120px] justify-center"
+              className="relative overflow-hidden bg-[#1A1A1A] border border-[#333] rounded-2xl pt-6 pb-6 px-4 flex flex-col items-center text-center cursor-pointer active:scale-[0.98] active:bg-bg-hover transition-all min-h-[120px] justify-center"
             >
               {/* v1: .new-badge { position:absolute; top:10px; right:-28px; rotate(45deg); font-size:9px; padding:3px 30px } */}
               {tool.isNew && (

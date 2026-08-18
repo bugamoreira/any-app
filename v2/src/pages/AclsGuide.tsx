@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
+import logo from '../assets/logo.png'
 import { useMetronome } from '../contexts/MetronomeContext'
 import { Disclaimer } from '../components/layout/Disclaimer'
 // Header disponível se necessário
@@ -887,7 +888,7 @@ export default function AclsGuide() {
         <Container>
           <div className="text-center py-5 px-4 border-b border-border mb-4">
             <img
-              src="/logo.png"
+              src={logo}
               alt="ANY App"
               className="max-w-[280px] w-full h-auto mx-auto cursor-pointer"
               onClick={handleLogoClick}
@@ -1054,7 +1055,7 @@ export default function AclsGuide() {
         <Container>
           <div className="text-center py-5 px-4 border-b border-border mb-4">
             <img
-              src="/logo.png"
+              src={logo}
               alt="ANY App"
               className="max-w-[280px] w-full h-auto mx-auto cursor-pointer"
               onClick={handleLogoClick}

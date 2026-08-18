@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import logo from '../../assets/logo.png'
 
 interface HeaderProps {
   title: string
@@ -10,13 +11,13 @@ export function Header({ title, subtitle, showLogo = true }: HeaderProps) {
   const navigate = useNavigate()
 
   return (
-    <div className="text-center px-4 py-5">
+    <div className="text-center px-4 py-6">
       <div className="max-w-[500px] mx-auto">
         {showLogo && (
           <img
-            src="/logo.png"
+            src={logo}
             alt="ANY App"
-            className="max-w-[280px] w-full h-auto mx-auto cursor-pointer translate-x-[6px]"
+            className="max-w-[280px] w-full h-auto mx-auto cursor-pointer"
             onClick={() => navigate('/')}
           />
         )}
