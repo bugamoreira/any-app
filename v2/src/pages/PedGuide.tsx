@@ -324,8 +324,10 @@ const INFUSION_DATA: Record<string, InfusionDrug> = {
     id: 'vasopressina', name: 'VASOPRESSINA', category: 'vasoativos', color: '#D946EF', unit: 'mU/kg/min', range: [0.2, 2], step: 0.1, defaultVal: 0.5,
     presentation: '20 U/mL',
     dilutions: {
-      small: { drug: 1, diluent: 99, conc: 200, vol: 100, formula: 1 },
-      medium: { drug: 1, diluent: 99, conc: 200, vol: 100, formula: 1 },
+      // 2 amp (20 U/mL) + SF 98 mL = 0,4 U/mL em todas as faixas — padrao do
+      // servico, identico ao adulto (confirmado por Gustavo, 22/08/2026).
+      small: { drug: 2, diluent: 98, conc: 400, vol: 100, formula: 1 },
+      medium: { drug: 2, diluent: 98, conc: 400, vol: 100, formula: 1 },
       large: { drug: 2, diluent: 98, conc: 400, vol: 100, formula: 1 },
     },
   },
