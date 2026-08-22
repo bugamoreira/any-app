@@ -180,11 +180,11 @@ const timiNstemi: Calculator = {
 
 const graceScore: Calculator = {
   id: 'grace-score',
-  name: 'GRACE Score',
+  name: 'GRACE Score (aproximação)',
   aliases: ['grace', 'sca', 'síndrome coronariana', 'mortalidade iam'],
   category: 'Cardiologia / SCA',
   type: 'formula',
-  description: 'Mortalidade intra-hospitalar e em 6 meses pós-SCA (GRACE 2.0).',
+  description: 'Estimativa de mortalidade pós-SCA. Aproximação do GRACE — o escore oficial usa nomograma não linear; para decisão formal, use a calculadora GRACE 2.0.',
   why: 'Mais preciso que TIMI para predizer mortalidade, recomendado pela ESC para decisão de estrategia invasiva.',
   whenToUse: 'Apos diagnóstico de SCA (IAMCSST ou IAMSSST) para guiar tempo de cateterismo e nível de cuidado.',
   pearlsPitfalls: [
@@ -1215,29 +1215,33 @@ const pecarn: Calculator = {
     'Critérios diferentes para < 2 anos e >= 2 anos.',
     '< 2 anos: hematoma parietal/temporal não frontal e mecanismo grave são preditores.',
     '≥ 2 anos: cefaleia intensa e sinais de fratura de base de cranio são preditores.',
-    'Risco muito baixo (todos negativos) = VPN > 99,9% para lesão intracraniana clinicamente importante.'
+    'Risco muito baixo (todos negativos) = VPN > 99,9% para lesão intracraniana clinicamente importante.',
+    'Não é somatório: um único critério de alto risco (estado mental alterado ou fratura de crânio) já indica TC. Os demais definem a zona intermediária.',
+    'Comportamento não habitual vale para menores de 2 anos; vômitos valem para 2 anos ou mais.'
   ],
   reference: 'Kuppermann N et al. Identification of children at very low risk of clinically-important brain injuries after head trauma: a prospective cohort study. Lancet. 2009;374(9696):1160-70.',
   items: [
     {
-      id: 'age_group', label: 'Faixa etária',
+      id: 'age_group', label: 'Faixa etária (define quais critérios se aplicam)',
       options: [
         { label: '< 2 anos', value: 0 },
-        { label: '≥ 2 anos', value: 1 }
+        { label: '≥ 2 anos', value: 0 }
       ]
     },
-    { id: 'gcs_alt', label: 'GCS alterada (não age-appropriate) ou estado mental alterado', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 4 }] },
-    { id: 'skull', label: 'Fratura de cranio palpavel (< 2a) ou sinais de fratura de base (>= 2a)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 4 }] },
-    { id: 'hematoma', label: 'Hematoma subgaleal não frontal (< 2a) ou cefaleia intensa (>= 2a)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 2 }] },
-    { id: 'loc', label: 'Perda de consciência >= 5 segundos', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 2 }] },
-    { id: 'mechanism', label: 'Mecanismo de trauma grave (queda > 90 cm em < 2a, > 1,5 m em >= 2a; MVC com ejecao/capotamento/óbito; atropelamento; ciclista sem capacete)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 2 }] },
-    { id: 'behavior', label: 'Comportamento não habitual segundo os pais', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] }
+    { id: 'gcs_alt', label: 'Estado mental alterado ou GCS < 15 (critério de alto risco)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 100 }] },
+    { id: 'skull', label: 'Fratura de crânio palpável (< 2a) ou sinais de fratura de base (>= 2a) (critério de alto risco)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 100 }] },
+    { id: 'hematoma', label: 'Hematoma subgaleal occipital, parietal ou temporal (< 2a) ou cefaleia intensa (>= 2a)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
+    { id: 'loc', label: 'Perda de consciência >= 5 segundos (< 2a) ou qualquer perda de consciência (>= 2a)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
+    { id: 'mechanism', label: 'Mecanismo de trauma grave (queda > 90 cm em < 2a, > 1,5 m em >= 2a; colisão com ejeção, capotamento ou óbito; atropelamento; ciclista sem capacete)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
+    { id: 'behavior', label: 'Comportamento não habitual segundo os pais (< 2a)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
+    { id: 'vomito', label: 'Vômitos (>= 2a)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] }
   ],
   interpret: (score: number) => {
-    if (score === 0) return interp('Risco muito baixo', '#4CAF50', 'Risco de lesão intracraniana clinicamente importante < 0,02%. TC geralmente não recomendada. Observação e orientações de alta.')
-    if (score <= 2) return interp('Risco intermediário', '#FFC107', 'Considere observação por 4-6h vs TC de cranio, conforme clínica e preferência familiar.')
-    return interp('Alto risco', '#F44336', 'TC de cranio recomendada. Risco de lesão intracraniana clinicamente importante elevado.')
+    if (score >= 100) return interp('Alto risco — TC recomendada', '#F44336', 'Risco de lesão intracraniana clinicamente importante em torno de 4%. TC de crânio recomendada.')
+    if (score >= 1) return interp('Risco intermediário', '#FFC107', 'Risco em torno de 0,9%. Considere observação por 4-6 h ou TC, conforme evolução clínica, experiência do examinador, achados múltiplos, piora dos sintomas, idade abaixo de 3 meses e preferência dos pais.')
+    return interp('Risco muito baixo — TC geralmente não recomendada', '#4CAF50', 'Risco de lesão intracraniana clinicamente importante abaixo de 0,05%. TC geralmente não recomendada. Observação e orientações de alta.')
   }
+
 }
 
 const mBig: Calculator = {
@@ -1859,38 +1863,35 @@ const akinKdigo: Calculator = {
 
 const correçãoNa: Calculator = {
   id: 'correção-na',
-  name: 'Correção de Sódio (Katz)',
-  aliases: ['sódio', 'hiponatremia', 'correção sódio', 'katz', 'nacio3'],
+  name: 'Correção de sódio na hiperglicemia (Katz)',
+  aliases: ['sódio', 'hiponatremia', 'correção sódio', 'katz', 'hiperglicemia', 'pseudo-hiponatremia', 'cetoacidose'],
   category: 'Renal / Metabólico',
   type: 'formula',
-  description: 'Estima variação de sódio sérico após infusão de solução salina.',
-  why: 'Guia reposição segura de sódio em hiponatremia, prevenindo correção excessivamente rápida.',
-  whenToUse: 'Pacientes com hiponatremia que necessitam correção com solução salina.',
+  description: 'Estima o sódio real a partir do sódio medido em vigência de hiperglicemia.',
+  why: 'A hiperglicemia desloca água do intracelular e dilui o sódio medido. Sem corrigir, uma hiponatremia apenas dilucional pode ser tratada como se fosse perda real de sódio.',
+  whenToUse: 'Paciente com hiperglicemia (cetoacidose diabética, estado hiperosmolar) e sódio medido baixo.',
   pearlsPitfalls: [
-    'Fórmula de Adrogué-Madias: variação Na = (Na infusato - Na paciente) / (ACT + 1).',
-    'ACT = peso x fator (0,6 homens, 0,5 mulheres, 0,45 idosos).',
-    'Meta: corrigir no máximo 8-10 mEq/L nas primeiras 24h (risco de mielinolise).',
-    'Hiponatremia grave sintomática: NaCl 3% 150 mL em 20 min, pode repetir até 3x.',
-    'Monitorar sódio a cada 2-4h durante correção ativa.'
+    'Katz: sódio corrigido = sódio medido + 1,6 x (glicose - 100) / 100.',
+    'Hillier propõe fator 2,4, mais preciso com glicose acima de 400 mg/dL.',
+    'Se o sódio corrigido for normal ou alto, a hiponatremia é dilucional e se resolve tratando a hiperglicemia.',
+    'Sódio corrigido elevado em cetoacidose sinaliza déficit de água livre importante.',
+    'Não confundir com a fórmula de Adrogué-Madias, que estima a variação do sódio após infusão — calculadora separada.'
   ],
-  reference: 'Adrogué HJ, Madias NE. Hyponatremia. N Engl J Med. 2000;342(21):1581-9.',
+  reference: 'Katz MA. Hyperglycemia-induced hyponatremia: calculation of expected serum sodium depression. N Engl J Med. 1973;289(16):843-4. Fator alternativo: Hillier TA et al. Hyponatremia: evaluating the correction factor for hyperglycemia. Am J Med. 1999;106(4):399-403.',
   inputs: [
-    { id: 'na_patient', label: 'Sódio do paciente', unit: 'mEq/L', min: 100, max: 160, step: 1, inputMode: 'numeric' },
-    { id: 'na_infusate', label: 'Sódio do infusato', unit: 'mEq/L', min: 0, max: 855, step: 1, defaultValue: 513, inputMode: 'numeric' },
-    { id: 'weight', label: 'Peso', unit: 'kg', min: 20, max: 200, step: 0.5, inputMode: 'decimal' },
-    { id: 'act_factor', label: 'Fator de agua corporal total', unit: '', min: 0.4, max: 0.6, step: 0.05, defaultValue: 0.6, inputMode: 'decimal' }
+    { id: 'na_measured', label: 'Sódio medido', unit: 'mEq/L', min: 100, max: 160, step: 1, inputMode: 'numeric' },
+    { id: 'glucose', label: 'Glicose', unit: 'mg/dL', min: 100, max: 1500, step: 1, inputMode: 'numeric' },
+    { id: 'factor', label: 'Fator de correção', unit: '', min: 1.6, max: 2.4, step: 0.8, defaultValue: 1.6, inputMode: 'decimal' }
   ],
   formula: (v: Record<string, number>) => {
-    const act = v.weight * v.act_factor
-    const delta = (v.na_infusate - v.na_patient) / (act + 1)
-    return Math.round(delta * 100) / 100
+    const fator = v.factor || 1.6
+    const corrigido = v.na_measured + fator * ((v.glucose - 100) / 100)
+    return Math.round(corrigido * 10) / 10
   },
   interpret: (score: number) => {
-    return interp(
-      `Variação estimada: ${score} mEq/L por litro de infusato`,
-      '#2196F3',
-      `Cada litro de infusato eleva o sódio sérico em ~${score} mEq/L. Meta: não ultrapassar 8-10 mEq/L em 24h. NaCl 3% = 513 mEq/L. SF 0,9% = 154 mEq/L.`
-    )
+    if (score < 135) return interp(`Sódio corrigido ${score} mEq/L — hiponatremia verdadeira`, '#FFC107', 'A hiponatremia persiste após corrigir pela glicose. Investigar causa e conduzir como hiponatremia real.')
+    if (score > 145) return interp(`Sódio corrigido ${score} mEq/L — hipernatremia`, '#F44336', 'Sugere déficit importante de água livre, comum na cetoacidose e no estado hiperosmolar. Considere reposição de água livre junto ao tratamento da hiperglicemia.')
+    return interp(`Sódio corrigido ${score} mEq/L — normal`, '#4CAF50', 'A hiponatremia medida é dilucional pela hiperglicemia. Tende a se corrigir com o tratamento da glicemia.')
   }
 }
 
