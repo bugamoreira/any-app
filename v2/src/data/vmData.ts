@@ -115,31 +115,35 @@ export const HACOR_VARIABLES: HacorVariable[] = [
       { label: '15: 0', value: 0 },
       { label: '13-14: 2', value: 2 },
       { label: '11-12: 5', value: 5 },
-      { label: '≤ 10: 15', value: 15 },
+      { label: '≤ 10: 10', value: 10 },
     ],
   },
   {
     key: 'pf',
     label: 'PaO₂/FiO₂',
     options: [
-      { label: '> 200: 0', value: 0 },
-      { label: '175-200: 2', value: 2 },
-      { label: '150-174: 3', value: 3 },
-      { label: '125-149: 4', value: 4 },
-      { label: '< 125: 5', value: 5 },
+      { label: '≥ 201: 0', value: 0 },
+      { label: '176-200: 2', value: 2 },
+      { label: '151-175: 3', value: 3 },
+      { label: '126-150: 4', value: 4 },
+      { label: '101-125: 5', value: 5 },
+      { label: '≤ 100: 6', value: 6 },
     ],
   },
   {
     key: 'fr',
-    label: 'FR ≥ 30 irpm',
+    label: 'Frequência respiratória (irpm)',
     options: [
-      { label: 'Não: 0', value: 0 },
-      { label: 'Sim: 1', value: 1 },
+      { label: '≤ 30: 0', value: 0 },
+      { label: '31-35: 1', value: 1 },
+      { label: '36-40: 2', value: 2 },
+      { label: '41-45: 3', value: 3 },
+      { label: '≥ 46: 4', value: 4 },
     ],
   },
 ]
 
-export const HACOR_REF = 'Duan J, et al. An updated HACOR score for predicting the failure of noninvasive ventilation. Crit Care. 2017;21(1):300.'
+export const HACOR_REF = 'Duan J, et al. Assessment of heart rate, acidosis, consciousness, oxygenation, and respiratory rate to predict noninvasive ventilation failure in hypoxemic patients. Intensive Care Med. 2017;43(2):192-9. Pontuação de 0 a 25; corte ≥ 5 em 1-2 h de VNI.'
 
 // ----- Referências -----
 

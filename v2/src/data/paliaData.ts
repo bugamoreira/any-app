@@ -442,16 +442,19 @@ export const opioidOptions = [
   { value: 'morfina-ev', label: 'Morfina EV/SC' },
   { value: 'tramadol', label: 'Tramadol VO' },
   { value: 'codeina', label: 'Codeína VO' },
-  { value: 'fentanil-ev', label: 'Fentanil EV (mcg/h)' },
+  { value: 'fentanil-ev', label: 'Fentanil EV/SC contínuo (mcg/h)' },
   { value: 'metadona', label: 'Metadona VO' },
 ]
 
+// Fatores de conversao para equivalente de morfina ORAL em 24 h.
+// Fentanil e informado em mcg/h (infusao continua ou adesivo): 25 mcg/h
+// equivalem a cerca de 60 mg/24 h de morfina oral, ou seja, fator 2,4.
 export const opioidFactors: Record<string, number> = {
   'morfina-vo': 1,
   'morfina-ev': 3,
   'tramadol': 0.1,
   'codeina': 0.15,
-  'fentanil-ev': 300,
+  'fentanil-ev': 2.4,
   'metadona': 4,
 }
 
@@ -466,7 +469,7 @@ export const opioidEquivalenceTable: OpioidEquivalence[] = [
   { drug: 'Morfina EV/SC', dose: '10mg', factor: '3' },
   { drug: 'Tramadol VO', dose: '300mg', factor: '0,1' },
   { drug: 'Codeína VO', dose: '200mg', factor: '0,15' },
-  { drug: 'Fentanil EV', dose: '100mcg/h', factor: '~300' },
+  { drug: 'Fentanil EV/SC (mcg/h)', dose: '25 mcg/h', factor: '2,4' },
   { drug: 'Metadona VO', dose: 'Variável*', factor: '-' },
 ]
 

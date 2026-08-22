@@ -207,10 +207,11 @@ export function classifyWells(score: number): {
 }
 
 /** HACOR Score — Duan et al. Crit Care 2017 */
-export function calcHACOR(fc120: boolean, ph: number, gcs: number, pf: number, fr30: boolean): number {
+/** HACOR — Duan J et al. Intensive Care Med. 2017;43(2):192-9. Total de 0 a 25. */
+export function calcHACOR(fc120: boolean, ph: number, gcs: number, pf: number, fr: number): number {
   let score = 0
 
-  // FC >= 120
+  // FC >= 121
   if (fc120) score += 1
 
   // pH
@@ -223,17 +224,22 @@ export function calcHACOR(fc120: boolean, ph: number, gcs: number, pf: number, f
   if (gcs >= 15) score += 0
   else if (gcs >= 13) score += 2
   else if (gcs >= 11) score += 5
-  else score += 15
+  else score += 10
 
   // PaO2/FiO2
-  if (pf > 200) score += 0
-  else if (pf >= 175) score += 2
-  else if (pf >= 150) score += 3
-  else if (pf >= 125) score += 4
-  else score += 5
+  if (pf >= 201) score += 0
+  else if (pf >= 176) score += 2
+  else if (pf >= 151) score += 3
+  else if (pf >= 126) score += 4
+  else if (pf >= 101) score += 5
+  else score += 6
 
-  // FR >= 30
-  if (fr30) score += 1
+  // Frequencia respiratoria
+  if (fr <= 30) score += 0
+  else if (fr <= 35) score += 1
+  else if (fr <= 40) score += 2
+  else if (fr <= 45) score += 3
+  else score += 4
 
   return score
 }

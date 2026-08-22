@@ -752,12 +752,22 @@ function FerramentasScreen({ onBack }: { onBack: () => void }) {
               </select>
             </div>
             <div className="bg-bg-elevated border-2 border-accent rounded-lg p-4 text-center">
-              <div className="text-3xl font-bold text-accent">
-                {opioidResult ? `${opioidResult}` : '-'}
-              </div>
-              <div className="text-xs text-text-muted mt-1">
-                {opioidResult ? 'Dose equivalente em 24h (75% da dose calculada)' : 'Dose equivalente em 24h'}
-              </div>
+              {opioidFrom === 'metadona' || opioidTo === 'metadona' ? (
+                <div className="text-sm text-warning leading-relaxed">
+                  A equivalência da metadona não é linear: varia com a dose prévia de opioide e com o
+                  tempo de uso. Conversão sugerida apenas com orientação de especialista em dor ou
+                  cuidados paliativos.
+                </div>
+              ) : (
+                <>
+                  <div className="text-3xl font-bold text-accent">
+                    {opioidResult ? `${opioidResult}` : '-'}
+                  </div>
+                  <div className="text-xs text-text-muted mt-1">
+                    {opioidResult ? 'Dose equivalente em 24h (75% da dose calculada)' : 'Dose equivalente em 24h'}
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <h4 className="text-sm font-semibold text-text-primary mt-4 mb-2">Tabela de Equivalência (24h)</h4>
