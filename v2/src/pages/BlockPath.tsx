@@ -45,22 +45,22 @@ const topography: TopoCategory[] = [
     { lesion: 'Fratura de clavícula', blockId: 'plexo-cervical', blockName: 'Plexo cervical' }
   ]},
   { title: 'Membro superior', items: [
-    { lesion: 'Ombro, úmero proximal', blockId: 'interescalênico', blockName: 'Interescalênico' },
-    { lesion: 'Cotovelo, antebraço', blockId: 'supraclavícular', blockName: 'Supraclavicular' },
+    { lesion: 'Ombro, úmero proximal', blockId: 'interescalenico', blockName: 'Interescalênico' },
+    { lesion: 'Cotovelo, antebraço', blockId: 'supraclavicular', blockName: 'Supraclavicular' },
     { lesion: 'Antebraço distal, mão', blockId: 'axilar', blockName: 'Axilar' },
     { lesion: 'Mão, dedos', blockId: 'punho', blockName: 'Punho' }
   ]},
   { title: 'Membro inferior', items: [
     { lesion: 'Quadril, fêmur proximal', blockId: 'peng', blockName: 'PENG' },
-    { lesion: 'Quadril (alternativa)', blockId: 'fáscia-ilíaca', blockName: 'Fáscia ilíaca' },
+    { lesion: 'Quadril (alternativa)', blockId: 'fascia-iliaca', blockName: 'Fáscia ilíaca' },
     { lesion: 'Coxa anterior, joelho', blockId: 'femoral', blockName: 'Femoral' },
-    { lesion: 'Perna distal, tornozelo, pé', blockId: 'ciático-poplíteo', blockName: 'Ciático poplíteo' },
+    { lesion: 'Perna distal, tornozelo, pé', blockId: 'ciatico-popliteo', blockName: 'Ciático poplíteo' },
     { lesion: 'Complemento (face medial)', blockId: 'safeno', blockName: 'Safeno' },
     { lesion: 'Pé, dedos', blockId: 'tornozelo', blockName: 'Tornozelo' }
   ]},
   { title: 'Tórax / Costelas', items: [
     { lesion: 'Fraturas costelas (posterior)', blockId: 'esp', blockName: 'ESP' },
-    { lesion: 'Fraturas costelas (lateral)', blockId: 'serrátil', blockName: 'Serrátil anterior' },
+    { lesion: 'Fraturas costelas (lateral)', blockId: 'serratil', blockName: 'Serrátil anterior' },
     { lesion: 'Fratura costela isolada', blockId: 'intercostal', blockName: 'Intercostal' }
   ]}
 ]
@@ -68,14 +68,517 @@ const topography: TopoCategory[] = [
 const blocks: BlockData[] = [
   {
     id: 'plexo-cervical', name: 'Plexo cervical superficial', region: 'Pescoço', volume: '5-10 mL', type: 'Sensitivo',
-    indications: ['Fratura de clavícula', 'Procedimentos cervicais superficiais', 'Endarterectomia de carótida (complemento)', 'Linfonodectomia cervical', 'Acesso venoso central (jugular)'],
-    contraindications: ['Recusa do paciente', 'Infecção no local de punção', 'Alergia a anestésicos locais', 'Coagulopatia grave (relativa)'],
-    material: ['Luvas estéreis', 'Clorexidina alcoólica 0,5%', 'Campo estéril', 'Seringa 10 mL', 'Agulha 22-25G x 40mm', 'Anestésico local (5-10 mL)', 'USG linear (opcional)', 'Gel estéril'],
-    technique: ['Paciente supino, cabeça virada para lado contralateral', 'Identificar ponto médio da borda posterior do ECM', 'Transdutor transversal neste nível (opcional)', 'Inserir agulha superficialmente, posterior ao ECM', 'Depositar 5-10 mL em leque subcutâneo'],
-    tip: { title: 'Ponto de Erb', text: 'Borda posterior do ECM, junção dos terços superior e médio.' },
+    indications: [
+      'Fratura de clavícula',
+      'Procedimentos cervicais superficiais',
+      'Endarterectomia de carótida (complemento)',
+      'Linfonodectomia cervical',
+      'Acesso venoso central (jugular)'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Coagulopatia grave (relativa)'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 10 mL',
+      'Agulha 22-25G x 40mm',
+      'Anestésico local (5-10 mL)',
+      'USG linear (opcional)',
+      'Gel estéril'
+    ],
+    technique: [
+      'Paciente supino, cabeça virada para lado contralateral',
+      'Identificar ponto médio da borda posterior do ECM',
+      'Transdutor transversal neste nível (opcional)',
+      'Inserir agulha superficialmente, posterior ao ECM',
+      'Depositar 5-10 mL em leque subcutâneo'
+    ],
+    tip: { title: 'Vantagem', text: 'Técnica simples e segura — ideal para emergencista iniciante.' },
     anesthetics: [{ drug: 'Lidocaína', conc: '1-2%', vol: '5-10 mL' }, { drug: 'Bupivacaína', conc: '0,25-0,5%', vol: '5-10 mL' }, { drug: 'Ropivacaína', conc: '0,2-0,5%', vol: '5-10 mL' }]
   },
-  // TODO: adicionar os outros 13 bloqueios extraindo do HTML atual
+  {
+    id: 'interescalenico', name: 'Bloqueio interescalênico', region: 'Ombro', volume: '7-15 mL', type: 'Misto',
+    indications: [
+      'Cirurgias e procedimentos do ombro',
+      'Fratura de clavícula (porção lateral)',
+      'Fratura de úmero proximal',
+      'Luxação glenoumeral (redução)',
+      'Artroscopia de ombro'
+    ],
+    contraindications: [
+      'Doença pulmonar grave (DPOC severa, pulmão único)',
+      'Paralisia de nervo frênico contralateral',
+      'Paralisia de nervo laríngeo recorrente contralateral',
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Coagulopatia grave'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 20 mL',
+      'Agulha ecogênica 50-80mm',
+      'Anestésico local (7-15 mL)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente semi-sentado, cabeça virada para lado contralateral',
+      'Transdutor linear transversal no nível de C6',
+      'Identificar artéria carótida e veia jugular (medial)',
+      'Localizar escalenos anterior e médio',
+      'Visualizar raízes C5-C7 no sulco interescalênico',
+      'Agulha em plano, de lateral para medial',
+      'Depositar 7-15 mL ao redor das raízes'
+    ],
+    tip: { title: 'Sinal do semáforo', text: 'Raízes C5, C6 e C7 empilhadas como estruturas hipoecoicas redondas.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,5%', vol: '7-15 mL' }, { drug: 'Ropivacaína', conc: '0,5%', vol: '7-15 mL' }, { drug: 'Lidocaína', conc: '1,5-2%', vol: '10-15 mL' }]
+  },
+  {
+    id: 'supraclavicular', name: 'Bloqueio supraclavicular', region: 'Cotovelo/Antebraço', volume: '20-25 mL', type: 'Misto',
+    indications: [
+      'Cirurgias de cotovelo, antebraço e mão',
+      'Fraturas de úmero distal',
+      'Fraturas de rádio e ulna',
+      'Procedimentos em mão e punho'
+    ],
+    contraindications: [
+      'Doença pulmonar grave (risco de pneumotórax)',
+      'Insuficiência respiratória',
+      'Paralisia de nervo frênico contralateral',
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Coagulopatia grave'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 20 mL',
+      'Agulha ecogênica 50mm',
+      'Anestésico local (20-25 mL)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente supino, cabeça virada para lado contralateral',
+      'Transdutor oblíquo-sagital na fossa supraclavicular',
+      'Identificar artéria subclávia e 1ª costela',
+      'Localizar plexo posterolateral à artéria ("cacho de uvas")',
+      'Usar Doppler para mapear vasos',
+      'Agulha em plano, de lateral para medial',
+      'Avançar até o "corner pocket"',
+      'Depositar 20-25 mL de AL'
+    ],
+    tip: { title: '"Raquianestesia do MS"', text: 'Bloqueio mais completo do plexo braquial.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,5%', vol: '20-25 mL' }, { drug: 'Ropivacaína', conc: '0,5%', vol: '20-25 mL' }, { drug: 'Lidocaína', conc: '1,5-2%', vol: '20-25 mL' }]
+  },
+  {
+    id: 'axilar', name: 'Bloqueio axilar', region: 'Antebraço/Mão', volume: '20 mL', type: 'Misto',
+    indications: [
+      'Cirurgias de antebraço distal e mão',
+      'Fraturas de punho (Colles, Smith)',
+      'Procedimentos em mão e dedos',
+      'FAV para hemodiálise',
+      'Síndrome do túnel do carpo'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção na axila',
+      'Linfadenopatia axilar extensa',
+      'Coagulopatia grave',
+      'Impossibilidade de posicionar o braço'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 20 mL',
+      'Agulha ecogênica 50mm',
+      'Anestésico local (20 mL)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente supino, braço abduzido 90°, cotovelo fletido',
+      'Transdutor transversal na axila, sobre pulso axilar',
+      'Identificar artéria axilar e veias adjacentes',
+      'Localizar nervos mediano, ulnar e radial',
+      'Identificar musculocutâneo no coracobraquial',
+      'Depositar ~5 mL ao redor de cada nervo'
+    ],
+    tip: { title: 'Vantagem', text: 'Sem risco de pneumotórax ou paralisia frênica.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,25-0,5%', vol: '20 mL total' }, { drug: 'Ropivacaína', conc: '0,5%', vol: '20 mL total' }, { drug: 'Lidocaína', conc: '1,5-2%', vol: '20-25 mL' }]
+  },
+  {
+    id: 'punho', name: 'Bloqueio do punho', region: 'Mão/Dedos', volume: '9-15 mL', type: 'Misto',
+    indications: [
+      'Lacerações de mão',
+      'Procedimentos em dedos',
+      'Drenagem de abscessos',
+      'Remoção de corpo estranho',
+      'Redução de fraturas de metacarpos/falanges'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Seringa 10 mL',
+      'Agulha 25G x 25mm',
+      'Anestésico local SEM epinefrina (9-15 mL)',
+      'USG linear (opcional)'
+    ],
+    technique: [
+      'Entre palmar longo e flexor radial do carpo',
+      '2-3 cm proximal à prega do punho',
+      'Volume: 3-5 mL',
+      'Lateral ao tendão do flexor ulnar do carpo',
+      'Volume: 3-5 mL',
+      'Subcutâneo, face lateral do punho',
+      'Volume: 3-5 mL em leque'
+    ],
+    tip: undefined,
+    anesthetics: [{ drug: 'Lidocaína', conc: '1-2%', vol: '3-5 mL' }, { drug: 'Bupivacaína', conc: '0,25-0,5%', vol: '3-5 mL' }]
+  },
+  {
+    id: 'peng', name: 'Bloqueio PENG', region: 'Quadril', volume: '15-20 mL', type: 'Sensitivo',
+    indications: [
+      'Fratura de quadril (colo femoral, transtrocantérica)',
+      'Artroplastia total de quadril',
+      'Dor na articulação coxofemoral',
+      'Complemento ao bloqueio de fáscia ilíaca'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Coagulopatia grave (relativa)'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 20 mL',
+      'Agulha ecogênica 80-100mm',
+      'Anestésico local (15-20 mL)',
+      'USG curvo 2-5 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente supino, membro inferior estendido',
+      'Transdutor curvo transversal na prega inguinal',
+      'Identificar EIAI deslizando lateralmente',
+      'Deslizar medialmente até visualizar eminência iliopúbica',
+      'Identificar tendão do iliopsoas',
+      'Usar Doppler para mapear vasos femorais',
+      'Agulha em plano, de lateral para medial',
+      'Depositar 15-20 mL entre iliopsoas e osso'
+    ],
+    tip: { title: 'Vantagem', text: 'Preserva função motora do quadríceps.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,25-0,5%', vol: '15-20 mL' }, { drug: 'Ropivacaína', conc: '0,2-0,5%', vol: '15-20 mL' }, { drug: 'Lidocaína', conc: '1-2%', vol: '15-20 mL' }]
+  },
+  {
+    id: 'fascia-iliaca', name: 'Bloqueio de fáscia ilíaca', region: 'Quadril/Fêmur', volume: '30-40 mL', type: 'Sensitivo',
+    indications: [
+      'Fratura de quadril',
+      'Fratura de diáfise femoral',
+      'Artroplastia de quadril',
+      'Queimaduras de coxa anterior'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Coagulopatia grave'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 20 mL (x2)',
+      'Agulha ecogênica 80mm',
+      'Anestésico local (30-40 mL)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente supino',
+      'Transdutor linear na prega inguinal',
+      'Identificar artéria femoral e músculo iliopsoas',
+      'Localizar fáscia ilíaca sobre o iliopsoas',
+      'Agulha em plano, de lateral para medial',
+      'Avançar até "pop" ao atravessar a fáscia',
+      'Depositar 30-40 mL observando dissecção subfascial'
+    ],
+    tip: { title: 'vs PENG', text: 'Maior cobertura, porém maior bloqueio motor.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,25%', vol: '30-40 mL' }, { drug: 'Ropivacaína', conc: '0,2-0,375%', vol: '30-40 mL' }, { drug: 'Lidocaína', conc: '1%', vol: '30-40 mL' }]
+  },
+  {
+    id: 'femoral', name: 'Bloqueio femoral', region: 'Coxa/Joelho', volume: '15-20 mL', type: 'Misto',
+    indications: [
+      'Fratura de fêmur (diáfise)',
+      'Fratura de patela',
+      'Cirurgia de joelho (LCA, ATJ)',
+      'Biópsia de coxa anterior'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Coagulopatia grave',
+      'Cirurgia vascular femoral prévia (relativa)'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 20 mL',
+      'Agulha ecogênica 50mm',
+      'Anestésico local (15-20 mL)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente supino',
+      'Transdutor linear transversal na prega inguinal',
+      'Identificar artéria e veia femorais',
+      'Localizar nervo femoral lateral à artéria',
+      'Agulha em plano, de lateral para medial',
+      'Depositar 15-20 mL ao redor do nervo'
+    ],
+    tip: { title: 'Mnemônico NAVEL', text: 'Nervo, Artéria, Veia, Espaço, Linfáticos.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,25-0,5%', vol: '15-20 mL' }, { drug: 'Ropivacaína', conc: '0,2-0,5%', vol: '15-20 mL' }, { drug: 'Lidocaína', conc: '1-2%', vol: '15-20 mL' }]
+  },
+  {
+    id: 'safeno', name: 'Bloqueio do safeno', region: 'Perna medial', volume: '8-10 mL', type: 'Sensitivo',
+    indications: [
+      'Complemento ao bloqueio ciático',
+      'Safenectomia',
+      'Cirurgia de varizes',
+      'Procedimentos em face medial da perna',
+      'Cirurgia de joelho (complemento)'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Coagulopatia grave (relativa)'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 10 mL',
+      'Agulha ecogênica 50mm',
+      'Anestésico local (8-10 mL)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente supino, coxa em leve abdução e rotação externa',
+      'Transdutor transversal no terço médio da coxa',
+      'Identificar artéria femoral no canal adutor',
+      'Localizar nervo safeno anterolateral à artéria',
+      'Agulha em plano',
+      'Depositar 8-10 mL ao redor do nervo'
+    ],
+    tip: { title: 'Canal adutor', text: 'Canal de Hunter — vasto medial, adutor longo e magno.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,25-0,5%', vol: '8-10 mL' }, { drug: 'Ropivacaína', conc: '0,2-0,5%', vol: '8-10 mL' }, { drug: 'Lidocaína', conc: '1%', vol: '10 mL' }]
+  },
+  {
+    id: 'ciatico-popliteo', name: 'Bloqueio ciático poplíteo', region: 'Perna/Pé', volume: '15-20 mL', type: 'Misto',
+    indications: [
+      'Cirurgias de pé e tornozelo',
+      'Fraturas de tornozelo (maléolo lateral/posterior)',
+      'Reparo de tendão de Aquiles',
+      'Amputação abaixo do joelho',
+      'Dor crônica de pé'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Coagulopatia grave',
+      'Neuropatia prévia do ciático (relativa)'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 20 mL',
+      'Agulha ecogênica 80mm',
+      'Anestésico local (15-20 mL)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente em decúbito ventral ou lateral',
+      'Transdutor linear transversal na fossa poplítea',
+      'Identificar artéria poplítea (profunda)',
+      'Localizar nervos tibial e fibular comum',
+      'Escanear proximalmente até a junção',
+      'Posicionar 5-10 cm acima da prega poplítea',
+      'Agulha em plano, de lateral para medial',
+      'Depositar 15-20 mL na bainha paraneurial'
+    ],
+    tip: { title: 'Complemento', text: 'Associar bloqueio do safeno para cobertura completa.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,5%', vol: '15-20 mL' }, { drug: 'Ropivacaína', conc: '0,5%', vol: '15-20 mL' }, { drug: 'Lidocaína', conc: '1,5-2%', vol: '15-20 mL' }]
+  },
+  {
+    id: 'tornozelo', name: 'Bloqueio do tornozelo', region: 'Pé/Dedos', volume: '15-25 mL', type: 'Misto',
+    indications: [
+      'Procedimentos no pé',
+      'Remoção de corpo estranho',
+      'Drenagem de abscessos',
+      'Redução de fraturas de metatarsos/dedos',
+      'Cirurgia de unha encravada'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Doença vascular periférica grave'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Seringa 20 mL',
+      'Agulha 25G x 25mm',
+      'Anestésico local SEM epinefrina (15-25 mL)',
+      'USG linear (opcional)'
+    ],
+    technique: [
+      'Posterior ao maléolo medial • 5 mL',
+      'Entre extensor do hálux e tibial anterior • 3-5 mL',
+      'Subcutâneo anterolateral • 3-5 mL em leque',
+      'Anterior ao maléolo medial • 3-5 mL',
+      'Entre maléolo lateral e Aquiles • 3-5 mL'
+    ],
+    tip: undefined,
+    anesthetics: [{ drug: 'Lidocaína', conc: '1%', vol: '15-25 mL' }, { drug: 'Bupivacaína', conc: '0,25%', vol: '15-25 mL' }]
+  },
+  {
+    id: 'esp', name: 'Bloqueio ESP', region: 'Tórax', volume: '20-30 mL', type: 'Sensitivo',
+    indications: [
+      'Fraturas de costelas (múltiplas)',
+      'Dor torácica pós-trauma',
+      'Analgesia pós-toracotomia',
+      'Herpes zoster torácico',
+      'Cirurgias de mama (complemento)'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Coagulopatia grave',
+      'Deformidade vertebral grave (relativa)'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 20 mL (x2)',
+      'Agulha ecogênica 80mm',
+      'Anestésico local (20-30 mL)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente sentado ou decúbito lateral',
+      'Transdutor sagital, ~3 cm lateral à linha média',
+      'Identificar processos transversos',
+      'Localizar músculos trapézio, romboide, eretor da espinha',
+      'Agulha em plano, direção crânio-caudal',
+      'Avançar até contactar o processo transverso',
+      'Aspirar e injetar 2-3 mL teste',
+      'Observar elevação do eretor (hidrodissecção)',
+      'Completar com 20-30 mL de AL'
+    ],
+    tip: { title: 'Vantagem', text: 'Bloqueio interfascial com excelente perfil de segurança.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,25%', vol: '20-30 mL' }, { drug: 'Ropivacaína', conc: '0,375%', vol: '20-30 mL' }, { drug: 'Lidocaína', conc: '1%', vol: '20-30 mL' }]
+  },
+  {
+    id: 'serratil', name: 'Bloqueio do serrátil anterior', region: 'Tórax lateral', volume: '20-30 mL', type: 'Sensitivo',
+    indications: [
+      'Fraturas de costelas anterolaterais',
+      'Drenagem torácica',
+      'Cirurgia de mama (complemento)',
+      'Herpes zoster torácico lateral',
+      'Toracostomia'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Coagulopatia grave'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 20 mL (x2)',
+      'Agulha ecogênica 50-80mm',
+      'Anestésico local (20-30 mL)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Paciente supino ou decúbito lateral, braço abduzido',
+      'Transdutor na linha axilar média, 4ª-5ª costela',
+      'Identificar músculo grande dorsal (superficial)',
+      'Localizar músculo serrátil anterior (sobre costelas)',
+      'Agulha em plano',
+      'Depositar AL no plano profundo ao serrátil (20-30 mL)'
+    ],
+    tip: { title: 'Superficial vs Profundo', text: 'Plano profundo oferece maior dispersão e cobertura.' },
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,25%', vol: '20-30 mL' }, { drug: 'Ropivacaína', conc: '0,2-0,375%', vol: '20-30 mL' }]
+  },
+  {
+    id: 'intercostal', name: 'Bloqueio intercostal', region: 'Costela', volume: '3-5 mL/nível', type: 'Sensitivo',
+    indications: [
+      'Fratura de costela isolada',
+      'Drenagem torácica (anestesia local)',
+      'Toracostomia',
+      'Biópsia pleural'
+    ],
+    contraindications: [
+      'Recusa do paciente',
+      'Infecção no local de punção',
+      'Alergia a anestésicos locais',
+      'Coagulopatia grave'
+    ],
+    material: [
+      'Luvas estéreis',
+      'Clorexidina alcoólica 0,5%',
+      'Campo estéril',
+      'Seringa 10 mL',
+      'Agulha 22-25G x 40mm',
+      'Anestésico local (3-5 mL por nível)',
+      'USG linear 6-13 MHz',
+      'Gel estéril + capa transdutor'
+    ],
+    technique: [
+      'Identificar o nível da costela a ser bloqueada',
+      'Transdutor linear sobre a costela',
+      'Visualizar costela e músculo intercostal',
+      'Agulha até o sulco costal (borda inferior)',
+      'Aspirar (descartar punção vascular/pleural)',
+      'Depositar 3-5 mL de AL',
+      'Repetir nos níveis adjacentes se necessário'
+    ],
+    tip: undefined,
+    anesthetics: [{ drug: 'Bupivacaína', conc: '0,25-0,5%', vol: '3-5 mL' }, { drug: 'Ropivacaína', conc: '0,5%', vol: '3-5 mL' }, { drug: 'Lidocaína', conc: '1-2%', vol: '3-5 mL' }]
+  }
 ]
 
 // BLOCKER-01: bloqueios ainda nao implementados sao marcados como "Em breve"
@@ -88,22 +591,22 @@ const isImplemented = (id: string): boolean => implementedBlockIds.has(id)
 const blockList = [
   { region: 'Pescoço', items: [{ id: 'plexo-cervical', name: 'Plexo cervical superficial', volume: '5-10 mL' }] },
   { region: 'Membro superior', items: [
-    { id: 'interescalênico', name: 'Interescalênico', volume: '7-15 mL' },
-    { id: 'supraclavícular', name: 'Supraclavicular', volume: '20-25 mL' },
+    { id: 'interescalenico', name: 'Interescalênico', volume: '7-15 mL' },
+    { id: 'supraclavicular', name: 'Supraclavicular', volume: '20-25 mL' },
     { id: 'axilar', name: 'Axilar', volume: '20 mL' },
     { id: 'punho', name: 'Punho', volume: '9-15 mL' }
   ]},
   { region: 'Membro inferior', items: [
     { id: 'peng', name: 'PENG', volume: '15-20 mL' },
-    { id: 'fáscia-ilíaca', name: 'Fáscia ilíaca', volume: '30-40 mL' },
+    { id: 'fascia-iliaca', name: 'Fáscia ilíaca', volume: '30-40 mL' },
     { id: 'femoral', name: 'Femoral', volume: '15-20 mL' },
     { id: 'safeno', name: 'Safeno', volume: '8-10 mL' },
-    { id: 'ciático-poplíteo', name: 'Ciático poplíteo', volume: '15-20 mL' },
+    { id: 'ciatico-popliteo', name: 'Ciático poplíteo', volume: '15-20 mL' },
     { id: 'tornozelo', name: 'Tornozelo', volume: '15-25 mL' }
   ]},
   { region: 'Tórax', items: [
     { id: 'esp', name: 'ESP (Eretor da espinha)', volume: '20-30 mL' },
-    { id: 'serrátil', name: 'Serrátil anterior', volume: '20-30 mL' },
+    { id: 'serratil', name: 'Serrátil anterior', volume: '20-30 mL' },
     { id: 'intercostal', name: 'Intercostal', volume: '3-5 mL/nível' }
   ]}
 ]
@@ -289,7 +792,7 @@ export default function BlockPath() {
             <button onClick={() => setScreen('home')} className="flex items-center gap-1.5 text-accent text-sm font-medium bg-transparent border-none cursor-pointer mb-5 px-0 min-h-[44px]"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>Início</button>
             <div className="bg-bg-elevated border-l-4 border-l-accent rounded-t-xl p-5 mb-0">
               <h2 className="text-xl font-semibold mb-1">Lista de bloqueios</h2>
-              <p className="text-sm text-text-secondary">{implementedBlockIds.size} de 14 disponível{implementedBlockIds.size === 1 ? '' : 's'} — outros em breve</p>
+              <p className="text-sm text-text-secondary">{implementedBlockIds.size === 14 ? '14 bloqueios disponíveis' : `${implementedBlockIds.size} de 14 disponíveis — outros em breve`}</p>
             </div>
             <div className="bg-[#111] border border-[#333] rounded-b-xl p-4">
               {blockList.map(cat => (
