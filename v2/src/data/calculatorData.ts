@@ -1242,32 +1242,63 @@ const pecarn: Calculator = {
 
 const mBig: Calculator = {
   id: 'mbig',
-  name: 'mBIG Score',
-  aliases: ['mbig', 'big', 'tce', 'pediátrico', 'criança', 'trauma craniano leve'],
+  name: 'mBIG — Modified Brain Injury Guidelines',
+  aliases: ['mbig', 'big', 'brain injury guidelines', 'tce', 'hemorragia intracraniana', 'hsd', 'hed', 'hsa', 'trauma craniano'],
   category: 'Trauma',
   type: 'score',
-  description: 'Estratificacao de TCE leve pediátrico para necessidade de neuroimagem e internação.',
-  why: 'Complementa o PECARN com dados mais recentes, especialmente para decisão de internação.',
-  whenToUse: 'TCE leve (GCS 13-15) em criancas para decidir entre observação, TC e internação.',
+  description: 'Estratifica o TCE leve COM hemorragia intracraniana ja documentada na TC, definindo observacao no DE, internacao ou leito monitorado com neurocirurgia.',
+  why: 'Reduz TC de controle, parecer de neurocirurgia e internacoes desnecessarias em sangramentos pequenos. Na validacao multicentrica da AAST, os criterios de mBIG 3 mostraram alta sensibilidade para necessidade de intervencao neurocirurgica.',
+  whenToUse: 'Adulto com TCE, GCS 13-15 (ou basal) e hemorragia intracraniana na TC inicial. NAO serve para decidir se a TC deve ser feita — para isso use Canadian CT Head ou, em criancas, PECARN.',
   pearlsPitfalls: [
-    'Derivado de banco de dados multicêntrico pediátrico.',
-    'Foca em achados clínicos de fácil identificacao no DE.',
-    'Não substitui PECARN — usar em conjunto para decisão.',
-    'Baixo risco = observação e alta segura.'
+    'Pre-requisito: TC ja realizada e com sangramento. Sem hemorragia, o escore nao se aplica.',
+    'Nao e somatorio: vale sempre a pior categoria. Um unico criterio de mBIG 3 define a conduta.',
+    'Qualquer hematoma extradural e qualquer hemorragia intraventricular sao mBIG 3, independentemente do tamanho.',
+    'Uso de anticoagulante ou antiagregante (incluindo DOAC e heparina) e mBIG 3.',
+    'Intoxicacao permite mBIG 2, mas exige exame neurologico normal.',
+    'Validado em adultos. Nao ha versao pediatrica validada — o kBIG e uma proposta recente, ainda sem validacao.',
+    'Medir o maior diametro do sangramento no corte axial.'
   ],
-  reference: 'Borgialli DA et al. Performance of the Pediatric Glasgow Coma Scale Score in the Evaluation of Children With Blunt Head Trauma. Acad Emerg Med. 2016;23(8):878-84.',
+  reference: 'Joseph B et al. The BIG (brain injury guidelines) project. J Trauma Acute Care Surg. 2014;76(4):965-9. Validacao: Joseph B et al. Validating the Brain Injury Guidelines (BIG): AAST prospective multi-institutional trial. J Trauma Acute Care Surg. 2022.',
   items: [
-    { id: 'gcs', label: 'GCS', options: [
-      { label: '15', value: 0 }, { label: '14', value: 1 }, { label: '13', value: 2 }
+    { id: 'exame', label: 'Exame neurologico', options: [
+      { label: 'Normal, GCS 13-15 ou basal', value: 0 },
+      { label: 'Anormal: GCS < 13, deficit focal ou alteracao pupilar', value: 100 }
     ]},
-    { id: 'skull_fx', label: 'Fratura de cranio suspeitada ou confirmada', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 2 }] },
-    { id: 'scalp', label: 'Hematoma subgaleal', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
-    { id: 'mechanism', label: 'Mecanismo grave', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] }
+    { id: 'anticoag', label: 'Anticoagulante ou antiagregante (inclui DOAC e heparina)', options: [
+      { label: 'Nao', value: 0 }, { label: 'Sim', value: 100 }
+    ]},
+    { id: 'intox', label: 'Intoxicacao', options: [
+      { label: 'Nao', value: 0 }, { label: 'Sim', value: 1 }
+    ]},
+    { id: 'fratura', label: 'Fratura de cranio', options: [
+      { label: 'Ausente', value: 0 },
+      { label: 'Nao desviada', value: 1 },
+      { label: 'Desviada', value: 100 }
+    ]},
+    { id: 'hsd_hip', label: 'Hematoma subdural ou hemorragia intraparenquimatosa (maior diametro)', options: [
+      { label: 'Ausente ou ate 4 mm', value: 0 },
+      { label: '5 a 7,9 mm', value: 1 },
+      { label: '8 mm ou mais', value: 100 }
+    ]},
+    { id: 'hsa', label: 'Hemorragia subaracnoidea', options: [
+      { label: 'Ausente ou traco (ate 3 sulcos, < 1 mm)', value: 0 },
+      { label: 'Um hemisferio, 1 a 3 mm', value: 1 },
+      { label: 'Bi-hemisferica ou > 3 mm', value: 100 }
+    ]},
+    { id: 'hed', label: 'Hematoma extradural', options: [
+      { label: 'Ausente', value: 0 }, { label: 'Presente (qualquer tamanho)', value: 100 }
+    ]},
+    { id: 'hiv', label: 'Hemorragia intraventricular', options: [
+      { label: 'Ausente', value: 0 }, { label: 'Presente', value: 100 }
+    ]},
+    { id: 'multiplos', label: 'Multiplos focos de sangramento ou desvio de linha media', options: [
+      { label: 'Nao', value: 0 }, { label: 'Sim', value: 100 }
+    ]}
   ],
   interpret: (score: number) => {
-    if (score === 0) return interp('Risco muito baixo', '#4CAF50', 'TC e internação provávelmente desnecessárias. Observação e orientações.')
-    if (score <= 2) return interp('Risco baixo a moderado', '#FFC107', 'Considere TC de cranio. Observação prolongada se TC não realizada.')
-    return interp('Risco elevado', '#F44336', 'TC de cranio recomendada. Considere internação para observação.')
+    if (score >= 100) return interp('mBIG 3 — alto risco', '#F44336', 'Considere leito monitorado (UTI ou unidade neurocritica), parecer de neurocirurgia e TC de controle.')
+    if (score >= 1) return interp('mBIG 2 — risco moderado', '#FFC107', 'Considere internacao por 24 a 48 h com avaliacao neurologica a cada 2 h nas primeiras 6 h e depois a cada 4 h. TC de controle e parecer de neurocirurgia geralmente nao necessarios sem piora clinica.')
+    return interp('mBIG 1 — baixo risco', '#4CAF50', 'Considere observacao de 6 h no DE com avaliacao neurologica a cada 2 h. TC de controle e parecer de neurocirurgia geralmente nao necessarios. Alta do DE se mantiver estabilidade.')
   }
 }
 
