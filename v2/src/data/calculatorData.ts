@@ -277,11 +277,12 @@ const chadsVasc: Calculator = {
   items: [
     { id: 'chf', label: 'ICC / disfunção ventricular (C)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
     { id: 'htn', label: 'Hipertensão (H)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
-    { id: 'age75', label: 'Idade >= 75 anos (A2)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 2 }] },
     { id: 'dm', label: 'Diabetes mellitus (D)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
     { id: 'stroke', label: 'AVC / AIT / tromboembolismo prévio (S2)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 2 }] },
     { id: 'vascular', label: 'Doença vascular (IAM prévio, DAP, placa aórtica) (V)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
-    { id: 'age65', label: 'Idade 65-74 anos (A)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] },
+    { id: 'idade', label: 'Idade (A / A2)', options: [
+      { label: '< 65 anos', value: 0 }, { label: '65-74 anos', value: 1 }, { label: '>= 75 anos', value: 2 }
+    ]},
     { id: 'sex', label: 'Sexo feminino (Sc)', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 1 }] }
   ],
   interpret: (score: number) => {
@@ -968,18 +969,12 @@ const glasgowBlatchford: Calculator = {
       { label: '10,0-24,9 mmol/L (28-69,9 mg/dL)', value: 4 },
       { label: '≥ 25 mmol/L (>= 70 mg/dL)', value: 6 }
     ]},
-    { id: 'hb_male', label: 'Hemoglobina (homens)', options: [
-      { label: '≥ 13 g/dL', value: 0 },
-      { label: '12,0-12,9 g/dL', value: 1 },
-      { label: '10,0-11,9 g/dL', value: 3 },
-      { label: '< 10 g/dL', value: 6 },
-      { label: 'Não aplicável (sexo feminino)', value: 0 }
-    ]},
-    { id: 'hb_female', label: 'Hemoglobina (mulheres)', options: [
-      { label: '≥ 12 g/dL', value: 0 },
-      { label: '10,0-11,9 g/dL', value: 1 },
-      { label: '< 10 g/dL', value: 6 },
-      { label: 'Não aplicável (sexo masculino)', value: 0 }
+    { id: 'hb', label: 'Hemoglobina (faixas diferentes por sexo)', options: [
+      { label: 'Homem >= 13 ou mulher >= 12 g/dL', value: 0 },
+      { label: 'Homem 12,0-12,9 g/dL', value: 1 },
+      { label: 'Mulher 10,0-11,9 g/dL', value: 1 },
+      { label: 'Homem 10,0-11,9 g/dL', value: 3 },
+      { label: '< 10 g/dL (qualquer sexo)', value: 6 }
     ]},
     { id: 'sbp', label: 'Pressão arterial sistólica', options: [
       { label: '≥ 110 mmHg', value: 0 },
@@ -1175,7 +1170,8 @@ const tash: Calculator = {
     'Score >= 16 = probabilidade > 50% de necessidade de transfusão maciça.',
     'Considere ativar protocolo de transfusão maciça com score >= 15.',
     'Inclui dados clínicos e laboratoriais simples disponíveis na admissão.',
-    'Sensibilidade aumenta se combinado com avaliação clínica (ABC score).'
+    'Sensibilidade aumenta se combinado com avaliação clínica (ABC score).',
+    'Pontuação de 0 a 31. Base excess e hemoglobina sao graduados por faixa — usar o pior valor da admissao.'
   ],
   reference: 'Yucel N et al. Trauma Associated Severe Hemorrhage (TASH)-Score: probability of mass transfusion as surrogate for life threatening hemorrhage after multiple trauma. J Trauma. 2006;60(6):1228-36.',
   items: [
@@ -1191,7 +1187,11 @@ const tash: Calculator = {
     { id: 'fast', label: 'Líquido livre intra-abdominal (FAST)', options: [{ label: 'Negativo', value: 0 }, { label: 'Positivo', value: 3 }] },
     { id: 'fracture', label: 'Fratura instável de pelve', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 6 }] },
     { id: 'hr', label: 'Frequência cardíaca >= 120 bpm', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 2 }] },
-    { id: 'be', label: 'Base excess <= -10', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 4 }] },
+    { id: 'be', label: 'Base excess', options: [
+      { label: '≥ -2 mmol/L', value: 0 }, { label: '< -2 mmol/L', value: 1 },
+      { label: '< -6 mmol/L', value: 3 }, { label: '< -10 mmol/L', value: 4 }
+    ]},
+    { id: 'femur', label: 'Fratura de fêmur aberta ou luxada', options: [{ label: 'Não', value: 0 }, { label: 'Sim', value: 3 }] },
     { id: 'sex', label: 'Sexo masculino', options: [{ label: 'Feminino', value: 0 }, { label: 'Masculino', value: 1 }] }
   ],
   interpret: (score: number) => {
@@ -1737,21 +1737,17 @@ const ciwaAr: Calculator = {
       { label: 'Atividade normal (0)', value: 0 }, { label: 'Atividade um pouco acima do normal (1-3)', value: 2 },
       { label: 'Moderadamente inquieto e agitado (4-6)', value: 5 }, { label: 'Deambula durante a entrevista ou agitação constante (7)', value: 7 }
     ]},
-    { id: 'tactile', label: 'Alterações táteis (prurido, queimacao, dormencia, formigamento)', options: [
-      { label: 'Nenhuma (0)', value: 0 }, { label: 'Leve (1-2)', value: 1 },
-      { label: 'Moderada (3-4)', value: 3 }, { label: 'Alucinações táteis continuas (5-7)', value: 6 }
+    { id: 'tactile', label: 'Alterações táteis (prurido, queimação, dormência, formigamento)', options: [
+      { label: '0 — nenhuma', value: 0 }, { label: '1 — prurido/dormência muito leve', value: 1 }, { label: '2 — leve', value: 2 }, { label: '3 — moderada', value: 3 }, { label: '4 — alucinações moderadamente graves', value: 4 }, { label: '5 — alucinações graves', value: 5 }, { label: '6 — alucinações muito graves', value: 6 }, { label: '7 — alucinações contínuas', value: 7 }
     ]},
-    { id: 'auditory', label: 'Alterações auditivas', options: [
-      { label: 'Nenhuma (0)', value: 0 }, { label: 'Leve (sons mais agudos, assustam) (1-2)', value: 1 },
-      { label: 'Moderada (3-4)', value: 3 }, { label: 'Alucinações auditivas continuas (5-7)', value: 6 }
+    { id: 'auditory', label: 'Alterações auditivas (sons ásperos, assustadores)', options: [
+      { label: '0 — ausente', value: 0 }, { label: '1 — muito leve', value: 1 }, { label: '2 — leve', value: 2 }, { label: '3 — moderada', value: 3 }, { label: '4 — alucinações moderadamente graves', value: 4 }, { label: '5 — alucinações graves', value: 5 }, { label: '6 — alucinações muito graves', value: 6 }, { label: '7 — alucinações contínuas', value: 7 }
     ]},
-    { id: 'visual', label: 'Alterações visuais (sensibilidade a luz, visão alterada)', options: [
-      { label: 'Nenhuma (0)', value: 0 }, { label: 'Leve (sensibilidade a luz) (1-2)', value: 1 },
-      { label: 'Moderada (3-4)', value: 3 }, { label: 'Alucinações visuais continuas (5-7)', value: 6 }
+    { id: 'visual', label: 'Alterações visuais (sensibilidade a luz, cores, formas)', options: [
+      { label: '0 — ausente', value: 0 }, { label: '1 — muito leve', value: 1 }, { label: '2 — leve', value: 2 }, { label: '3 — moderada', value: 3 }, { label: '4 — alucinações moderadamente graves', value: 4 }, { label: '5 — alucinações graves', value: 5 }, { label: '6 — alucinações muito graves', value: 6 }, { label: '7 — alucinações contínuas', value: 7 }
     ]},
     { id: 'headache', label: 'Cefaleia, sensação de cabeça pesada', options: [
-      { label: 'Nenhuma (0)', value: 0 }, { label: 'Leve (1-2)', value: 1 },
-      { label: 'Moderada (3-4)', value: 3 }, { label: 'Grave (5-7)', value: 6 }
+      { label: '0 — ausente', value: 0 }, { label: '1 — muito leve', value: 1 }, { label: '2 — leve', value: 2 }, { label: '3 — moderada', value: 3 }, { label: '4 — moderadamente grave', value: 4 }, { label: '5 — grave', value: 5 }, { label: '6 — muito grave', value: 6 }, { label: '7 — extremamente grave', value: 7 }
     ]},
     { id: 'orientation', label: 'Orientação e turvação da consciência', options: [
       { label: 'Orientado, capaz de fazer soma seriada (0)', value: 0 },
@@ -3235,6 +3231,16 @@ const apacheII: Calculator = {
       { label: '12-24', value: 0 }, { label: '25-34 ou 10-11', value: 1 },
       { label: '35-49 ou 6-9', value: 3 }, { label: '≥ 50 ou <= 5', value: 4 }
     ]},
+    { id: 'oxy', label: 'Oxigenação — gradiente A-a se FiO2 >= 0,5; PaO2 se FiO2 < 0,5', options: [
+      { label: 'FiO2 < 0,5 — PaO2 > 70 mmHg', value: 0 },
+      { label: 'FiO2 < 0,5 — PaO2 61-70 mmHg', value: 1 },
+      { label: 'FiO2 < 0,5 — PaO2 55-60 mmHg', value: 3 },
+      { label: 'FiO2 < 0,5 — PaO2 < 55 mmHg', value: 4 },
+      { label: 'FiO2 >= 0,5 — gradiente A-a < 200', value: 0 },
+      { label: 'FiO2 >= 0,5 — gradiente A-a 200-349', value: 2 },
+      { label: 'FiO2 >= 0,5 — gradiente A-a 350-499', value: 3 },
+      { label: 'FiO2 >= 0,5 — gradiente A-a >= 500', value: 4 }
+    ]},
     { id: 'ph', label: 'pH arterial — pior valor 24h', options: [
       { label: '7,33-7,49', value: 0 }, { label: '7,50-7,59 ou 7,25-7,32', value: 1 },
       { label: '7,60-7,69 ou 7,15-7,24', value: 3 }, { label: '≥ 7,70 ou < 7,15', value: 4 }
@@ -3247,9 +3253,14 @@ const apacheII: Calculator = {
       { label: '3,5-5,4', value: 0 }, { label: '5,5-5,9 ou 3,0-3,4', value: 1 },
       { label: '6,0-6,9 ou 2,5-2,9', value: 3 }, { label: '≥ 7,0 ou < 2,5', value: 4 }
     ]},
-    { id: 'cr_val', label: 'Creatinina (mg/dL) — pior valor 24h (pontos dobrados se IRA)', options: [
-      { label: '0,6-1,4', value: 0 }, { label: '1,5-1,9 ou < 0,6', value: 2 },
-      { label: '2,0-3,4', value: 3 }, { label: '≥ 3,5', value: 4 }
+    { id: 'cr_val', label: 'Creatinina (mg/dL) — pior valor 24h. Pontos dobram na insuficiência renal aguda', options: [
+      { label: '0,6-1,4', value: 0 },
+      { label: '1,5-1,9 ou < 0,6 — sem IRA', value: 2 },
+      { label: '2,0-3,4 — sem IRA', value: 3 },
+      { label: '≥ 3,5 — sem IRA', value: 4 },
+      { label: '1,5-1,9 ou < 0,6 — com IRA', value: 4 },
+      { label: '2,0-3,4 — com IRA', value: 6 },
+      { label: '≥ 3,5 — com IRA', value: 8 }
     ]},
     { id: 'ht_val', label: 'Hematocrito (%) — pior valor 24h', options: [
       { label: '30-45,9', value: 0 }, { label: '46-49,9 ou 20-29,9', value: 2 },
@@ -3259,10 +3270,12 @@ const apacheII: Calculator = {
       { label: '3-14,9', value: 0 }, { label: '15-19,9 ou 1-2,9', value: 2 },
       { label: '20-39,9', value: 3 }, { label: '≥ 40 ou < 1', value: 4 }
     ]},
-    { id: 'gcs_val', label: 'Glasgow (GCS) — pior valor 24h', options: [
-      { label: '15 (0 pts)', value: 0 }, { label: '13-14 (1-2 pts)', value: 1 },
-      { label: '10-12 (3-5 pts)', value: 3 }, { label: '7-9 (6-8 pts)', value: 6 },
-      { label: '3-6 (9-12 pts)', value: 10 }
+    { id: 'gcs_val', label: 'Glasgow (GCS) — pior valor 24h. Pontos = 15 menos o GCS', options: [
+      { label: 'GCS 15', value: 0 }, { label: 'GCS 14', value: 1 }, { label: 'GCS 13', value: 2 },
+      { label: 'GCS 12', value: 3 }, { label: 'GCS 11', value: 4 }, { label: 'GCS 10', value: 5 },
+      { label: 'GCS 9', value: 6 }, { label: 'GCS 8', value: 7 }, { label: 'GCS 7', value: 8 },
+      { label: 'GCS 6', value: 9 }, { label: 'GCS 5', value: 10 }, { label: 'GCS 4', value: 11 },
+      { label: 'GCS 3', value: 12 }
     ]},
     { id: 'age_pts', label: 'Idade', options: [
       { label: '< 45 anos', value: 0 }, { label: '45-54 anos', value: 2 },
