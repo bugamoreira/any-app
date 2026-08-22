@@ -13,7 +13,7 @@ export function Footer({ toolName, version, updatedAt }: FooterProps) {
     <footer className="fixed bottom-0 left-0 right-0 text-center py-3 px-4 bg-black border-t border-border-card z-50">
       <div className="max-w-[500px] mx-auto">
         <div className="text-[12px] text-text-muted mb-0.5">
-          Gustavo Moreira &#8226; Gabriela Feltrin &#8226; João Pedro Moreira
+          Gustavo Moreira
         </div>
         <div className="text-[10px] text-[#555]">
           {toolName} {version} — ANY App{updatedAt ? ` — ${updatedAt}` : ''}

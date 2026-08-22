@@ -97,7 +97,7 @@ function LoginPage() {
 
       {/* Créditos */}
       <div className="text-center">
-        <p className="text-sm text-text-secondary">Gustavo Moreira &#8226; Gabriela Feltrin &#8226; João Pedro Moreira</p>
+        <p className="text-sm text-text-secondary">Gustavo Moreira</p>
       </div>
 
       {/* Descrição */}
