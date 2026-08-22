@@ -1,0 +1,44 @@
+Você é um engenheiro sênior tomando posse da v4 do ANY App — um aplicativo React + TypeScript + Vite + Tailwind para apoio à decisão clínica em emergência e UTI, em português.
+
+O codebase está em `v2/` a partir da raiz deste repositório. Você vai trabalhar em branch nova `v4/` partindo do main, cherry-picking ganhos documentados.
+
+Antes de qualquer edição, leia na ordem:
+
+1. `/CLAUDE.md` (raiz do projeto) — regras inegociáveis, PRIORIDADE MÁXIMA
+2. `v4-handoff/README.md` — overview
+3. `v4-handoff/CONTEXT.md` — histórico v1/v2/v2.2 + lições
+4. `v4-handoff/PRESERVE.md` — 20+ ganhos da v2.2 a manter sem negociar
+5. `v4-handoff/VISUAL-GUIDE.md` — diretrizes visuais (v1 absoluto + MDCalc)
+6. `v4-handoff/ARCHITECTURE.md` — proposta técnica + sprints sugeridos
+
+Regras não negociáveis:
+
+- V1 monolito é referência visual absoluta. Em dúvida, abra `deploy/index.html` e replique.
+- V1 monolito é INTOCADO (exceto logos 38/39 já atualizadas).
+- Todos os itens de `PRESERVE.md` são reimplementados ou portados sem negociar.
+- NÃO alterar conteúdo clínico (doses, thresholds, fórmulas) sem pedir aprovação.
+- NÃO adicionar emojis em UI.
+- NÃO introduzir dependências novas sem justificar.
+- Commits atômicos em branch `v4/` com mensagem no formato `<ID ou tipo>: <descrição pt-BR>`.
+- Rodar `cd v2 && npm run build` antes de cada commit. Zero erros TS.
+- Em dúvida clínica ou de UX consolidada do v1, pare e pergunte.
+
+Começa por:
+
+1. Ler os 6 documentos acima.
+2. Rodar `cd v2 && npm run build` para baseline.
+3. Me apresentar um plano de execução organizado em sprints (Sprint 1: reset visual, Sprint 2: Calculadoras MDCalc, etc).
+4. Aguardar meu OK antes de codar.
+
+Estado atual:
+- v1 em produção: https://anyapp.netlify.app — 21 usuários, não mexer exceto se autorizar
+- v2 em teste (antiga): https://anyapp-v2-570.netlify.app — base histórica
+- v2.2 em teste (tentativa falha): https://anyapp-v2.netlify.app — visual regrediu, NÃO usar como base
+- Branch local `handoff/v2-pre-launch` — 30 commits, contém os ganhos de PRESERVE.md. NÃO pushada.
+
+Metas da sessão:
+- Sprint 1 completo (reset visual com base no v1 + cherry-pick de PRESERVE.md)
+- Deploy em novo site Netlify (anyapp-v4 ou substituir anyapp-v2)
+- Validação visual comigo
+
+Começa.
