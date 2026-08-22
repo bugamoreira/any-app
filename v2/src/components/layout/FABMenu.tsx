@@ -3,9 +3,11 @@ import type { FABItem } from '../../types/clinical'
 
 interface FABMenuProps {
   items: FABItem[]
+  /** Distância do rodapé em px. Use quando houver barra fixa embaixo (padrão: 20). */
+  bottomOffset?: number
 }
 
-export function FABMenu({ items }: FABMenuProps) {
+export function FABMenu({ items, bottomOffset }: FABMenuProps) {
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -20,7 +22,11 @@ export function FABMenu({ items }: FABMenuProps) {
   }, [])
 
   return (
-    <div ref={menuRef} className="fixed bottom-5 right-5 z-[1000] max-w-[500px]">
+    <div
+      ref={menuRef}
+      className="fixed right-5 z-[1000] max-w-[500px]"
+      style={{ bottom: bottomOffset ?? 20 }}
+    >
       {open && (
         <div className="absolute bottom-[70px] right-0 bg-bg-elevated border border-border-card rounded-xl shadow-2xl p-2 min-w-[220px] animate-fade-in">
           {items.map((item, i) => (

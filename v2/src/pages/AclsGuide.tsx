@@ -736,10 +736,13 @@ export default function AclsGuide() {
     lines.push(`Choques: ${s.shockCount}`)
     lines.push(`Desfecho: ${s.outcome === 'rosc' ? 'RCE obtido' : 'Óbito'}`)
 
-    if (s.fctTracking && s.totalPauseTime > 0) {
+    if (elapsed > 0) {
       const pauseSec = Math.round(s.totalPauseTime / 1000)
-      const fct = Math.round(((elapsed - pauseSec) / elapsed) * 100)
-      lines.push(`FCT: ${fct}% (pausas: ${pauseSec}s)`)
+      const compressSec = Math.max(0, elapsed - pauseSec)
+      const fctFinal = Math.round((compressSec / elapsed) * 100)
+      lines.push(`Tempo total de compressão: ${formatElapsed(compressSec)}`)
+      lines.push(`Tempo em pausa: ${formatElapsed(pauseSec)}`)
+      lines.push(`Fração de compressão torácica: ${fctFinal}%${fctFinal < 80 ? ' (meta: acima de 80%)' : ''}`)
     }
 
     lines.push('')
@@ -840,6 +843,15 @@ export default function AclsGuide() {
   const epiProgressPct = state.lastEpiTime ? Math.min(100, (epiElapsed / state.epiInterval) * 100) : 0
 
   const _isCodeScreen = screen === 'code'
+
+  // Fracao de compressao toracica: tempo comprimindo sobre tempo total.
+  // Meta das diretrizes: acima de 80 %. Pausa em curso conta como tempo parado.
+  const fct = useMemo(() => {
+    if (!state.running || totalElapsed <= 0) return null
+    const pausaAtual = state.pauseStart ? Date.now() - state.pauseStart : 0
+    const paradoSeg = Math.round((state.totalPauseTime + pausaAtual) / 1000)
+    return Math.max(0, Math.round(((totalElapsed - paradoSeg) / totalElapsed) * 100))
+  }, [state.running, state.totalPauseTime, state.pauseStart, totalElapsed])
 
   // ==========================================
   // FAB ITEMS
@@ -1299,10 +1311,12 @@ export default function AclsGuide() {
                 <div className="text-xs text-text-secondary uppercase tracking-wider">Total</div>
               </div>
               <div className="text-center tabular-nums">
-                <div className="text-xl font-bold">{state.cycleCount || '--'}</div>
-                <div className="text-xs text-text-secondary uppercase tracking-wider">Ciclo</div>
+                <div className={`text-xl font-bold ${fct !== null && fct < 80 ? 'text-warning' : ''}`}>
+                  {fct !== null ? `${fct}%` : '--'}
+                </div>
+                <div className="text-xs text-text-secondary uppercase tracking-wider">FCT</div>
               </div>
-              {state.fctTracking && (
+              {(
                 <button
                   onClick={() => dispatch({ type: 'TOGGLE_PAUSE' })}
                   className={`px-3 py-1 rounded-lg text-xs font-semibold cursor-pointer transition-all min-h-[48px] ${
@@ -1523,7 +1537,8 @@ export default function AclsGuide() {
       )}
 
       {/* FAB only on start/code screens */}
-      {(screen === 'start' || screen === 'code') && <FABMenu items={fabItems} />}
+      {screen === 'start' && <FABMenu items={fabItems} />}
+      {screen === 'code' && <FABMenu items={fabItems} bottomOffset={76} />}
     </div>
   )
 }
