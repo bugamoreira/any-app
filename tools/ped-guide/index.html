@@ -105,6 +105,16 @@
         .section-title { flex: 1; font-size: .9rem; font-weight: 800; text-transform: uppercase; }
         .section-body { padding: 16px 20px; }
         .section.collapsed .section-body { display: none; }
+        .vitais-idade { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .vitais-idade label { font-size: 13px; color: #888; }
+        .vitais-idade input { background: #1A1A1A; border: 2px solid #333; border-radius: 8px; color: #FFF; font-size: 16px; padding: 10px 12px; width: 110px; min-height: 44px; }
+        .vitais-pas { background: #1A1A1A; border-left: 4px solid #333; border-radius: 8px; padding: 12px; font-size: 14px; color: #888; margin-bottom: 12px; }
+        .vitais-pas.on { border-left-color: #FF5252; color: #FFF; }
+        .vitais-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .vitais-table th, .vitais-table td { border: 1px solid #333; padding: 8px 6px; text-align: center; color: #FFF; }
+        .vitais-table th { background: #1A1A1A; color: #888; font-size: 12px; }
+        .vitais-table .vitais-lbl { text-align: left; color: #888; }
+        .drug-calc-at { font-size: 12px; color: #888; margin-top: 8px; }
         .drug-card { background: #1A1A1A; border: 2px solid #333; border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
         .drug-card.highlight { border-color: #FF5252; background: rgba(255,82,82,0.1); }
         .drug-card.highlight .drug-header { background: #FF5252; color: white; }
@@ -441,15 +451,55 @@
             <div class="section collapsed" id="section-neuro">
                 <div class="section-header" onclick="toggleSection('section-neuro')">
                     <div class="section-icon info"><svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/></svg></div>
-                    <span class="section-title">Neuroprotecao e Osmoterapia</span>
+                    <span class="section-title">Neuroproteção e osmoterapia</span>
                 </div>
                 <div class="section-body" id="neuro-drugs"></div>
+            </div>
+
+            <div class="section collapsed" id="section-dor">
+                <div class="section-header" onclick="toggleSection('section-dor')">
+                    <div class="section-icon info"><svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/></svg></div>
+                    <span class="section-title">Dor e sedação para procedimentos</span>
+                </div>
+                <div class="section-body" id="dor-drugs"></div>
+            </div>
+
+            <div class="section collapsed" id="section-resp">
+                <div class="section-header" onclick="toggleSection('section-resp')">
+                    <div class="section-icon info"><svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/></svg></div>
+                    <span class="section-title">Crise asmática e broncoespasmo</span>
+                </div>
+                <div class="section-body" id="resp-drugs"></div>
+            </div>
+
+            <div class="section collapsed" id="section-tox">
+                <div class="section-header" onclick="toggleSection('section-tox')">
+                    <div class="section-icon critical"><svg viewBox="0 0 24 24"><path d="M12,2C12,2 7,7.33 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12C17,7.33 12,2 12,2Z"/></svg></div>
+                    <span class="section-title">Toxicologia e antídotos</span>
+                </div>
+                <div class="section-body" id="tox-drugs"></div>
+            </div>
+
+            <div class="section collapsed" id="section-vitais">
+                <div class="section-header" onclick="toggleSection('section-vitais')">
+                    <div class="section-icon info"><svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/></svg></div>
+                    <span class="section-title">Sinais vitais por idade</span>
+                </div>
+                <div class="section-body" id="vitais-body"></div>
+            </div>
+
+            <div class="section collapsed" id="section-estimar-peso">
+                <div class="section-header" onclick="toggleSection('section-estimar-peso')">
+                    <div class="section-icon info"><svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/></svg></div>
+                    <span class="section-title">Estimar peso por comprimento</span>
+                </div>
+                <div class="section-body" id="estimar-peso-body"></div>
             </div>
 
             <div class="section collapsed" id="section-transfusao">
                 <div class="section-header" onclick="toggleSection('section-transfusao')">
                     <div class="section-icon critical"><svg viewBox="0 0 24 24"><path d="M12,2C12,2 7,7.33 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12C17,7.33 12,2 12,2Z"/></svg></div>
-                    <span class="section-title">Transfusao e Hemocomponentes</span>
+                    <span class="section-title">Transfusão e hemocomponentes</span>
                 </div>
                 <div class="section-body" id="transfusion-section"></div>
             </div>
@@ -457,7 +507,7 @@
             <div class="section collapsed" id="section-fluidos">
                 <div class="section-header" onclick="toggleSection('section-fluidos')">
                     <div class="section-icon success"><svg viewBox="0 0 24 24"><path d="M12,2C12,2 7,7.33 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12C17,7.33 12,2 12,2Z"/></svg></div>
-                    <span class="section-title">Fluidos e Volumes</span>
+                    <span class="section-title">Fluidos e volumes</span>
                 </div>
                 <div class="section-body"><div class="equipment-grid" id="fluids-grid"></div></div>
             </div>
@@ -476,7 +526,7 @@
     <footer class="footer">
         <div class="footer-names">Gustavo Moreira • Gabriela Feltrin • João Pedro Moreira</div>
         <div style="margin-top:4px;font-size:12px;color:#FF5252;">Ambassadors: Ariadne Becker • Daniel Raylander</div>
-        <div class="footer-version">Ped Guide v1.1.1 — ANY App — Abril 2026</div>
+        <div class="footer-version">Ped Guide v1.2.0 — ANY App — Agosto 2026</div>
     </footer>
 
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
@@ -502,97 +552,270 @@
             green:  { name: 'Verde', peso: 32, idadeMeses: 108, altura: 139, tubo: 6.0, fixacao: 18, lamina: '3', lma: '3', bougie: '15', sondaAsp: 12, min: 133, max: 145 }
         };
 
+        // Formatador pt-BR (mesma assinatura usada nas entradas novas)
+        var fN = function(x, n) { return x.toFixed(n).replace('.', ','); };
+
+        // ===== Sinais vitais por idade e estimativa de peso por comprimento =====
+        var VITAL_ROWS = [
+          { label:'FC (bpm)',  values:['100-190','80-160','75-120','70-110','60-110'] },
+          { label:'FR (irpm)', values:['30-60','20-40','20-30','18-25','12-20'] },
+        ];
+        var VITAL_COLS = ['< 1 ano','1-2 anos','3-5 anos','6-11 anos','> 12 anos'];
+        
+        function pasMinima(ageY){
+          if (ageY === null) return null;
+          return ageY > 10 ? 90 : Math.round(70 + 2*ageY);
+        }
+        
+        // ==========================================
+        // PESO ESTIMADO POR COMPRIMENTO (cm)
+        // ==========================================
+        var ALTURA_PESO = [
+          [40,48,3,true],[48,55,4,true],[55,59,5,false],[60,63,6,false],[64,66,7,false],
+          [67,70,8,false],[71,74,9,false],[75,78,10,false],[79,83,11,false],[84,87,12,false],
+          [88,91,13,false],[92,94,14,false],[95,98,15,false],[99,101,16,false],[102,104,17,false],
+          [105,108,18,false],[109,112,19,false],[113,116,20,false],[117,121,22,false],[122,124,24,false],
+          [125,127,26,false],[128,130,28,false],[131,133,30,false],[134,137,32,false],[138,140,34,false],
+          [141,143,36,false],[144,150,40,true],[150,155,45,true],[155,160,50,false],
+        ];
+        var ALTURA_PESO = [
+          [40,48,3,true],[48,55,4,true],[55,59,5,false],[60,63,6,false],[64,66,7,false],
+          [67,70,8,false],[71,74,9,false],[75,78,10,false],[79,83,11,false],[84,87,12,false],
+          [88,91,13,false],[92,94,14,false],[95,98,15,false],[99,101,16,false],[102,104,17,false],
+          [105,108,18,false],[109,112,19,false],[113,116,20,false],[117,121,22,false],[122,124,24,false],
+          [125,127,26,false],[128,130,28,false],[131,133,30,false],[134,137,32,false],[138,140,34,false],
+          [141,143,36,false],[144,150,40,true],[150,155,45,true],[155,160,50,false],
+        ];
+        function pasMinima(ageY){
+          if (ageY === null) return null;
+          return ageY > 10 ? 90 : Math.round(70 + 2*ageY);
+        }
+
         var drugs = {
             pcr: [
                 { id: 'epinefrina-iv', name: 'EPINEFRINA IV/IO', presentation: '1 mg/mL (1:1.000)', doseBadge: '0,01 mg/kg', highlight: true,
                   instruction: '<strong>Diluição 1:10.000:</strong> 1 mL + 9 mL Água Destilada<br>Concentração: 0,1 mg/mL - <strong>A cada 3-5 min</strong>',
-                  calc: function(p) { return { mg: (p * 0.01).toFixed(2), ml: (p * 0.1).toFixed(1), mlLabel: 'da sol. 1:10.000', unit: 'mg' }; }, prepKey: 'epinefrina' },
+                  calc: function(p) { return { mg: fN(p * 0.01, 2), ml: fN(p * 0.1, 1), mlLabel: 'da sol. 1:10.000', unit: 'mg' }; }, prepKey: 'epinefrina' },
                 { id: 'amiodarona', name: 'AMIODARONA', presentation: '50 mg/mL', doseBadge: '5 mg/kg',
                   instruction: '<strong>FV/TV sem pulso refratária</strong><br>Max: 300 mg - Pode repetir até 15 mg/kg',
-                  calc: function(p) { var d = Math.min(p * 5, 300); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' }; } },
+                  calc: function(p) { var d = Math.min(p * 5, 300); return { mg: fN(d, 0), ml: fN(d / 50, 1), unit: 'mg' }; } },
                 { id: 'bicarbonato', name: 'BICARBONATO DE SÓDIO 8,4%', presentation: '1 mEq/mL', doseBadge: '1 mEq/kg',
                   instruction: '<strong>PCR prolongada, acidose documentada</strong><br>Diluir 1:1 com Água Destilada',
-                  calc: function(p) { return { mg: p.toFixed(0), ml: p.toFixed(0), mlLabel: '+ igual vol. AD', unit: 'mEq' }; } },
-                { id: 'calcio', name: 'GLUCONATO DE CÁLCIO 10%', presentation: '100 mg/mL', doseBadge: '60-100 mg/kg',
+                  calc: function(p) { return { mg: fN(p, 0), ml: fN(p, 0), mlLabel: '+ igual vol. AD', unit: 'mEq' }; } },
+                { id: 'calcio', name: 'GLUCONATO DE CÁLCIO 10%', presentation: '100 mg/mL', doseBadge: '60-100 mg/kg', calcAt: '60 mg/kg (piso da faixa)',
                   instruction: '<strong>Hipocalcemia, Hipercalemia</strong><br>Max: 2000 mg - Infundir lento',
-                  calc: function(p) { var d = Math.min(p * 60, 2000); return { mg: d.toFixed(0), ml: (d / 100).toFixed(1), unit: 'mg' }; } },
+                  calc: function(p) { var d = Math.min(p * 60, 2000); return { mg: fN(d, 0), ml: fN(d / 100, 1), unit: 'mg' }; } },
                 { id: 'atropina', name: 'ATROPINA', presentation: '0,5 mg/mL', doseBadge: '0,02 mg/kg',
                   instruction: '<strong>Bradicardia com pulso</strong><br>Min: 0,1 mg - Max: 0,5 mg (criança)',
-                  calc: function(p) { var d = Math.max(0.1, Math.min(p * 0.02, 0.5)); return { mg: d.toFixed(2), ml: (d / 0.5).toFixed(2), unit: 'mg' }; } }
+                  calc: function(p) { var d = Math.max(0.1, Math.min(p * 0.02, 0.5)); return { mg: fN(d, 2), ml: fN(d / 0.5, 2), unit: 'mg' }; } },
+  { id:'cloreto-calcio', name:'CLORETO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'20 mg/kg',
+    instruction:'Diluir em igual volume de AD/SF. Max: 1000 mg. Infundir EV em bolus.',
+    calc:p => { const d=Math.min(p*20,1000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
+  { id:'lidocaina', name:'LIDOCAÍNA 1%', presentation:'10 mg/mL', doseBadge:'1 mg/kg',
+    instruction:'FV/TV sem pulso (alternativa). Max: 100 mg. EV bolus rápido.',
+    calc:p => { const d=Math.min(p,100); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; } },
+  { id:'insulina-hiperk', name:'INSULINA REGULAR (Hipercalemia)', presentation:'100 UI/mL', doseBadge:'0,1 UI/kg',
+    instruction:'Hipercalemia. Max: 10 UI. EV bolus rápido, sempre com glicose associada.',
+    calc:p => { const d=Math.min(p*0.1,10); return { mg:fN(d,1), ml:'--', mlLabel:'em seringa de insulina, com glicose associada', unit:'UI' }; } },
+  { id:'magnesio-pcr', name:'SULFATO DE MAGNÉSIO 10%', presentation:'100 mg/mL', doseBadge:'50 mg/kg',
+    instruction:'Torsades de pointes / hipomagnesemia. Max: 2000 mg. EV bolus na PCR.',
+    calc:p => { const d=Math.min(p*50,2000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
+  { id:'glicose-g10', name:'GLICOSE 50% → G10%', presentation:'500 mg/mL', doseBadge:'0,5 g/kg',
+    instruction:'Hipoglicemia. Max: 40 mL de G50%. Diluir e fazer EV em bolus.',
+    calc:p => { const e=p>40?40:p, g=p>37?150:p*4; return { mg:fN(e,0), ml:fN(g,0), mlLabel:'mL de G50% + mL de AD/SF', unit:'mL G50%' }; } },
+  { id:'glicose-g25', name:'GLICOSE 50% → G25%', presentation:'500 mg/mL', doseBadge:'0,5 g/kg',
+    instruction:'Hipoglicemia (acesso calibroso). Max: 40 mL de G50%. Diluir 1:1 e fazer EV em bolus.',
+    calc:p => { const e=p>40?40:p; return { mg:fN(e,0), ml:fN(e,0), mlLabel:'mL de G50% + mL de AD/SF (1:1)', unit:'mL G50%' }; } }
             ],
             iot: [
-                { id: 'cetamina', name: 'CETAMINA', presentation: '50 mg/mL', doseBadge: '1-2 mg/kg',
+                { id: 'cetamina', name: 'CETAMINA', presentation: '50 mg/mL', doseBadge: '1-2 mg/kg', calcAt: '2 mg/kg (topo da faixa)',
                   instruction: '<strong>Indução dissociativa</strong><br>Mantém VA e drive respiratório - Broncodilatador',
-                  calc: function(p) { return { mg: (p * 2).toFixed(0), ml: (p * 2 / 50).toFixed(2), unit: 'mg' }; } },
-                { id: 'midazolam', name: 'MIDAZOLAM', presentation: '5 mg/mL', doseBadge: '0,1-0,4 mg/kg',
+                  calc: function(p) { return { mg: fN(p * 2, 0), ml: fN(p * 2 / 50, 2), unit: 'mg' }; } },
+                { id: 'midazolam', name: 'MIDAZOLAM', presentation: '5 mg/mL', doseBadge: '0,1-0,4 mg/kg', calcAt: '0,3 mg/kg',
                   instruction: '<strong>Sedação</strong><br>ISR: 0,3 mg/kg - Max: 5 mg - Pode causar hipotensão',
-                  calc: function(p) { var d = Math.min(p * 0.3, 5); return { mg: d.toFixed(1), ml: (d / 5).toFixed(2), unit: 'mg' }; } },
-                { id: 'fentanil', name: 'FENTANIL', presentation: '50 mcg/mL', doseBadge: '1-2 mcg/kg',
+                  calc: function(p) { var d = Math.min(p * 0.3, 5); return { mg: fN(d, 1), ml: fN(d / 5, 2), unit: 'mg' }; } },
+                { id: 'fentanil', name: 'FENTANIL', presentation: '50 mcg/mL', doseBadge: '1-2 mcg/kg', calcAt: '2 mcg/kg (topo da faixa)',
                   instruction: '<strong>Analgesia</strong><br>Administrar lento - Max: 100 mcg',
-                  calc: function(p) { var d = Math.min(p * 2, 100); return { mg: d.toFixed(0), ml: (d / 50).toFixed(2), unit: 'mcg' }; } },
-                { id: 'propofol', name: 'PROPOFOL', presentation: '10 mg/mL', doseBadge: '1-2,5 mg/kg',
+                  calc: function(p) { var d = Math.min(p * 2, 100); return { mg: fN(d, 0), ml: fN(d / 50, 2), unit: 'mcg' }; } },
+                { id: 'propofol', name: 'PROPOFOL', presentation: '10 mg/mL', doseBadge: '1-2,5 mg/kg', calcAt: '2,5 mg/kg (topo da faixa)',
                   instruction: '<strong>Indução</strong><br>Hipotensão dose-dependente - Evitar em choque',
-                  calc: function(p) { return { mg: (p * 2.5).toFixed(0), ml: (p * 2.5 / 10).toFixed(1), unit: 'mg' }; } },
-                { id: 'etomidato', name: 'ETOMIDATO', presentation: '2 mg/mL', doseBadge: '0,2-0,4 mg/kg',
+                  calc: function(p) { return { mg: fN(p * 2.5, 0), ml: fN(p * 2.5 / 10, 1), unit: 'mg' }; } },
+                { id: 'etomidato', name: 'ETOMIDATO', presentation: '2 mg/mL', doseBadge: '0,2-0,4 mg/kg', calcAt: '0,3 mg/kg',
                   instruction: '<strong>Indução</strong><br>Estabilidade hemodinâmica - Max: 20 mg - Evitar em sepse',
-                  calc: function(p) { var d = Math.min(p * 0.3, 20); return { mg: d.toFixed(1), ml: (d / 2).toFixed(1), unit: 'mg' }; } },
-                { id: 'rocuronio', name: 'ROCURÔNIO', presentation: '10 mg/mL', doseBadge: '0,9-1,2 mg/kg',
+                  calc: function(p) { var d = Math.min(p * 0.3, 20); return { mg: fN(d, 1), ml: fN(d / 2, 1), unit: 'mg' }; } },
+                { id: 'rocuronio', name: 'ROCURÔNIO', presentation: '10 mg/mL', doseBadge: '0,9-1,2 mg/kg', calcAt: '1 mg/kg',
                   instruction: '<strong>Bloqueador neuromuscular</strong><br>ISR: 1 mg/kg - Reversível com Sugammadex',
-                  calc: function(p) { return { mg: p.toFixed(0), ml: (p / 10).toFixed(1), unit: 'mg' }; } },
-                { id: 'succinil', name: 'SUCCINILCOLINA', presentation: '10 mg/mL', doseBadge: '1-2 mg/kg',
+                  calc: function(p) { return { mg: fN(p, 0), ml: fN(p / 10, 1), unit: 'mg' }; } },
+                { id: 'succinil', name: 'SUCCINILCOLINA', presentation: '10 mg/mL', doseBadge: '1-2 mg/kg', calcAt: '1,5 mg/kg',
                   instruction: '<strong>BNM despolarizante</strong><br>Contraindicado: hipercalemia, queimados - Max: 150 mg',
-                  calc: function(p) { var d = Math.min(p * 1.5, 150); return { mg: d.toFixed(0), ml: (d / 10).toFixed(1), unit: 'mg' }; } },
-                { id: 'cisatracurio', name: 'CISATRACÚRIO', presentation: '2 mg/mL', doseBadge: '0,1-0,15 mg/kg',
+                  calc: function(p) { var d = Math.min(p * 1.5, 150); return { mg: fN(d, 0), ml: fN(d / 10, 1), unit: 'mg' }; } },
+                { id: 'cisatracurio', name: 'CISATRACÚRIO', presentation: '2 mg/mL', doseBadge: '0,1-0,15 mg/kg', calcAt: '0,15 mg/kg (topo da faixa)',
                   instruction: '<strong>BNM não despolarizante</strong><br>Metabolismo de Hofmann',
-                  calc: function(p) { return { mg: (p * 0.15).toFixed(2), ml: (p * 0.15 / 2).toFixed(2), unit: 'mg' }; } }
+                  calc: function(p) { return { mg: fN(p * 0.15, 2), ml: fN(p * 0.15 / 2, 2), unit: 'mg' }; } }
             ],
             emergency: [
                 { id: 'epinefrina-im', name: 'EPINEFRINA IM (Anafilaxia)', presentation: '1 mg/mL - SEM DILUIR', doseBadge: '0,01 mg/kg', highlight: true,
                   instruction: '<strong>Via INTRAMUSCULAR - Vasto lateral</strong><br>Max: 0,3 mg (criança) / 0,5 mg (adolescente) - Repetir 5-15 min',
-                  calc: function(p) { var d = Math.min(p * 0.01, p < 30 ? 0.3 : 0.5); return { mg: d.toFixed(2), ml: d.toFixed(2), unit: 'mg' }; } },
+                  calc: function(p) { var d = Math.min(p * 0.01, p < 30 ? 0.3 : 0.5); return { mg: fN(d, 2), ml: fN(d, 2), unit: 'mg' }; } },
                 { id: 'adenosina', name: 'ADENOSINA', presentation: '3 mg/mL', doseBadge: '0,1 - 0,2 mg/kg',
                   instruction: '<strong>TSV com pulso</strong><br>Bolus RÁPIDO + flush 5-10 mL SF - Max: 6/12 mg',
-                  calc: function(p) { var d1 = Math.min(p * 0.1, 6), d2 = Math.min(p * 0.2, 12); return { mg: d1.toFixed(1) + ' / ' + d2.toFixed(1), ml: (d1/3).toFixed(2) + ' / ' + (d2/3).toFixed(2), unit: 'mg' }; } },
-                { id: 'glicose', name: 'GLICOSE 50%', presentation: '500 mg/mL', doseBadge: '0,5-1 g/kg',
+                  calc: function(p) { var d1 = Math.min(p * 0.1, 6), d2 = Math.min(p * 0.2, 12); return { mg: fN(d1, 1) + ' / ' + fN(d2, 1), ml: fN(d1/3, 2) + ' / ' + fN(d2/3, 2), unit: 'mg' }; } },
+                { id: 'glicose', name: 'GLICOSE 50%', presentation: '500 mg/mL', doseBadge: '0,5-1 g/kg', calcAt: '0,5 g/kg (piso da faixa)',
                   instruction: '<strong>Hipoglicemia</strong><br>Diluir em crianças pequenas (G10/G25)',
-                  calc: function(p) { return { mg: (p * 0.5).toFixed(1), ml: Math.min(p, 50).toFixed(0), unit: 'g' }; } },
+                  calc: function(p) { return { mg: fN(p * 0.5, 1), ml: fN(Math.min(p, 50), 0), unit: 'g' }; } },
                 { id: 'naloxona', name: 'NALOXONA', presentation: '0,4 mg/mL', doseBadge: '0,1 mg/kg',
                   instruction: '<strong>Reversão de opioides</strong><br>Via: IV, IO, IM, IN - Max: 2 mg',
-                  calc: function(p) { var d = Math.min(p * 0.1, 2); return { mg: d.toFixed(2), ml: (d / 0.4).toFixed(1), unit: 'mg' }; } },
+                  calc: function(p) { var d = Math.min(p * 0.1, 2); return { mg: fN(d, 2), ml: fN(d / 0.4, 1), unit: 'mg' }; } },
                 { id: 'tranexamico', name: 'ÁCIDO TRANEXÂMICO', presentation: '50 mg/mL', doseBadge: '15 mg/kg',
                   instruction: '<strong>Trauma com hemorragia</strong><br>Bolus em 10 min - Max: 1000 mg',
-                  calc: function(p) { var d = Math.min(p * 15, 1000); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' }; } },
-                { id: 'hidrocortisona', name: 'HIDROCORTISONA', presentation: '100 mg/2mL', doseBadge: '2-4 mg/kg',
+                  calc: function(p) { var d = Math.min(p * 15, 1000); return { mg: fN(d, 0), ml: fN(d / 50, 1), unit: 'mg' }; } },
+                { id: 'hidrocortisona', name: 'HIDROCORTISONA', presentation: '100 mg/2mL', doseBadge: '2-4 mg/kg', calcAt: '4 mg/kg (topo da faixa)',
                   instruction: '<strong>Anafilaxia / Choque / Asma</strong><br>Max: 200 mg - Infundir em bolus',
-                  calc: function(p) { var d = Math.min(p * 4, 200); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' }; } },
-                { id: 'difenidramina', name: 'DIFENIDRAMINA', presentation: '50 mg/mL', doseBadge: '1-1,25 mg/kg',
+                  calc: function(p) { var d = Math.min(p * 4, 200); return { mg: fN(d, 0), ml: fN(d / 50, 1), unit: 'mg' }; } },
+                { id: 'difenidramina', name: 'DIFENIDRAMINA', presentation: '50 mg/mL', doseBadge: '1-1,25 mg/kg', calcAt: '1,25 mg/kg (topo da faixa)',
                   instruction: '<strong>Anafilaxia (adjuvante)</strong><br>Via: IV lento ou IM - Max: 50 mg',
-                  calc: function(p) { var d = Math.min(p * 1.25, 50); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' }; } }
+                  calc: function(p) { var d = Math.min(p * 1.25, 50); return { mg: fN(d, 0), ml: fN(d / 50, 1), unit: 'mg' }; } },
+  { id:'salbutamol-anaf', name:'SALBUTAMOL MDI', presentation:'100 mcg/jato', doseBadge:'100 mcg/2 kg',
+    instruction:'Anafilaxia com broncoespasmo (2ª linha). Max: 10 jatos. Inalar com espaçador.',
+    calc:p => { const j=p>20?10:Math.ceil(p/2); return { mg:fN(j,0), ml:'--', mlLabel:'jatos com espaçador', unit:'jatos' }; } },
+  { id:'loratadina', name:'LORATADINA', presentation:'1 mg/mL xarope', doseBadge:'por idade/peso', needsAge:true,
+    instruction:'Anafilaxia (adjuvante, 2ª geração). Max: 10 mg VO. Evitar anti-histamínicos de 1ª geração.',
+    calc:(p, ageY) => {
+      if (ageY < 2) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 2 anos', unit:'' };
+      const d = p <= 30 ? 5 : 10;
+      return { mg:fN(d,0), ml:fN(d,0), mlLabel:'VO 1x/dia', unit:'mg' }; } },
+  { id:'cetirizina', name:'CETIRIZINA', presentation:'VO', doseBadge:'por idade', needsAge:true,
+    instruction:'Anafilaxia (adjuvante, 2ª geração). Max: 10 mg VO.',
+    calc:(p, ageY, ageM) => {
+      if (ageM < 6) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 6 meses', unit:'' };
+      const d = ageM < 24 ? 2.5 : ageM < 72 ? 5 : 10;
+      return { mg:fN(d,1), ml:'--', mlLabel:'VO', unit:'mg' }; } },
+  { id:'octreotide-hda', name:'OCTREOTIDE (HDA)', presentation:'0,1 mg/mL', doseBadge:'1-2 mcg/kg',
+    instruction:'Hemorragia digestiva alta. Bolus max: 50 mcg. Infusão: 1-2 mcg/kg/h (diluir 100 mcg em 50 mL SF, correr peso/2 a peso mL/h, max 25-50 mcg/h).',
+    calc:p => { const d1=Math.min(p,50), d2=Math.min(p*2,50);
+      return { mg:fN(d1,0)+' / '+fN(d2,0), ml:fN(d1/100,2)+' / '+fN(d2/100,2), mlLabel:'EV bolus', unit:'mcg' }; } },
+  { id:'omeprazol-hda', name:'OMEPRAZOL (HDA)', presentation:'4 mg/mL (amp. 40 mg + 10 mL diluente)', doseBadge:'1 mg/kg',
+    instruction:'Hemorragia digestiva alta. Max: 40 mg. EV em bolus.',
+    calc:p => { const d=Math.min(p,40); return { mg:fN(d,0), ml:fN(d/4,1), unit:'mg' }; } }
             ],
             convulsion: [
                 { id: 'diazepam', name: 'DIAZEPAM', presentation: '5 mg/mL', doseBadge: '0,2-0,4 mg/kg',
                   instruction: '<strong>Status epilepticus - 1ª linha</strong><br>Via: IV lento ou Retal (0,5 mg/kg) - Max: 10 mg - Repetir até 3x',
-                  calc: function(p) { var d = Math.min(p * 0.3, 10); return { mg: d.toFixed(1), ml: (d / 5).toFixed(1), unit: 'mg' }; } },
+                  calc: function(p) { var d = Math.min(p * 0.3, 10); return { mg: fN(d, 1), ml: fN(d / 5, 1), unit: 'mg' }; } },
                 { id: 'midazolam-conv', name: 'MIDAZOLAM (Status)', presentation: '5 mg/mL', doseBadge: '0,1-0,2 mg/kg',
                   instruction: '<strong>Status epilepticus - Alternativa</strong><br>Via: IV, IM, IN (0,2 mg/kg), Bucal - Max: 10 mg',
-                  calc: function(p) { var d = Math.min(p * 0.2, 10); return { mg: d.toFixed(1), ml: (d / 5).toFixed(1), unit: 'mg' }; } },
+                  calc: function(p) { var d = Math.min(p * 0.2, 10); return { mg: fN(d, 1), ml: fN(d / 5, 1), unit: 'mg' }; } },
                 { id: 'fenitoina', name: 'FENITOÍNA', presentation: '50 mg/mL', doseBadge: '15-20 mg/kg',
                   instruction: '<strong>Status epilepticus - 2ª linha</strong><br>Diluir em SF, infundir em 20 min - Monitorizar ECG',
-                  calc: function(p) { return { mg: (p * 20).toFixed(0), ml: (p * 20 / 50).toFixed(1), unit: 'mg' }; } },
+                  calc: function(p) { return { mg: fN(p * 20, 0), ml: fN(p * 20 / 50, 1), unit: 'mg' }; } },
                 { id: 'fenobarbital', name: 'FENOBARBITAL', presentation: '100 mg/mL', doseBadge: '10-20 mg/kg',
                   instruction: '<strong>Status refratário / Neonatal</strong><br>Infundir em 15-20 min - Risco depressão respiratória',
-                  calc: function(p) { return { mg: (p * 20).toFixed(0), ml: (p * 20 / 100).toFixed(1), unit: 'mg' }; } },
-                { id: 'levetiracetam', name: 'LEVETIRACETAM', presentation: '100 mg/mL', doseBadge: '40-60 mg/kg',
+                  calc: function(p) { return { mg: fN(p * 20, 0), ml: fN(p * 20 / 100, 1), unit: 'mg' }; } },
+                { id: 'levetiracetam', name: 'LEVETIRACETAM', presentation: '100 mg/mL', doseBadge: '40-60 mg/kg', calcAt: '60 mg/kg (topo da faixa)',
                   instruction: '<strong>Status epilepticus - Alternativa 2ª linha</strong><br>Infundir em 15 min - Max: 3000 mg',
-                  calc: function(p) { var d = Math.min(p * 60, 3000); return { mg: d.toFixed(0), ml: (d / 100).toFixed(1), unit: 'mg' }; } }
+                  calc: function(p) { var d = Math.min(p * 60, 3000); return { mg: fN(d, 0), ml: fN(d / 100, 1), unit: 'mg' }; } }
             ],
             neuro: [
-                { id: 'manitol', name: 'MANITOL 20%', presentation: '200 mg/mL', doseBadge: '0,25-1 g/kg',
+                { id: 'manitol', name: 'MANITOL 20%', presentation: '200 mg/mL', doseBadge: '0,25-1 g/kg', calcAt: '0,5 g/kg',
                   instruction: '<strong>Hipertensão intracraniana</strong><br>Infundir em 15-30 min',
-                  calc: function(p) { return { mg: (p * 0.5).toFixed(1), ml: (p * 0.5 * 5).toFixed(0), unit: 'g' }; } },
-                { id: 'nacl', name: 'NaCl 3% (Salina Hipertônica)', presentation: '0,513 mEq Na/mL', doseBadge: '2-5 mL/kg',
+                  calc: function(p) { return { mg: fN(p * 0.5, 1), ml: fN(p * 0.5 * 5, 0), unit: 'g' }; } },
+                { id: 'nacl', name: 'NaCl 3% (Salina Hipertônica)', presentation: '0,513 mEq Na/mL', doseBadge: '2-5 mL/kg', calcAt: '3 mL/kg',
                   instruction: '<strong>HIC, hiponatremia grave</strong><br>Infundir em 10-20 min', prepKey: 'nacl3',
-                  calc: function(p) { return { mg: (p * 3 * 0.513).toFixed(1), ml: (p * 3).toFixed(0), unit: 'mEq' }; } }
+                  calc: function(p) { return { mg: fN(p * 3 * 0.513, 1), ml: fN(p * 3, 0), unit: 'mEq' }; } }
+            ],
+            dor: [
+  { id:'cetamina-dor', name:'CETAMINA', presentation:'50 mg/mL', doseBadge:'1 EV · 4 IM mg/kg',
+    instruction:'Sedação dissociativa para procedimentos. Max: 100 mg EV / 200 mg IM. Bolus lento. Evitar abaixo de 3 meses.',
+    calc:p => { const ev=Math.min(p,100), im=Math.min(p*4,200);
+      return { mg:fN(ev,0)+' / '+fN(im,0), ml:fN(ev/50,2)+' / '+fN(im/50,2), mlLabel:'EV / IM', unit:'mg' }; } },
+  { id:'fentanil-dor', name:'FENTANIL', presentation:'50 mcg/mL', doseBadge:'1 EV · 1,5 IN mcg/kg',
+    instruction:'Analgesia. Max: 100 mcg. EV em bolus lento ou intranasal.',
+    calc:p => { const ev=Math.min(p,100), inl=Math.min(p*1.5,100);
+      return { mg:fN(ev,0)+' / '+fN(inl,0), ml:fN(ev/50,2)+' / '+fN(inl/50,2), mlLabel:'EV / IN', unit:'mcg' }; } },
+  { id:'midazolam-dor', name:'MIDAZOLAM', presentation:'5 mg/mL', doseBadge:'0,1 EV · 0,4 IN mg/kg',
+    instruction:'Ansiólise/sedação leve. Max: 5 mg EV / 10 mg IN. IN: se acima de 1 mL, dividir entre as narinas.',
+    calc:p => { const ev=Math.min(p*0.1,5), inl=Math.min(p*0.4,10);
+      return { mg:fN(ev,1)+' / '+fN(inl,1), ml:fN(ev/5,2)+' / '+fN(inl/5,2), mlLabel:'EV / IN', unit:'mg' }; } },
+  { id:'morfina-dor', name:'MORFINA', presentation:'10 mg/mL', doseBadge:'0,1 mg/kg',
+    instruction:'Analgesia de dor intensa. Max: 5 mg. EV em bolus lento.',
+    calc:p => { const d=Math.min(p*0.1,5); return { mg:fN(d,1), ml:fN(d/10,2), unit:'mg' }; } },
+  { id:'propofol-dor', name:'PROPOFOL', presentation:'10 mg/mL', doseBadge:'1 mg/kg',
+    instruction:'Sedação para procedimentos curtos. Max: 100 mg. EV lento, considerar doses fracionadas.',
+    calc:p => { const d=Math.min(p,100); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; } }
+            ],
+            resp: [
+  { id:'salbutamol-resp', name:'SALBUTAMOL MDI', presentation:'100 mcg/jato', doseBadge:'100 mcg/2 kg',
+    instruction:'Crise asmática. Max: 10 jatos/dose. Inalar com espaçador, repetir conforme resposta.',
+    calc:p => { const j=p>20?10:Math.ceil(p/2); return { mg:fN(j,0), ml:'--', mlLabel:'jatos com espaçador', unit:'jatos' }; } },
+  { id:'ipratropio-mdi', name:'IPRATRÓPIO MDI', presentation:'20 mcg/jato', doseBadge:'40-80 mcg',
+    instruction:'Crise moderada/grave, associado ao beta-agonista. Max: 80 mcg/dose.',
+    calc:() => ({ mg:'2 - 4', ml:'--', mlLabel:'jatos com espaçador, de 20/20 min', unit:'jatos' }) },
+  { id:'ipratropio-gotas', name:'IPRATRÓPIO GOTAS', presentation:'0,25 mg/mL (1 mL = 20 gotas)', doseBadge:'0,25-0,5 mg',
+    instruction:'Alternativa ao MDI. Max: 0,5 mg/dose.',
+    calc:() => ({ mg:'20 - 40', ml:'--', mlLabel:'gotas em nebulização, de 20/20 min', unit:'gotas' }) },
+  { id:'prednisolona', name:'PREDNISOLONA', presentation:'3 mg/mL', doseBadge:'2 mg/kg',
+    instruction:'Corticoide VO de escolha. Max: 40 mg, 1x/dia.',
+    calc:p => { const d=Math.min(p*2,40); return { mg:fN(d,0), ml:fN(Math.ceil(d/3),0), mlLabel:'VO 1x/dia', unit:'mg' }; } },
+  { id:'metilprednisolona', name:'METILPREDNISOLONA SUCCINATO', presentation:'--', doseBadge:'1 mg/kg',
+    instruction:'Crise grave (EV). Max: 80 mg. Diluir em 20-50 mL de SF e correr EV em 20 min.',
+    calc:p => { const d=Math.min(p,80); return { mg:fN(d,0), ml:'--', mlLabel:'em 20-50 mL de SF, EV em 20 min', unit:'mg' }; } },
+  { id:'magnesio10-resp', name:'SULFATO DE MAGNÉSIO 10%', presentation:'100 mg/mL', doseBadge:'50 mg/kg',
+    instruction:'Crise grave refratária. Max: 2000 mg. Diluir em SF e correr EV em 20 min.',
+    calc:p => { const d=Math.min(p*50,2000); return { mg:fN(d,0), ml:fN(d/100,1), mlLabel:'diluir em '+fN(d/10,0)+' mL de SF', unit:'mg' }; } },
+  { id:'magnesio50-resp', name:'SULFATO DE MAGNÉSIO 50%', presentation:'500 mg/mL', doseBadge:'50 mg/kg',
+    instruction:'Crise grave refratária. Max: 2000 mg. Completar com SF e correr EV em 20 min.',
+    calc:p => { const d=Math.min(p*50,2000); return { mg:fN(d,0), ml:fN(d/500,1), mlLabel:'completar até '+fN(d/10,0)+' mL de SF', unit:'mg' }; } }
+            ],
+            tox: [
+  { id:'atropina-tox', name:'ATROPINA (Organofosforados)', presentation:'0,5 mg/mL', doseBadge:'0,02 mg/kg',
+    instruction:'Sindrome colinérgica. Max: 2 mg (dose inicial). EV bolus. Dobrar as doses se necessário.',
+    calc:p => { const d=Math.min(p*0.02,2); return { mg:fN(d,2), ml:fN(d/0.5,2), unit:'mg' }; } },
+  { id:'bicarbonato-tox', name:'BICARBONATO DE SÓDIO 8,4%', presentation:'1 mEq/mL', doseBadge:'1 mL/kg',
+    instruction:'Cardiotoxicidade por bloqueio de canal de sódio (tricíclicos). Max: 250 mL. Sem diluir ou 1:1 em AD/SF. Salicilatos: 150 mL bic + 850 mL SG 5% em taxa de manutenção.',
+    calc:p => { const d=Math.min(p,250); return { mg:fN(d,0), ml:fN(d,0), unit:'mEq' }; } },
+  { id:'emulsao-lipidica', name:'EMULSÃO LIPÍDICA 20%', presentation:'--', doseBadge:'1,5 mL/kg',
+    instruction:'Intoxicação por anestésico local / lipofílicos com colapso. Max: 100 mL. EV em bolus.',
+    calc:p => { const d=Math.min(p*1.5,100); return { mg:fN(d,1), ml:fN(d,1), unit:'mL' }; } },
+  { id:'glicose10-tox', name:'GLICOSE 10% (Betabloqueador/BCC)', presentation:'SG 10% 500 mL + NaCl 20% 20 mL', doseBadge:'manutenção',
+    instruction:'Suporte em intoxicação por betabloqueador/BCC junto com insulina. Max: 90 mL/h. Alternativa: SF 400 mL + SG 50% 100 mL.',
+    calc:p => {
+      const m = p <= 10 ? p*4 : p <= 20 ? 40 + (p-10)*2 : 60 + (p-20);
+      return { mg:fN(Math.min(m,90),0), ml:'--', mlLabel:'mL/h EV', unit:'mL/h' }; } },
+  { id:'glucagon-tox', name:'GLUCAGON (Betabloqueador/BCC)', presentation:'1 mg/mL', doseBadge:'0,05 mg/kg',
+    instruction:'Diluir 4 mg (4 mL) em SG 5% 46 mL (0,8 mg/mL). Ataque max: 10 mg. Manutenção: 0,05-0,1 mg/kg/h na mesma diluição.',
+    calc:p => { const d=Math.min(p*0.05,10); return { mg:fN(d,2), ml:fN(d/0.8,2), mlLabel:'da solução 0,8 mg/mL', unit:'mg' }; } },
+  { id:'gluconato-tox', name:'GLUCONATO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'60 mg/kg',
+    instruction:'Intoxicação por BCC / hipocalcemia. Max: 2000 mg. Diluir em AD/SF e infundir lento.',
+    calc:p => { const d=Math.min(p*60,2000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
+  { id:'hidroxicobalamina', name:'HIDROXICOBALAMINA', presentation:'5 g/200 mL', doseBadge:'70 mg/kg',
+    instruction:'Intoxicação por cianeto (inalação de fumaça). Max: 5 g. EV.',
+    calc:p => { const d=Math.min(p*70,5000); return { mg:fN(d,0), ml:fN(d/25,1), unit:'mg' }; } },
+  { id:'insulina-tox', name:'INSULINA EUGLICÊMICA (Betabloqueador/BCC)', presentation:'100 UI/mL', doseBadge:'1 UI/kg',
+    instruction:'Bolus 1 UI/kg + infusão 1 UI/kg/h (diluir 100 UI em 100 mL SF = 1 UI/mL). Monitorizar glicemia e potássio.',
+    calc:p => ({ mg:fN(p,0), ml:fN(p,0), mlLabel:'bolus UI / infusão mL/h', unit:'UI' }) },
+  { id:'naloxona-tox', name:'NALOXONA', presentation:'0,4 mg/mL', doseBadge:'0,1 mg/kg',
+    instruction:'Intoxicação por opioides. Dose inicial: 0,4-2 mg. Via: IV, IO, IM, IN.',
+    calc:p => { const d1=Math.min(p*0.1,0.4), d2=Math.min(p*0.1,2);
+      return { mg:fN(d1,2)+' - '+fN(d2,2), ml:fN(d1/0.4,1)+' - '+fN(d2/0.4,1), unit:'mg' }; } },
+  { id:'octreotide-tox', name:'OCTREOTIDE (Sulfonilureias)', presentation:'0,1 mg/mL', doseBadge:'1-2 mcg/kg',
+    instruction:'Hipoglicemia refratária por sulfonilureia. Max: 50 mcg. EV bolus.',
+    calc:p => { const d1=Math.min(p,50), d2=Math.min(p*2,50);
+      return { mg:fN(d1,0)+' / '+fN(d2,0), ml:fN(d1/100,2)+' / '+fN(d2/100,2), unit:'mcg' }; } },
+  { id:'vitamina-k', name:'VITAMINA K', presentation:'10 mg/mL', doseBadge:'0,03 mg/kg',
+    instruction:'Intoxicação por cumarínicos. Max: 5 mg. EV lento. Esquema de dose fixa também pode ser usado: 0,5-2-5 mg conforme gravidade.',
+    calc:p => { const d=Math.min(p*0.03,5); return { mg:fN(d,2), ml:fN(d/10,2), unit:'mg' }; } },
+  { id:'nac-fase1', name:'N-ACETILCISTEÍNA — Fase 1 (1ª hora)', presentation:'100 mg/mL', doseBadge:'150 mg/kg',
+    instruction:'Intoxicação por paracetamol. Max: 15000 mg. Diluir em SF e infundir em 1 h.',
+    calc:p => { const d=Math.min(p*150,15000); return { mg:fN(d,0), ml:fN(d/100,1), mlLabel:'diluir em '+fN(d/30,0)+' mL de SF', unit:'mg' }; } },
+  { id:'nac-fase2', name:'N-ACETILCISTEÍNA — Fase 2 (4 h)', presentation:'100 mg/mL', doseBadge:'50 mg/kg',
+    instruction:'Max: 5000 mg. Diluir em SF e infundir nas próximas 4 h.',
+    calc:p => { const d=Math.min(p*50,5000); return { mg:fN(d,0), ml:fN(d/100,1), mlLabel:'diluir em '+fN(Math.ceil(d/10),0)+' mL de SF', unit:'mg' }; } },
+  { id:'nac-fase3', name:'N-ACETILCISTEÍNA — Fase 3 (16 h)', presentation:'100 mg/mL', doseBadge:'100 mg/kg',
+    instruction:'Max: 10000 mg. Diluir em SF e infundir nas próximas 16 h.',
+    calc:p => { const d=Math.min(p*100,10000); return { mg:fN(d,0), ml:fN(d/100,1), mlLabel:'diluir em '+fN(d/10,0)+' mL de SF', unit:'mg' }; } },
+  { id:'nac-alternativo', name:'N-ACETILCISTEÍNA — Infusão única (alternativo)', presentation:'15 g + SF 350 mL (30 mg/mL)', doseBadge:'15 mg/kg/h',
+    instruction:'Após a dose de ataque da 1ª hora. Max: 1500 mg/h.',
+    calc:p => { const d=Math.min(p*15,1500); return { mg:fN(d,0), ml:fN(d/30,1), mlLabel:'mg/h = mL/h da solução 30 mg/mL', unit:'mg/h' }; } }
             ]
         };
 
@@ -635,12 +858,65 @@
             }
         }
 
+
+        function pesoPorAltura(cm){
+          if (!isFinite(cm) || cm <= 0) return null;
+          for (const [minCm, maxCm, peso, maxExclusivo] of ALTURA_PESO){
+            if (cm >= minCm && (maxExclusivo ? cm < maxCm : cm <= maxCm)) return peso;
+          }
+          return null;
+        }
+
+        function buildVitais() {
+            var cols = VITAL_COLS.map(function(c) { return '<th>' + c + '</th>'; }).join('');
+            var rows = VITAL_ROWS.map(function(r) {
+                return '<tr><td class="vitais-lbl">' + r.label + '</td>' +
+                    r.values.map(function(v) { return '<td>' + v + '</td>'; }).join('') + '</tr>';
+            }).join('');
+            document.getElementById('vitais-body').innerHTML =
+                '<div class="vitais-idade"><label for="input-idade-vitais">Idade (anos)</label>' +
+                '<input type="number" id="input-idade-vitais" inputmode="decimal" min="0" max="18" step="0.5" placeholder="--"></div>' +
+                '<div class="vitais-pas" id="vitais-pas">Informe a idade para estimar a PAS mínima</div>' +
+                '<table class="vitais-table"><tr><th>Parâmetro</th>' + cols + '</tr>' + rows + '</table>' +
+                '<div class="drug-calc-at">PAS mínima = 70 + (2 x idade). A partir de 10 anos, considera-se 90 mmHg como piso.</div>';
+            document.getElementById('input-idade-vitais').addEventListener('input', function() {
+                var v = parseFloat(this.value);
+                var el = document.getElementById('vitais-pas');
+                if (isNaN(v) || v < 0) { el.textContent = 'Informe a idade para estimar a PAS mínima'; el.classList.remove('on'); return; }
+                el.innerHTML = 'PAS mínima estimada: <strong>' + pasMinima(v) + ' mmHg</strong>';
+                el.classList.add('on');
+            });
+        }
+
+        function buildEstimarPeso() {
+            document.getElementById('estimar-peso-body').innerHTML =
+                '<div class="vitais-idade"><label for="input-altura">Comprimento (cm)</label>' +
+                '<input type="number" id="input-altura" inputmode="decimal" min="40" max="180" step="1" placeholder="--"></div>' +
+                '<div class="vitais-pas" id="altura-res">Informe o comprimento para estimar o peso</div>' +
+                '<div class="drug-calc-at">Estimativa por faixa de comprimento. Sempre que houver balança disponível, prefira o peso aferido.</div>';
+            document.getElementById('input-altura').addEventListener('input', function() {
+                var cm = parseFloat(this.value);
+                var el = document.getElementById('altura-res');
+                var est = pesoPorAltura(cm);
+                if (est === null) { el.textContent = 'Informe o comprimento para estimar o peso'; el.classList.remove('on'); return; }
+                el.innerHTML = 'Peso estimado: <strong>' + est + ' kg</strong> — aplicado aos cálculos';
+                el.classList.add('on');
+                var pin = document.getElementById('peso');
+                if (pin) { pin.value = est; setSource('input-peso'); calcularTudo(); }
+            });
+        }
+
         function buildDrugSections() {
             document.getElementById('pcr-drugs').innerHTML = drugs.pcr.map(buildDrugCard).join('');
             document.getElementById('iot-drugs').innerHTML = drugs.iot.map(buildDrugCard).join('');
             document.getElementById('emergency-drugs').innerHTML = drugs.emergency.map(buildDrugCard).join('');
             document.getElementById('convulsion-drugs').innerHTML = drugs.convulsion.map(buildDrugCard).join('');
             document.getElementById('neuro-drugs').innerHTML = drugs.neuro.map(buildDrugCard).join('');
+            document.getElementById('dor-drugs').innerHTML = drugs.dor.map(buildDrugCard).join('');
+            document.getElementById('resp-drugs').innerHTML = drugs.resp.map(buildDrugCard).join('');
+            document.getElementById('tox-drugs').innerHTML = drugs.tox.map(buildDrugCard).join('');
+            buildVitais();
+            buildEstimarPeso();
         }
 
         function buildDrugCard(drug) {
@@ -652,7 +928,7 @@
                 '<div class="drug-instruction">' + drug.instruction + '</div>' +
                 '<div class="drug-result-box"><div class="drug-result-label">Dose</div><div class="drug-result"><span id="' + drug.id + '-mg">--</span><span id="' + drug.id + '-unit" class="drug-result-unit"></span></div></div>' +
                 '<div class="drug-result-box"><div class="drug-result-label">Volume</div><div class="drug-result"><span id="' + drug.id + '-ml">--</span> mL</div></div>' +
-                '</div>' + prepBtn + '</div></div>';
+                '</div>' + (drug.calcAt ? '<div class="drug-calc-at">Calculado a ' + drug.calcAt + '</div>' : '') + prepBtn + '</div></div>';
         }
 
         function buildEquipmentGrid() {
@@ -714,7 +990,7 @@
             html += '<div style="margin-bottom:16px;"><input type="text" id="infusion-search" placeholder="Buscar medicamento..." oninput="filterInfusions(this.value)" style="width:100%;padding:12px 16px;background:#1A1A1A;border:2px solid #333;border-radius:10px;color:#F5F5F5;font-size:.9rem;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor=\'#42A5F5\'" onblur="this.style.borderColor=\'#333\'"></div>';
 
             html += '<div class="infusion-category"><div class="infusion-category-title">Vasoativos</div><div id="infusions-vasoativos"></div></div>';
-            html += '<div class="infusion-category"><div class="infusion-category-title">💤 Sedativos e Analgesia</div><div id="infusions-sedativos"></div></div>';
+            html += '<div class="infusion-category"><div class="infusion-category-title">Sedativos e Analgesia</div><div id="infusions-sedativos"></div></div>';
             html += '<div class="infusion-category"><div class="infusion-category-title">Outros</div><div id="infusions-outros"></div></div>';
 
             document.getElementById('infusions-section').innerHTML = html;
@@ -786,9 +1062,18 @@
                 name: 'VASOPRESSINA', category: 'vasoativos', color: '#D946EF', unit: 'mU/kg/min', range: [0.2, 2], step: 0.1, defaultVal: 0.5,
                 presentation: '20 U/mL',
                 dilutions: {
-                    small: { drug: 1, diluent: 99, conc: 200, vol: 100, formula: 1 },
-                    medium: { drug: 1, diluent: 99, conc: 200, vol: 100, formula: 1 },
+                    small: { drug: 2, diluent: 98, conc: 400, vol: 100, formula: 1 },
+                    medium: { drug: 2, diluent: 98, conc: 400, vol: 100, formula: 1 },
                     large: { drug: 2, diluent: 98, conc: 400, vol: 100, formula: 1 }
+                }
+            },
+            nitroprussiato: {
+                name: 'NITROPRUSSIATO', category: 'vasoativos', color: '#8B5CF6', unit: 'mcg/kg/min', range: [0.5, 10], step: 0.25, defaultVal: 0.5,
+                presentation: '25 mg/mL',
+                dilutions: {
+                    small: { drug: 1, diluent: 40, conc: 600, vol: 41, formula: 0.1 },
+                    medium: { drug: 1, diluent: 40, conc: 600, vol: 41, formula: 0.1 },
+                    large: { drug: 2, diluent: 80, conc: 600, vol: 82, formula: 0.1 }
                 }
             },
             milrinona: {
@@ -1139,7 +1424,7 @@
                 document.getElementById('cpr-depth').textContent = '5-6 cm';
             }
 
-            var allDrugs = drugs.pcr.concat(drugs.iot).concat(drugs.emergency).concat(drugs.convulsion).concat(drugs.neuro);
+            var allDrugs = drugs.pcr.concat(drugs.iot).concat(drugs.emergency).concat(drugs.convulsion).concat(drugs.neuro).concat(drugs.dor).concat(drugs.resp).concat(drugs.tox);
             for (var i = 0; i < allDrugs.length; i++) {
                 var drug = allDrugs[i];
                 var result = drug.calc(peso);
