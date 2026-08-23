@@ -3,6 +3,43 @@
 // ==========================================
 
 /** Configuração de uma droga para calculadora de infusão */
+/**
+ * Caixa de bolus/ataque que acompanha um modo de dose.
+ * As linhas sao pares label/valor, iguais aos info-row do v1.
+ */
+export interface DrugBolus {
+  title: string
+  rows: { label: string; value: string }[]
+  /** Dose por kg — gera a linha "Este paciente". */
+  perKg?: number
+  /** Quando a dose de ataque e uma faixa (ex.: propofol 0,5 a 2,5 mg/kg). */
+  perKgRange?: [number, number]
+  /** Teto absoluto POR BOLUS (ex.: midazolam 20 mg). Nao confundir com dose
+   *  cumulativa maxima, que fica no texto da linha "Repetir". */
+  capPerBolus?: number
+  /** Unidade do calculo por kg. Padrao mg. */
+  unit?: string
+}
+
+/**
+ * Modo de dose por indicacao. Troca a faixa do slider E as faixas de cor —
+ * no v1 isso vivia em setMidaMode/setPropofolMode/setCetaMode/setNitroMode
+ * junto com as chamadas a setStatus.
+ */
+export interface DrugMode {
+  id: string
+  label: string
+  doseMin: number
+  doseMax: number
+  doseStep: number
+  doseDefault: number
+  cautionThreshold?: number
+  criticalThreshold?: number
+  /** Texto da faixa exibido ao usuario, com virgula decimal. */
+  rangeLabel: string
+  bolus?: DrugBolus
+}
+
 export interface DrugConfig {
   id: string
   name: string
@@ -22,6 +59,8 @@ export interface DrugConfig {
   factor: number              // 60 para mcg/kg/min, 1 para mg/kg/h
   usesWeight: boolean
   dilutions?: DrugDilution[]
+  /** Modos por indicacao. Sem isso, a droga tem faixa unica (as outras onze). */
+  modes?: DrugMode[]
 }
 
 export interface DrugDilution {

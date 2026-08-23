@@ -86,6 +86,28 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 0.04, doseMax: 0.2, doseStep: 0.01, doseDefault: 0.1,
     cautionThreshold: 0.15, criticalThreshold: 0.2,
     factor: 1, usesWeight: true,
+    modes: [
+      {
+        id: 'sedacao', label: 'Sedação',
+        doseMin: 0.04, doseMax: 0.2, doseStep: 0.01, doseDefault: 0.1,
+        cautionThreshold: 0.15, criticalThreshold: 0.2,
+        rangeLabel: '0,04 - 0,2 mg/kg/h',
+      },
+      {
+        id: 'status', label: 'Status epilepticus',
+        doseMin: 0.05, doseMax: 2, doseStep: 0.05, doseDefault: 0.5,
+        cautionThreshold: 1.5, criticalThreshold: 2,
+        rangeLabel: '0,05 - 2,0 mg/kg/h',
+        bolus: {
+          title: 'Bolus (Status epilepticus)',
+          rows: [
+            { label: 'Dose', value: '0,2 mg/kg IV' },
+            { label: 'Repetir', value: '5/5 min até máx 20 mg' },
+          ],
+          perKg: 0.2, capPerBolus: 20,
+        },
+      },
+    ],
   },
   {
     id: 'fentanil', name: 'Fentanil', aliases: ['fenta', 'fentanyl'],
@@ -103,7 +125,30 @@ export const drugConfigs: DrugConfig[] = [
     concentration: 10, concentrationUnit: 'mg/mL',
     doseUnit: 'mg/kg/h', resultUnit: 'mL/h',
     doseMin: 1, doseMax: 4, doseStep: 0.1, doseDefault: 2,
+    cautionThreshold: 3, criticalThreshold: 4,
     factor: 1, usesWeight: true,
+    modes: [
+      {
+        id: 'sedacao', label: 'Sedação',
+        doseMin: 1, doseMax: 4, doseStep: 0.1, doseDefault: 2,
+        cautionThreshold: 3, criticalThreshold: 4,
+        rangeLabel: '1,0 - 4,0 mg/kg/h',
+      },
+      {
+        id: 'status', label: 'Status epilepticus',
+        doseMin: 0.3, doseMax: 4.8, doseStep: 0.1, doseDefault: 2,
+        cautionThreshold: 3, criticalThreshold: 4.8,
+        rangeLabel: '0,3 - 4,8 mg/kg/h',
+        bolus: {
+          title: 'Bolus (Status epilepticus)',
+          rows: [
+            { label: 'Dose', value: '0,5 - 2,5 mg/kg IV' },
+            { label: 'Repetir', value: '5/5 min até máx 10 mg/kg' },
+          ],
+          perKgRange: [0.5, 2.5],
+        },
+      },
+    ],
   },
   {
     id: 'dexmedetomidina', name: 'Dexmedetomidina', aliases: ['dex', 'precedex'],
@@ -122,7 +167,30 @@ export const drugConfigs: DrugConfig[] = [
     concentration: 5, concentrationUnit: 'mg/mL',
     doseUnit: 'mg/kg/h', resultUnit: 'mL/h',
     doseMin: 0.5, doseMax: 2.0, doseStep: 0.1, doseDefault: 1.0,
+    cautionThreshold: 1.5, criticalThreshold: 2,
     factor: 1, usesWeight: true,
+    modes: [
+      {
+        id: 'sedacao', label: 'Sedação',
+        doseMin: 0.5, doseMax: 2, doseStep: 0.1, doseDefault: 1,
+        cautionThreshold: 1.5, criticalThreshold: 2,
+        rangeLabel: '0,5 - 2,0 mg/kg/h',
+      },
+      {
+        id: 'status', label: 'Status epilepticus',
+        doseMin: 1.2, doseMax: 7.5, doseStep: 0.1, doseDefault: 3,
+        cautionThreshold: 5, criticalThreshold: 7.5,
+        rangeLabel: '1,2 - 7,5 mg/kg/h',
+        bolus: {
+          title: 'Bolus (Status epilepticus)',
+          rows: [
+            { label: 'Dose', value: '1,5 mg/kg IV' },
+            { label: 'Repetir', value: '5/5 min até máx 4,5 mg/kg' },
+          ],
+          perKg: 1.5,
+        },
+      },
+    ],
   },
 
   // === BNM ===
@@ -153,9 +221,31 @@ export const drugConfigs: DrugConfig[] = [
     presentation: '50 mg (1 amp 10mL — 5mg/mL) + SF 0,9% 240 mL = 250 mL',
     concentration: 200, concentrationUnit: 'mcg/mL',
     doseUnit: 'mcg/kg/min', resultUnit: 'mL/h',
-    doseMin: 0.25, doseMax: 10, doseStep: 0.25, doseDefault: 1,
+    doseMin: 0.25, doseMax: 2, doseStep: 0.05, doseDefault: 0.5,
     cautionThreshold: 2, criticalThreshold: 5,
     factor: 60, usesWeight: true,
+    modes: [
+      {
+        id: 'padrao', label: 'Padrão',
+        doseMin: 0.25, doseMax: 2, doseStep: 0.05, doseDefault: 0.5,
+        cautionThreshold: 2, criticalThreshold: 5,
+        rangeLabel: '0,25 - 2,0 mcg/kg/min',
+      },
+      {
+        id: 'scape', label: 'SCAPE',
+        doseMin: 1, doseMax: 10, doseStep: 0.5, doseDefault: 3,
+        cautionThreshold: 2, criticalThreshold: 5,
+        rangeLabel: '1 - 10 mcg/kg/min (alta dose)',
+        bolus: {
+          title: 'SCAPE (EAP hipertensivo)',
+          rows: [
+            { label: 'Bolus', value: '400-800 mcg IV (2-4 mL)' },
+            { label: 'Repetir bolus', value: '3-5 min até resposta' },
+            { label: 'Alvo', value: 'Reduzir PAS 20-30%' },
+          ],
+        },
+      },
+    ],
   },
   {
     id: 'nitroprussiato', name: 'Nitroprussiato', aliases: ['nipride', 'nps'],
