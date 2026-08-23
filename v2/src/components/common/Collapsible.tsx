@@ -13,16 +13,25 @@ interface CollapsibleProps {
 export function Collapsible({ title, badge, badgeColor, children, defaultOpen = false, isOpen, onToggle }: CollapsibleProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen)
   const bodyRef = useRef<HTMLDivElement>(null)
+  const innerRef = useRef<HTMLDivElement>(null)
   const open = isOpen !== undefined ? isOpen : internalOpen
 
+  /**
+   * O corpo fica com `max-height` fixo e `overflow: hidden` para animar. Se o
+   * ResizeObserver observar o proprio corpo, ele NUNCA dispara quando o conteudo
+   * cresce — o corpo esta preso na altura antiga, entao o tamanho dele nao muda.
+   * Resultado: abrir uma droga dentro de uma categoria ja aberta cortava o card
+   * exatamente na caixa de resultado em mL/h.
+   * A correcao e observar o conteudo INTERNO, que cresce de verdade.
+   */
   useEffect(() => {
-    if (!open || !bodyRef.current) return
+    if (!open || !bodyRef.current || !innerRef.current) return
     const el = bodyRef.current
-    el.style.maxHeight = `${el.scrollHeight}px`
-    const observer = new ResizeObserver(() => {
-      if (el.scrollHeight > 0) el.style.maxHeight = `${el.scrollHeight}px`
-    })
-    observer.observe(el)
+    const inner = innerRef.current
+    const sync = () => { el.style.maxHeight = `${inner.scrollHeight}px` }
+    sync()
+    const observer = new ResizeObserver(sync)
+    observer.observe(inner)
     return () => observer.disconnect()
   }, [open])
 
@@ -64,7 +73,7 @@ export function Collapsible({ title, badge, badgeColor, children, defaultOpen = 
         className={`overflow-hidden transition-all duration-300 ease-in-out ${open ? 'border border-border-card border-t-0 rounded-b-lg' : ''}`}
         style={{ maxHeight: open ? undefined : '0px', background: open ? '#0A0A0A' : 'transparent' }}
       >
-        <div className="px-[14px] pb-[14px] pt-[14px]">
+        <div ref={innerRef} className="px-[14px] pb-[14px] pt-[14px]">
           {children}
         </div>
       </div>
