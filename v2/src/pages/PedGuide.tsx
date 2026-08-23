@@ -63,6 +63,12 @@ interface InfusionDilution {
   diluent: number
   conc: number
   vol: number
+  /**
+   * NAO E LIDO pelo calculo — `doseParaMlh` usa `conc` e a unidade da droga.
+   * Ficou como espelho da coluna "mL/h" do protocolo (CLAUDE.md secao 17), que
+   * mistura multiplicador e divisor entre drogas; por isso os valores aqui sao
+   * inconsistentes entre si. Campo morto, candidato a remocao.
+   */
   formula: number
 }
 
@@ -146,8 +152,7 @@ const PCR_DRUGS: BolusDrug[] = [
   {
     id: 'bicarbonato', name: 'BICARBONATO DE SÓDIO 8,4%', presentation: '1 mEq/mL', doseBadge: '1 mEq/kg',
     instruction: 'PCR prolongada, acidose documentada. Diluir 1:1 com Água Destilada.',
-    calc: (p) => ({ mg: p.toFixed(0), ml: p.toFixed(0), mlLabel: '+ igual vol. AD', unit: 'mEq' }),
-  },
+    calc: (p) => { const d=Math.min(p,250); return { mg:fN(d,0), ml:fN(d,0), mlLabel:'+ igual vol. AD', unit:'mEq' }; }},
   {
     id: 'cálcio', name: 'GLUCONATO DE CÁLCIO 10%', presentation: '100 mg/mL', doseBadge: '60-100 mg/kg',
     instruction: 'Hipocalcemia, Hipercalemia. Max: 2000 mg. Infundir lento.',
@@ -155,9 +160,8 @@ const PCR_DRUGS: BolusDrug[] = [
   },
   {
     id: 'atropina', name: 'ATROPINA', presentation: '0,5 mg/mL', doseBadge: '0,02 mg/kg',
-    instruction: 'Bradicardia com pulso. Min: 0,1 mg. Max: 0,5 mg (criança).',
-    calc: (p) => { const d = Math.max(0.1, Math.min(p * 0.02, 0.5)); return { mg: d.toFixed(2), ml: (d / 0.5).toFixed(2), unit: 'mg' } },
-  },
+    instruction: 'Bradicardia com pulso. Max: 1 mg.',
+    calc: (p) => { const d=Math.min(p*0.02,1); return { mg:fN(d,2), ml:fN(d/0.5,2), unit:'mg' }; }},
   { id: 'calcio', name:'GLUCONATO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'60-100 mg/kg', calcAt:'60 mg/kg (piso da faixa)',
     instruction:'Hipocalcemia, Hipercalemia. Max: 2000 mg. Infundir lento.',
     calc:p => { const d=Math.min(p*60,2000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
@@ -185,8 +189,7 @@ const IOT_DRUGS: BolusDrug[] = [
   {
     id: 'cetamina', name: 'CETAMINA', presentation: '50 mg/mL', doseBadge: '1-2 mg/kg', calcAt: '2 mg/kg (topo da faixa)',
     instruction: 'Indução dissociativa. Mantém VA e drive respiratório. Broncodilatador.',
-    calc: (p) => ({ mg: (p * 2).toFixed(0), ml: (p * 2 / 50).toFixed(2), unit: 'mg' }),
-  },
+    calc: (p) => { const d=Math.min(p*2,100); return { mg:fN(d,0), ml:fN(d/50,2), unit:'mg' }; }},
   {
     id: 'midazolam', name: 'MIDAZOLAM', presentation: '5 mg/mL', doseBadge: '0,1-0,4 mg/kg', calcAt: '0,3 mg/kg',
     instruction: 'Sedação. ISR: 0,3 mg/kg. Max: 5 mg. Pode causar hipotensão.',
@@ -194,14 +197,12 @@ const IOT_DRUGS: BolusDrug[] = [
   },
   {
     id: 'fentanil', name: 'FENTANIL', presentation: '50 mcg/mL', doseBadge: '1-2 mcg/kg', calcAt: '2 mcg/kg (topo da faixa)',
-    instruction: 'Analgesia. Infusão lenta. Max: 100 mcg.',
-    calc: (p) => { const d = Math.min(p * 2, 100); return { mg: d.toFixed(0), ml: (d / 50).toFixed(2), unit: 'mcg' } },
-  },
+    instruction: 'Analgesia. Administrar lento. Max: 100 mcg.',
+    calc: (p) => { const d=Math.min(p*2,100); return { mg:fN(d,0), ml:fN(d/50,2), unit:'mcg' }; }},
   {
     id: 'propofol', name: 'PROPOFOL', presentation: '10 mg/mL', doseBadge: '1-2,5 mg/kg', calcAt: '2,5 mg/kg (topo da faixa)',
     instruction: 'Indução. Hipotensão dose-dependente. Evitar em choque.',
-    calc: (p) => ({ mg: (p * 2.5).toFixed(0), ml: (p * 2.5 / 10).toFixed(1), unit: 'mg' }),
-  },
+    calc: (p) => { const d=Math.min(p*2.5,200); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; }},
   {
     id: 'etomidato', name: 'ETOMIDATO', presentation: '2 mg/mL', doseBadge: '0,2-0,4 mg/kg', calcAt: '0,3 mg/kg',
     instruction: 'Indução. Estabilidade hemodinâmica. Max: 20 mg. Evitar em sepse.',
@@ -210,13 +211,11 @@ const IOT_DRUGS: BolusDrug[] = [
   {
     id: 'rocuronio', name: 'ROCURONIO', presentation: '10 mg/mL', doseBadge: '0,9-1,2 mg/kg', calcAt: '1 mg/kg',
     instruction: 'Bloqueador neuromuscular. ISR: 1 mg/kg. Reversível com Sugammadex.',
-    calc: (p) => ({ mg: p.toFixed(0), ml: (p / 10).toFixed(1), unit: 'mg' }),
-  },
+    calc: (p) => { const d=Math.min(p,100); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; }},
   {
     id: 'succinil', name: 'SUCCINILCOLINA', presentation: '10 mg/mL', doseBadge: '1-2 mg/kg', calcAt: '1,5 mg/kg',
-    instruction: 'BNM despolarizante. Contraindicado: hipercalemia, queimados. Max: 150 mg.',
-    calc: (p) => { const d = Math.min(p * 1.5, 150); return { mg: d.toFixed(0), ml: (d / 10).toFixed(1), unit: 'mg' } },
-  },
+    instruction: 'BNM despolarizante. Contraindicado: hipercalemia, queimados. Max: 100 mg. Ampola de 100 mg reconstituída para 10 mL.',
+    calc: (p) => { const d=Math.min(p*1.5,100); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; }},
   {
     id: 'cisatracurio', name: 'CISATRACURIO', presentation: '2 mg/mL', doseBadge: '0,1-0,15 mg/kg', calcAt: '0,15 mg/kg (topo da faixa)',
     instruction: 'BNM não despolarizante. Metabolismo de Hofmann.',
@@ -277,25 +276,22 @@ const EMERGENCY_DRUGS: BolusDrug[] = [
 
 const CONVULSION_DRUGS: BolusDrug[] = [
   {
-    id: 'diazepam', name: 'DIAZEPAM', presentation: '5 mg/mL', doseBadge: '0,2-0,4 mg/kg',
-    instruction: 'Status epilepticus - 1ª linha. Via: IV lento ou Retal (0,5 mg/kg). Max: 10 mg. Repetir até 3x.',
-    calc: (p) => { const d = Math.min(p * 0.3, 10); return { mg: d.toFixed(1), ml: (d / 5).toFixed(1), unit: 'mg' } },
-  },
+    id: 'diazepam', name: 'DIAZEPAM', presentation: '5 mg/mL', doseBadge: '0,3 mg/kg',
+    instruction: 'Status epilepticus - 1ª linha. EV em bolus, não diluir. Max: 5 mg.',
+    calc: (p) => { const d=Math.min(p*0.3,5); return { mg:fN(d,1), ml:fN(d/5,2), unit:'mg' }; }},
   {
-    id: 'midazolam-conv', name: 'MIDAZOLAM (Status)', presentation: '5 mg/mL', doseBadge: '0,1-0,2 mg/kg',
-    instruction: 'Status epilepticus - Alternativa. Via: IV, IM, IN (0,2 mg/kg), Bucal. Max: 10 mg.',
-    calc: (p) => { const d = Math.min(p * 0.2, 10); return { mg: d.toFixed(1), ml: (d / 5).toFixed(1), unit: 'mg' } },
-  },
+    id: 'midazolam-conv', name: 'MIDAZOLAM (Status)', presentation: '5 mg/mL', doseBadge: '0,3 IM · 0,1 EV mg/kg',
+    instruction: 'Status epilepticus - Alternativa. IM: 0,3 mg/kg (max 10 mg). EV: 0,1 mg/kg (max 5 mg).',
+    calc: (p) => { const im=Math.min(p*0.3,10), ev=Math.min(p*0.1,5);
+      return { mg:fN(im,1)+' / '+fN(ev,1), ml:fN(im/5,2)+' / '+fN(ev/5,2), mlLabel:'IM / EV', unit:'mg' }; }},
   {
-    id: 'fenitoina', name: 'FENITOINA', presentation: '50 mg/mL', doseBadge: '15-20 mg/kg',
-    instruction: 'Status epilepticus - 2ª linha. Diluir em SF, infundir em 20 min. Monitorizar ECG.',
-    calc: (p) => ({ mg: (p * 20).toFixed(0), ml: (p * 20 / 50).toFixed(1), unit: 'mg' }),
-  },
+    id: 'fenitoina', name: 'FENITOINA', presentation: '50 mg/mL', doseBadge: '20 mg/kg',
+    instruction: 'Status epilepticus - 2ª linha. Max: 1500 mg. Diluir em SF, infundir em 20 min. Monitorizar ECG.',
+    calc: (p) => { const d=Math.min(p*20,1500); return { mg:fN(d,0), ml:fN(d/50,1), unit:'mg' }; }},
   {
-    id: 'fenobarbital', name: 'FENOBARBITAL', presentation: '100 mg/mL', doseBadge: '10-20 mg/kg',
-    instruction: 'Status refratário / Neonatal. Infundir em 15-20 min. Risco depressão respiratória.',
-    calc: (p) => ({ mg: (p * 20).toFixed(0), ml: (p * 20 / 100).toFixed(1), unit: 'mg' }),
-  },
+    id: 'fenobarbital', name: 'FENOBARBITAL', presentation: '100 mg/mL', doseBadge: '20 mg/kg',
+    instruction: 'Status refratário / Neonatal. Max: 1000 mg. Diluir em SF, infundir em 15-20 min. Risco depressão respiratória.',
+    calc: (p) => { const d=Math.min(p*20,1000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; }},
   {
     id: 'levetiracetam', name: 'LEVETIRACETAM', presentation: '100 mg/mL', doseBadge: '40-60 mg/kg', calcAt: '60 mg/kg (topo da faixa)',
     instruction: 'Status epilepticus - Alternativa 2ª linha. Infundir em 15 min. Max: 3000 mg.',
@@ -364,27 +360,21 @@ const RESP_DRUGS: BolusDrug[] = [
 
 const AGE_DRUGS: BolusDrug[] = [
   {
-    id: 'loratadina', name: 'LORATADINA', presentation: '1 mg/mL xarope', doseBadge: 'por idade e peso', needsAge: true,
-    instruction: 'Anti-histamínico de 2a geração. Adjuvante na anafilaxia e na urticária. Máx: 10 mg.',
+    id: 'loratadina', name: 'LORATADINA', presentation: '1 mg/mL xarope', doseBadge: 'por idade/peso', needsAge: true,
+    instruction: 'Anafilaxia (adjuvante, 2ª geração). Max: 10 mg VO. Evitar anti-histamínicos de 1ª geração.',
     calc: (p, ageY) => {
-      if (ageY === null || ageY === undefined || ageY < 2) {
-        return { mg: '--', ml: '--', mlLabel: 'Geralmente não recomendado abaixo de 2 anos', unit: '' }
-      }
-      const d = p <= 30 ? 5 : 10
-      return { mg: fN(d, 0), ml: fN(d, 0), mlLabel: 'mL do xarope 1 mg/mL, VO 1x/dia', unit: 'mg' }
-    },
-  },
+      if (ageY === null || ageY === undefined) return { mg:'--', ml:'--', mlLabel:'Informe a idade', unit:'' };
+      if (ageY < 2) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 2 anos', unit:'' };
+      const d = p <= 30 ? 5 : 10;
+      return { mg:fN(d,0), ml:fN(d,0), mlLabel:'VO 1x/dia', unit:'mg' }; }},
   {
     id: 'cetirizina', name: 'CETIRIZINA', presentation: 'VO', doseBadge: 'por idade', needsAge: true,
-    instruction: 'Anti-histamínico de 2a geração. Máx: 10 mg. Evitar anti-histamínicos de 1a geração.',
-    calc: (_p, _ageY, ageM) => {
-      if (ageM === null || ageM === undefined || ageM < 6) {
-        return { mg: '--', ml: '--', mlLabel: 'Geralmente não recomendado abaixo de 6 meses', unit: '' }
-      }
-      const d = ageM < 24 ? 2.5 : ageM < 72 ? 5 : 10
-      return { mg: fN(d, 1), ml: '--', mlLabel: 'VO 1x/dia', unit: 'mg' }
-    },
-  },
+    instruction: 'Anafilaxia (adjuvante, 2ª geração). Max: 10 mg VO.',
+    calc: (p, ageY, ageM) => {
+      if (ageM === null || ageM === undefined) return { mg:'--', ml:'--', mlLabel:'Informe a idade', unit:'' };
+      if (ageM < 6) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 6 meses', unit:'' };
+      const d = ageM < 24 ? 2.5 : ageM < 72 ? 5 : 10;
+      return { mg:fN(d,1), ml:'--', mlLabel:'VO', unit:'mg' }; }},
 ]
 
 const TOX_DRUGS: BolusDrug[] = [
@@ -489,6 +479,19 @@ const INFUSION_DATA: Record<string, InfusionDrug> = {
       small: { drug: 2, diluent: 98, conc: 400, vol: 100, formula: 1 },
       medium: { drug: 2, diluent: 98, conc: 400, vol: 100, formula: 1 },
       large: { drug: 2, diluent: 98, conc: 400, vol: 100, formula: 1 },
+    },
+  },
+  // Nitroprussiato — existia no HETRIN e faltava aqui; unico item que o
+  // pareamento por id apontou como ausente.
+  // conc 600 mcg/mL confere com o protocolo: mL/h = dose x peso x 60 / 600
+  // = peso x dose / 10, exatamente a coluna do CLAUDE.md secao 17.
+  nitroprussiato: {
+    id: 'nitroprussiato', name: 'NITROPRUSSIATO', category: 'vasoativos', color: '#78716C', unit: 'mcg/kg/min', range: [0.5, 10], step: 0.5, defaultVal: 1,
+    presentation: '25 mg/mL', warning: 'Diluir em SG 5%. Proteger da luz.',
+    dilutions: {
+      small: { drug: 1, diluent: 40, conc: 600, vol: 41, formula: 0.1 },
+      medium: { drug: 1, diluent: 40, conc: 600, vol: 41, formula: 0.1 },
+      large: { drug: 2, diluent: 80, conc: 600, vol: 82, formula: 0.1 },
     },
   },
   milrinona: {
