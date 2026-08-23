@@ -25,7 +25,7 @@ export function FABMenu({ items, bottomOffset }: FABMenuProps) {
     <div
       ref={menuRef}
       className="fixed right-5 z-[1000] max-w-[500px]"
-      style={{ bottom: bottomOffset ?? 20 }}
+      style={{ bottom: `calc(${bottomOffset ?? 20}px + env(safe-area-inset-bottom))` }}
     >
       {open && (
         <div className="absolute bottom-[70px] right-0 bg-bg-elevated border border-border-card rounded-xl shadow-2xl p-2 min-w-[220px] animate-fade-in">
