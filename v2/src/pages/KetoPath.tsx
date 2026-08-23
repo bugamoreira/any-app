@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { Disclaimer } from '../components/layout/Disclaimer'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Container } from '../components/layout/Container'
+import { FABMenu } from '../components/layout/FABMenu'
 import { Button } from '../components/common/Button'
 import { AlertCard } from '../components/common/AlertCard'
 import { useWeight } from '../contexts/WeightContext'
@@ -14,6 +15,7 @@ import { KetoPlanilha } from '../components/clinical/KetoPlanilha'
 import {
   TelaReconhecimento, TelaExames, TelaCalculadoras, TelaArmadilhas, TelaPrecipitante, TelaReferencias,
 } from '../components/clinical/KetoConsulta'
+import type { FABItem } from '../types/clinical'
 import type { KetoDados, Trilha } from '../data/ketoData'
 import * as K from '../data/ketoData'
 
@@ -92,10 +94,20 @@ export default function KetoPath() {
   const [reavaliadoEm, setReavaliadoEm] = useState<string | null>(null)
   const [pesoTxt, setPesoTxt] = useState(weight !== null ? String(weight) : '')
 
-  function goTo(s: Screen) {
+  const goTo = useCallback((s: Screen) => {
     setScreen(s)
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
-  }
+  }, [])
+
+  // Toda ferramenta do app tem FABMenu com 'Início' — e o KetoPath nao tinha.
+  const fabItems: FABItem[] = useMemo(() => [
+    { label: 'Início', onClick: () => goTo('home') },
+    { label: 'Avaliação guiada', onClick: () => goTo('p1') },
+    { label: 'Reconhecer', onClick: () => goTo('reconhecimento') },
+    { label: 'Calculadoras', onClick: () => goTo('calculadoras') },
+    { label: 'Planilha', onClick: () => goTo('planilha') },
+    { label: 'Referências', onClick: () => goTo('referencias') },
+  ], [goTo])
 
   function setCampo(id: string, valor: string) {
     setTextos(t => ({ ...t, [id]: valor }))
@@ -253,6 +265,7 @@ export default function KetoPath() {
 
       </Container>
       <Footer toolName="KetoPath" version="v1.0.0" updatedAt="Agosto 2026" />
+      <FABMenu items={fabItems} />
     </div>
   )
 }
