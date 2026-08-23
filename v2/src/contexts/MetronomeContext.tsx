@@ -23,6 +23,26 @@ const defaultConfig: MetronomeConfig = { bpm: 110, ventEnabled: false, ventInter
 
 const MetronomeContext = createContext<MetronomeContextType | null>(null)
 
+/**
+ * O iOS toca Web Audio pelo canal de "ambiente", que obedece a chave lateral do
+ * silencioso — por isso o metronomo ficava mudo com o telefone no silencioso.
+ * Declarar a sessao como 'playback' faz o iOS tratar o som como midia: toca com
+ * a chave no silencioso e continua com a tela bloqueada.
+ *
+ * Suportado a partir do iOS 16.4 / Safari 16.4. Em versoes anteriores nao existe
+ * caminho pelo navegador — degrada para o comportamento antigo, sem quebrar.
+ * Observacao: o volume de MIDIA em zero silencia em qualquer versao; a chave do
+ * silencioso e o volume sao controles diferentes.
+ */
+function setAudioSession(type: 'playback' | 'auto') {
+  try {
+    const session = (navigator as unknown as { audioSession?: { type: string } }).audioSession
+    if (session) session.type = type
+  } catch {
+    // navegador sem suporte — ignora
+  }
+}
+
 export function MetronomeProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [config, setConfig] = useState<MetronomeConfig>(defaultConfig)
@@ -33,6 +53,7 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
 
   function getAudioCtx() {
+    setAudioSession('playback')
     if (!audioCtxRef.current) {
       audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
     }
@@ -88,7 +109,8 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
     try {
       const audio = document.createElement('audio')
       audio.setAttribute('loop', '')
-      audio.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA='
+      // 50 ms de silencio, WAV mono 8 kHz 16-bit valido (o anterior tinha bloco de dados vazio)
+      audio.src = 'data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YSADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=='
       audio.volume = 0.01
       audio.play().catch(() => {})
       silentAudioRef.current = audio
@@ -125,6 +147,7 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
     if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null }
     if (ventIntervalRef.current) { clearInterval(ventIntervalRef.current); ventIntervalRef.current = null }
     stopSilentAudio()
+    setAudioSession('auto')
     setIsPlaying(false)
   }, [])
 
@@ -171,6 +194,7 @@ export function MetronomeProvider({ children }: { children: ReactNode }) {
       if (intervalRef.current) clearInterval(intervalRef.current)
       if (ventIntervalRef.current) clearInterval(ventIntervalRef.current)
       stopSilentAudio()
+      setAudioSession('auto')
       if (audioCtxRef.current) audioCtxRef.current.close()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
