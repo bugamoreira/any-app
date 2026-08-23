@@ -53,7 +53,26 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
   const volFinal = parseFloat(formVol.replace(',', '.'))
   const previewConc = amp && nAmps > 0 && volFinal > 0 ? (nAmps * amp.mass) / volFinal : null
 
-  /** Barra erro grosseiro de digitacao sem impedir diluicao legitima. */
+  /**
+   * Barra erro grosseiro de digitacao sem impedir diluicao legitima.
+   *
+   * A faixa e ASSIMETRICA de proposito. Diluir e concentrar nao tem o mesmo
+   * risco: diluir mais baixa a concentracao e AUMENTA o mL/h — o pior caso e
+   * volume a mais, e a velocidade sobe visivelmente na tela. Concentrar mais
+   * derruba o mL/h, e um zero a mais entrega muito mais droga com um numero
+   * que continua parecendo plausivel. E a direcao perigosa.
+   *
+   * A primeira versao usava 0,25x a 4x, simetrica, e barrava preparo legitimo:
+   * o padrao do fentanil no app e a ampola PURA (50 mcg/mL), entao qualquer
+   * diluicao cai muito abaixo de 1x e a trava era impossivel de satisfazer.
+   * O HUGO usa 4 ampolas em 250 mL = 8 mcg/mL, que e 0,16x — barrado a toa.
+   * O v1, aliás, nao tinha trava de proporcao nenhuma.
+   *
+   * O piso de 0,05x (20x mais diluido) ainda pega o erro classico de digitar
+   * um zero a mais no volume, e a trava de volume mínimo cobre o caso inverso.
+   */
+  const RAZAO_MIN = 0.05
+  const RAZAO_MAX = 4
   function erroDoFormulario(): string | null {
     if (!amp) return null
     if (!(nAmps > 0)) return 'Informe quantas ampolas.'
@@ -62,8 +81,12 @@ export function DoseCalculator({ drug, onConcentrationChange }: DoseCalculatorPr
       return `O volume final não pode ser menor que o volume das ampolas (${fmt(nAmps * amp.volume, 0)} mL).`
     }
     const c = (nAmps * amp.mass) / volFinal
-    if (c < drug.concentration * 0.25 || c > drug.concentration * 4) {
-      return `Resultado de ${fmtConc(c)} ${drug.concentrationUnit} — o padrão é ${fmtConc(drug.concentration)}. Confira as ampolas e o volume.`
+    const padrao = `${fmtConc(drug.concentration)} ${drug.concentrationUnit}`
+    if (c > drug.concentration * RAZAO_MAX) {
+      return `Resultado de ${fmtConc(c)} ${drug.concentrationUnit} — mais de ${RAZAO_MAX} vezes o padrão de ${padrao}. Confira as ampolas e o volume.`
+    }
+    if (c < drug.concentration * RAZAO_MIN) {
+      return `Resultado de ${fmtConc(c)} ${drug.concentrationUnit} — muito abaixo do padrão de ${padrao}. Confira o volume final.`
     }
     return null
   }
