@@ -47,7 +47,9 @@ interface BolusDrug {
   doseBadge: string
   highlight?: boolean
   instruction: string
-  calc: (peso: number) => BolusCalcResult
+  calc: (peso: number, ageY?: number | null, ageM?: number | null) => BolusCalcResult
+  /** Depende da idade: o card pede a idade antes de calcular */
+  needsAge?: boolean
   prepKey?: string
   /** Ponto da faixa usado no calculo, quando doseBadge exibe um intervalo */
   calcAt?: string
@@ -358,6 +360,31 @@ const RESP_DRUGS: BolusDrug[] = [
   { id: 'magnesio50-resp', name:'SULFATO DE MAGNÉSIO 50%', presentation:'500 mg/mL', doseBadge:'50 mg/kg',
     instruction:'Crise grave refratária. Max: 2000 mg. Completar com SF e correr EV em 20 min.',
     calc:p => { const d=Math.min(p*50,2000); return { mg:fN(d,0), ml:fN(d/500,1), mlLabel:'completar até '+fN(d/10,0)+' mL de SF', unit:'mg' }; } }
+]
+
+const AGE_DRUGS: BolusDrug[] = [
+  {
+    id: 'loratadina', name: 'LORATADINA', presentation: '1 mg/mL xarope', doseBadge: 'por idade e peso', needsAge: true,
+    instruction: 'Anti-histamínico de 2a geração. Adjuvante na anafilaxia e na urticária. Máx: 10 mg.',
+    calc: (p, ageY) => {
+      if (ageY === null || ageY === undefined || ageY < 2) {
+        return { mg: '--', ml: '--', mlLabel: 'Geralmente não recomendado abaixo de 2 anos', unit: '' }
+      }
+      const d = p <= 30 ? 5 : 10
+      return { mg: fN(d, 0), ml: fN(d, 0), mlLabel: 'mL do xarope 1 mg/mL, VO 1x/dia', unit: 'mg' }
+    },
+  },
+  {
+    id: 'cetirizina', name: 'CETIRIZINA', presentation: 'VO', doseBadge: 'por idade', needsAge: true,
+    instruction: 'Anti-histamínico de 2a geração. Máx: 10 mg. Evitar anti-histamínicos de 1a geração.',
+    calc: (_p, _ageY, ageM) => {
+      if (ageM === null || ageM === undefined || ageM < 6) {
+        return { mg: '--', ml: '--', mlLabel: 'Geralmente não recomendado abaixo de 6 meses', unit: '' }
+      }
+      const d = ageM < 24 ? 2.5 : ageM < 72 ? 5 : 10
+      return { mg: fN(d, 1), ml: '--', mlLabel: 'VO 1x/dia', unit: 'mg' }
+    },
+  },
 ]
 
 const TOX_DRUGS: BolusDrug[] = [
@@ -706,13 +733,17 @@ const CAUSES_6T = ['Tensão (Pneumotórax)', 'Tamponamento cardíaco', 'Toxinas'
 // SUBCOMPONENTES
 // ==========================================
 
-function DrugCard({ drug, peso, highlighted, onPrep }: {
+function DrugCard({ drug, peso, ageY, highlighted, onPrep }: {
   drug: BolusDrug
   peso: number
+  ageY?: number | null
   highlighted: boolean
   onPrep?: (key: string) => void
 }) {
-  const result = peso > 0 ? drug.calc(peso) : null
+  const faltaIdade = !!drug.needsAge && (ageY === null || ageY === undefined)
+  const result = peso > 0 && !faltaIdade
+    ? drug.calc(peso, ageY ?? null, ageY != null ? ageY * 12 : null)
+    : null
   const isHighlight = drug.highlight || highlighted
 
   return (
@@ -750,7 +781,11 @@ function DrugCard({ drug, peso, highlighted, onPrep }: {
         {result && drug.calcAt && (
           <div className="text-center text-[0.75rem] text-text-muted mt-2">Calculado a {drug.calcAt}</div>
         )}
-        {!result && <div className="text-center text-[0.8rem] text-warning py-2">Informe o peso para calcular</div>}
+        {!result && (
+          <div className="text-center text-[0.8rem] text-warning py-2">
+            {faltaIdade ? 'Informe a idade em Sinais vitais para calcular' : 'Informe o peso para calcular'}
+          </div>
+        )}
         {drug.prepKey && onPrep && (
           <button
             onClick={() => onPrep(drug.prepKey!)}
@@ -889,6 +924,40 @@ function ChecklistItem({ text, value }: { text: string; value?: string }) {
 }
 
 // ==========================================
+// SINAIS VITAIS E ESTIMATIVA DE PESO
+// ==========================================
+
+const VITAL_COLS = ['< 1 ano', '1-2 anos', '3-5 anos', '6-11 anos', '> 12 anos']
+
+const VITAL_ROWS: { label: string; values: string[] }[] = [
+  { label: 'FC (bpm)', values: ['100-190', '80-160', '75-120', '70-110', '60-110'] },
+  { label: 'FR (irpm)', values: ['30-60', '20-40', '20-30', '18-25', '12-20'] },
+]
+
+/** PAS minima estimada: 70 + (2 x idade). A partir de 10 anos, piso de 90 mmHg. */
+function pasMinima(ageY: number): number {
+  return ageY > 10 ? 90 : Math.round(70 + 2 * ageY)
+}
+
+/** Peso estimado por comprimento (cm). Faixas do Ped Guide do monolito. */
+const ALTURA_PESO: [number, number, number][] = [
+  [40, 47, 3], [48, 54, 4], [55, 59, 5], [60, 63, 6], [64, 66, 7], [67, 70, 8],
+  [71, 74, 9], [75, 78, 10], [79, 83, 11], [84, 87, 12], [88, 91, 13], [92, 94, 14],
+  [95, 98, 15], [99, 101, 16], [102, 104, 17], [105, 108, 18], [109, 112, 19],
+  [113, 116, 20], [117, 121, 22], [122, 124, 24], [125, 127, 26], [128, 130, 28],
+  [131, 133, 30], [134, 137, 32], [138, 140, 34], [141, 143, 36], [144, 149, 40],
+  [150, 154, 45], [155, 160, 50],
+]
+
+function pesoPorAltura(cm: number): number | null {
+  if (!isFinite(cm) || cm <= 0) return null
+  for (const [min, max, peso] of ALTURA_PESO) {
+    if (cm >= min && cm <= max) return peso
+  }
+  return cm > 160 ? 60 : null
+}
+
+// ==========================================
 // COMPONENTE PRINCIPAL
 // ==========================================
 
@@ -900,6 +969,9 @@ export default function PedGuide() {
   const [selectedBroselow, setSelectedBroselow] = useState<BroselowEntry | null>(null)
   const [broselowOpen, setBroselowOpen] = useState(false)
   const [source, setSource] = useState<'peso' | 'broselow' | null>(null)
+
+  // Idade em anos: destrava sinais vitais e doses por faixa etaria
+  const [idade, setIdade] = useState<number | null>(null)
 
   // Views
   const [view, setView] = useState<PedView>('home')
@@ -1231,7 +1303,7 @@ export default function PedGuide() {
             {/* PCR Drugs */}
             <Collapsible title="Drogas de parada cardiorrespiratória" badge="PCR" badgeColor="#F44336">
               {PCR_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
@@ -1344,47 +1416,123 @@ export default function PedGuide() {
             {/* IOT Drugs */}
             <Collapsible title="Drogas de intubação (ISR)" badge="ISR" badgeColor="#8B5CF6" defaultOpen={isSectionOpen('drogas-iot')}>
               {IOT_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Emergency Drugs */}
             <Collapsible title="Outras drogas de emergência" badge="SOS" badgeColor="#F44336" defaultOpen={isSectionOpen('emergências')}>
               {EMERGENCY_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Convulsion Drugs */}
             <Collapsible title="Anticonvulsivantes" badge="SE" badgeColor="#FFC107" defaultOpen={isSectionOpen('convulsão')}>
               {CONVULSION_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Neuro Drugs */}
             <Collapsible title="Neuroproteção e Osmoterapia" badge="HIC" badgeColor="#2196F3" defaultOpen={isSectionOpen('neuro')}>
               {NEURO_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             <Collapsible title="Dor e sedação para procedimentos" badge="DOR" badgeColor="#C15C82">
               {PAIN_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             <Collapsible title="Crise asmática e broncoespasmo" badge="RESP" badgeColor="#2196F3">
               {RESP_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             <Collapsible title="Toxicologia e antídotos" badge="TOX" badgeColor="#4CAF50">
               {TOX_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
+            </Collapsible>
+
+            <Collapsible title="Anti-histamínicos por idade" badge="IDADE" badgeColor="#8B5CF6">
+              {AGE_DRUGS.map(drug => (
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+              ))}
+            </Collapsible>
+
+            <Collapsible title="Sinais vitais por idade" badge="SV" badgeColor="#2196F3">
+              <div className="flex items-center gap-3 mb-3">
+                <label htmlFor="ped-idade" className="text-[0.8rem] text-text-muted">Idade (anos)</label>
+                <input
+                  id="ped-idade"
+                  type="number"
+                  inputMode="decimal"
+                  min={0}
+                  max={18}
+                  step={0.5}
+                  value={idade ?? ''}
+                  onChange={e => setIdade(e.target.value === '' ? null : parseFloat(e.target.value))}
+                  placeholder="--"
+                  className="w-[110px] bg-bg-elevated border-2 border-border-card rounded-lg text-text-primary text-base px-3 py-2.5 min-h-[44px] outline-none focus:border-accent"
+                />
+              </div>
+              <div className={`rounded-lg border-l-4 p-3 mb-3 text-[0.85rem] ${idade !== null ? 'border-accent bg-bg-elevated text-text-primary' : 'border-border-card bg-bg-elevated text-text-muted'}`}>
+                {idade !== null
+                  ? <>PAS mínima estimada: <strong className="font-mono">{pasMinima(idade)} mmHg</strong></>
+                  : 'Informe a idade para estimar a PAS mínima'}
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-[0.8rem]">
+                  <thead>
+                    <tr>
+                      <th className="border border-border-card bg-bg-elevated text-text-muted font-semibold p-2 text-left">Parâmetro</th>
+                      {VITAL_COLS.map(c => (
+                        <th key={c} className="border border-border-card bg-bg-elevated text-text-muted font-semibold p-2">{c}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {VITAL_ROWS.map(r => (
+                      <tr key={r.label}>
+                        <td className="border border-border-card p-2 text-text-muted">{r.label}</td>
+                        {r.values.map((v, i) => (
+                          <td key={i} className="border border-border-card p-2 text-center font-mono text-text-primary">{v}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-[0.75rem] text-text-muted mt-2">PAS mínima = 70 + (2 x idade). A partir de 10 anos, considera-se 90 mmHg como piso.</p>
+            </Collapsible>
+
+            <Collapsible title="Estimar peso por comprimento" badge="CM" badgeColor="#2196F3">
+              <div className="flex items-center gap-3 mb-3">
+                <label htmlFor="ped-altura" className="text-[0.8rem] text-text-muted">Comprimento (cm)</label>
+                <input
+                  id="ped-altura"
+                  type="number"
+                  inputMode="decimal"
+                  min={40}
+                  max={180}
+                  step={1}
+                  placeholder="--"
+                  onChange={e => {
+                    const est = pesoPorAltura(parseFloat(e.target.value))
+                    if (est !== null) { setPeso(est); setSource('peso') }
+                  }}
+                  className="w-[110px] bg-bg-elevated border-2 border-border-card rounded-lg text-text-primary text-base px-3 py-2.5 min-h-[44px] outline-none focus:border-accent"
+                />
+              </div>
+              <p className="text-[0.75rem] text-text-muted">
+                Estimativa por faixa de comprimento; ao digitar, o peso é aplicado aos cálculos.
+                Sempre que houver balança disponível, prefira o peso aferido.
+              </p>
             </Collapsible>
 
             {/* Transfusion */}
