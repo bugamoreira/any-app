@@ -30,149 +30,118 @@ function Paragrafos({ textos }: { textos: string[] }) {
   )
 }
 
-export function KetoManejo({ dados, peso, trilha }: Props) {
+/** Passo 3 — Fluidos. */
+export function PassoFluidos({ dados, peso, trilha }: Props) {
   const [estadoVolemico, setEstadoVolemico] = useState<string | null>(null)
   const ehEhh = trilha === 'ehh' || trilha === 'misto'
-
   const naCorr =
     dados.sodio !== null && dados.glicemia !== null ? sodioCorrigido(dados.sodio, dados.glicemia) : null
 
   return (
     <div>
-      {/* ═══════════════════ 4.1 FLUIDOS ═══════════════════ */}
-      <Collapsible title="4.1 Fluidos">
-        <Paragrafos textos={K.FLUIDO_INICIAL} />
-        <p className="text-sm text-info leading-relaxed mb-3">{K.PREFERENCIA_FLUIDO}</p>
+      <Paragrafos textos={K.FLUIDO_INICIAL} />
+      <p className="text-sm text-info leading-relaxed mb-3">{K.PREFERENCIA_FLUIDO}</p>
 
-        <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
-          Fase A — estado volêmico
-        </div>
-        <div className="flex flex-col gap-2 mb-3">
-          {K.ESTADOS_VOLEMICOS.map(e => (
-            <button
-              key={e.id}
-              onClick={() => setEstadoVolemico(estadoVolemico === e.id ? null : e.id)}
-              className={`${btn(estadoVolemico === e.id)} text-left`}
-            >
-              {e.label}
-            </button>
-          ))}
-        </div>
-        {estadoVolemico && (() => {
-          const e = K.ESTADOS_VOLEMICOS.find(x => x.id === estadoVolemico)!
-          return (
-            <AlertCard type="info" title={e.label}>
-              <p className="leading-relaxed">{e.conduta}</p>
-              {e.extra && <p className="leading-relaxed mt-2 text-warning">{e.extra}</p>}
-            </AlertCard>
-          )
-        })()}
-
-        <AlertCard type="warning" title="Populações de risco">
-          <p className="leading-relaxed">{K.ALERTA_SOBRECARGA}</p>
-        </AlertCard>
-
-        <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
-          Reavaliação após a expansão
-        </div>
-        <Paragrafos textos={K.REAVALIACAO_EXPANSAO} />
-
-        <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
-          Fase B — manutenção pelo sódio corrigido
-        </div>
-        {naCorr !== null ? (
-          <AlertCard type={naCorr < 135 ? 'info' : 'success'} title={`Sódio corrigido: ${fmt(naCorr, 1)} mEq/L`}>
-            <p className="leading-relaxed font-medium text-text-primary">
-              {naCorr < 135 ? K.FASE_B.abaixo135 : K.FASE_B.acima135}
-            </p>
+      <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
+        Fase A — estado volêmico
+      </div>
+      <div className="flex flex-col gap-2 mb-3">
+        {K.ESTADOS_VOLEMICOS.map(e => (
+          <button
+            key={e.id}
+            onClick={() => setEstadoVolemico(estadoVolemico === e.id ? null : e.id)}
+            className={`${btn(estadoVolemico === e.id)} text-left`}
+          >
+            {e.label}
+          </button>
+        ))}
+      </div>
+      {estadoVolemico && (() => {
+        const e = K.ESTADOS_VOLEMICOS.find(x => x.id === estadoVolemico)!
+        return (
+          <AlertCard type="info" title={e.label}>
+            <p className="leading-relaxed">{e.conduta}</p>
+            {e.extra && <p className="leading-relaxed mt-2 text-warning">{e.extra}</p>}
           </AlertCard>
-        ) : (
-          <p className="text-sm text-warning">Informe sódio e glicemia no painel para ver a conduta da fase B.</p>
-        )}
+        )
+      })()}
 
-        <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
-          Gatilho da dextrose
-        </div>
-        <Paragrafos textos={K.GATILHO_DEXTROSE} />
-        <p className="text-xs text-text-muted leading-relaxed mt-2 italic">{K.NOTA_VEICULO_DEXTROSE}</p>
+      <AlertCard type="warning" title="Populações de risco">
+        <p className="leading-relaxed">{K.ALERTA_SOBRECARGA}</p>
+      </AlertCard>
 
-        {ehEhh && (
-          <>
-            <AlertCard type="danger" title="EHH — velocidades de correção">
-              <Paragrafos textos={K.EHH_VELOCIDADES} />
-              <ul className="mt-2 space-y-1">
-                {K.EHH_LIMITES.map((l, i) => (
-                  <li key={i} className="text-sm text-text-primary leading-relaxed">• {l}</li>
-                ))}
-              </ul>
-            </AlertCard>
-            <AlertCard type="warning" title="Elevação inicial do sódio">
-              <p className="leading-relaxed">{K.EHH_ALERTA_SODIO}</p>
-            </AlertCard>
-            <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
-              EHH — estimativa do déficit de volume
-            </div>
-            <Paragrafos textos={K.EHH_DEFICIT_VOLUME} />
-            {peso ? (() => {
-              const d = deficitVolumeEHH(peso)
-              return (
-                <div className="bg-bg-hover rounded-xl p-3 text-center mt-2">
-                  <div className="text-xs text-text-muted">Para {fmt(peso, 0)} kg</div>
-                  <div className="text-xl font-bold text-accent mt-0.5">
-                    {fmt(d.min, 1)} a {fmt(d.max, 1)} L
-                  </div>
+      <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
+        Reavaliação após a expansão
+      </div>
+      <Paragrafos textos={K.REAVALIACAO_EXPANSAO} />
+
+      <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
+        Fase B — manutenção pelo sódio corrigido
+      </div>
+      {naCorr !== null ? (
+        <AlertCard type={naCorr < 135 ? 'info' : 'success'} title={`Sódio corrigido: ${fmt(naCorr, 1)} mEq/L`}>
+          <p className="leading-relaxed font-medium text-text-primary">
+            {naCorr < 135 ? K.FASE_B.abaixo135 : K.FASE_B.acima135}
+          </p>
+        </AlertCard>
+      ) : (
+        <p className="text-sm text-warning">Informe sódio e glicemia no painel para ver a conduta da fase B.</p>
+      )}
+
+      <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
+        Gatilho da dextrose
+      </div>
+      <Paragrafos textos={K.GATILHO_DEXTROSE} />
+      <p className="text-xs text-text-muted leading-relaxed mt-2 italic">{K.NOTA_VEICULO_DEXTROSE}</p>
+
+      {ehEhh && (
+        <>
+          <AlertCard type="danger" title="EHH — velocidades de correção">
+            <Paragrafos textos={K.EHH_VELOCIDADES} />
+            <ul className="mt-2 space-y-1">
+              {K.EHH_LIMITES.map((l, i) => (
+                <li key={i} className="text-sm text-text-primary leading-relaxed">• {l}</li>
+              ))}
+            </ul>
+          </AlertCard>
+          <AlertCard type="warning" title="Elevação inicial do sódio">
+            <p className="leading-relaxed">{K.EHH_ALERTA_SODIO}</p>
+          </AlertCard>
+          <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
+            EHH — estimativa do déficit de volume
+          </div>
+          <Paragrafos textos={K.EHH_DEFICIT_VOLUME} />
+          {peso ? (() => {
+            const d = deficitVolumeEHH(peso)
+            return (
+              <div className="bg-bg-hover rounded-xl p-3 text-center mt-2">
+                <div className="text-xs text-text-muted">Para {fmt(peso, 0)} kg</div>
+                <div className="text-xl font-bold text-accent mt-0.5">
+                  {fmt(d.min, 1)} a {fmt(d.max, 1)} L
                 </div>
-              )
-            })() : (
-              <p className="text-sm text-warning mt-2">Informe o peso para estimar o déficit.</p>
-            )}
-          </>
-        )}
-      </Collapsible>
-
-      {/* ═══════════════════ 4.2 POTÁSSIO — GATE ═══════════════════ */}
-      <PotassioGate dados={dados} />
-
-      {/* ═══════════════════ 4.3 INSULINA — TRAVADA ═══════════════════ */}
-      <InsulinaGate dados={dados} peso={peso} trilha={trilha} />
-
-      {/* ═══════════════════ 4.4 BICARBONATO ═══════════════════ */}
-      <Collapsible title="4.4 Bicarbonato">
-        {dados.phVenoso !== null && dados.phVenoso < 7.0 ? (
-          <>
-            <AlertCard type="warning" title="pH abaixo de 7,0">
-              <Paragrafos textos={K.BICARBONATO_PH_BAIXO} />
-              {dados.potassio !== null && dados.potassio < 5.0 && (
-                <p className="leading-relaxed mt-2 font-semibold text-warning">{K.BICARBONATO_LINHA_KCL}</p>
-              )}
-            </AlertCard>
-            <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
-          </>
-        ) : (
-          <>
-            <Paragrafos textos={K.BICARBONATO_PH_ALTO} />
-            <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
-          </>
-        )}
-      </Collapsible>
-
-      {/* ═══════════════════ 4.5 FOSFATO ═══════════════════ */}
-      <Collapsible title="4.5 Fosfato">
-        <Paragrafos textos={K.FOSFATO} />
-      </Collapsible>
+              </div>
+            )
+          })() : (
+            <p className="text-sm text-warning mt-2">Informe o peso para estimar o déficit.</p>
+          )}
+        </>
+      )}
     </div>
   )
 }
 
 // ─────────────────────────────────────────────────────────── 4.2 Potássio
 
-function PotassioGate({ dados }: { dados: KetoDados }) {
+/** Passo 4 — Potássio. Precede a insulina e a destrava. */
+export function PassoPotassio({ dados }: { dados: KetoDados }) {
   const k = dados.potassio
   const faixaAtiva = k === null ? null : k < 3.5 ? 'baixo' : k <= 5.0 ? 'alvo' : 'alto'
 
   return (
-    <Collapsible title="4.2 Potássio" badge="GATE" badgeColor="#FFC107">
-      <Paragrafos textos={K.POTASSIO_INTRO} />
+    <div>
+      <Collapsible title="Por que o potássio vem antes">
+        <Paragrafos textos={K.POTASSIO_INTRO} />
+      </Collapsible>
 
       <AlertCard type="warning" title="Antes de repor — função renal">
         <p className="leading-relaxed">{K.GATE_FUNCAO_RENAL}</p>
@@ -258,7 +227,7 @@ function PotassioGate({ dados }: { dados: KetoDados }) {
       <CalculadoraKcl />
 
       <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
-    </Collapsible>
+    </div>
   )
 }
 
@@ -338,7 +307,8 @@ function CalculadoraKcl() {
  * quando K <3,5. E o gate central da ferramenta: iniciar insulina com potassio
  * baixo pode causar arritmia com risco de vida.
  */
-function InsulinaGate({ dados, peso, trilha }: { dados: KetoDados; peso: number | null; trilha: Trilha }) {
+/** Passo 5 — Insulina. TRAVADA até o potássio ser informado. */
+export function PassoInsulina({ dados, peso, trilha }: { dados: KetoDados; peso: number | null; trilha: Trilha }) {
   const [taxa, setTaxa] = useState(0.1)
   const k = dados.potassio
   const travada = k === null
@@ -346,22 +316,20 @@ function InsulinaGate({ dados, peso, trilha }: { dados: KetoDados; peso: number 
 
   if (travada) {
     return (
-      <div className="mb-3">
-        <div className="flex items-center justify-between w-full px-[14px] min-h-[44px] bg-bg-elevated border border-border-card rounded-lg opacity-60">
-          <span className="text-[15px] font-semibold text-text-muted">4.3 Insulina</span>
-          <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-warning/20 text-warning">TRAVADA</span>
-        </div>
-        <div className="border border-border-card border-t-0 rounded-b-lg bg-bg-card px-[14px] py-3">
-          <p className="text-sm text-warning leading-relaxed">{K.INSULINA_GATE_VAZIO}</p>
-        </div>
-      </div>
+      <AlertCard type="warning" title="Seção travada">
+        <p className="leading-relaxed">{K.INSULINA_GATE_VAZIO}</p>
+        <p className="leading-relaxed mt-2 text-text-muted">
+          Volte ao passo 4 e informe o potássio. Iniciar insulina sem conhecer o potássio pode
+          levar a arritmia com risco de vida.
+        </p>
+      </AlertCard>
     )
   }
 
   const velocidade = peso ? insulinaVelocidade(peso, taxa) : null
 
   return (
-    <Collapsible title="4.3 Insulina" badge={bloqueioAtivo ? 'BLOQUEIO ATIVO' : undefined} badgeColor="#F44336">
+    <div>
       {bloqueioAtivo && (
         <AlertCard type="danger" title="Insulina bloqueada">
           <p className="leading-relaxed">{K.INSULINA_BLOQUEIO_ATIVO}</p>
@@ -375,7 +343,7 @@ function InsulinaGate({ dados, peso, trilha }: { dados: KetoDados; peso: number 
         <p className="leading-relaxed mt-2 font-semibold text-text-primary">{K.INSULINA_PURGA_NOTA}</p>
       </AlertCard>
 
-      <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">Dose por trilha</div>
+      <Collapsible title="Dose por trilha e referências">
       <div className="rounded-xl overflow-hidden border border-border-card mb-3">
         <table className="w-full text-xs">
           <thead>
@@ -400,6 +368,7 @@ function InsulinaGate({ dados, peso, trilha }: { dados: KetoDados; peso: number 
         <div className="mt-3"><Paragrafos textos={K.INSULINA_TEXTO_EHH} /></div>
       )}
       <p className="text-sm text-text-secondary leading-relaxed mt-3">{K.INSULINA_APOS_REDUCAO}</p>
+      </Collapsible>
 
       <AlertCard type="warning" title="Enquanto a bomba estiver ativa">
         <Paragrafos textos={K.INSULINA_BOMBA_ATIVA} />
@@ -437,7 +406,37 @@ function InsulinaGate({ dados, peso, trilha }: { dados: KetoDados; peso: number 
       </Collapsible>
 
       <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
-    </Collapsible>
+    </div>
+  )
+}
+
+/** Passo 6 — Adjuvantes: bicarbonato e fosfato. */
+export function PassoAdjuvantes({ dados }: { dados: KetoDados }) {
+  const phBaixo = dados.phVenoso !== null && dados.phVenoso < 7.0
+  return (
+    <div>
+      <Collapsible title="Bicarbonato" badge={phBaixo ? 'pH <7,0' : undefined} badgeColor="#F44336">
+        {phBaixo ? (
+          <>
+            <AlertCard type="warning" title="pH abaixo de 7,0">
+              <Paragrafos textos={K.BICARBONATO_PH_BAIXO} />
+              {dados.potassio !== null && dados.potassio < 5.0 && (
+                <p className="leading-relaxed mt-2 font-semibold text-warning">{K.BICARBONATO_LINHA_KCL}</p>
+              )}
+            </AlertCard>
+            <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+          </>
+        ) : (
+          <>
+            <Paragrafos textos={K.BICARBONATO_PH_ALTO} />
+            <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+          </>
+        )}
+      </Collapsible>
+      <Collapsible title="Fosfato">
+        <Paragrafos textos={K.FOSFATO} />
+      </Collapsible>
+    </div>
   )
 }
 
