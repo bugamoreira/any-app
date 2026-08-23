@@ -19,6 +19,7 @@ export const FEATURES = {
   dengue: true,
   shock: true,
   calculadoras: true,
+  keto: true,
   // Features cross-tool
   metronome: true,
   persistentSessions: false, // ALTA-04 — habilitar quando hook usePersistentReducer existir

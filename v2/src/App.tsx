@@ -23,6 +23,7 @@ const PedGuide = lazy(() => import('./pages/PedGuide'))
 const VmGuide = lazy(() => import('./pages/VmGuide'))
 const ToxPath = lazy(() => import('./pages/ToxPath'))
 const Calculators = lazy(() => import('./pages/Calculators'))
+const KetoPath = lazy(() => import('./pages/KetoPath'))
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { session, loading } = useAuth()
@@ -73,6 +74,7 @@ export default function App() {
       <Route path="/vm" element={<ProtectedRoute><LazyPage><VmGuide /></LazyPage></ProtectedRoute>} />
       <Route path="/tox" element={<ProtectedRoute><LazyPage><ToxPath /></LazyPage></ProtectedRoute>} />
       <Route path="/calculadoras" element={<ProtectedRoute><LazyPage><Calculators /></LazyPage></ProtectedRoute>} />
+      <Route path="/keto" element={<ProtectedRoute><LazyPage><KetoPath /></LazyPage></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
     </>

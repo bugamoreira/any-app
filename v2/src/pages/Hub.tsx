@@ -66,6 +66,10 @@ const tools: ToolCard[] = [
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
   },
   {
+    key: 'keto', name: 'KetoPath', color: '#FF5252', path: '/keto', isNew: true,
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3h12l-1 5H7L6 3z"/><path d="M7 8c0 4-2 6-2 9a5 5 0 0010 0c0-3-2-5-2-9"/><line x1="9" y1="15" x2="13" y2="15"/><line x1="11" y1="13" x2="11" y2="17"/></svg>
+  },
+  {
     key: 'calculadoras', name: 'Calculadoras', color: '#2196F3', path: '/calculadoras', isNew: true,
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
   },
