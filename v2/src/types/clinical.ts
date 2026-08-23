@@ -61,6 +61,14 @@ export interface DrugConfig {
   dilutions?: DrugDilution[]
   /** Modos por indicacao. Sem isso, a droga tem faixa unica (as outras onze). */
   modes?: DrugMode[]
+  /**
+   * Ampola de referencia, para a diluicao personalizada. `mass` vem na MESMA
+   * unidade de massa da `concentration`, para conc = ampolas * mass / volume.
+   * `volume` ausente = apresentacao sem volume declarado (pó); a validacao de
+   * volume minimo e pulada. Droga sem `ampoule` nao oferece personalizacao —
+   * e o caso do propofol, que e "puro, NAO diluir".
+   */
+  ampoule?: { mass: number; volume?: number; label: string }
 }
 
 export interface DrugDilution {

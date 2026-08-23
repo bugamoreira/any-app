@@ -81,6 +81,17 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+/* Campo numerico dentro de container flex nao encolhia e estourava o card.
+   Um <input> tem largura intrinseca (~20 caracteres) e, como todo item flex
+   nasce com min-width:auto, essa largura vira um PISO — nem `flex-1` faz ele
+   ceder. Zerar o min-width devolve o controle ao flex. Nao afeta quem tem
+   largura explicita (w-24, w-32, w-full): min-width so remove o piso.
+   Sintoma relatado: o campo de peso da Calculadora de Infusoes saindo pela
+   direita do card no iPhone. */
+input, select, textarea {
+  min-width: 0;
+}
+
 /* Input focus */
 input:focus, select:focus, textarea:focus {
   outline: none;

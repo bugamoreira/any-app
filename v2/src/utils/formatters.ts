@@ -5,6 +5,16 @@ export function fmt(n: number | null | undefined, decimals = 1): string {
 }
 
 /** Formata peso com unidade */
+/**
+ * Concentracao: o `fmt(x, 0)` que estava em uso mostrava a vasopressina (0,4)
+ * como "0". Porta o fmtConc do v1, mas sem o zero final inutil — 1000 sai
+ * "1000" em vez de "1000,0" e 0,4 sai "0,4" em vez de "0,40".
+ */
+export function fmtConc(n: number): string {
+  if (isNaN(n)) return '--'
+  return n.toFixed(2).replace(/\.?0+$/, '').replace('.', ',')
+}
+
 export function fmtWeight(w: number | null): string {
   if (!w) return '-- kg'
   return `${fmt(w, 1)} kg`

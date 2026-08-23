@@ -17,6 +17,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 0.01, doseMax: 3.0, doseStep: 0.01, doseDefault: 0.1,
     cautionThreshold: 1, criticalThreshold: 2,
     factor: 60, usesWeight: true,
+    ampoule: { mass: 4000, volume: 4, label: '4 mg / 4 mL' },
     dilutions: [
       { label: 'Padrão (64 mcg/mL)', concentration: 64, isDefault: true },
       { label: 'Dobrada (128 mcg/mL)', concentration: 128 },
@@ -31,6 +32,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 0.05, doseMax: 2.0, doseStep: 0.01, doseDefault: 0.1,
     cautionThreshold: 0.5, criticalThreshold: 1,
     factor: 60, usesWeight: true,
+    ampoule: { mass: 1000, volume: 1, label: '1 mg / 1 mL' },
   },
   {
     id: 'dobutamina', name: 'Dobutamina', aliases: ['dobuta', 'dobutrex'],
@@ -41,6 +43,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 2, doseMax: 40, doseStep: 1, doseDefault: 5,
     cautionThreshold: 20, criticalThreshold: 30,
     factor: 60, usesWeight: true,
+    ampoule: { mass: 250000, volume: 20, label: '250 mg / 20 mL' },
     dilutions: [
       { label: 'Padrão (1000 mcg/mL)', concentration: 1000, isDefault: true },
       { label: 'Dobrada (2000 mcg/mL)', concentration: 2000 },
@@ -56,6 +59,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 2, doseMax: 50, doseStep: 1, doseDefault: 5,
     cautionThreshold: 20, criticalThreshold: 40,
     factor: 60, usesWeight: true,
+    ampoule: { mass: 250000, volume: 50, label: '250 mg / 50 mL' },
   },
   {
     id: 'vasopressina', name: 'Vasopressina', aliases: ['vaso', 'avp', 'pitressin'],
@@ -65,6 +69,7 @@ export const drugConfigs: DrugConfig[] = [
     doseUnit: 'UI/min', resultUnit: 'mL/h',
     doseMin: 0.01, doseMax: 0.04, doseStep: 0.005, doseDefault: 0.03,
     factor: 60, usesWeight: false,
+    ampoule: { mass: 20, volume: 1, label: '20 UI / 1 mL' },
   },
   {
     id: 'milrinona', name: 'Milrinona', aliases: ['milri', 'primacor'],
@@ -74,6 +79,7 @@ export const drugConfigs: DrugConfig[] = [
     doseUnit: 'mcg/kg/min', resultUnit: 'mL/h',
     doseMin: 0.375, doseMax: 0.75, doseStep: 0.025, doseDefault: 0.5,
     factor: 60, usesWeight: true,
+    ampoule: { mass: 20000, volume: 20, label: '20 mg / 20 mL' },
   },
 
   // === SEDAÇÃO / ANALGESIA ===
@@ -86,6 +92,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 0.04, doseMax: 0.2, doseStep: 0.01, doseDefault: 0.1,
     cautionThreshold: 0.15, criticalThreshold: 0.2,
     factor: 1, usesWeight: true,
+    ampoule: { mass: 50, volume: 10, label: '50 mg / 10 mL' },
     modes: [
       {
         id: 'sedacao', label: 'Sedação',
@@ -117,6 +124,7 @@ export const drugConfigs: DrugConfig[] = [
     doseUnit: 'mcg/kg/h', resultUnit: 'mL/h',
     doseMin: 0.3, doseMax: 2.0, doseStep: 0.1, doseDefault: 1.0,
     factor: 1, usesWeight: true,
+    ampoule: { mass: 500, volume: 10, label: '500 mcg / 10 mL' },
   },
   {
     id: 'propofol', name: 'Propofol', aliases: ['diprivan'],
@@ -159,6 +167,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 0.2, doseMax: 1.4, doseStep: 0.1, doseDefault: 0.7,
     cautionThreshold: 0.7, criticalThreshold: 1.4,
     factor: 1, usesWeight: true,
+    ampoule: { mass: 200, volume: 2, label: '200 mcg / 2 mL' },
   },
   {
     id: 'cetamina', name: 'Cetamina', aliases: ['ceta', 'ketamina', 'ketalar'],
@@ -169,6 +178,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 0.5, doseMax: 2.0, doseStep: 0.1, doseDefault: 1.0,
     cautionThreshold: 1.5, criticalThreshold: 2,
     factor: 1, usesWeight: true,
+    ampoule: { mass: 500, volume: 10, label: '500 mg / 10 mL' },
     modes: [
       {
         id: 'sedacao', label: 'Sedação',
@@ -203,6 +213,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 1, doseMax: 3, doseStep: 0.5, doseDefault: 2,
     cautionThreshold: 2.5, criticalThreshold: 3,
     factor: 60, usesWeight: true,
+    ampoule: { mass: 20000, volume: 10, label: '20 mg / 10 mL' },
   },
   {
     id: 'rocuronio', name: 'Rocurônio', aliases: ['rocu', 'esmeron'],
@@ -212,6 +223,7 @@ export const drugConfigs: DrugConfig[] = [
     doseUnit: 'mcg/kg/min', resultUnit: 'mL/h',
     doseMin: 5, doseMax: 12, doseStep: 1, doseDefault: 10,
     factor: 60, usesWeight: true,
+    ampoule: { mass: 100000, volume: 10, label: '100 mg / 10 mL' },
   },
 
   // === VASODILATADORES ===
@@ -224,6 +236,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 0.25, doseMax: 2, doseStep: 0.05, doseDefault: 0.5,
     cautionThreshold: 2, criticalThreshold: 5,
     factor: 60, usesWeight: true,
+    ampoule: { mass: 50000, volume: 10, label: '50 mg / 10 mL' },
     modes: [
       {
         id: 'padrao', label: 'Padrão',
@@ -256,6 +269,7 @@ export const drugConfigs: DrugConfig[] = [
     doseMin: 0.25, doseMax: 8, doseStep: 0.25, doseDefault: 1,
     cautionThreshold: 5, criticalThreshold: 8,
     factor: 60, usesWeight: true,
+    ampoule: { mass: 50000, label: '50 mg / ampola' },
   },
 ]
 

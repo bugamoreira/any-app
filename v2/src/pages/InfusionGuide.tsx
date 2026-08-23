@@ -86,7 +86,7 @@ export default function InfusionGuide() {
                 }}
                 className="mt-3 w-full border border-border-card text-text-secondary rounded-xl py-3 text-sm font-medium min-h-[44px] cursor-pointer active:opacity-80 transition-opacity bg-transparent"
               >
-                Recuperar ultimo peso ({savedWeight} kg)
+                Recuperar último peso ({savedWeight} kg)
               </button>
             )}
           </div>
