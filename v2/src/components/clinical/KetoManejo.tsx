@@ -20,11 +20,24 @@ const btn = (ativo: boolean) =>
 const campo =
   'w-full mt-1 bg-bg-hover border border-border-card rounded-lg px-3 py-2.5 text-text-primary text-base outline-none focus:border-accent'
 
+/**
+ * Remove a marca de fonte do texto exibido — [ADA], [UTD], [JBDS], [LIT: ...].
+ *
+ * Sao 150 marcas no KetoPath e elas poluiam cada frase da tela. As strings
+ * seguem VERBATIM em ketoData.ts, entao a rastreabilidade continua no codigo;
+ * o credito publico vive na tela de Referencias, que ja lista Umpierrez et al.
+ * com DOI — o que satisfaz a exigencia de atribuicao da licenca CC BY 4.0 do
+ * consenso ADA.
+ */
+export function semFonte(t: string): string {
+  return t.replace(/\s*\[(?:ADA|UTD|JBDS|LIT[^\]]*)\]/g, '').replace(/\s+([.,;:])/g, '$1').trim()
+}
+
 function Paragrafos({ textos }: { textos: string[] }) {
   return (
     <>
       {textos.map((t, i) => (
-        <p key={i} className="text-sm text-text-secondary leading-relaxed mb-2 last:mb-0">{t}</p>
+        <p key={i} className="text-sm text-text-secondary leading-relaxed mb-2 last:mb-0">{semFonte(t)}</p>
       ))}
     </>
   )
@@ -40,7 +53,7 @@ export function PassoFluidos({ dados, peso, trilha }: Props) {
   return (
     <div>
       <Paragrafos textos={K.FLUIDO_INICIAL} />
-      <p className="text-sm text-info leading-relaxed mb-3">{K.PREFERENCIA_FLUIDO}</p>
+      <p className="text-sm text-info leading-relaxed mb-3">{semFonte(K.PREFERENCIA_FLUIDO)}</p>
 
       <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
         Fase A — estado volêmico
@@ -67,7 +80,7 @@ export function PassoFluidos({ dados, peso, trilha }: Props) {
       })()}
 
       <AlertCard type="warning" title="Populações de risco">
-        <p className="leading-relaxed">{K.ALERTA_SOBRECARGA}</p>
+        <p className="leading-relaxed">{semFonte(K.ALERTA_SOBRECARGA)}</p>
       </AlertCard>
 
       <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
@@ -92,7 +105,7 @@ export function PassoFluidos({ dados, peso, trilha }: Props) {
         Gatilho da dextrose
       </div>
       <Paragrafos textos={K.GATILHO_DEXTROSE} />
-      <p className="text-xs text-text-muted leading-relaxed mt-2 italic">{K.NOTA_VEICULO_DEXTROSE}</p>
+      <p className="text-xs text-text-muted leading-relaxed mt-2 italic">{semFonte(K.NOTA_VEICULO_DEXTROSE)}</p>
 
       {ehEhh && (
         <>
@@ -100,12 +113,12 @@ export function PassoFluidos({ dados, peso, trilha }: Props) {
             <Paragrafos textos={K.EHH_VELOCIDADES} />
             <ul className="mt-2 space-y-1">
               {K.EHH_LIMITES.map((l, i) => (
-                <li key={i} className="text-sm text-text-primary leading-relaxed">• {l}</li>
+                <li key={i} className="text-sm text-text-primary leading-relaxed">• {semFonte(l)}</li>
               ))}
             </ul>
           </AlertCard>
           <AlertCard type="warning" title="Elevação inicial do sódio">
-            <p className="leading-relaxed">{K.EHH_ALERTA_SODIO}</p>
+            <p className="leading-relaxed">{semFonte(K.EHH_ALERTA_SODIO)}</p>
           </AlertCard>
           <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
             EHH — estimativa do déficit de volume
@@ -144,7 +157,7 @@ export function PassoPotassio({ dados }: { dados: KetoDados }) {
       </Collapsible>
 
       <AlertCard type="warning" title="Antes de repor — função renal">
-        <p className="leading-relaxed">{K.GATE_FUNCAO_RENAL}</p>
+        <p className="leading-relaxed">{semFonte(K.GATE_FUNCAO_RENAL)}</p>
       </AlertCard>
 
       <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
@@ -221,12 +234,12 @@ export function PassoPotassio({ dados }: { dados: KetoDados }) {
           </table>
         </div>
         <Paragrafos textos={K.KCL_VELOCIDADE} />
-        <p className="text-sm text-info leading-relaxed mt-2">{K.KCL_MONITORIZACAO}</p>
+        <p className="text-sm text-info leading-relaxed mt-2">{semFonte(K.KCL_MONITORIZACAO)}</p>
       </Collapsible>
 
       <CalculadoraKcl />
 
-      <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+      <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
     </div>
   )
 }
@@ -234,23 +247,61 @@ export function PassoPotassio({ dados }: { dados: KetoDados }) {
 function CalculadoraKcl() {
   const [apresId, setApresId] = useState(K.KCL_APRESENTACOES[0].id)
   const [viaId, setViaId] = useState(K.KCL_VIAS[0].id)
-  const [doseTxt, setDoseTxt] = useState('')
-  const [velTxt, setVelTxt] = useState('10')
+  // O plantonista prescreve em mL; o mEq e a equivalencia. Por isso os dois
+  // campos sao editaveis e se espelham — quem tem a dose da diretriz digita
+  // mEq, quem esta escrevendo a prescricao digita mL.
+  const [mlTxt, setMlTxt] = useState('')
+  const [mEqTxt, setMEqTxt] = useState('')
   const [volTxt, setVolTxt] = useState('')
+  const [velMEqTxt, setVelMEqTxt] = useState('10')
+  const [velMlTxt, setVelMlTxt] = useState('')
 
   const apres = K.KCL_APRESENTACOES.find(a => a.id === apresId)!
   const via = K.KCL_VIAS.find(v => v.id === viaId)!
   const num = (t: string) => { const v = parseFloat(t.replace(',', '.')); return isNaN(v) ? null : v }
-  const dose = num(doseTxt), vel = num(velTxt), vol = num(volTxt)
+  /** mEq contidos em 1 mL da apresentacao escolhida. */
+  const mEqPorMl = apres.mEqPorAmpola / apres.mlPorAmpola
 
-  const r = dose && dose > 0 ? preparoKcl(dose, apres.mEqPorAmpola, apres.mlPorAmpola, via.maxMEqPorLitro, vel ?? 0, vol ?? undefined) : null
-  const alertaOsmotico = vel !== null && vel > 20
+  const mlKcl = num(mlTxt)
+  const dose  = num(mEqTxt)
+  const vol   = num(volTxt)
+  const velMEq = num(velMEqTxt)
+
+  function digitouMl(v: string) {
+    setMlTxt(v)
+    const n = num(v)
+    setMEqTxt(n !== null ? fmt(n * mEqPorMl, 1) : '')
+  }
+  function digitouMEq(v: string) {
+    setMEqTxt(v)
+    const n = num(v)
+    setMlTxt(n !== null ? fmt(n / mEqPorMl, 1) : '')
+  }
+  function digitouVelMEq(v: string) {
+    setVelMEqTxt(v); setVelMlTxt('')
+  }
+
+  // Ao trocar a apresentacao, o mL manda: o volume aspirado e o que ja foi decidido
+  function trocarApresentacao(id: string) {
+    setApresId(id)
+    const a = K.KCL_APRESENTACOES.find(x => x.id === id)!
+    const n = num(mlTxt)
+    if (n !== null) setMEqTxt(fmt(n * (a.mEqPorAmpola / a.mlPorAmpola), 1))
+  }
+
+  const r = dose !== null && dose > 0
+    ? preparoKcl(dose, apres.mEqPorAmpola, apres.mlPorAmpola, via.maxMEqPorLitro, velMEq ?? 0, vol ?? undefined)
+    : null
+  const volFinal = vol && vol > 0 ? vol : r?.volumeMinimo ?? 0
+  const diluente = r ? Math.max(0, volFinal - r.volumeKcl) : 0
+  const horas = dose && velMEq ? dose / velMEq : 0
+  const alertaOsmotico = velMEq !== null && velMEq > 20
 
   return (
     <Collapsible title="Calculadora de preparo">
       <div className="flex gap-2 mb-3">
         {K.KCL_APRESENTACOES.map(a => (
-          <button key={a.id} onClick={() => setApresId(a.id)} className={btn(apresId === a.id)}>{a.label}</button>
+          <button key={a.id} onClick={() => trocarApresentacao(a.id)} className={btn(apresId === a.id)}>{a.label}</button>
         ))}
       </div>
       <div className="flex gap-2 mb-3">
@@ -258,28 +309,55 @@ function CalculadoraKcl() {
           <button key={v.id} onClick={() => setViaId(v.id)} className={btn(viaId === v.id)}>{v.label}</button>
         ))}
       </div>
+
       <div className="grid grid-cols-2 gap-3 mb-3">
         <label className="block">
-          <span className="text-xs text-text-muted">Dose desejada (mEq)</span>
-          <input type="text" inputMode="decimal" value={doseTxt} placeholder="20" onChange={e => setDoseTxt(e.target.value)} className={campo} />
+          <span className="text-xs text-text-muted">KCl a aspirar (mL)</span>
+          <input type="text" inputMode="decimal" value={mlTxt} placeholder="15"
+            onChange={e => digitouMl(e.target.value)} className={campo} />
+        </label>
+        <label className="block">
+          <span className="text-xs text-text-muted">equivale a (mEq)</span>
+          <input type="text" inputMode="decimal" value={mEqTxt} placeholder="20"
+            onChange={e => digitouMEq(e.target.value)} className={campo} />
+        </label>
+      </div>
+      <p className="text-[11px] text-text-muted leading-relaxed -mt-1 mb-3">
+        Os dois campos se espelham. {apres.label} tem {fmt(mEqPorMl, 2)} mEq por mL.
+      </p>
+
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <label className="block">
+          <span className="text-xs text-text-muted">Volume final da bolsa (mL)</span>
+          <input type="text" inputMode="decimal" value={volTxt}
+            placeholder={r ? String(r.volumeMinimo) : '400'}
+            onChange={e => setVolTxt(e.target.value)} className={campo} />
         </label>
         <label className="block">
           <span className="text-xs text-text-muted">Velocidade (mEq/h)</span>
-          <input type="text" inputMode="decimal" value={velTxt} placeholder="10" onChange={e => setVelTxt(e.target.value)} className={campo} />
+          <input type="text" inputMode="decimal" value={velMEqTxt} placeholder="10"
+            onChange={e => digitouVelMEq(e.target.value)} className={campo} />
         </label>
       </div>
-      <label className="block mb-3">
-        <span className="text-xs text-text-muted">Volume final (mL) — deixe vazio para usar o mínimo</span>
-        <input type="text" inputMode="decimal" value={volTxt} placeholder={r ? String(r.volumeMinimo) : '400'} onChange={e => setVolTxt(e.target.value)} className={campo} />
-      </label>
 
       {r && (
-        <div className="bg-bg-hover rounded-xl p-3.5 space-y-1.5">
-          <Linha rotulo="Aspirar de KCl" valor={`${fmt(r.volumeKcl, 1)} mL`} />
-          <Linha rotulo={`Volume mínimo (${via.maxMEqPorLitro} mEq/L)`} valor={`${r.volumeMinimo} mL`} />
-          <Linha rotulo="Concentração resultante" valor={`${r.concentracaoResultante} mEq/L`} destaque={r.excedeLimite} />
-          <Linha rotulo="Velocidade de infusão" valor={`${fmt(r.velocidadeMlH, 1)} mL/h`} />
-        </div>
+        <>
+          {/* Saida no formato do que se escreve na prescricao */}
+          <div className="bg-bg-hover rounded-xl p-3.5 border-l-[3px] border-accent">
+            <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Prescrição</div>
+            <Linha rotulo={apres.label} valor={`${fmt(r.volumeKcl, 1)} mL`} forte />
+            <Linha rotulo="SF 0,9% (diluente)" valor={`${fmt(diluente, 1)} mL`} forte />
+            <Linha rotulo="Volume final" valor={`${fmt(volFinal, 0)} mL`} />
+            <Linha rotulo="Correr a" valor={`${fmt(r.velocidadeMlH, 1)} mL/h${horas ? ` · ${fmt(horas, 1)} h` : ''}`} forte />
+            <div className="border-t border-white/10 mt-2 pt-2">
+              <Linha rotulo="Equivale a" valor={`${fmt(dose!, 1)} mEq · ${fmt(velMEq ?? 0, 0)} mEq/h`} />
+              <Linha rotulo="Concentração" valor={`${r.concentracaoResultante} mEq/L`} destaque={r.excedeLimite} />
+            </div>
+          </div>
+          <p className="text-[11px] text-text-muted leading-relaxed mt-2">
+            O volume final já inclui o KCl aspirado — o diluente acima é o complemento.
+          </p>
+        </>
       )}
 
       {r?.excedeLimite && (
@@ -300,13 +378,6 @@ function CalculadoraKcl() {
   )
 }
 
-// ─────────────────────────────────────────────────────────── 4.3 Insulina
-
-/**
- * A secao fica TRAVADA ate o potassio ser informado, e mostra bloqueio ativo
- * quando K <3,5. E o gate central da ferramenta: iniciar insulina com potassio
- * baixo pode causar arritmia com risco de vida.
- */
 /** Passo 5 — Insulina. TRAVADA até o potássio ser informado. */
 export function PassoInsulina({ dados, peso, trilha }: { dados: KetoDados; peso: number | null; trilha: Trilha }) {
   const [taxa, setTaxa] = useState(0.1)
@@ -317,7 +388,7 @@ export function PassoInsulina({ dados, peso, trilha }: { dados: KetoDados; peso:
   if (travada) {
     return (
       <AlertCard type="warning" title="Seção travada">
-        <p className="leading-relaxed">{K.INSULINA_GATE_VAZIO}</p>
+        <p className="leading-relaxed">{semFonte(K.INSULINA_GATE_VAZIO)}</p>
         <p className="leading-relaxed mt-2 text-text-muted">
           Volte ao passo 4 e informe o potássio. Iniciar insulina sem conhecer o potássio pode
           levar a arritmia com risco de vida.
@@ -332,15 +403,15 @@ export function PassoInsulina({ dados, peso, trilha }: { dados: KetoDados; peso:
     <div>
       {bloqueioAtivo && (
         <AlertCard type="danger" title="Insulina bloqueada">
-          <p className="leading-relaxed">{K.INSULINA_BLOQUEIO_ATIVO}</p>
+          <p className="leading-relaxed">{semFonte(K.INSULINA_BLOQUEIO_ATIVO)}</p>
         </AlertCard>
       )}
 
-      <p className="text-sm text-text-secondary leading-relaxed mb-3">{K.INSULINA_PREPARO}</p>
+      <p className="text-sm text-text-secondary leading-relaxed mb-3">{semFonte(K.INSULINA_PREPARO)}</p>
 
       <AlertCard type="warning" title="Purga do equipo">
         <Paragrafos textos={K.INSULINA_PURGA} />
-        <p className="leading-relaxed mt-2 font-semibold text-text-primary">{K.INSULINA_PURGA_NOTA}</p>
+        <p className="leading-relaxed mt-2 font-semibold text-text-primary">{semFonte(K.INSULINA_PURGA_NOTA)}</p>
       </AlertCard>
 
       <Collapsible title="Dose por trilha e referências">
@@ -367,7 +438,7 @@ export function PassoInsulina({ dados, peso, trilha }: { dados: KetoDados; peso:
       {(trilha === 'ehh' || trilha === 'misto') && (
         <div className="mt-3"><Paragrafos textos={K.INSULINA_TEXTO_EHH} /></div>
       )}
-      <p className="text-sm text-text-secondary leading-relaxed mt-3">{K.INSULINA_APOS_REDUCAO}</p>
+      <p className="text-sm text-text-secondary leading-relaxed mt-3">{semFonte(K.INSULINA_APOS_REDUCAO)}</p>
       </Collapsible>
 
       <AlertCard type="warning" title="Enquanto a bomba estiver ativa">
@@ -405,7 +476,7 @@ export function PassoInsulina({ dados, peso, trilha }: { dados: KetoDados; peso:
         <Paragrafos textos={K.INSULINA_BASAL} />
       </Collapsible>
 
-      <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+      <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
     </div>
   )
 }
@@ -421,15 +492,15 @@ export function PassoAdjuvantes({ dados }: { dados: KetoDados }) {
             <AlertCard type="warning" title="pH abaixo de 7,0">
               <Paragrafos textos={K.BICARBONATO_PH_BAIXO} />
               {dados.potassio !== null && dados.potassio < 5.0 && (
-                <p className="leading-relaxed mt-2 font-semibold text-warning">{K.BICARBONATO_LINHA_KCL}</p>
+                <p className="leading-relaxed mt-2 font-semibold text-warning">{semFonte(K.BICARBONATO_LINHA_KCL)}</p>
               )}
             </AlertCard>
-            <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+            <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
           </>
         ) : (
           <>
             <Paragrafos textos={K.BICARBONATO_PH_ALTO} />
-            <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+            <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
           </>
         )}
       </Collapsible>
@@ -440,11 +511,14 @@ export function PassoAdjuvantes({ dados }: { dados: KetoDados }) {
   )
 }
 
-function Linha({ rotulo, valor, destaque }: { rotulo: string; valor: string; destaque?: boolean }) {
+function Linha({ rotulo, valor, destaque, forte }: {
+  rotulo: string; valor: string; destaque?: boolean; forte?: boolean
+}) {
   return (
-    <div className="flex justify-between gap-3">
+    <div className="flex justify-between gap-3 py-0.5">
       <span className="text-sm text-text-muted">{rotulo}</span>
-      <span className={`text-sm font-semibold text-right ${destaque ? 'text-danger' : 'text-text-primary'}`}>{valor}</span>
+      <span className={`text-right ${forte ? 'text-[15px] font-bold' : 'text-sm font-semibold'} ${
+        destaque ? 'text-danger' : forte ? 'text-accent' : 'text-text-primary'}`}>{valor}</span>
     </div>
   )
 }

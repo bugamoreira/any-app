@@ -9,7 +9,7 @@ import { AlertCard } from '../components/common/AlertCard'
 import { useWeight } from '../contexts/WeightContext'
 import { fmt } from '../utils/formatters'
 import { sodioCorrigido, gravidadeCAD } from '../utils/ketoCalc'
-import { PassoFluidos, PassoPotassio, PassoInsulina, PassoAdjuvantes, Paragrafos, btn, campo } from '../components/clinical/KetoManejo'
+import { PassoFluidos, PassoPotassio, PassoInsulina, PassoAdjuvantes, Paragrafos, btn, campo, semFonte } from '../components/clinical/KetoManejo'
 import { KetoMonitor, KetoResolucao } from '../components/clinical/KetoMonitor'
 import { KetoPlanilha } from '../components/clinical/KetoPlanilha'
 import {
@@ -224,7 +224,7 @@ export default function KetoPath() {
                 <KetoResolucao peso={weight} trilha={trilha} />
                 {dados.cetonuria !== null && (
                   <AlertCard type="danger" title="Cetonúria não serve como critério de resolução">
-                    <p className="leading-relaxed">{K.DISCORDANCIA_CETONURIA[3]}</p>
+                    <p className="leading-relaxed">{semFonte(K.DISCORDANCIA_CETONURIA[3])}</p>
                   </AlertCard>
                 )}
               </>
@@ -352,9 +352,9 @@ function PassoClassificacao({ dados, trilha, setTrilha, gravidade }: {
           reconhecimento — quem entra direto pela avaliacao nao passaria por ele. */}
       {dados.glicemia !== null && dados.glicemia < 200 && (
         <AlertCard type="danger" title="Glicemia abaixo de 200 — atenção">
-          <p className="leading-relaxed">{K.CAD_EUGLICEMICA[0]}</p>
-          <p className="leading-relaxed mt-2">{K.CAD_EUGLICEMICA[1]}</p>
-          <p className="leading-relaxed mt-2">{K.CAD_EUGLICEMICA[2]}</p>
+          <p className="leading-relaxed">{semFonte(K.CAD_EUGLICEMICA[0])}</p>
+          <p className="leading-relaxed mt-2">{semFonte(K.CAD_EUGLICEMICA[1])}</p>
+          <p className="leading-relaxed mt-2">{semFonte(K.CAD_EUGLICEMICA[2])}</p>
         </AlertCard>
       )}
 
@@ -369,8 +369,8 @@ function PassoClassificacao({ dados, trilha, setTrilha, gravidade }: {
       {/* Alerta condicional da cetonuria, pelo mesmo motivo do de cima */}
       {dados.cetonuria !== null && (
         <AlertCard type="warning" title="Cetonúria pode enganar nas duas direções">
-          <p className="leading-relaxed">{K.DISCORDANCIA_CETONURIA[2]}</p>
-          <p className="leading-relaxed mt-2">{K.DISCORDANCIA_CETONURIA[3]}</p>
+          <p className="leading-relaxed">{semFonte(K.DISCORDANCIA_CETONURIA[2])}</p>
+          <p className="leading-relaxed mt-2">{semFonte(K.DISCORDANCIA_CETONURIA[3])}</p>
         </AlertCard>
       )}
 
@@ -417,8 +417,8 @@ function PassoClassificacao({ dados, trilha, setTrilha, gravidade }: {
           </tbody>
         </table>
       </div>
-      <p className="text-sm text-text-secondary leading-relaxed">{K.NOTA_GRAVIDADE}</p>
-      <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+      <p className="text-sm text-text-secondary leading-relaxed">{semFonte(K.NOTA_GRAVIDADE)}</p>
+      <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
     </div>
   )
 }

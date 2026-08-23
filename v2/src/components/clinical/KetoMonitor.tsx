@@ -3,7 +3,7 @@ import { Collapsible } from '../common/Collapsible'
 import { AlertCard } from '../common/AlertCard'
 import { fmt } from '../../utils/formatters'
 import { transicaoInsulina, insulinaVelocidade } from '../../utils/ketoCalc'
-import { Paragrafos, btn, campo } from './KetoManejo'
+import { Paragrafos, btn, campo, semFonte } from './KetoManejo'
 import type { Trilha } from '../../data/ketoData'
 import * as K from '../../data/ketoData'
 
@@ -29,15 +29,15 @@ export function KetoMonitor({ peso, trilha }: { peso: number | null; trilha: Tri
               {K.CADENCIA_EXAMES.map(c => (
                 <tr key={c.parametro} className="border-t border-border">
                   <td className="px-3 py-2 text-text-secondary leading-relaxed">{c.parametro}</td>
-                  <td className="px-3 py-2 text-text-secondary leading-relaxed">{c.frequencia}</td>
+                  <td className="px-3 py-2 text-text-secondary leading-relaxed">{semFonte(c.frequencia)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-text-muted leading-relaxed mb-3 italic">{K.NOTA_BHB_INDISPONIVEL}</p>
+        <p className="text-xs text-text-muted leading-relaxed mb-3 italic">{semFonte(K.NOTA_BHB_INDISPONIVEL)}</p>
         <Paragrafos textos={K.CADENCIA_TEXTOS} />
-        <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+        <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
       </Collapsible>
 
       <Collapsible title="5.2 Titulação da insulina">
@@ -50,7 +50,7 @@ export function KetoMonitor({ peso, trilha }: { peso: number | null; trilha: Tri
 
         {mostrarQueda && (
           <AlertCard type="warning" title="Queda insuficiente na primeira hora">
-            <p className="leading-relaxed mb-2">{K.QUEDA_INSUFICIENTE_INTRO}</p>
+            <p className="leading-relaxed mb-2">{semFonte(K.QUEDA_INSUFICIENTE_INTRO)}</p>
             <ol className="space-y-2">
               {K.QUEDA_INSUFICIENTE_PASSOS.map((passo, i) => (
                 <li key={i} className="flex gap-2 text-sm leading-relaxed">
@@ -79,8 +79,8 @@ export function KetoMonitor({ peso, trilha }: { peso: number | null; trilha: Tri
         )}
 
         <AlertCard type="danger" title="Teto de velocidade de queda">
-          <p className="leading-relaxed">{K.TETO_QUEDA}</p>
-          <p className="leading-relaxed mt-2 text-text-muted text-xs italic">{K.NOTA_TETO_QUEDA}</p>
+          <p className="leading-relaxed">{semFonte(K.TETO_QUEDA)}</p>
+          <p className="leading-relaxed mt-2 text-text-muted text-xs italic">{semFonte(K.NOTA_TETO_QUEDA)}</p>
         </AlertCard>
 
         <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
@@ -113,13 +113,13 @@ export function KetoMonitor({ peso, trilha }: { peso: number | null; trilha: Tri
           <AlertCard type="danger" title="EHH — limites de correção">
             <ul className="space-y-1">
               {K.EHH_LIMITES.map((l, i) => (
-                <li key={i} className="text-sm text-text-primary leading-relaxed">• {l}</li>
+                <li key={i} className="text-sm text-text-primary leading-relaxed">• {semFonte(l)}</li>
               ))}
             </ul>
           </AlertCard>
         ) : (
           <AlertCard type="warning" title="CAD">
-            <p className="leading-relaxed">{K.VELOCIDADE_CORRECAO_CAD}</p>
+            <p className="leading-relaxed">{semFonte(K.VELOCIDADE_CORRECAO_CAD)}</p>
           </AlertCard>
         )}
       </Collapsible>
@@ -138,7 +138,7 @@ export function KetoResolucao({ peso, trilha }: { peso: number | null; trilha: T
   return (
     <div>
       <Collapsible title="7.1 Critérios de resolução — CAD">
-        <p className="text-sm text-text-secondary leading-relaxed mb-3">{K.RESOLUCAO_CAD_ADA}</p>
+        <p className="text-sm text-text-secondary leading-relaxed mb-3">{semFonte(K.RESOLUCAO_CAD_ADA)}</p>
         <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">
           Adaptação para este serviço, sem BHB
         </div>
@@ -147,14 +147,14 @@ export function KetoResolucao({ peso, trilha }: { peso: number | null; trilha: T
             <tbody>
               {K.RESOLUCAO_CAD_ADAPTADA.map(c => (
                 <tr key={c.criterio} className="border-t border-border first:border-t-0">
-                  <td className="px-3 py-2 text-text-secondary leading-relaxed">{c.criterio}</td>
+                  <td className="px-3 py-2 text-text-secondary leading-relaxed">{semFonte(c.criterio)}</td>
                   <td className="px-3 py-2 text-text-primary font-semibold text-right whitespace-nowrap">{c.valor}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+        <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
       </Collapsible>
 
       <AlertCard type="danger" title="7.2 O que NÃO usar como critério de resolução">
@@ -163,7 +163,7 @@ export function KetoResolucao({ peso, trilha }: { peso: number | null; trilha: T
 
       {ehEhh && (
         <Collapsible title="7.3 Critérios de resolução — EHH">
-          <p className="text-sm text-text-secondary leading-relaxed mb-3">{K.RESOLUCAO_EHH_TEXTO}</p>
+          <p className="text-sm text-text-secondary leading-relaxed mb-3">{semFonte(K.RESOLUCAO_EHH_TEXTO)}</p>
           <div className="space-y-2">
             {K.RESOLUCAO_EHH_CHECKLIST.map((item, i) => (
               <button key={i} onClick={() => setChecklist(c => ({ ...c, [i]: !c[i] }))}
@@ -190,7 +190,7 @@ export function KetoResolucao({ peso, trilha }: { peso: number | null; trilha: T
           <p className="text-lg font-bold text-text-primary">
             {K.TRANSICAO_SOBREPOSICAO.find(s => s.id === tipoSc)!.tempo}
           </p>
-          <p className="leading-relaxed mt-2">{K.TRANSICAO_NOTA_SOBREPOSICAO}</p>
+          <p className="leading-relaxed mt-2">{semFonte(K.TRANSICAO_NOTA_SOBREPOSICAO)}</p>
         </AlertCard>
 
         <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
@@ -217,7 +217,7 @@ export function KetoResolucao({ peso, trilha }: { peso: number | null; trilha: T
         ) : (
           <p className="text-sm text-warning">Informe o peso para estimar a dose.</p>
         )}
-        <p className="text-xs text-text-muted mt-3 leading-relaxed italic">{K.TRANSICAO_NOTA_REPARTICAO}</p>
+        <p className="text-xs text-text-muted mt-3 leading-relaxed italic">{semFonte(K.TRANSICAO_NOTA_REPARTICAO)}</p>
 
         <div className="mt-4"><Paragrafos textos={K.TRANSICAO_TEXTOS_FINAIS} /></div>
       </Collapsible>

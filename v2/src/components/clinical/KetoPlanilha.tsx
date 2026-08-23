@@ -48,7 +48,8 @@ export function KetoPlanilha() {
         Imprimir planilha
       </button>
       <p className="text-xs text-text-muted leading-relaxed mt-2">
-        No iPhone, a caixa de impressão oferece "Salvar em Arquivos" para gerar o PDF.
+        Escolha <strong className="text-text-secondary">paisagem</strong> na caixa de impressão — são 19
+        colunas. No iPhone, a mesma caixa oferece "Salvar em Arquivos" para gerar o PDF.
       </p>
 
       {/* Só existe na impressão. Fora dela, `display: none` pelo CSS. */}
@@ -66,8 +67,12 @@ export function KetoPlanilha() {
             <tr>
               {COLUNAS.map(c => (
                 <th key={c.label}>
-                  {c.grupo && <span className="keto-planilha-grupo">{c.grupo}</span>}
-                  {c.label}
+                  {/* O span e o que gira: writing-mode vertical no TH nao
+                      funciona de forma confiavel entre navegadores. */}
+                  <span>
+                    {c.label}
+                    {c.grupo && <><br /><span className="keto-planilha-grupo">{c.grupo}</span></>}
+                  </span>
                 </th>
               ))}
             </tr>

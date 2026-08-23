@@ -144,14 +144,22 @@ button:active, a:active, [role="button"]:active {
 }
 
 /* ═══════════════════ Planilha impressa do KetoPath ═══════════════════
-   A planilha e artefato exclusivamente impresso: nao existe na tela.
-   Na impressao, todo o resto do app some e so ela aparece, em A4 paisagem. */
+   Artefato exclusivamente impresso: nao existe na tela.
+
+   Primeira versao saiu ILEGIVEL: o Safari imprimiu em RETRATO (o PDF veio com
+   MediaBox 595x842) ignorando o `size: A4 landscape`, e as 19 colunas ficaram
+   com ~10mm cada — todo cabecalho truncou ("Fsf ro" por Fosforo, "N el de con
+   sc incia" por Nivel de consciencia).
+
+   Correcao: CABECALHO NA VERTICAL, que e o padrao de folha de balanco de UTI.
+   O texto do cabecalho corre de baixo para cima e deixa de exigir largura; a
+   coluna so precisa caber a escrita a mao. Assim a planilha sobrevive mesmo se
+   o usuario imprimir em retrato. */
 .keto-planilha-impressa { display: none; }
 
 @media print {
-  @page { size: A4 landscape; margin: 8mm; }
+  @page { size: A4 landscape; margin: 10mm; }
 
-  /* Some com o app inteiro e mostra so a planilha */
   body * { visibility: hidden; }
   .keto-planilha-impressa,
   .keto-planilha-impressa * { visibility: visible; }
@@ -161,33 +169,45 @@ button:active, a:active, [role="button"]:active {
     top: 0; left: 0; width: 100%;
     background: #fff; color: #000;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
   }
 
-  .keto-planilha-impressa h1 { font-size: 13pt; margin-bottom: 3mm; }
+  .keto-planilha-impressa h1 { font-size: 12pt; margin: 0 0 2mm; }
 
   .keto-planilha-cabecalho {
-    display: flex; flex-wrap: wrap; gap: 2mm 6mm;
-    font-size: 8pt; margin-bottom: 3mm;
+    display: flex; flex-wrap: wrap; gap: 1.5mm 5mm;
+    font-size: 8pt; margin-bottom: 2.5mm; white-space: nowrap;
   }
 
   .keto-planilha-impressa table {
     width: 100%; border-collapse: collapse; table-layout: fixed;
   }
   .keto-planilha-impressa th,
-  .keto-planilha-impressa td {
-    border: 0.4pt solid #000; padding: 1mm; font-size: 6.5pt;
-    vertical-align: top; word-wrap: break-word;
+  .keto-planilha-impressa td { border: 0.4pt solid #000; }
+
+  /* Cabecalho vertical — le-se de baixo para cima */
+  .keto-planilha-impressa thead th {
+    height: 30mm; padding: 1mm 0; background: #eee; font-weight: 600;
+    vertical-align: bottom; text-align: left;
   }
-  .keto-planilha-impressa th { background: #eee; font-weight: 600; text-align: left; }
-  /* Altura suficiente para escrita manual */
-  .keto-planilha-impressa td { height: 8mm; }
+  .keto-planilha-impressa thead th > span {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-size: 7pt; line-height: 1.1; white-space: nowrap;
+    display: inline-block;
+  }
   .keto-planilha-grupo {
-    display: block; font-size: 5pt; font-weight: 400;
-    text-transform: uppercase; letter-spacing: 0.3pt; color: #555;
+    font-size: 5.5pt; font-weight: 400; text-transform: uppercase;
+    letter-spacing: 0.3pt; color: #555;
   }
 
+  /* Celulas altas o bastante para escrita a mao */
+  .keto-planilha-impressa td { height: 9mm; }
+  /* A coluna da hora e a unica que recebe texto curto pre-impresso */
+  .keto-planilha-impressa td:first-child,
+  .keto-planilha-impressa thead th:first-child { width: 13mm; }
+
   .keto-planilha-rodape {
-    margin-top: 3mm; font-size: 6pt; color: #333;
+    margin-top: 2.5mm; font-size: 6pt; color: #333;
     display: flex; justify-content: space-between;
   }
 }

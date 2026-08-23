@@ -3,7 +3,7 @@ import { Collapsible } from '../common/Collapsible'
 import { AlertCard } from '../common/AlertCard'
 import { fmt } from '../../utils/formatters'
 import { anionGap, sodioCorrigido, osmolaridadeEfetiva, deficitAguaLivre } from '../../utils/ketoCalc'
-import { Paragrafos, btn } from './KetoManejo'
+import { Paragrafos, btn, semFonte } from './KetoManejo'
 import type { KetoDados, Trilha } from '../../data/ketoData'
 import * as K from '../../data/ketoData'
 
@@ -15,7 +15,7 @@ export function TelaReconhecimento() {
       <Collapsible title="1.1 Quando suspeitar">
         <Paragrafos textos={K.QUANDO_SUSPEITAR} />
         <AlertCard type="warning" title="Dor abdominal">
-          <p className="leading-relaxed">{K.ALERTA_DOR_ABDOMINAL}</p>
+          <p className="leading-relaxed">{semFonte(K.ALERTA_DOR_ABDOMINAL)}</p>
         </AlertCard>
       </Collapsible>
 
@@ -26,7 +26,7 @@ export function TelaReconhecimento() {
 
       <Collapsible title="1.3 Critérios diagnósticos — CAD">
         <p className="text-sm text-text-secondary leading-relaxed mb-3">
-          Os três componentes precisam estar presentes. [ADA]
+          Os três componentes precisam estar presentes.
         </p>
         <div className="rounded-xl overflow-hidden border border-border-card mb-3">
           <table className="w-full text-xs">
@@ -34,15 +34,15 @@ export function TelaReconhecimento() {
               {K.CRITERIOS_CAD.map(c => (
                 <tr key={c.eixo} className="border-t border-border first:border-t-0">
                   <td className="px-3 py-2 text-text-primary font-semibold align-top whitespace-nowrap">{c.eixo}</td>
-                  <td className="px-3 py-2 text-text-secondary leading-relaxed">{c.criterio}</td>
+                  <td className="px-3 py-2 text-text-secondary leading-relaxed">{semFonte(c.criterio)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-text-muted leading-relaxed italic mb-2">{K.NOTA_CRITERIOS_CAD}</p>
-        <p className="text-sm text-text-secondary leading-relaxed">{K.NOTA_GASOMETRIA}</p>
-        <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_UNIDADES}</p>
+        <p className="text-xs text-text-muted leading-relaxed italic mb-2">{semFonte(K.NOTA_CRITERIOS_CAD)}</p>
+        <p className="text-sm text-text-secondary leading-relaxed">{semFonte(K.NOTA_GASOMETRIA)}</p>
+        <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
       </Collapsible>
 
       <AlertCard type="warning" title="1.4 Discordância da cetonúria">
@@ -52,10 +52,10 @@ export function TelaReconhecimento() {
       <Collapsible title="Critérios do EHH — referência">
         <ul className="space-y-1 mb-3">
           {K.CRITERIOS_EHH.map((c, i) => (
-            <li key={i} className="text-sm text-text-secondary leading-relaxed">• {c}</li>
+            <li key={i} className="text-sm text-text-secondary leading-relaxed">• {semFonte(c)}</li>
           ))}
         </ul>
-        <p className="text-sm text-text-secondary leading-relaxed">{K.NOTA_EHH}</p>
+        <p className="text-sm text-text-secondary leading-relaxed">{semFonte(K.NOTA_EHH)}</p>
       </Collapsible>
 
       <Collapsible title="1.7 Diagnóstico diferencial">
@@ -76,9 +76,9 @@ export function TelaExames() {
           <li key={e} className="text-sm text-text-secondary leading-relaxed">• {e}</li>
         ))}
       </ul>
-      <p className="text-xs text-text-muted leading-relaxed mb-3 italic">{K.NOTA_PAINEL_INICIAL}</p>
+      <p className="text-xs text-text-muted leading-relaxed mb-3 italic">{semFonte(K.NOTA_PAINEL_INICIAL)}</p>
       <AlertCard type="info" title="Sobre o eletrocardiograma">
-        <p className="leading-relaxed">{K.NOTA_ECG}</p>
+        <p className="leading-relaxed">{semFonte(K.NOTA_ECG)}</p>
       </AlertCard>
       <Collapsible title="Avaliação de volemia">
         <Paragrafos textos={K.AVALIACAO_VOLEMIA} />
@@ -130,15 +130,15 @@ export function TelaCalculadoras({ dados, peso, trilha }: {
           <AlertCard type={ag > 12 ? 'warning' : 'info'} title={`${ag} mEq/L`}>
             <p className="leading-relaxed">
               {ag > 12
-                ? 'Ânion-gap acima de 12 mEq/L indica acidose metabólica com ânion-gap elevado, compatível com CAD. [ADA]'
+                ? 'Ânion-gap acima de 12 mEq/L indica acidose metabólica com ânion-gap elevado, compatível com CAD.'
                 : 'Ânion-gap dentro da faixa habitual.'}
             </p>
           </AlertCard>
         ) : (
           <p className="text-sm text-warning">Informe sódio, cloro e bicarbonato nos dados do paciente.</p>
         )}
-        <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_ANION_GAP}</p>
-        <p className="text-xs text-text-muted mt-2 leading-relaxed">{K.NOTA_UNIDADES}</p>
+        <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_ANION_GAP)}</p>
+        <p className="text-xs text-text-muted mt-2 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
       </Collapsible>
 
       <Collapsible title="Sódio corrigido" badge={naCorr !== null ? `${fmt(naCorr, 1)}` : undefined} badgeColor="#2196F3">
@@ -150,7 +150,7 @@ export function TelaCalculadoras({ dados, peso, trilha }: {
         ) : (
           <p className="text-sm text-warning">Informe sódio e glicemia nos dados do paciente.</p>
         )}
-        <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_SODIO_CORRIGIDO}</p>
+        <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_SODIO_CORRIGIDO)}</p>
       </Collapsible>
 
       <Collapsible title="Osmolaridade efetiva" badge={osm !== null ? `${osm}` : undefined} badgeColor="#2196F3">
@@ -188,7 +188,7 @@ export function TelaCalculadoras({ dados, peso, trilha }: {
           ) : (
             <p className="text-sm text-warning">Informe peso, sódio e glicemia nos dados do paciente.</p>
           )}
-          <p className="text-xs text-text-muted mt-3 leading-relaxed">{K.NOTA_DEFICIT_AGUA}</p>
+          <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_DEFICIT_AGUA)}</p>
         </Collapsible>
       )}
     </div>
@@ -211,7 +211,7 @@ export function TelaPrecipitante() {
   const [marcados, setMarcados] = useState<Record<string, boolean>>({})
   return (
     <div>
-      <p className="text-sm text-text-secondary leading-relaxed mb-3">{K.FATOR_PRECIPITANTE_INTRO}</p>
+      <p className="text-sm text-text-secondary leading-relaxed mb-3">{semFonte(K.FATOR_PRECIPITANTE_INTRO)}</p>
       <div className="space-y-2">
         {K.FATORES_PRECIPITANTES.map(f => (
           <div key={f.id}>
@@ -225,7 +225,7 @@ export function TelaPrecipitante() {
                 <span className={`block text-sm leading-relaxed ${marcados[f.id] ? 'text-text-primary font-semibold' : 'text-text-secondary'}`}>
                   {f.label}
                 </span>
-                <span className="block text-xs text-text-muted leading-relaxed mt-0.5">{f.nota}</span>
+                <span className="block text-xs text-text-muted leading-relaxed mt-0.5">{semFonte(f.nota)}</span>
               </span>
             </button>
             {f.id === 'isglt2' && marcados[f.id] && (
@@ -237,7 +237,7 @@ export function TelaPrecipitante() {
         ))}
       </div>
       <AlertCard type="info" title="Rastreio de saúde mental">
-        <p className="leading-relaxed">{K.RASTREIO_SAUDE_MENTAL}</p>
+        <p className="leading-relaxed">{semFonte(K.RASTREIO_SAUDE_MENTAL)}</p>
       </AlertCard>
     </div>
   )
