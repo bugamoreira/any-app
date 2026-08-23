@@ -202,6 +202,19 @@ export const drugConfigs: DrugConfig[] = [
       },
     ],
   },
+  {
+    // v1: 100 mg (10 amp 1mL) em 100 mL = 1 mg/mL; slider 1-10 step 0,5 default 2;
+    // setStatus(..., 1, 5, 8). Nao usa peso — a dose ja e em mg/h.
+    id: 'morfina', name: 'Morfina', aliases: ['morphine', 'dimorf'],
+    category: 'sedation',
+    presentation: '100 mg (10 amp 1mL — 10mg/mL) + SF 0,9% 90 mL = 100 mL',
+    concentration: 1, concentrationUnit: 'mg/mL',
+    doseUnit: 'mg/h', resultUnit: 'mL/h',
+    doseMin: 1, doseMax: 10, doseStep: 0.5, doseDefault: 2,
+    cautionThreshold: 5, criticalThreshold: 8,
+    factor: 1, usesWeight: false,
+    ampoule: { mass: 10, volume: 1, label: '10 mg / 1 mL' },
+  },
 
   // === BNM ===
   {

@@ -5,6 +5,8 @@ import { Footer } from '../components/layout/Footer'
 import { Container } from '../components/layout/Container'
 import { FABMenu } from '../components/layout/FABMenu'
 import { Collapsible } from '../components/common/Collapsible'
+import { HeparinCalculator } from '../components/clinical/HeparinCalculator'
+import { InsulinCalculator } from '../components/clinical/InsulinCalculator'
 import { WeightInput } from '../components/common/WeightInput'
 import { ToastContainer } from '../components/common/Toast'
 import { DoseCalculator } from '../components/clinical/DoseCalculator'
@@ -27,7 +29,7 @@ export default function InfusionGuide() {
 
   const drugsByCategory = useMemo(() => getDrugsByCategory(), [])
 
-  const categoryOrder: DrugCategory[] = ['vasopressors', 'sedation', 'neuromuscular', 'vasodilators', 'protocols']
+  const categoryOrder: DrugCategory[] = ['vasopressors', 'sedation', 'neuromuscular', 'vasodilators']
 
   const fabItems = [
     { label: 'Vasopressores', onClick: () => setSearch('') },
@@ -166,6 +168,30 @@ export default function InfusionGuide() {
                 </Collapsible>
               )
             })}
+
+            {/* Protocolos — heparina e insulina nao sao infusao por peso com
+                slider, entao tem componente proprio em vez de DrugConfig. */}
+            <Collapsible title={categoryLabels.protocols} badge="2" badgeColor="#FF5252">
+              {[
+                { id: 'heparina', nome: 'Heparina', Comp: HeparinCalculator },
+                { id: 'insulina', nome: 'Insulina regular', Comp: InsulinCalculator },
+              ].map(({ id, nome, Comp }) => (
+                <div key={id} className="mb-3">
+                  <button
+                    onClick={() => setOpenDrug(openDrug === id ? null : id)}
+                    className="flex items-center justify-between w-full px-3 py-3 bg-bg-hover rounded-lg text-left cursor-pointer min-h-[44px] transition-colors"
+                  >
+                    <span className="font-medium text-sm text-text-primary">{nome}</span>
+                    <span className={`text-text-muted transition-transform ${openDrug === id ? 'rotate-90' : ''}`}>›</span>
+                  </button>
+                  {openDrug === id && (
+                    <div className="mt-2">
+                      <Comp />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </Collapsible>
           </div>
         )}
       </Container>
