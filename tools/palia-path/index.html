@@ -2427,7 +2427,7 @@
                                 <option value="morfina-ev">Morfina EV/SC</option>
                                 <option value="tramadol">Tramadol VO</option>
                                 <option value="codeina">Codeína VO</option>
-                                <option value="fentanil-ev">Fentanil EV (mcg/h)</option>
+                                <option value="fentanil-ev">Fentanil EV/SC contínuo (mcg/h)</option>
                                 <option value="metadona">Metadona VO</option>
                             </select>
                         </div>
@@ -2444,7 +2444,7 @@
                                 <option value="morfina-ev">Morfina EV/SC</option>
                                 <option value="tramadol">Tramadol VO</option>
                                 <option value="codeina">Codeína VO</option>
-                                <option value="fentanil-ev">Fentanil EV (mcg/h)</option>
+                                <option value="fentanil-ev">Fentanil EV/SC contínuo (mcg/h)</option>
                                 <option value="metadona">Metadona VO</option>
                             </select>
                         </div>
@@ -2462,7 +2462,7 @@
                         <tr><td>Morfina EV/SC</td><td>10mg</td><td>3</td></tr>
                         <tr><td>Tramadol VO</td><td>300mg</td><td>0,1</td></tr>
                         <tr><td>Codeína VO</td><td>200mg</td><td>0,15</td></tr>
-                        <tr><td>Fentanil EV</td><td>100mcg/h</td><td>~300</td></tr>
+                        <tr><td>Fentanil EV/SC (mcg/h)</td><td>25 mcg/h</td><td>2,4</td></tr>
                         <tr><td>Metadona VO</td><td>Variável*</td><td>-</td></tr>
                     </table>
                     <p style="font-size: 0.75rem; color: var(--cinza-secundario);">*Metadona: conversão não linear. Solicitar avaliação especializada para doses altas.</p>
@@ -3378,8 +3378,8 @@
             'morfina-ev': 3,
             'tramadol': 0.1,
             'codeina': 0.15,
-            'fentanil-ev': 300,
-            'metadona': 4 // aproximado para doses baixas
+            'fentanil-ev': 2.4, // mcg/h -> mg/24h de morfina oral (25 mcg/h ~ 60 mg/dia)
+            'metadona': 4 // nao linear: ver aviso no calculo
         };
 
         function calculateOpioid() {
@@ -3392,6 +3392,14 @@
                 return;
             }
             
+            // Metadona: equivalencia nao linear (varia com dose previa e tempo de uso).
+            // Conversao automatica seria insegura.
+            if (from === 'metadona' || to === 'metadona') {
+                document.getElementById('opioid-result').textContent =
+                    'Converter com especialista';
+                return;
+            }
+
             // Converter para morfina VO equivalente
             const morfinaVOEquiv = dose * opioidFactors[from];
             

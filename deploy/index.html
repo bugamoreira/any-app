@@ -1899,22 +1899,26 @@
                         <button onclick="selectHacorInicio('gcs', 0, this)">15: 0</button>
                         <button onclick="selectHacorInicio('gcs', 2, this)">13-14: 2</button>
                         <button onclick="selectHacorInicio('gcs', 5, this)">11-12: 5</button>
-                        <button onclick="selectHacorInicio('gcs', 15, this)">&lt;= 10: 15</button>
+                        <button onclick="selectHacorInicio('gcs', 10, this)">&lt;= 10: 10</button>
                     </div>
 
                     <div class="hacor-var-label">PaO2/FiO2</div>
                     <div class="hacor-toggle" id="hacorInicioPf">
-                        <button onclick="selectHacorInicio('pf', 0, this)">&gt; 200: 0</button>
-                        <button onclick="selectHacorInicio('pf', 2, this)">175-200: 2</button>
-                        <button onclick="selectHacorInicio('pf', 3, this)">150-174: 3</button>
-                        <button onclick="selectHacorInicio('pf', 4, this)">125-149: 4</button>
-                        <button onclick="selectHacorInicio('pf', 5, this)">&lt; 125: 5</button>
+                        <button onclick="selectHacorInicio('pf', 0, this)">&gt;= 201: 0</button>
+                        <button onclick="selectHacorInicio('pf', 2, this)">176-200: 2</button>
+                        <button onclick="selectHacorInicio('pf', 3, this)">151-175: 3</button>
+                        <button onclick="selectHacorInicio('pf', 4, this)">126-150: 4</button>
+                        <button onclick="selectHacorInicio('pf', 5, this)">101-125: 5</button>
+                        <button onclick="selectHacorInicio('pf', 6, this)">&lt;= 100: 6</button>
                     </div>
 
                     <div class="hacor-var-label">FR &gt;= 30 irpm</div>
                     <div class="hacor-toggle" id="hacorInicioFr">
-                        <button onclick="selectHacorInicio('fr', 0, this)">Não: 0</button>
-                        <button onclick="selectHacorInicio('fr', 1, this)">Sim: 1</button>
+                        <button onclick="selectHacorInicio('fr', 0, this)">&lt;= 30: 0</button>
+                        <button onclick="selectHacorInicio('fr', 1, this)">31-35: 1</button>
+                        <button onclick="selectHacorInicio('fr', 2, this)">36-40: 2</button>
+                        <button onclick="selectHacorInicio('fr', 3, this)">41-45: 3</button>
+                        <button onclick="selectHacorInicio('fr', 4, this)">&gt;= 46: 4</button>
                     </div>
 
                     <div class="hacor-result-box" id="hacorInicioResult">
@@ -1952,22 +1956,26 @@
                         <button onclick="selectHacorReaval('gcs', 0, this)">15: 0</button>
                         <button onclick="selectHacorReaval('gcs', 2, this)">13-14: 2</button>
                         <button onclick="selectHacorReaval('gcs', 5, this)">11-12: 5</button>
-                        <button onclick="selectHacorReaval('gcs', 15, this)">&lt;= 10: 15</button>
+                        <button onclick="selectHacorReaval('gcs', 10, this)">&lt;= 10: 10</button>
                     </div>
 
                     <div class="hacor-var-label">PaO2/FiO2</div>
                     <div class="hacor-toggle" id="hacorReavalPf">
-                        <button onclick="selectHacorReaval('pf', 0, this)">&gt; 200: 0</button>
-                        <button onclick="selectHacorReaval('pf', 2, this)">175-200: 2</button>
-                        <button onclick="selectHacorReaval('pf', 3, this)">150-174: 3</button>
-                        <button onclick="selectHacorReaval('pf', 4, this)">125-149: 4</button>
-                        <button onclick="selectHacorReaval('pf', 5, this)">&lt; 125: 5</button>
+                        <button onclick="selectHacorReaval('pf', 0, this)">&gt;= 201: 0</button>
+                        <button onclick="selectHacorReaval('pf', 2, this)">176-200: 2</button>
+                        <button onclick="selectHacorReaval('pf', 3, this)">151-175: 3</button>
+                        <button onclick="selectHacorReaval('pf', 4, this)">126-150: 4</button>
+                        <button onclick="selectHacorReaval('pf', 5, this)">101-125: 5</button>
+                        <button onclick="selectHacorReaval('pf', 6, this)">&lt;= 100: 6</button>
                     </div>
 
                     <div class="hacor-var-label">FR &gt;= 30 irpm</div>
                     <div class="hacor-toggle" id="hacorReavalFr">
-                        <button onclick="selectHacorReaval('fr', 0, this)">Não: 0</button>
-                        <button onclick="selectHacorReaval('fr', 1, this)">Sim: 1</button>
+                        <button onclick="selectHacorReaval('fr', 0, this)">&lt;= 30: 0</button>
+                        <button onclick="selectHacorReaval('fr', 1, this)">31-35: 1</button>
+                        <button onclick="selectHacorReaval('fr', 2, this)">36-40: 2</button>
+                        <button onclick="selectHacorReaval('fr', 3, this)">41-45: 3</button>
+                        <button onclick="selectHacorReaval('fr', 4, this)">&gt;= 46: 4</button>
                     </div>
 
                     <div class="hacor-result-box" id="hacorReavalResult">
@@ -22528,7 +22536,7 @@ function showTab(tabName) {
                                 <option value="morfina-ev">Morfina EV/SC</option>
                                 <option value="tramadol">Tramadol VO</option>
                                 <option value="codeina">Codeína VO</option>
-                                <option value="fentanil-ev">Fentanil EV (mcg/h)</option>
+                                <option value="fentanil-ev">Fentanil EV/SC contínuo (mcg/h)</option>
                                 <option value="metadona">Metadona VO</option>
                             </select>
                         </div>
@@ -22545,7 +22553,7 @@ function showTab(tabName) {
                                 <option value="morfina-ev">Morfina EV/SC</option>
                                 <option value="tramadol">Tramadol VO</option>
                                 <option value="codeina">Codeína VO</option>
-                                <option value="fentanil-ev">Fentanil EV (mcg/h)</option>
+                                <option value="fentanil-ev">Fentanil EV/SC contínuo (mcg/h)</option>
                                 <option value="metadona">Metadona VO</option>
                             </select>
                         </div>
@@ -22563,7 +22571,7 @@ function showTab(tabName) {
                         <tr><td>Morfina EV/SC</td><td>10mg</td><td>3</td></tr>
                         <tr><td>Tramadol VO</td><td>300mg</td><td>0,1</td></tr>
                         <tr><td>Codeína VO</td><td>200mg</td><td>0,15</td></tr>
-                        <tr><td>Fentanil EV</td><td>100mcg/h</td><td>~300</td></tr>
+                        <tr><td>Fentanil EV/SC (mcg/h)</td><td>25 mcg/h</td><td>2,4</td></tr>
                         <tr><td>Metadona VO</td><td>Variável*</td><td>-</td></tr>
                     </table>
                     <p style="font-size: 0.75rem; color: var(--cinza-secundario);">*Metadona: conversão não linear. Solicitar avaliação especializada para doses altas.</p>
@@ -23479,8 +23487,8 @@ function showTab(tabName) {
             'morfina-ev': 3,
             'tramadol': 0.1,
             'codeina': 0.15,
-            'fentanil-ev': 300,
-            'metadona': 4 // aproximado para doses baixas
+            'fentanil-ev': 2.4, // mcg/h -> mg/24h de morfina oral (25 mcg/h ~ 60 mg/dia)
+            'metadona': 4 // nao linear: ver aviso no calculo
         };
 
         function calculateOpioid() {
@@ -23493,6 +23501,14 @@ function showTab(tabName) {
                 return;
             }
             
+            // Metadona: equivalencia nao linear (varia com dose previa e tempo de uso).
+            // Conversao automatica seria insegura.
+            if (from === 'metadona' || to === 'metadona') {
+                document.getElementById('opioid-result').textContent =
+                    'Converter com especialista';
+                return;
+            }
+
             // Converter para morfina VO equivalente
             const morfinaVOEquiv = dose * opioidFactors[from];
             
