@@ -97,14 +97,24 @@ export const DIAGNOSTICO_DIFERENCIAL = [
 
 // ────────────────────────────────────────────────────────── 2. EXAMES INICIAIS
 
+/**
+ * A spec listava so "Eletrolitos sericos", sem dizer quais — o Gustavo
+ * perguntou e mandou espelhar a secao 5.1, que ja enumera o painel de
+ * acompanhamento. Assim o que se pede na admissao e o mesmo que se acompanha
+ * depois, e a incoerencia interna do documento some.
+ */
 export const PAINEL_INICIAL = [
   'Glicemia',
-  'Eletrólitos séricos',
+  'Eletrólitos séricos — sódio, potássio, cloro e bicarbonato',
+  'Ureia, creatinina e fósforo',
   'Gasometria venosa',
   'Hemograma completo',
   'Cetonas — sangue ou urina',
   'Eletrocardiograma',
 ]
+
+export const NOTA_PAINEL_INICIAL =
+  'Mesmo conjunto acompanhado depois, na cadência de exames. O fósforo tem seção própria no manejo.'
 
 export const NOTA_ECG =
   'Permite avaliar alterações de repolarização de origem bioquímica, como ondas T apiculadas na hipercalemia, e sinais de isquemia. [ADA]'

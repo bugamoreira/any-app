@@ -76,6 +76,7 @@ export function TelaExames() {
           <li key={e} className="text-sm text-text-secondary leading-relaxed">• {e}</li>
         ))}
       </ul>
+      <p className="text-xs text-text-muted leading-relaxed mb-3 italic">{K.NOTA_PAINEL_INICIAL}</p>
       <AlertCard type="info" title="Sobre o eletrocardiograma">
         <p className="leading-relaxed">{K.NOTA_ECG}</p>
       </AlertCard>
