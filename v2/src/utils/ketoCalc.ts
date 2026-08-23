@@ -163,3 +163,100 @@ export function transicaoInsulina(peso: number, riscoHipoglicemia: boolean): Tra
     basalMax: r(peso * 0.3),
   }
 }
+
+// ── Ciclo de reavaliacao ─────────────────────────────────────────────────────
+
+/**
+ * Uma rodada de reavaliacao. O ciclo guarda a ANTERIOR para calcular a queda
+ * por hora — variavel central da titulacao da insulina. Memoria de sessao
+ * apenas; a spec proibe historico entre sessoes.
+ */
+export interface Rodada {
+  glicemia: number | null
+  potassio: number | null
+  sodio: number | null
+  /** Necessario para o anion-gap e, por consequencia, para o delta/delta. */
+  cloro: number | null
+  phVenoso: number | null
+  bicarbonato: number | null
+  /** Momento em que a rodada foi fechada, para o intervalo real. */
+  em: number
+}
+
+export type LeituraQueda = 'insuficiente' | 'adequada' | 'rapida'
+
+export interface Queda {
+  /** mg/dL por hora. Positivo = caindo. So confiavel se `extrapolavel`. */
+  porHora: number
+  /** Variacao absoluta entre as duas rodadas, sem normalizar. */
+  absoluta: number
+  horas: number
+  leitura: LeituraQueda
+  /**
+   * False quando o intervalo e curto demais para extrapolar por hora. Dividir
+   * 80 mg/dL por 1 minuto daria 4800 mg/dL/h — matematicamente certo,
+   * clinicamente absurdo, e dispara alarme falso de teto. Acontece de verdade
+   * quando o medico reabre uma rodada para corrigir um valor.
+   */
+  extrapolavel: boolean
+}
+
+/**
+ * Queda da glicemia entre duas rodadas, normalizada por hora.
+ *
+ * Faixas [UTD]: abaixo de 50 mg/dL/h e insuficiente e manda investigar o
+ * acesso e dobrar a infusao; acima de 90 e rapida demais e esbarra no teto de
+ * 90-120 mg/dL/h, que vale para CAD e EHH.
+ */
+const MINUTOS_MINIMOS = 15
+
+export function quedaGlicemia(atual: number, anterior: number, minutos: number): Queda | null {
+  if (minutos <= 0) return null
+  const horas = minutos / 60
+  const absoluta = anterior - atual
+  const porHora = absoluta / horas
+  const extrapolavel = minutos >= MINUTOS_MINIMOS
+  const leitura: LeituraQueda = !extrapolavel ? 'adequada'
+    : porHora < 50 ? 'insuficiente' : porHora > 90 ? 'rapida' : 'adequada'
+  return { porHora: Math.round(porHora), absoluta: Math.round(absoluta), horas, leitura, extrapolavel }
+}
+
+/** Resolucao da CAD, adaptada ao servico que nao dispoe de BHB. */
+export function resolvidoCAD(ph: number | null, hco3: number | null, glicemia: number | null) {
+  const obrigatorio = (ph !== null && ph >= 7.3) || (hco3 !== null && hco3 >= 18)
+  const desejavel = glicemia !== null && glicemia < 200
+  return { obrigatorio, desejavel, resolvido: obrigatorio }
+}
+
+
+// ── Delta/delta ──────────────────────────────────────────────────────────────
+
+export type LeituraDelta = 'hiperclorêmica' | 'ag-puro' | 'alcalose'
+
+export interface DeltaDelta {
+  deltaGap: number
+  razao: number
+  leitura: LeituraDelta
+}
+
+/**
+ * Delta gap e razao delta/delta. Mesma formula da calculadora do app
+ * (Emmett M, Narins RG. Medicine 1977) — AG normal 12, HCO3 normal 24.
+ *
+ * Por que isso importa no KetoPath: depois de litros de salina 0,9%, instala-se
+ * acidose hiperclorêmica. O bicarbonato segue baixo mesmo com o anion-gap ja
+ * normalizado, e quem le isso como "CAD persistente" mantem a bomba de insulina
+ * e ATRASA a transicao para subcutanea — a armadilha que a propria spec nomeia.
+ * A razao abaixo de 1 responde que o bicarbonato baixo e o soro, nao a CAD.
+ */
+export function deltaDelta(ag: number, hco3: number): DeltaDelta | null {
+  const dAG = ag - 12
+  const dHCO3 = 24 - hco3
+  if (dHCO3 <= 0) return null // bicarbonato normal ou alto: nao se aplica
+  const razao = Math.round((dAG / dHCO3) * 100) / 100
+  return {
+    deltaGap: Math.round(((ag - 12) - (24 - hco3)) * 10) / 10,
+    razao,
+    leitura: razao < 1 ? 'hiperclorêmica' : razao <= 2 ? 'ag-puro' : 'alcalose',
+  }
+}

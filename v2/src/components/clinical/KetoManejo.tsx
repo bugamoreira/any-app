@@ -44,7 +44,14 @@ function Paragrafos({ textos }: { textos: string[] }) {
 }
 
 /** Passo 3 — Fluidos. */
-export function PassoFluidos({ dados, peso, trilha }: Props) {
+/**
+ * Serve as DUAS fases: hidratacao inicial na primeira hora (fase A) e reposicao
+ * de manutencao depois dos exames (fase B). `soManutencao` corta a fase A, que
+ * ja foi decidida na primeira hora — o medico nao reescolhe o estado volemico.
+ */
+export function PassoFluidos({ dados, peso, trilha, fase = 'inicial' }: Props & { fase?: 'inicial' | 'manutencao' }) {
+  const soManutencao = fase === 'manutencao'
+  const soInicial = fase === 'inicial'
   const [estadoVolemico, setEstadoVolemico] = useState<string | null>(null)
   const ehEhh = trilha === 'ehh' || trilha === 'misto'
   const naCorr =
@@ -55,6 +62,7 @@ export function PassoFluidos({ dados, peso, trilha }: Props) {
       <Paragrafos textos={K.FLUIDO_INICIAL} />
       <p className="text-sm text-info leading-relaxed mb-3">{semFonte(K.PREFERENCIA_FLUIDO)}</p>
 
+      {!soManutencao && (<>
       <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
         Fase A — estado volêmico
       </div>
@@ -82,7 +90,9 @@ export function PassoFluidos({ dados, peso, trilha }: Props) {
       <AlertCard type="warning" title="Populações de risco">
         <p className="leading-relaxed">{semFonte(K.ALERTA_SOBRECARGA)}</p>
       </AlertCard>
+      </>)}
 
+      {soManutencao && (<>
       <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-4">
         Reavaliação após a expansão
       </div>
@@ -106,6 +116,14 @@ export function PassoFluidos({ dados, peso, trilha }: Props) {
       </div>
       <Paragrafos textos={K.GATILHO_DEXTROSE} />
       <p className="text-xs text-text-muted leading-relaxed mt-2 italic">{semFonte(K.NOTA_VEICULO_DEXTROSE)}</p>
+      </>)}
+
+      {soInicial && (
+        <p className="text-sm text-text-muted leading-relaxed mt-4">
+          A reposição de manutenção e o gatilho da dextrose dependem do sódio corrigido — entram
+          depois que os exames voltarem.
+        </p>
+      )}
 
       {ehEhh && (
         <>

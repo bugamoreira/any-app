@@ -6,11 +6,13 @@ import { Container } from '../components/layout/Container'
 import { FABMenu } from '../components/layout/FABMenu'
 import { Button } from '../components/common/Button'
 import { AlertCard } from '../components/common/AlertCard'
+import { Collapsible } from '../components/common/Collapsible'
 import { useWeight } from '../contexts/WeightContext'
 import { fmt } from '../utils/formatters'
 import { sodioCorrigido, gravidadeCAD } from '../utils/ketoCalc'
-import { PassoFluidos, PassoPotassio, PassoInsulina, PassoAdjuvantes, Paragrafos, btn, campo, semFonte } from '../components/clinical/KetoManejo'
-import { KetoMonitor, KetoResolucao } from '../components/clinical/KetoMonitor'
+import { PassoFluidos, PassoPotassio, PassoInsulina, Paragrafos, btn, campo, semFonte } from '../components/clinical/KetoManejo'
+import { KetoCiclo } from '../components/clinical/KetoCiclo'
+import type { Rodada } from '../utils/ketoCalc'
 import { KetoPlanilha } from '../components/clinical/KetoPlanilha'
 import {
   TelaReconhecimento, TelaExames, TelaCalculadoras, TelaArmadilhas, TelaPrecipitante, TelaReferencias,
@@ -29,41 +31,58 @@ import * as K from '../data/ketoData'
  */
 type Screen =
   | 'home'
-  | 'p1' | 'p2' | 'p3' | 'p4' | 'p5' | 'p6' | 'p7' | 'p8'
-  | 'reconhecimento' | 'exames' | 'calculadoras' | 'planilha'
+  | 'h1' | 'h2' | 'h3'                       // primeira hora
+  | 'e1' | 'e2' | 'e3' | 'e4' | 'e5'          // apos os exames
+  | 'ciclo'                                   // reavaliacao, reentrante
+  | 'reconhecimento' | 'calculadoras' | 'planilha'
   | 'armadilhas' | 'precipitante' | 'referencias'
 
-const PASSOS = [
-  { id: 'p1', n: 1, titulo: 'Dados do paciente' },
-  { id: 'p2', n: 2, titulo: 'Classificação' },
-  { id: 'p3', n: 3, titulo: 'Fluidos' },
-  { id: 'p4', n: 4, titulo: 'Potássio' },
-  { id: 'p5', n: 5, titulo: 'Insulina' },
-  { id: 'p6', n: 6, titulo: 'Adjuvantes' },
-  { id: 'p7', n: 7, titulo: 'Monitorização' },
-  { id: 'p8', n: 8, titulo: 'Resolução' },
+/**
+ * O fluxo espelha a CHEGADA DOS DADOS, nao uma lista de campos.
+ * Primeira hora: suspeita, hidratacao e confirmacao — nada espera exame.
+ * Depois: os resultados chegam e destravam classificacao, reposicao e insulina.
+ * Dai em diante e ciclo, nao passo.
+ */
+const FASE1 = [
+  { id: 'h1', n: 1, titulo: 'Reconhecer', sub: 'suspeita clínica' },
+  { id: 'h2', n: 2, titulo: 'Hidratar', sub: 'não espera exame' },
+  { id: 'h3', n: 3, titulo: 'Confirmar', sub: 'o que coletar' },
 ] as const
+
+const FASE2 = [
+  { id: 'e1', n: 4, titulo: 'Classificar', sub: 'trilha, gravidade, bicarbonato' },
+  { id: 'e2', n: 5, titulo: 'Reposição', sub: 'governada pelo sódio' },
+  { id: 'e3', n: 6, titulo: 'Potássio', sub: 'libera a insulina' },
+  { id: 'e4', n: 7, titulo: 'Insulina', sub: 'travada até o potássio' },
+  { id: 'e5', n: 8, titulo: 'Fosfato', sub: 'raramente indicado' },
+] as const
+
+const PASSOS = [...FASE1, ...FASE2]
 
 const CARDS: { id: Screen; titulo: string; sub: string; destaque?: boolean; icon: React.ReactNode }[] = [
   {
-    id: 'p1', titulo: 'Avaliação guiada', sub: '8 passos', destaque: true,
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>,
+    id: 'h1', titulo: 'Primeira hora', sub: 'suspeita · hidratação · dx', destaque: true,
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>,
   },
   {
-    id: 'reconhecimento', titulo: 'Reconhecer', sub: 'É CAD? É EHH?',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+    id: 'e1', titulo: 'Após os exames', sub: 'reposição · K · insulina', destaque: true,
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3v6.5L4 18a2 2 0 001.7 3h12.6a2 2 0 001.7-3l-5-8.5V3"/><line x1="7.5" y1="3" x2="16.5" y2="3"/><line x1="7" y1="15" x2="17" y2="15"/></svg>,
   },
   {
-    id: 'calculadoras', titulo: 'Calculadoras', sub: 'AG · Na · Osm',
+    id: 'ciclo', titulo: 'Reavaliação', sub: 'ciclo até a resolução', destaque: true,
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>,
+  },
+  {
+    id: 'calculadoras', titulo: 'Calculadoras', sub: 'AG · Na · Osm · Δ/Δ',
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="10" y2="11"/><line x1="14" y1="11" x2="16" y2="11"/><line x1="8" y1="16" x2="10" y2="16"/><line x1="14" y1="16" x2="16" y2="16"/></svg>,
+  },
+  {
+    id: 'reconhecimento', titulo: 'Reconhecer', sub: 'critérios e alertas',
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
   },
   {
     id: 'planilha', titulo: 'Planilha', sub: 'imprimir',
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>,
-  },
-  {
-    id: 'exames', titulo: 'Exames', sub: 'painel inicial',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 2v7.5L5 18a2 2 0 001.7 3h10.6A2 2 0 0019 18l-5-8.5V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/></svg>,
   },
   {
     id: 'armadilhas', titulo: 'Armadilhas', sub: '7 riscos',
@@ -80,7 +99,7 @@ const CARDS: { id: Screen; titulo: string; sub: string; destaque?: boolean; icon
 ]
 
 const TITULOS: Record<string, string> = {
-  reconhecimento: 'Reconhecimento', exames: 'Exames iniciais', calculadoras: 'Calculadoras',
+  reconhecimento: 'Reconhecimento', calculadoras: 'Calculadoras',
   planilha: 'Planilha de acompanhamento', armadilhas: 'Armadilhas',
   precipitante: 'Fator precipitante', referencias: 'Referências',
 }
@@ -92,6 +111,25 @@ export default function KetoPath() {
   const [textos, setTextos] = useState<Record<string, string>>({})
   const [trilha, setTrilha] = useState<Trilha>('cad')
   const [reavaliadoEm, setReavaliadoEm] = useState<string | null>(null)
+  // O ciclo guarda a rodada ANTERIOR para calcular a queda por hora — sem isso
+  // nao da para titular a insulina. Memoria de sessao apenas.
+  const [numeroRodada, setNumeroRodada] = useState(1)
+  const [rodadaAnterior, setRodadaAnterior] = useState<Rodada | null>(null)
+  const [rodadaAtual, setRodadaAtual] = useState<Rodada>({
+    glicemia: null, potassio: null, sodio: null, cloro: null,
+    phVenoso: null, bicarbonato: null, em: Date.now(),
+  })
+
+  /** Fecha a rodada: o que estava na tela vira "anterior" e abre a proxima. */
+  function fecharRodada() {
+    setRodadaAnterior({ ...rodadaAtual, em: Date.now() })
+    setRodadaAtual({
+      glicemia: null, potassio: null, sodio: null, cloro: null,
+      phVenoso: null, bicarbonato: null, em: Date.now(),
+    })
+    setNumeroRodada(n => n + 1)
+    setReavaliadoEm(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }))
+  }
   const [pesoTxt, setPesoTxt] = useState(weight !== null ? String(weight) : '')
 
   const goTo = useCallback((s: Screen) => {
@@ -102,7 +140,9 @@ export default function KetoPath() {
   // Toda ferramenta do app tem FABMenu com 'Início' — e o KetoPath nao tinha.
   const fabItems: FABItem[] = useMemo(() => [
     { label: 'Início', onClick: () => goTo('home') },
-    { label: 'Avaliação guiada', onClick: () => goTo('p1') },
+    { label: 'Primeira hora', onClick: () => goTo('h1') },
+    { label: 'Após os exames', onClick: () => goTo('e1') },
+    { label: 'Reavaliação', onClick: () => goTo('ciclo') },
     { label: 'Reconhecer', onClick: () => goTo('reconhecimento') },
     { label: 'Calculadoras', onClick: () => goTo('calculadoras') },
     { label: 'Planilha', onClick: () => goTo('planilha') },
@@ -168,28 +208,25 @@ export default function KetoPath() {
         {/* ═══════════════ PASSOS ═══════════════ */}
         {ehPasso && (
           <>
-            {/* Progresso */}
-            <div className="flex justify-center gap-[6px] py-3 flex-wrap">
-              {PASSOS.map(p => (
-                <button key={p.id} onClick={() => goTo(p.id)} aria-label={`Passo ${p.n}: ${p.titulo}`}
-                  className="p-[12px] bg-transparent border-none cursor-pointer flex items-center justify-center">
-                  <span className={`block w-[10px] h-[10px] rounded-full border transition-all duration-200 ${
-                    p.n === passoAtual.n ? 'bg-accent border-accent scale-[1.2]'
-                    : p.n < passoAtual.n ? 'bg-success border-success'
-                    : 'bg-bg-elevated border-border-card'}`} />
-                </button>
-              ))}
+            {/* Progresso — as duas fases ficam visualmente separadas */}
+            <div className="flex justify-center items-center gap-[2px] py-3">
+              {FASE1.map(p => <Ponto key={p.id} p={p} atual={passoAtual.n} goTo={goTo} />)}
+              <span className="w-4 h-px bg-border-card mx-1.5" />
+              {FASE2.map(p => <Ponto key={p.id} p={p} atual={passoAtual.n} goTo={goTo} />)}
             </div>
 
             <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-xs font-bold text-accent">PASSO {passoAtual.n}</span>
-              <span className="text-xs text-text-muted">de 8</span>
+              <span className="text-xs font-bold text-accent">
+                {passoAtual.n <= 3 ? 'PRIMEIRA HORA' : 'APÓS OS EXAMES'}
+              </span>
+              <span className="text-xs text-text-muted">passo {passoAtual.n} de 8</span>
             </div>
-            <h2 className="text-[20px] font-bold text-text-primary mb-3">{passoAtual.titulo}</h2>
+            <h2 className="text-[20px] font-bold text-text-primary mb-1">{passoAtual.titulo}</h2>
+            <p className="text-xs text-text-muted mb-3">{passoAtual.sub}</p>
 
             {/* Faixa de contexto — os laboratoriais entram uma vez e ficam à vista */}
-            {screen !== 'p1' && (
-              <button onClick={() => goTo('p1')}
+            {screen !== 'h1' && screen !== 'h3' && (
+              <button onClick={() => goTo('h3')}
                 className="flex items-center justify-between gap-2 w-full bg-bg-elevated border border-border-card rounded-lg px-3 py-2 mb-4 cursor-pointer text-left min-h-[44px]">
                 <span className="text-[11px] text-text-secondary leading-relaxed">
                   {[
@@ -204,54 +241,59 @@ export default function KetoPath() {
               </button>
             )}
 
-            {screen === 'p1' && (
-              <PassoDados
-                dados={dados} textos={textos} pesoTxt={pesoTxt} reavaliadoEm={reavaliadoEm}
-                setCampo={setCampo} setDados={setDados} reavaliar={reavaliar}
-                setPesoTxt={setPesoTxt} setWeight={setWeight}
-              />
+            {/* ── primeira hora: nada aqui espera exame ── */}
+            {screen === 'h1' && (
+              <PassoReconhecer dados={dados} textos={textos} pesoTxt={pesoTxt}
+                setCampo={setCampo} setDados={setDados} setPesoTxt={setPesoTxt} setWeight={setWeight} />
             )}
-            {screen === 'p2' && (
+            {screen === 'h2' && <PassoFluidos dados={dados} peso={weight} trilha={trilha} fase="inicial" />}
+            {screen === 'h3' && (
+              <PassoConfirmar dados={dados} textos={textos} setCampo={setCampo} setDados={setDados} />
+            )}
+
+            {/* ── depois que os exames chegam ── */}
+            {screen === 'e1' && (
               <PassoClassificacao dados={dados} trilha={trilha} setTrilha={setTrilha} gravidade={gravidade} />
             )}
-            {screen === 'p3' && <PassoFluidos dados={dados} peso={weight} trilha={trilha} />}
-            {screen === 'p4' && <PassoPotassio dados={dados} />}
-            {screen === 'p5' && <PassoInsulina dados={dados} peso={weight} trilha={trilha} />}
-            {screen === 'p6' && <PassoAdjuvantes dados={dados} />}
-            {screen === 'p7' && <KetoMonitor peso={weight} trilha={trilha} />}
-            {screen === 'p8' && (
-              <>
-                <KetoResolucao peso={weight} trilha={trilha} />
-                {dados.cetonuria !== null && (
-                  <AlertCard type="danger" title="Cetonúria não serve como critério de resolução">
-                    <p className="leading-relaxed">{semFonte(K.DISCORDANCIA_CETONURIA[3])}</p>
-                  </AlertCard>
-                )}
-              </>
-            )}
+            {screen === 'e2' && <PassoFluidos dados={dados} peso={weight} trilha={trilha} fase="manutencao" />}
+            {screen === 'e3' && <PassoPotassio dados={dados} />}
+            {screen === 'e4' && <PassoInsulina dados={dados} peso={weight} trilha={trilha} />}
+            {screen === 'e5' && <PassoFosfato />}
 
             {/* Navegação */}
             <div className="flex gap-3 mt-6">
               <Button variant="secondary" fullWidth
-                onClick={() => goTo(passoAtual.n === 1 ? 'home' : (`p${passoAtual.n - 1}` as Screen))}>
+                onClick={() => goTo(passoAtual.n === 1 ? 'home' : PASSOS[passoAtual.n - 2].id)}>
                 {passoAtual.n === 1 ? 'Início' : 'Voltar'}
               </Button>
-              {passoAtual.n < 8 && (
-                <Button fullWidth onClick={() => goTo(`p${passoAtual.n + 1}` as Screen)}>Próximo</Button>
-              )}
-              {passoAtual.n === 8 && (
-                <Button fullWidth onClick={() => goTo('home')}>Concluir</Button>
-              )}
+              {passoAtual.n < 8
+                ? <Button fullWidth onClick={() => goTo(PASSOS[passoAtual.n].id)}>Próximo</Button>
+                : <Button fullWidth onClick={() => goTo('ciclo')}>Ir para reavaliação</Button>}
+            </div>
+          </>
+        )}
+
+        {/* ═══════════════ CICLO DE REAVALIAÇÃO ═══════════════ */}
+        {screen === 'ciclo' && (
+          <>
+            <span className="text-xs font-bold text-accent">CICLO</span>
+            <h2 className="text-[20px] font-bold text-text-primary mb-1">Reavaliação</h2>
+            <p className="text-xs text-text-muted mb-4">as mesmas variáveis, até a resolução</p>
+            <KetoCiclo
+              peso={weight} trilha={trilha} rodada={numeroRodada} anterior={rodadaAnterior}
+              valores={rodadaAtual} setValores={setRodadaAtual} fecharRodada={fecharRodada}
+            />
+            <div className="mt-6">
+              <Button variant="secondary" fullWidth onClick={() => goTo('home')}>Início</Button>
             </div>
           </>
         )}
 
         {/* ═══════════════ TELAS DE CONSULTA ═══════════════ */}
-        {!ehPasso && screen !== 'home' && (
+        {!ehPasso && screen !== 'home' && screen !== 'ciclo' && (
           <>
             <h2 className="text-[20px] font-bold text-text-primary mt-2 mb-3">{TITULOS[screen]}</h2>
             {screen === 'reconhecimento' && <TelaReconhecimento />}
-            {screen === 'exames' && <TelaExames />}
             {screen === 'calculadoras' && <TelaCalculadoras dados={dados} peso={weight} trilha={trilha} />}
             {screen === 'planilha' && <KetoPlanilha />}
             {screen === 'armadilhas' && <TelaArmadilhas />}
@@ -419,6 +461,189 @@ function PassoClassificacao({ dados, trilha, setTrilha, gravidade }: {
       </div>
       <p className="text-sm text-text-secondary leading-relaxed">{semFonte(K.NOTA_GRAVIDADE)}</p>
       <p className="text-xs text-text-muted mt-3 leading-relaxed">{semFonte(K.NOTA_UNIDADES)}</p>
+    </div>
+  )
+}
+
+
+function Ponto({ p, atual, goTo }: {
+  p: { id: Screen; n: number; titulo: string }
+  atual: number
+  goTo: (s: Screen) => void
+}) {
+  return (
+    <button onClick={() => goTo(p.id)} aria-label={`Passo ${p.n}: ${p.titulo}`}
+      className="p-[10px] bg-transparent border-none cursor-pointer flex items-center justify-center">
+      <span className={`block w-[10px] h-[10px] rounded-full border transition-all duration-200 ${
+        p.n === atual ? 'bg-accent border-accent scale-[1.2]'
+        : p.n < atual ? 'bg-success border-success'
+        : 'bg-bg-elevated border-border-card'}`} />
+    </button>
+  )
+}
+
+// ─────────────────────────────── Passo 1 — Reconhecer (nada espera exame)
+
+function PassoReconhecer({ dados, textos, pesoTxt, setCampo, setDados, setPesoTxt, setWeight }: {
+  dados: KetoDados
+  textos: Record<string, string>
+  pesoTxt: string
+  setCampo: (id: string, v: string) => void
+  setDados: React.Dispatch<React.SetStateAction<KetoDados>>
+  setPesoTxt: (v: string) => void
+  setWeight: (n: number | null) => void
+}) {
+  return (
+    <div>
+      <p className="text-sm text-text-secondary leading-relaxed mb-4">
+        Nesta fase basta o que está à beira do leito. Nenhum resultado de laboratório é necessário
+        para começar.
+      </p>
+
+      <div className="grid grid-cols-2 gap-2.5 mb-4">
+        <label className="block">
+          <span className="text-xs text-text-muted">Peso (kg)</span>
+          <input type="text" inputMode="decimal" value={pesoTxt} placeholder="70"
+            onChange={e => {
+              setPesoTxt(e.target.value)
+              const n = parseFloat(e.target.value.replace(',', '.'))
+              setWeight(!isNaN(n) && n >= 40 && n <= 200 ? n : null)
+            }} className={campo} />
+        </label>
+        <label className="block">
+          <span className="text-xs text-text-muted">Glicemia capilar (mg/dL)</span>
+          <input type="text" inputMode="decimal" value={textos.glicemia ?? ''} placeholder="450"
+            onChange={e => setCampo('glicemia', e.target.value)} className={campo} />
+        </label>
+      </div>
+
+      <div className="mb-4">
+        <span className="text-xs text-text-muted">Nível de consciência</span>
+        <div className="flex gap-1.5 mt-1">
+          {K.CONSCIENCIA_OPCOES.map(o => (
+            <button key={o.id}
+              onClick={() => setDados(d => ({ ...d, nivelConsciencia: d.nivelConsciencia === o.id ? null : o.id }))}
+              className={`${btn(dados.nivelConsciencia === o.id)} text-xs px-1`}>{o.label}</button>
+          ))}
+        </div>
+      </div>
+
+      {/* O alerta que justifica pedir a glicemia capilar logo de cara */}
+      {dados.glicemia !== null && dados.glicemia < 200 && (
+        <AlertCard type="danger" title="Glicemia abaixo de 200 não descarta CAD">
+          <p className="leading-relaxed">{semFonte(K.CAD_EUGLICEMICA[1])}</p>
+          <p className="leading-relaxed mt-2">{semFonte(K.CAD_EUGLICEMICA[2])}</p>
+        </AlertCard>
+      )}
+
+      <Collapsible title="Quando suspeitar">
+        <Paragrafos textos={K.QUANDO_SUSPEITAR} />
+        <AlertCard type="warning" title="Dor abdominal">
+          <p className="leading-relaxed">{semFonte(K.ALERTA_DOR_ABDOMINAL)}</p>
+        </AlertCard>
+      </Collapsible>
+
+      <Collapsible title="Avaliação de volemia">
+        <Paragrafos textos={K.AVALIACAO_VOLEMIA} />
+      </Collapsible>
+    </div>
+  )
+}
+
+// ─────────────────────────── Passo 3 — Confirmar (a ponte para os exames)
+
+function PassoConfirmar({ dados, textos, setCampo, setDados }: {
+  dados: KetoDados
+  textos: Record<string, string>
+  setCampo: (id: string, v: string) => void
+  setDados: React.Dispatch<React.SetStateAction<KetoDados>>
+}) {
+  return (
+    <div>
+      <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">O que coletar</div>
+      <ul className="space-y-1 mb-3">
+        {K.PAINEL_INICIAL.map(e => (
+          <li key={e} className="text-sm text-text-secondary leading-relaxed">• {e}</li>
+        ))}
+      </ul>
+      <p className="text-xs text-text-muted leading-relaxed mb-3 italic">{K.NOTA_PAINEL_INICIAL}</p>
+      <AlertCard type="info" title="Sobre o eletrocardiograma">
+        <p className="leading-relaxed">{semFonte(K.NOTA_ECG)}</p>
+      </AlertCard>
+
+      <Collapsible title="Conforme suspeita clínica">
+        <div className="rounded-xl overflow-hidden border border-border-card">
+          <table className="w-full text-xs">
+            <tbody>
+              {K.EXAMES_CONFORME_SUSPEITA.map(e => (
+                <tr key={e.exame} className="border-t border-border first:border-t-0">
+                  <td className="px-3 py-2 text-text-secondary">{e.exame}</td>
+                  <td className="px-3 py-2 text-text-secondary">{e.gatilho}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Collapsible>
+
+      <div className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 mt-5">
+        Resultados chegaram
+      </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        {K.KETO_CAMPOS.filter(c => c.id !== 'glicemia').map(c => (
+          <label key={c.id} className="block">
+            <span className="text-xs text-text-muted">
+              {c.label}{c.unidade && ` (${c.unidade})`}{!c.obrigatorio && ' · opcional'}
+            </span>
+            <input type="text" inputMode="decimal" value={textos[c.id] ?? ''}
+              onChange={e => setCampo(c.id, e.target.value)} className={campo} />
+          </label>
+        ))}
+      </div>
+
+      <div className="mt-4">
+        <span className="text-xs text-text-muted">Cetonúria</span>
+        <div className="flex gap-1.5 mt-1">
+          {K.CETONURIA_OPCOES.map(o => (
+            <button key={o} onClick={() => setDados(d => ({ ...d, cetonuria: d.cetonuria === o ? null : o }))}
+              className={`${btn(dados.cetonuria === o)} px-1`}>{o}</button>
+          ))}
+        </div>
+      </div>
+
+      <Collapsible title="Critérios diagnósticos — CAD">
+        <p className="text-sm text-text-secondary leading-relaxed mb-3">
+          Os três componentes precisam estar presentes.
+        </p>
+        <div className="rounded-xl overflow-hidden border border-border-card mb-3">
+          <table className="w-full text-xs">
+            <tbody>
+              {K.CRITERIOS_CAD.map(c => (
+                <tr key={c.eixo} className="border-t border-border first:border-t-0">
+                  <td className="px-3 py-2 text-text-primary font-semibold align-top whitespace-nowrap">{c.eixo}</td>
+                  <td className="px-3 py-2 text-text-secondary leading-relaxed">{semFonte(c.criterio)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-sm text-text-secondary leading-relaxed">{semFonte(K.NOTA_GASOMETRIA)}</p>
+      </Collapsible>
+
+      {dados.cetonuria !== null && (
+        <AlertCard type="warning" title="A cetonúria pode enganar nas duas direções">
+          <p className="leading-relaxed">{semFonte(K.DISCORDANCIA_CETONURIA[2])}</p>
+          <p className="leading-relaxed mt-2">{semFonte(K.DISCORDANCIA_CETONURIA[3])}</p>
+        </AlertCard>
+      )}
+    </div>
+  )
+}
+
+function PassoFosfato() {
+  return (
+    <div>
+      <Paragrafos textos={K.FOSFATO} />
     </div>
   )
 }
