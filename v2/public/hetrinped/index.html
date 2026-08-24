@@ -412,6 +412,7 @@ footer{
     <div class="input-card" id="peso-card">
       <div class="input-card-top">
         <span class="input-label">Peso</span>
+        <span class="est-tag" id="peso-est" style="display:none">ESTIMADO</span>
         <span class="src-tag" id="peso-src" hidden>FONTE</span>
       </div>
       <div class="peso-row">
@@ -478,7 +479,7 @@ footer{
 <footer>
   <div class="ft-dev">Desenvolvido por <strong>Gustavo Moreira</strong></div>
   <div class="ft-role">Médico&nbsp;emergencista&nbsp;· Coordenação&nbsp;do&nbsp;Departamento&nbsp;de&nbsp;Emergência</div>
-  <div class="ft-meta">Ped Guide v1.1.2 · atualizado em agosto de 2026</div>
+  <div class="ft-meta">Ped Guide v1.1.3 · atualizado em agosto de 2026</div>
 </footer>
 
 <script>
@@ -1035,6 +1036,24 @@ function getAgeY(){
   const b = currentBroselow();
   if (b) return b.idadeMeses / 12;
   return null;
+}
+
+// Peso estimado pela idade — formulas por faixa do APLS atual
+// <1 ano: (meses/2)+4 · 1-5 anos: 2x idade+8 · 6-12 anos: 3x idade+7 (Luscombe)
+function estimatePesoByAge(ageY){
+  if (ageY === null || !isFinite(ageY)) return null;
+  let w;
+  if (ageY < 1) w = (ageY * 12) / 2 + 4;
+  else if (ageY <= 5) w = 2 * ageY + 8;
+  else w = 3 * ageY + 7;
+  w = Math.round(w);
+  if (w < 0.5) w = 0.5;
+  if (w > 50) w = 50;
+  return w;
+}
+
+function setPesoEstTag(on){
+  document.getElementById('peso-est').style.display = on ? 'inline' : 'none';
 }
 
 // Interdependencia: idade estimada pela cor Broselow atual (nao sobrescreve idade digitada)
@@ -1622,6 +1641,7 @@ document.addEventListener('click', e => {
     state.source = 'broselow';
     $('#peso-input').value = entry.peso;
     document.getElementById('peso-card').classList.remove('invalid');
+    setPesoEstTag(false);
     $('#bro-menu').hidden = true;
     $('#backdrop').hidden = true;
     updateBroselowChip();
@@ -1678,6 +1698,7 @@ document.addEventListener('input', e => {
 
   if (el.id === 'peso-input') {
     const pesoCard = document.getElementById('peso-card');
+    setPesoEstTag(false);
     const v = parseFloat(el.value.replace(',', '.'));
     if (!isNaN(v) && v >= 0.5 && v <= 50) {
       state.peso = v;
@@ -1716,10 +1737,20 @@ document.addEventListener('input', e => {
 
   if (el.id === 'idade-input') {
     const card = document.getElementById('idade-card');
+    const clearPesoFromIdade = () => {
+      if (state.source === 'idade') {
+        state.peso = null;
+        state.source = null;
+        document.getElementById('peso-input').value = '';
+        setPesoEstTag(false);
+        updateBroselowChip();
+      }
+    };
     if (el.value === '') {
       state.idade = null;
       state.idadeSource = null;
       card.classList.remove('invalid');
+      clearPesoFromIdade();
       autoFillIdade();
     } else {
       const v = parseFloat(el.value.replace(',', '.'));
@@ -1728,11 +1759,24 @@ document.addEventListener('input', e => {
         state.idadeSource = 'user';
         card.classList.remove('invalid');
         card.classList.remove('estimated');
+        // Idade -> peso estimado, apenas se o peso nao veio de fonte melhor
+        if (state.source === null || state.source === 'idade') {
+          const est = estimatePesoByAge(v);
+          if (est !== null) {
+            state.peso = est;
+            state.source = 'idade';
+            document.getElementById('peso-input').value = est;
+            document.getElementById('peso-card').classList.remove('invalid');
+            setPesoEstTag(true);
+            updateBroselowChip();
+          }
+        }
       } else {
         state.idade = null;
         state.idadeSource = 'user';
         card.classList.add('invalid');
         card.classList.remove('estimated');
+        clearPesoFromIdade();
       }
     }
     renderView();
@@ -1759,6 +1803,7 @@ document.addEventListener('input', e => {
       const pi = document.getElementById('peso-input');
       pi.value = est;
       document.getElementById('peso-card').classList.remove('invalid');
+      setPesoEstTag(false);
       updateBroselowChip();
       autoFillIdade();
       renderView();
