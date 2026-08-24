@@ -478,7 +478,7 @@ footer{
 <footer>
   <div class="ft-dev">Desenvolvido por <strong>Gustavo Moreira</strong></div>
   <div class="ft-role">Médico&nbsp;emergencista&nbsp;· Coordenação&nbsp;do&nbsp;Departamento&nbsp;de&nbsp;Emergência</div>
-  <div class="ft-meta">Ped Guide v1.1.1 · atualizado em agosto de 2026</div>
+  <div class="ft-meta">Ped Guide v1.1.2 · atualizado em agosto de 2026</div>
 </footer>
 
 <script>
@@ -861,6 +861,28 @@ const SCENARIO_CONFIGS = {
   'intox':         { highlight:['atropina-tox','naloxona-tox','nac-fase1'], sections:['tox'], scrollTo:'atropina-tox', infusionHighlight:[] },
 };
 
+// Conteudo da view dedicada de cada cenario (apenas os cards relevantes)
+const SCENARIO_VIEWS = {
+  'anafilaxia':    { drugs:['epinefrina-im','hidrocortisona','difenidramina','salbutamol-anaf','loratadina','cetirizina'], infusions:[] },
+  'convulsao':     { drugs:['diazepam','midazolam-conv','fenitoina','fenobarbital','levetiracetam'], infusions:[] },
+  'isr':           { checklist:true, drugs:['cetamina','midazolam','fentanil','propofol','etomidato','rocuronio','succinil','cisatracurio'], infusions:[] },
+  'choque':        { fluids:true, drugs:[], infusions:['epinefrina_inf','norepinefrina','dobutamina'] },
+  'choque-cardio': { drugs:[], infusions:['dobutamina','milrinona','epinefrina_inf'] },
+  'pos-pcr':       { drugs:[], infusions:['amiodarona_inf','epinefrina_inf','norepinefrina'] },
+  'sedacao':       { drugs:[], infusions:['fentanil_inf','midazolam_inf','dexmedetomidina','cetamina_inf'] },
+  'asma':          { drugs: RESP_DRUGS.map(d => d.id), infusions:[] },
+  'intox':         { drugs: TOX_DRUGS.map(d => d.id), infusions:[] },
+};
+
+const ALL_DRUG_ARRAYS = [PCR_DRUGS, IOT_DRUGS, EMERGENCY_DRUGS, CONVULSION_DRUGS, NEURO_DRUGS, PAIN_DRUGS, TOX_DRUGS, RESP_DRUGS];
+function findDrug(id){
+  for (const arr of ALL_DRUG_ARRAYS){
+    const d = arr.find(x => x.id === id);
+    if (d) return d;
+  }
+  return null;
+}
+
 // ==========================================
 // PREPAROS
 // ==========================================
@@ -988,6 +1010,7 @@ const state = {
   broKey: null,
   idade: null,        // anos (decimal) — opcional
   idadeSource: null,  // 'user' | 'auto' (estimada pela Broselow) | null
+  scenarioKey: null,  // cenario aberto na view dedicada
   openDrugs: {},      // drugId -> true (cards expandidos)
   openInf: {},        // infId -> true
   view: 'home',
@@ -1232,6 +1255,57 @@ function viewCenarios(){
   '</div>';
 }
 
+// Blocos reutilizados pela view Calculadoras e pelas views de cenario
+function buildChecklistInner(){
+  const eq = getEquipment();
+  return '<div class="chk-box">' + IOT_CHECKLIST.map((item, i) => {
+    let value = '';
+    if (item.valueKey && eq) {
+      if (item.valueKey === 'lamina') value = eq.checkLamina;
+      else if (item.valueKey === 'tubo') value = eq.checkTubo;
+      else if (item.valueKey === 'bougie') value = eq.checkBougie;
+      else if (item.valueKey === 'lma') value = eq.checkLma;
+    }
+    return '<div class="chk' + (state.checklist[i] ? ' done' : '') + '" data-action="check" data-idx="' + i + '">' +
+      '<div class="cb"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg></div>' +
+      '<span class="cl">' + item.text + '</span>' +
+      (value ? '<span class="cv">' + value + '</span>' : '') +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+function buildFluidsInner(){
+  const p = getPeso();
+  if (!(p > 0)) return '<div class="need-weight">Informe o peso para calcular</div>';
+  let m;
+  if (p <= 10) m = p*4;
+  else if (p <= 20) m = 40 + (p-10)*2;
+  else m = 60 + (p-20);
+  return '<div class="fl-grid">' + [
+    { l:'Bolus cristaloide', v:Math.min(p*20,1000).toFixed(0), u:'mL (20 mL/kg, max 1000)' },
+    { l:'Bolus cauteloso', v:Math.min(p*10,500).toFixed(0), u:'mL (10 mL/kg, max 500)' },
+    { l:'Manutenção/hora', v:m.toFixed(0), u:'mL/h (Holliday-Segar)' },
+    { l:'Volemia estimada', v:(p*80).toFixed(0), u:'mL (80 mL/kg)' },
+  ].map(i => '<div class="eq"><div class="el">' + i.l + '</div><div class="ev">' + i.v + '</div><div class="eu">' + i.u + '</div></div>').join('') + '</div>';
+}
+
+// View dedicada de cenario: apenas os cards relevantes, destacados ja expandidos
+function viewCenario(){
+  const s = SCENARIOS.find(x => x.key === state.scenarioKey);
+  const v = SCENARIO_VIEWS[state.scenarioKey];
+  if (!s || !v) return viewCenarios();
+  let html = '<div class="pt">' +
+    '<button class="btn-back" data-action="nav" data-view="cenarios">← Voltar aos cenários</button>' +
+    '<h2 class="view-title" style="color:' + s.color + '">' + s.title + '</h2>' +
+    '<p style="font-size:.85rem;color:var(--muted);margin:-8px 0 16px">' + s.desc + '</p>';
+  if (v.checklist) html += '<div class="sec-label">Checklist de intubação</div>' + buildChecklistInner() + '<div style="height:16px"></div>';
+  if (v.fluids) html += '<div class="sec-label">Fluidos e volumes</div>' + buildFluidsInner() + '<div style="height:16px"></div>';
+  if (v.drugs.length) html += v.drugs.map(id => { const d = findDrug(id); return d ? drugCard(d) : ''; }).join('');
+  if (v.infusions.length) html += v.infusions.map(id => { const inf = INFUSIONS.find(x => x.id === id); return inf ? infCard(inf) : ''; }).join('');
+  html += '<button class="btn-back" data-action="nav" data-view="calculadoras" style="margin-top:8px;width:100%">Ver todas as calculadoras</button>';
+  return html + '</div>';
+}
+
 function viewCalculadoras(){
   const p = getPeso();
   const eq = getEquipment();
@@ -1263,21 +1337,7 @@ function viewCalculadoras(){
   html += collapsible('vitais', 'Sinais vitais por idade', 'SV', '#0E8A80', vsInner);
 
   // Checklist IOT
-  const chkInner = '<div class="chk-box">' + IOT_CHECKLIST.map((item, i) => {
-    let value = '';
-    if (item.valueKey && eq) {
-      if (item.valueKey === 'lamina') value = eq.checkLamina;
-      else if (item.valueKey === 'tubo') value = eq.checkTubo;
-      else if (item.valueKey === 'bougie') value = eq.checkBougie;
-      else if (item.valueKey === 'lma') value = eq.checkLma;
-    }
-    return '<div class="chk' + (state.checklist[i] ? ' done' : '') + '" data-action="check" data-idx="' + i + '">' +
-      '<div class="cb"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg></div>' +
-      '<span class="cl">' + item.text + '</span>' +
-      (value ? '<span class="cv">' + value + '</span>' : '') +
-    '</div>';
-  }).join('') + '</div>';
-  html += collapsible('iot', 'Checklist de intubação orotraqueal', 'IOT', '#2E7D32', chkInner);
+  html += collapsible('iot', 'Checklist de intubação orotraqueal', 'IOT', '#2E7D32', buildChecklistInner());
 
   html += collapsible('drogas-iot', 'Drogas de intubação (ISR)', 'ISR', '#8B5CF6', IOT_DRUGS.map(drugCard).join(''));
   html += collapsible('emergencias', 'Outras drogas de emergência', 'SOS', '#C62828', EMERGENCY_DRUGS.map(drugCard).join(''));
@@ -1313,22 +1373,7 @@ function viewCalculadoras(){
   html += collapsible('tx', 'Transfusão e hemocomponentes', 'TX', '#C62828', txInner);
 
   // Fluidos
-  let flInner;
-  if (p > 0) {
-    let m;
-    if (p <= 10) m = p*4;
-    else if (p <= 20) m = 40 + (p-10)*2;
-    else m = 60 + (p-20);
-    flInner = '<div class="fl-grid">' + [
-      { l:'Bolus cristaloide', v:Math.min(p*20,1000).toFixed(0), u:'mL (20 mL/kg, max 1000)' },
-      { l:'Bolus cauteloso', v:Math.min(p*10,500).toFixed(0), u:'mL (10 mL/kg, max 500)' },
-      { l:'Manutenção/hora', v:m.toFixed(0), u:'mL/h (Holliday-Segar)' },
-      { l:'Volemia estimada', v:(p*80).toFixed(0), u:'mL (80 mL/kg)' },
-    ].map(i => '<div class="eq"><div class="el">' + i.l + '</div><div class="ev">' + i.v + '</div><div class="eu">' + i.u + '</div></div>').join('') + '</div>';
-  } else {
-    flInner = '<div class="need-weight">Informe o peso para calcular</div>';
-  }
-  html += collapsible('fluidos', 'Fluidos e volumes', 'IV', '#2E7D32', flInner);
+  html += collapsible('fluidos', 'Fluidos e volumes', 'IV', '#2E7D32', buildFluidsInner());
 
   // Infusoes
   const byCat = { vasoativos: [], sedativos: [], outros: [] };
@@ -1402,6 +1447,7 @@ function renderView(){
   if (state.view === 'home') app.innerHTML = viewHome();
   else if (state.view === 'pcr') app.innerHTML = viewPcr();
   else if (state.view === 'cenarios') app.innerHTML = viewCenarios();
+  else if (state.view === 'cenario') app.innerHTML = viewCenario();
   else app.innerHTML = viewCalculadoras();
 
   if (state.infSearch) applyInfFilter();
@@ -1523,16 +1569,14 @@ function showView(v){
 
 function loadScenario(key){
   const cfg = SCENARIO_CONFIGS[key];
-  if (!cfg) return;
-  state.view = 'calculadoras';
-  state.scenarioBack = true;
+  if (!cfg || !SCENARIO_VIEWS[key]) return;
+  state.view = 'cenario';
+  state.scenarioKey = key;
   state.hlDrugs = cfg.highlight;
   state.hlInf = cfg.infusionHighlight;
   state.openSections = {};
-  for (const s of cfg.sections) state.openSections[s] = true;
-  state.pendingScroll = cfg.scrollTo;
   renderView();
-  if (!cfg.scrollTo) window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 }
 
 // ==========================================
