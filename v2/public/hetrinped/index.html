@@ -80,6 +80,12 @@ button{font-family:inherit}
   background:transparent;border:none;outline:none;color:var(--text);text-align:right;
 }
 .mini-card .mu{font-size:.75rem;font-weight:600;color:var(--muted)}
+.input-card.invalid,.mini-card.invalid{border-color:var(--danger);background:var(--danger-bg)}
+.input-card.invalid .peso-hint{color:var(--danger);font-weight:700}
+.mini-err{display:none;font-size:9px;font-weight:700;color:var(--danger);white-space:nowrap}
+.mini-card.invalid .mini-err{display:inline}
+.est-tag{font-size:8px;font-weight:700;padding:2px 5px;border-radius:4px;background:var(--border);color:var(--text-2);display:none;letter-spacing:.5px}
+.mini-card.estimated .est-tag{display:inline}
 .input-card{border:2px solid var(--border);border-radius:var(--radius);padding:12px 14px;background:var(--bg);transition:border-color .2s,background .2s;position:relative}
 .input-card.active{border-color:var(--teal);background:var(--teal-soft)}
 .input-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
@@ -159,7 +165,16 @@ button{font-family:inherit}
 /* Drug cards */
 .drug{border:2px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;background:var(--card)}
 .drug.hl{border-color:var(--danger)}
-.drug-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:var(--teal-soft)}
+.drug-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:var(--teal-soft);cursor:pointer;min-height:44px}
+.drug-head .dchev{flex-shrink:0;color:var(--teal-dark);transition:transform .3s}
+.drug.hl .drug-head .dchev{color:#fff}
+.drug.open .drug-head .dchev{transform:rotate(180deg)}
+.dwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+.dwrap>div{overflow:hidden;min-height:0}
+.drug.open>.dwrap,.inf.open>.dwrap{grid-template-rows:1fr}
+.inf-head{cursor:pointer;min-height:44px}
+.inf-head .dchev{flex-shrink:0;color:rgba(255,255,255,.9);transition:transform .3s}
+.inf.open .inf-head .dchev{transform:rotate(180deg)}
 .drug.hl .drug-head{background:var(--danger)}
 .drug-name{font-weight:700;font-size:.95rem;color:var(--teal-dark)}
 .drug.hl .drug-name{color:#fff}
@@ -418,14 +433,17 @@ footer{
     </div>
   </div>
   <div class="input-grid2">
-    <div class="mini-card">
+    <div class="mini-card" id="idade-card">
       <span class="ml">Idade</span>
+      <span class="est-tag">ESTIMADA</span>
+      <span class="mini-err">0-18 anos</span>
       <input type="number" inputmode="decimal" id="idade-input" placeholder="--" min="0" max="18" step="0.5">
       <span class="mu">anos</span>
     </div>
-    <div class="mini-card">
+    <div class="mini-card" id="altura-card">
       <span class="ml">Comprimento</span>
-      <input type="number" inputmode="decimal" id="altura-input" placeholder="--" min="40" max="180" step="1">
+      <span class="mini-err">40-160 cm</span>
+      <input type="number" inputmode="decimal" id="altura-input" placeholder="--" min="40" max="160" step="1">
       <span class="mu">cm</span>
     </div>
   </div>
@@ -460,7 +478,7 @@ footer{
 <footer>
   <div class="ft-dev">Desenvolvido por <strong>Gustavo Moreira</strong></div>
   <div class="ft-role">Médico&nbsp;emergencista&nbsp;· Coordenação&nbsp;do&nbsp;Departamento&nbsp;de&nbsp;Emergência</div>
-  <div class="ft-meta">Ped Guide v1.1.0 · atualizado em agosto de 2026</div>
+  <div class="ft-meta">Ped Guide v1.1.1 · atualizado em agosto de 2026</div>
 </footer>
 
 <script>
@@ -969,6 +987,9 @@ const state = {
   source: null,       // 'peso' | 'broselow'
   broKey: null,
   idade: null,        // anos (decimal) — opcional
+  idadeSource: null,  // 'user' | 'auto' (estimada pela Broselow) | null
+  openDrugs: {},      // drugId -> true (cards expandidos)
+  openInf: {},        // infId -> true
   view: 'home',
   scenarioBack: false,
   hlDrugs: [],
@@ -991,6 +1012,26 @@ function getAgeY(){
   const b = currentBroselow();
   if (b) return b.idadeMeses / 12;
   return null;
+}
+
+// Interdependencia: idade estimada pela cor Broselow atual (nao sobrescreve idade digitada)
+function autoFillIdade(){
+  const card = document.getElementById('idade-card');
+  const input = document.getElementById('idade-input');
+  if (state.idadeSource === 'user') { card.classList.remove('estimated'); return; }
+  const b = currentBroselow();
+  if (b) {
+    state.idade = Math.round(b.idadeMeses / 12 * 10) / 10;
+    state.idadeSource = 'auto';
+    input.value = state.idade;
+    card.classList.add('estimated');
+    card.classList.remove('invalid');
+  } else {
+    state.idade = null;
+    state.idadeSource = null;
+    input.value = '';
+    card.classList.remove('estimated');
+  }
 }
 
 function currentBroselow(){
@@ -1031,12 +1072,13 @@ function collapsible(key, title, badge, badgeColor, inner){
   '</section>';
 }
 
-function drugCard(d){
+function drugCard(d, forceOpen){
   const p = getPeso();
   const ageY = getAgeY();
   const needAge = d.needsAge && ageY === null;
   const r = (p > 0 && !needAge) ? d.calc(p, ageY, ageY !== null ? ageY*12 : null) : null;
   const hl = d.highlight || state.hlDrugs.includes(d.id);
+  const open = forceOpen === true || hl || !!state.openDrugs[d.id];
   let body = '<div class="drug-instr">' + d.instruction + '</div>';
   if (r) {
     body += '<div class="drug-res">' +
@@ -1048,15 +1090,16 @@ function drugCard(d){
     body += '<div class="need-weight">' + (needAge && p > 0 ? 'Informe a idade para calcular' : 'Informe o peso para calcular') + '</div>';
   }
   if (d.prepKey) body += '<button class="btn-prep" data-action="prep" data-prep="' + d.prepKey + '">Como preparar</button>';
-  return '<div class="drug' + (hl ? ' hl' : '') + '" data-drug="' + d.id + '">' +
-    '<div class="drug-head"><div><div class="drug-name">' + d.name + '</div><div class="drug-pres">' + d.presentation + '</div></div>' +
-    '<div class="drug-badge">' + d.doseBadge + '</div></div>' +
-    '<div class="drug-body">' + body + '</div></div>';
+  return '<div class="drug' + (hl ? ' hl' : '') + (open ? ' open' : '') + '" data-drug="' + d.id + '">' +
+    '<div class="drug-head" data-toggle-drug="' + d.id + '"><div><div class="drug-name">' + d.name + '</div><div class="drug-pres">' + d.presentation + '</div></div>' +
+    '<div style="display:flex;align-items:center;gap:8px"><div class="drug-badge">' + d.doseBadge + '</div>' +
+    '<svg class="dchev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div></div>' +
+    '<div class="dwrap"><div><div class="drug-body">' + body + '</div></div></div></div>';
 }
 
 function infDecimals(inf){ return inf.step < 0.1 ? 2 : inf.step < 1 ? 1 : 0; }
 
-function infCard(inf){
+function infCard(inf, forceOpen){
   const p = getPeso();
   const cat = weightCat(p || 10);
   const dil = inf.dilutions[cat];
@@ -1065,13 +1108,16 @@ function infCard(inf){
   const rate = p > 0 ? calcRate(inf, dose, p) : null;
   const oor = dose < inf.range[0] || dose > inf.range[1];
   const hl = state.hlInf.includes(inf.id);
+  const open = forceOpen === true || hl || !!state.openInf[inf.id];
   const clamped = Math.min(inf.range[1], Math.max(inf.range[0], dose));
   const rateTxt = rate !== null ? (rate < 0.1 ? fN(rate,2) : fN(rate,1)) : '';
-  return '<div class="inf' + (hl ? ' hl' : '') + '" data-inf-card="' + inf.id + '">' +
-    '<div class="inf-head" style="background:' + inf.color + '">' +
+  return '<div class="inf' + (hl ? ' hl' : '') + (open ? ' open' : '') + '" data-inf-card="' + inf.id + '">' +
+    '<div class="inf-head" style="background:' + inf.color + '" data-toggle-inf="' + inf.id + '">' +
       '<span class="in">' + inf.name + '</span>' +
-      '<span class="ir">' + inf.range[0] + '-' + inf.range[1] + ' ' + inf.unit + '</span>' +
+      '<span style="display:flex;align-items:center;gap:8px"><span class="ir">' + inf.range[0] + '-' + inf.range[1] + ' ' + inf.unit + '</span>' +
+      '<svg class="dchev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>' +
     '</div>' +
+    '<div class="dwrap"><div>' +
     '<div class="inf-body">' +
       '<div class="prep-box">' +
         '<div class="pt2">Preparo</div>' +
@@ -1092,7 +1138,8 @@ function infCard(inf){
         '<input type="text" inputmode="decimal" value="' + rateTxt + '" placeholder="' + (p > 0 ? '--' : 'Peso?') + '" data-inf-rate="' + inf.id + '">' +
         '<div class="ru">mL/h</div>' +
       '</div></div>' +
-    '</div></div>';
+    '</div>' +
+    '</div></div></div>';
 }
 
 // ==========================================
@@ -1113,8 +1160,7 @@ function viewPcr(){
   const defib = p > 0 ? {
     first: j(2), second: j(4),
     escalada: j(6) + ' / ' + j(8) + ' / ' + j(10),
-    cardio: Math.min(Math.round(p*0.5),200) + '-' + Math.min(Math.round(p*1),200),
-    cardioMax: Math.min(Math.round(p*2),200),
+    cardio: Math.min(Math.round(p*1),200) + '-' + Math.min(Math.round(p*2),200),
   } : null;
   const eq = getEquipment();
 
@@ -1135,7 +1181,7 @@ function viewPcr(){
     '<div class="defib shock"><div class="dl">1ª Desfibrilação (2 J/kg)</div><div class="dv">' + (defib ? defib.first : '--') + '</div><div class="du">Joules</div></div>' +
     '<div class="defib shock"><div class="dl">2ª Desfibrilação (4 J/kg)</div><div class="dv">' + (defib ? defib.second : '--') + '</div><div class="du">Joules</div></div>' +
     '<div class="defib shock"><div class="dl">Subsequentes (6 / 8 / 10 J/kg)</div><div class="dv" style="font-size:1.3rem">' + (defib ? defib.escalada : '--') + '</div><div class="du">Joules · teto 200 J</div></div>' +
-    '<div class="defib cardio"><div class="dl">Cardioversão (0,5-1 J/kg)</div><div class="dv">' + (defib ? defib.cardio : '--') + '</div><div class="du">Joules · refratária: 2 J/kg (' + (defib ? defib.cardioMax : '--') + ' J)</div></div>' +
+    '<div class="defib cardio"><div class="dl">Cardioversão (1-2 J/kg)</div><div class="dv">' + (defib ? defib.cardio : '--') + '</div><div class="du">Joules · teto 200 J</div></div>' +
   '</div>';
 
   html += collapsible('pcr-drogas', 'Drogas de parada cardiorrespiratória', 'PCR', '#C62828',
@@ -1334,13 +1380,13 @@ function applyCalcSearch(){
     const matched = g.drugs.filter(d => rx.test(searchHaystack(d.name)));
     if (matched.length) {
       total += matched.length;
-      out += '<div class="inf-cat">' + g.title + '</div>' + matched.map(drugCard).join('');
+      out += '<div class="inf-cat">' + g.title + '</div>' + matched.map(d => drugCard(d, true)).join('');
     }
   }
   const infMatched = INFUSIONS.filter(inf => rx.test(searchHaystack(inf.name)));
   if (infMatched.length) {
     total += infMatched.length;
-    out += '<div class="inf-cat">Infusões contínuas</div>' + infMatched.map(infCard).join('');
+    out += '<div class="inf-cat">Infusões contínuas</div>' + infMatched.map(i => infCard(i, true)).join('');
   }
   results.innerHTML = total
     ? out
@@ -1531,9 +1577,11 @@ document.addEventListener('click', e => {
     state.peso = entry.peso;
     state.source = 'broselow';
     $('#peso-input').value = entry.peso;
+    document.getElementById('peso-card').classList.remove('invalid');
     $('#bro-menu').hidden = true;
     $('#backdrop').hidden = true;
     updateBroselowChip();
+    autoFillIdade();
     renderView();
     return;
   }
@@ -1545,6 +1593,26 @@ document.addEventListener('click', e => {
 
   // Modal fecha clicando fora
   if (e.target.id === 'modal') { $('#modal').hidden = true; return; }
+
+  // Cards de medicacao colapsaveis
+  const tglDrug = e.target.closest('[data-toggle-drug]');
+  if (tglDrug) {
+    const id = tglDrug.getAttribute('data-toggle-drug');
+    const cardEl = tglDrug.closest('.drug');
+    const nowOpen = !cardEl.classList.contains('open');
+    cardEl.classList.toggle('open', nowOpen);
+    state.openDrugs[id] = nowOpen;
+    return;
+  }
+  const tglInf = e.target.closest('[data-toggle-inf]');
+  if (tglInf) {
+    const id = tglInf.getAttribute('data-toggle-inf');
+    const cardEl = tglInf.closest('.inf');
+    const nowOpen = !cardEl.classList.contains('open');
+    cardEl.classList.toggle('open', nowOpen);
+    state.openInf[id] = nowOpen;
+    return;
+  }
 
   if (!t) return;
   const action = t.getAttribute('data-action');
@@ -1565,19 +1633,27 @@ document.addEventListener('input', e => {
   const el = e.target;
 
   if (el.id === 'peso-input') {
+    const pesoCard = document.getElementById('peso-card');
     const v = parseFloat(el.value.replace(',', '.'));
     if (!isNaN(v) && v >= 0.5 && v <= 50) {
       state.peso = v;
       state.source = 'peso';
       state.broKey = null;
+      pesoCard.classList.remove('invalid');
     } else if (el.value === '') {
       state.peso = null;
       state.source = null;
       state.broKey = null;
+      pesoCard.classList.remove('invalid');
     } else {
-      return;
+      // Fora do range: zera o estado e sinaliza — nunca manter peso antigo em silencio
+      state.peso = null;
+      state.source = null;
+      state.broKey = null;
+      pesoCard.classList.add('invalid');
     }
     updateBroselowChip();
+    autoFillIdade();
     renderView();
     return;
   }
@@ -1595,21 +1671,52 @@ document.addEventListener('input', e => {
   }
 
   if (el.id === 'idade-input') {
-    const v = parseFloat(el.value.replace(',', '.'));
-    state.idade = (!isNaN(v) && v >= 0 && v <= 18) ? v : null;
+    const card = document.getElementById('idade-card');
+    if (el.value === '') {
+      state.idade = null;
+      state.idadeSource = null;
+      card.classList.remove('invalid');
+      autoFillIdade();
+    } else {
+      const v = parseFloat(el.value.replace(',', '.'));
+      if (!isNaN(v) && v >= 0 && v <= 18) {
+        state.idade = v;
+        state.idadeSource = 'user';
+        card.classList.remove('invalid');
+        card.classList.remove('estimated');
+      } else {
+        state.idade = null;
+        state.idadeSource = 'user';
+        card.classList.add('invalid');
+        card.classList.remove('estimated');
+      }
+    }
     renderView();
     return;
   }
 
   if (el.id === 'altura-input') {
-    const cm = parseFloat(el.value.replace(',', '.'));
+    const card = document.getElementById('altura-card');
+    if (el.value === '') {
+      card.classList.remove('invalid');
+      return;
+    }
+    const cm = Math.round(parseFloat(el.value.replace(',', '.')));
+    if (isNaN(cm) || cm < 40 || cm > 160) {
+      card.classList.add('invalid');
+      return;
+    }
+    card.classList.remove('invalid');
     const est = pesoPorAltura(cm);
     if (est !== null) {
       state.peso = est;
       state.source = 'peso';
       state.broKey = null;
-      document.getElementById('peso-input').value = est;
+      const pi = document.getElementById('peso-input');
+      pi.value = est;
+      document.getElementById('peso-card').classList.remove('invalid');
       updateBroselowChip();
+      autoFillIdade();
       renderView();
     }
     return;
