@@ -57,8 +57,9 @@ Deploy automático via Netlify (git push → auto-deploy de `v2/dist/`).
 1. Criar arquivo `v2/src/pages/NomeFerramenta.tsx` com `export default`
 2. Em `v2/src/App.tsx`: adicionar `lazy(() => import('./pages/NomeFerramenta'))` e `<Route path="/rota" ...>`
 3. Em `v2/src/pages/Hub.tsx`: adicionar card na grid principal
-4. Se necessário, criar arquivo de dados em `v2/src/data/`
-5. Testar: `cd v2 && npm run dev`
+4. Em `v2/src/hooks/usePageview.ts`: registrar a rota no mapa `TOOL_BY_PATH` — rota fora do mapa não gera analytics
+5. Se necessário, criar arquivo de dados em `v2/src/data/`
+6. Testar: `cd v2 && npm run dev`
 
 ---
 

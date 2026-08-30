@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './contexts/AuthContext'
+import { usePageview } from './hooks/usePageview'
 import { Splash } from './components/layout/Splash'
 
 // Hub carrega eager (primeira tela)
@@ -36,26 +37,37 @@ function LazyPage({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Registra pageview a cada mudança de rota. Montado uma única vez aqui,
+// cobre todas as rotas do mapa em hooks/usePageview.ts — inclusive as
+// futuras — sem precisar instrumentar cada página.
+function PageviewTracker() {
+  usePageview()
+  return null
+}
+
 export default function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<ProtectedRoute><Hub /></ProtectedRoute>} />
-      <Route path="/block" element={<ProtectedRoute><LazyPage><BlockPath /></LazyPage></ProtectedRoute>} />
-      <Route path="/infusion" element={<ProtectedRoute><LazyPage><InfusionGuide /></LazyPage></ProtectedRoute>} />
-      <Route path="/palia" element={<ProtectedRoute><LazyPage><PaliaPath /></LazyPage></ProtectedRoute>} />
-      <Route path="/shock" element={<ProtectedRoute><LazyPage><ShockPath /></LazyPage></ProtectedRoute>} />
-      <Route path="/dengue" element={<ProtectedRoute><LazyPage><DenguePath /></LazyPage></ProtectedRoute>} />
-      <Route path="/tep" element={<ProtectedRoute><LazyPage><TepGuide /></LazyPage></ProtectedRoute>} />
-      <Route path="/seda" element={<ProtectedRoute><LazyPage><SedaPath /></LazyPage></ProtectedRoute>} />
-      <Route path="/airway" element={<ProtectedRoute><LazyPage><AirwayGuide /></LazyPage></ProtectedRoute>} />
-      <Route path="/acls" element={<ProtectedRoute><LazyPage><AclsGuide /></LazyPage></ProtectedRoute>} />
-      <Route path="/ped" element={<ProtectedRoute><LazyPage><PedGuide /></LazyPage></ProtectedRoute>} />
-      <Route path="/vm" element={<ProtectedRoute><LazyPage><VmGuide /></LazyPage></ProtectedRoute>} />
-      <Route path="/tox" element={<ProtectedRoute><LazyPage><ToxPath /></LazyPage></ProtectedRoute>} />
-      <Route path="/calculadoras" element={<ProtectedRoute><LazyPage><Calculators /></LazyPage></ProtectedRoute>} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <>
+      <PageviewTracker />
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<ProtectedRoute><Hub /></ProtectedRoute>} />
+        <Route path="/block" element={<ProtectedRoute><LazyPage><BlockPath /></LazyPage></ProtectedRoute>} />
+        <Route path="/infusion" element={<ProtectedRoute><LazyPage><InfusionGuide /></LazyPage></ProtectedRoute>} />
+        <Route path="/palia" element={<ProtectedRoute><LazyPage><PaliaPath /></LazyPage></ProtectedRoute>} />
+        <Route path="/shock" element={<ProtectedRoute><LazyPage><ShockPath /></LazyPage></ProtectedRoute>} />
+        <Route path="/dengue" element={<ProtectedRoute><LazyPage><DenguePath /></LazyPage></ProtectedRoute>} />
+        <Route path="/tep" element={<ProtectedRoute><LazyPage><TepGuide /></LazyPage></ProtectedRoute>} />
+        <Route path="/seda" element={<ProtectedRoute><LazyPage><SedaPath /></LazyPage></ProtectedRoute>} />
+        <Route path="/airway" element={<ProtectedRoute><LazyPage><AirwayGuide /></LazyPage></ProtectedRoute>} />
+        <Route path="/acls" element={<ProtectedRoute><LazyPage><AclsGuide /></LazyPage></ProtectedRoute>} />
+        <Route path="/ped" element={<ProtectedRoute><LazyPage><PedGuide /></LazyPage></ProtectedRoute>} />
+        <Route path="/vm" element={<ProtectedRoute><LazyPage><VmGuide /></LazyPage></ProtectedRoute>} />
+        <Route path="/tox" element={<ProtectedRoute><LazyPage><ToxPath /></LazyPage></ProtectedRoute>} />
+        <Route path="/calculadoras" element={<ProtectedRoute><LazyPage><Calculators /></LazyPage></ProtectedRoute>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   )
 }
 
