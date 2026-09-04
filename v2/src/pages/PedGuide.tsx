@@ -1400,7 +1400,7 @@ export default function PedGuide() {
             <div className="bg-bg-elevated rounded-2xl p-6 mb-5">
               <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
                 <div className="text-[0.8rem] font-bold uppercase text-text-muted">Parâmetros de RCP pediátrica</div>
-                <div className="text-[0.75rem] font-bold text-text-muted">Compressão:Ventilação — 15:2</div>
+                <div className="text-[0.75rem] font-bold text-text-muted">PALS/AHA</div>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="rounded-xl p-4 text-center border-2" style={{ background: 'rgba(244,67,54,0.1)', borderColor: 'rgba(244,67,54,0.3)' }}>
@@ -1408,8 +1408,10 @@ export default function PedGuide() {
                   <div className="font-mono text-[28px] font-extrabold text-accent">100-120/min</div>
                 </div>
                 <div className="rounded-xl p-4 text-center border-2" style={{ background: 'rgba(33,150,243,0.1)', borderColor: 'rgba(33,150,243,0.3)' }}>
-                  <div className="text-[11px] font-bold uppercase text-[#888] mb-1.5" style={{ letterSpacing: '1.5px' }}>RELAÇÃO C:V</div>
+                  <div className="text-[11px] font-bold uppercase text-[#888] mb-1.5" style={{ letterSpacing: '1.5px' }}>C:V — 2 SOCORRISTAS</div>
                   <div className="font-mono text-[28px] font-extrabold text-accent">15:2</div>
+                  {/* PALS 2025: 30:2 com 1 socorrista em qualquer idade, ou 2 socorristas pos-puberdade */}
+                  <div className="text-[11px] text-[#888] mt-1.5 leading-snug">30:2 se 1 socorrista ou pós-puberdade</div>
                 </div>
                 <div className="rounded-xl p-4 text-center border-2" style={{ background: 'rgba(76,175,80,0.1)', borderColor: 'rgba(76,175,80,0.3)' }}>
                   <div className="text-[11px] font-bold uppercase text-[#888] mb-1.5" style={{ letterSpacing: '1.5px' }}>PROFUNDIDADE</div>
@@ -1418,6 +1420,7 @@ export default function PedGuide() {
                 <div className="rounded-xl p-4 text-center border-2" style={{ background: 'rgba(171,71,188,0.1)', borderColor: 'rgba(171,71,188,0.3)' }}>
                   <div className="text-[11px] font-bold uppercase text-[#888] mb-1.5" style={{ letterSpacing: '1.5px' }}>COM TOT</div>
                   <div className="font-mono text-[28px] font-extrabold text-accent">1 a cada 2-3s</div>
+                  <div className="text-[11px] text-[#888] mt-1.5 leading-snug">compressões contínuas, sem pausa</div>
                 </div>
               </div>
             </div>
