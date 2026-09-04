@@ -479,7 +479,7 @@ footer{
 <footer>
   <div class="ft-dev">Desenvolvido por <strong>Gustavo Moreira</strong></div>
   <div class="ft-role">Médico&nbsp;emergencista&nbsp;· Coordenação&nbsp;do&nbsp;Departamento&nbsp;de&nbsp;Emergência</div>
-  <div class="ft-meta">Ped Guide v1.1.3 · atualizado em agosto de 2026</div>
+  <div class="ft-meta">Ped Guide v1.1.4 · atualizado em agosto de 2026</div>
 </footer>
 
 <script>
@@ -528,8 +528,8 @@ const PCR_DRUGS = [
     calc:p => { const d=Math.min(p*5,300); return { mg:fN(d,0), ml:fN(d/50,1), unit:'mg' }; } },
   { id:'bicarbonato', name:'BICARBONATO DE SÓDIO 8,4%', presentation:'1 mEq/mL', doseBadge:'1 mEq/kg',
     instruction:'PCR prolongada, acidose documentada. Diluir 1:1 com Água Destilada.',
-    calc:p => ({ mg:fN(p,0), ml:fN(p,0), mlLabel:'+ igual vol. AD', unit:'mEq' }) },
-  { id:'calcio', name:'GLUCONATO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'60-100 mg/kg',
+    calc:p => { const d=Math.min(p,250); return { mg:fN(d,0), ml:fN(d,0), mlLabel:'+ igual vol. AD', unit:'mEq' }; } },
+  { id:'calcio', name:'GLUCONATO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'60-100 mg/kg', calcAt:'60 mg/kg (piso da faixa)',
     instruction:'Hipocalcemia, Hipercalemia. Max: 2000 mg. Infundir lento.',
     calc:p => { const d=Math.min(p*60,2000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
   { id:'atropina', name:'ATROPINA', presentation:'0,5 mg/mL', doseBadge:'0,02 mg/kg',
@@ -556,28 +556,28 @@ const PCR_DRUGS = [
 ];
 
 const IOT_DRUGS = [
-  { id:'cetamina', name:'CETAMINA', presentation:'50 mg/mL', doseBadge:'1-2 mg/kg',
+  { id:'cetamina', name:'CETAMINA', presentation:'50 mg/mL', doseBadge:'1-2 mg/kg', calcAt:'2 mg/kg (topo da faixa)',
     instruction:'Indução dissociativa. Mantém VA e drive respiratório. Broncodilatador.',
-    calc:p => ({ mg:fN(p*2,0), ml:fN(p*2/50,2), unit:'mg' }) },
-  { id:'midazolam', name:'MIDAZOLAM', presentation:'5 mg/mL', doseBadge:'0,1-0,4 mg/kg',
+    calc:p => { const d=Math.min(p*2,100); return { mg:fN(d,0), ml:fN(d/50,2), unit:'mg' }; } },
+  { id:'midazolam', name:'MIDAZOLAM', presentation:'5 mg/mL', doseBadge:'0,1-0,4 mg/kg', calcAt:'0,3 mg/kg',
     instruction:'Sedação. ISR: 0,3 mg/kg. Max: 5 mg. Pode causar hipotensão.',
     calc:p => { const d=Math.min(p*0.3,5); return { mg:fN(d,1), ml:fN(d/5,2), unit:'mg' }; } },
-  { id:'fentanil', name:'FENTANIL', presentation:'50 mcg/mL', doseBadge:'1-2 mcg/kg',
+  { id:'fentanil', name:'FENTANIL', presentation:'50 mcg/mL', doseBadge:'1-2 mcg/kg', calcAt:'2 mcg/kg (topo da faixa)',
     instruction:'Analgesia. Administrar lento. Max: 100 mcg.',
     calc:p => { const d=Math.min(p*2,100); return { mg:fN(d,0), ml:fN(d/50,2), unit:'mcg' }; } },
-  { id:'propofol', name:'PROPOFOL', presentation:'10 mg/mL', doseBadge:'1-2,5 mg/kg',
+  { id:'propofol', name:'PROPOFOL', presentation:'10 mg/mL', doseBadge:'1-2,5 mg/kg', calcAt:'2,5 mg/kg (topo da faixa)',
     instruction:'Indução. Hipotensão dose-dependente. Evitar em choque.',
-    calc:p => ({ mg:fN(p*2.5,0), ml:fN(p*2.5/10,1), unit:'mg' }) },
-  { id:'etomidato', name:'ETOMIDATO', presentation:'2 mg/mL', doseBadge:'0,2-0,4 mg/kg',
+    calc:p => { const d=Math.min(p*2.5,200); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; } },
+  { id:'etomidato', name:'ETOMIDATO', presentation:'2 mg/mL', doseBadge:'0,2-0,4 mg/kg', calcAt:'0,3 mg/kg',
     instruction:'Indução. Estabilidade hemodinâmica. Max: 20 mg. Evitar em sepse.',
     calc:p => { const d=Math.min(p*0.3,20); return { mg:fN(d,1), ml:fN(d/2,1), unit:'mg' }; } },
-  { id:'rocuronio', name:'ROCURONIO', presentation:'10 mg/mL', doseBadge:'0,9-1,2 mg/kg',
+  { id:'rocuronio', name:'ROCURONIO', presentation:'10 mg/mL', doseBadge:'0,9-1,2 mg/kg', calcAt:'1 mg/kg',
     instruction:'Bloqueador neuromuscular. ISR: 1 mg/kg. Reversível com Sugammadex.',
-    calc:p => ({ mg:fN(p,0), ml:fN(p/10,1), unit:'mg' }) },
-  { id:'succinil', name:'SUCCINILCOLINA', presentation:'10 mg/mL', doseBadge:'1-2 mg/kg',
+    calc:p => { const d=Math.min(p,100); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; } },
+  { id:'succinil', name:'SUCCINILCOLINA', presentation:'10 mg/mL', doseBadge:'1-2 mg/kg', calcAt:'1,5 mg/kg',
     instruction:'BNM despolarizante. Contraindicado: hipercalemia, queimados. Max: 100 mg. Ampola de 100 mg reconstituída para 10 mL.',
     calc:p => { const d=Math.min(p*1.5,100); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; } },
-  { id:'cisatracurio', name:'CISATRACURIO', presentation:'2 mg/mL', doseBadge:'0,1-0,15 mg/kg',
+  { id:'cisatracurio', name:'CISATRACURIO', presentation:'2 mg/mL', doseBadge:'0,1-0,15 mg/kg', calcAt:'0,15 mg/kg (topo da faixa)',
     instruction:'BNM não despolarizante. Metabolismo de Hofmann.',
     calc:p => ({ mg:fN(p*0.15,2), ml:fN(p*0.15/2,2), unit:'mg' }) },
 ];
@@ -590,7 +590,7 @@ const EMERGENCY_DRUGS = [
     instruction:'TSV com pulso. Bolus RÁPIDO + flush 5-10 mL SF. Max: 6/12 mg.',
     calc:p => { const d1=Math.min(p*0.1,6), d2=Math.min(p*0.2,12);
       return { mg:fN(d1,1)+' / '+fN(d2,1), ml:fN(d1/3,2)+' / '+fN(d2/3,2), unit:'mg' }; } },
-  { id:'glicose', name:'GLICOSE 50%', presentation:'500 mg/mL', doseBadge:'0,5-1 g/kg',
+  { id:'glicose', name:'GLICOSE 50%', presentation:'500 mg/mL', doseBadge:'0,5-1 g/kg', calcAt:'0,5 g/kg (piso da faixa)',
     instruction:'Hipoglicemia. Diluir em crianças pequenas (G10/G25).',
     calc:p => ({ mg:fN(p*0.5,1), ml:fN(Math.min(p,50),0), unit:'g' }) },
   { id:'naloxona', name:'NALOXONA', presentation:'0,4 mg/mL', doseBadge:'0,1 mg/kg',
@@ -599,10 +599,10 @@ const EMERGENCY_DRUGS = [
   { id:'tranexamico', name:'ÁCIDO TRANEXÂMICO', presentation:'50 mg/mL', doseBadge:'15 mg/kg',
     instruction:'Trauma com hemorragia. Bolus em 10 min. Max: 1000 mg.',
     calc:p => { const d=Math.min(p*15,1000); return { mg:fN(d,0), ml:fN(d/50,1), unit:'mg' }; } },
-  { id:'hidrocortisona', name:'HIDROCORTISONA', presentation:'100 mg/2mL', doseBadge:'2-4 mg/kg',
+  { id:'hidrocortisona', name:'HIDROCORTISONA', presentation:'100 mg/2mL', doseBadge:'2-4 mg/kg', calcAt:'4 mg/kg (topo da faixa)',
     instruction:'Anafilaxia / Choque / Asma. Max: 200 mg. Infundir em bolus.',
     calc:p => { const d=Math.min(p*4,200); return { mg:fN(d,0), ml:fN(d/50,1), unit:'mg' }; } },
-  { id:'difenidramina', name:'DIFENIDRAMINA', presentation:'50 mg/mL', doseBadge:'1-1,25 mg/kg',
+  { id:'difenidramina', name:'DIFENIDRAMINA', presentation:'50 mg/mL', doseBadge:'1-1,25 mg/kg', calcAt:'1,25 mg/kg (topo da faixa)',
     instruction:'Anafilaxia (adjuvante). Via: IV lento ou IM. Max: 50 mg.',
     calc:p => { const d=Math.min(p*1.25,50); return { mg:fN(d,0), ml:fN(d/50,1), unit:'mg' }; } },
   { id:'salbutamol-anaf', name:'SALBUTAMOL MDI', presentation:'100 mcg/jato', doseBadge:'100 mcg/2 kg',
@@ -740,16 +740,16 @@ const CONVULSION_DRUGS = [
   { id:'fenobarbital', name:'FENOBARBITAL', presentation:'100 mg/mL', doseBadge:'20 mg/kg',
     instruction:'Status refratário / Neonatal. Max: 1000 mg. Diluir em SF, infundir em 15-20 min. Risco depressão respiratória.',
     calc:p => { const d=Math.min(p*20,1000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
-  { id:'levetiracetam', name:'LEVETIRACETAM', presentation:'100 mg/mL', doseBadge:'40-60 mg/kg',
+  { id:'levetiracetam', name:'LEVETIRACETAM', presentation:'100 mg/mL', doseBadge:'40-60 mg/kg', calcAt:'60 mg/kg (topo da faixa)',
     instruction:'Status epilepticus - Alternativa 2ª linha. Infundir em 15 min. Max: 3000 mg.',
     calc:p => { const d=Math.min(p*60,3000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
 ];
 
 const NEURO_DRUGS = [
-  { id:'manitol', name:'MANITOL 20%', presentation:'200 mg/mL', doseBadge:'0,25-1 g/kg',
+  { id:'manitol', name:'MANITOL 20%', presentation:'200 mg/mL', doseBadge:'0,25-1 g/kg', calcAt:'0,5 g/kg',
     instruction:'Hipertensão intracraniana. Infundir em 15-30 min.',
     calc:p => ({ mg:fN(p*0.5,1), ml:fN(p*0.5*5,0), unit:'g' }) },
-  { id:'nacl', name:'NaCl 3% (Salina Hipertônica)', presentation:'0,513 mEq Na/mL', doseBadge:'2-5 mL/kg', prepKey:'nacl3',
+  { id:'nacl', name:'NaCl 3% (Salina Hipertônica)', presentation:'0,513 mEq Na/mL', doseBadge:'2-5 mL/kg', calcAt:'3 mL/kg', prepKey:'nacl3',
     instruction:'HIC, hiponatremia grave. Infundir em 10-20 min.',
     calc:p => ({ mg:fN(p*3*0.513,1), ml:fN(p*3,0), unit:'mEq' }) },
 ];
@@ -1128,6 +1128,7 @@ function drugCard(d, forceOpen){
       '<div class="res"><div class="res-l">Volume</div><div class="res-v">' + r.ml + ' <span>mL</span></div></div>' +
     '</div>';
     if (r.mlLabel) body += '<div class="res-note">' + r.mlLabel + '</div>';
+    if (d.calcAt) body += '<div class="res-note">Calculado a ' + d.calcAt + '</div>';
   } else {
     body += '<div class="need-weight">' + (needAge && p > 0 ? 'Informe a idade para calcular' : 'Informe o peso para calcular') + '</div>';
   }
@@ -1202,7 +1203,8 @@ function viewPcr(){
   const defib = p > 0 ? {
     first: j(2), second: j(4),
     escalada: j(6) + ' / ' + j(8) + ' / ' + j(10),
-    cardio: Math.min(Math.round(p*1),200) + '-' + Math.min(Math.round(p*2),200),
+    cardio: Math.min(Math.round(p*0.5),200) + '-' + Math.min(Math.round(p*1),200),
+    cardioMax: Math.min(Math.round(p*2),200),
   } : null;
   const eq = getEquipment();
 
@@ -1223,7 +1225,7 @@ function viewPcr(){
     '<div class="defib shock"><div class="dl">1ª Desfibrilação (2 J/kg)</div><div class="dv">' + (defib ? defib.first : '--') + '</div><div class="du">Joules</div></div>' +
     '<div class="defib shock"><div class="dl">2ª Desfibrilação (4 J/kg)</div><div class="dv">' + (defib ? defib.second : '--') + '</div><div class="du">Joules</div></div>' +
     '<div class="defib shock"><div class="dl">Subsequentes (6 / 8 / 10 J/kg)</div><div class="dv" style="font-size:1.3rem">' + (defib ? defib.escalada : '--') + '</div><div class="du">Joules · teto 200 J</div></div>' +
-    '<div class="defib cardio"><div class="dl">Cardioversão (1-2 J/kg)</div><div class="dv">' + (defib ? defib.cardio : '--') + '</div><div class="du">Joules · teto 200 J</div></div>' +
+    '<div class="defib cardio"><div class="dl">Cardioversão (0,5-1 J/kg)</div><div class="dv">' + (defib ? defib.cardio : '--') + '</div><div class="du">Joules · refratária: 2 J/kg (' + (defib ? defib.cardioMax : '--') + ' J)</div></div>' +
   '</div>';
 
   html += collapsible('pcr-drogas', 'Drogas de parada cardiorrespiratória', 'PCR', '#C62828',
