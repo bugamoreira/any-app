@@ -479,7 +479,7 @@ footer{
 <footer>
   <div class="ft-dev">Desenvolvido por <strong>Gustavo Moreira</strong></div>
   <div class="ft-role">Médico&nbsp;emergencista&nbsp;· Coordenação&nbsp;do&nbsp;Departamento&nbsp;de&nbsp;Emergência</div>
-  <div class="ft-meta">Ped Guide v1.1.7 · atualizado em setembro de 2026</div>
+  <div class="ft-meta">Ped Guide v1.1.8 · atualizado em setembro de 2026</div>
 </footer>
 
 <script>
@@ -645,8 +645,8 @@ const TOX_DRUGS = [
       const m = p <= 10 ? p*4 : p <= 20 ? 40 + (p-10)*2 : 60 + (p-20);
       return { mg:fN(Math.min(m,90),0), ml:'--', mlLabel:'mL/h EV', unit:'mL/h' }; } },
   { id:'glucagon-tox', name:'GLUCAGON (Betabloqueador/BCC)', presentation:'1 mg/mL', doseBadge:'0,05 mg/kg',
-    instruction:'Diluir 4 mg (4 mL) em SG 5% 46 mL (0,8 mg/mL). Ataque max: 10 mg. Manutenção: 0,05-0,1 mg/kg/h na mesma diluição.',
-    calc:p => { const d=Math.min(p*0.05,10); return { mg:fN(d,2), ml:fN(d/0.8,2), mlLabel:'da solução 0,8 mg/mL', unit:'mg' }; } },
+    instruction:'Preparo: 4 mg (4 mL) + SG 5% 46 mL = 50 mL, concentração 0,08 mg/mL. Ataque max: 10 mg. Manutenção: 0,05-0,1 mg/kg/h na mesma diluição. Benefício incerto: antecipar náuseas e vômitos e discutir com o CIATox.',
+    calc:p => { const d=Math.min(p*0.05,10); return { mg:fN(d,2), ml:fN(d/0.08,2), mlLabel:'da solução 0,08 mg/mL', unit:'mg' }; } },
   { id:'gluconato-tox', name:'GLUCONATO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'60 mg/kg',
     instruction:'Intoxicação por BCC / hipocalcemia. Max: 2000 mg. Diluir em AD/SF e infundir lento.',
     calc:p => { const d=Math.min(p*60,2000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
