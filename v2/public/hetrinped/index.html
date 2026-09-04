@@ -631,14 +631,14 @@ const EMERGENCY_DRUGS = [
     instruction:'Adjuvante apenas para sintomas cutâneos após estabilização. 2-5 anos ou até 30 kg: 5 mg VO; a partir de 6 anos ou acima de 30 kg: 10 mg VO. Evitar anti-histamínicos de 1ª geração.',
     calc:(p, ageY) => {
       if (ageY < 2) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 2 anos', unit:'' };
-      const d = p <= 30 ? 5 : 10;
-      return { mg:fN(d,0), ml:fN(d,0), mlLabel:'VO 1x/dia', unit:'mg' }; } },
+      const d = (ageY < 6 || p <= 30) ? 5 : 10;
+      return { mg:fN(d,0), ml:'--', mlLabel:'VO 1x/dia', unit:'mg' }; } },
   { id:'cetirizina', name:'CETIRIZINA', presentation:'1 mg/mL — solução oral', doseBadge:'2,5-10 mg', needsAge:true,
     instruction:'Adjuvante apenas para sintomas cutâneos após estabilização. 2-5 anos: 2,5-5 mg VO; a partir de 6 anos: 10 mg VO.',
     calc:(p, ageY, ageM) => {
-      if (ageM < 6) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 6 meses', unit:'' };
-      const d = ageM < 24 ? 2.5 : ageM < 72 ? 5 : 10;
-      return { mg:fN(d,1), ml:'--', mlLabel:'VO', unit:'mg' }; } },
+      if (ageM < 24) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 2 anos', unit:'' };
+      if (ageM < 72) return { mg:'2,5 - 5', ml:'--', mlLabel:'VO 1x/dia (2 a 5 anos)', unit:'mg' };
+      return { mg:'10', ml:'--', mlLabel:'VO 1x/dia (6 anos ou mais)', unit:'mg' }; } },
   { id:'octreotide-hda', name:'OCTREOTIDE (HDA)', presentation:'0,1 mg/mL', doseBadge:'1-2 mcg/kg',
     instruction:'Hemorragia digestiva alta. Bolus max: 50 mcg. Infusão: 1-2 mcg/kg/h (diluir 100 mcg em 50 mL SF, correr peso/2 a peso mL/h, max 25-50 mcg/h).',
     calc:p => { const d1=Math.min(p,50), d2=Math.min(p*2,50);
