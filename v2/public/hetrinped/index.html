@@ -479,7 +479,7 @@ footer{
 <footer>
   <div class="ft-dev">Desenvolvido por <strong>Gustavo Moreira</strong></div>
   <div class="ft-role">Médico&nbsp;emergencista&nbsp;· Coordenação&nbsp;do&nbsp;Departamento&nbsp;de&nbsp;Emergência</div>
-  <div class="ft-meta">Ped Guide v1.1.5 · atualizado em setembro de 2026</div>
+  <div class="ft-meta">Ped Guide v1.1.7 · atualizado em setembro de 2026</div>
 </footer>
 
 <script>
@@ -772,7 +772,9 @@ const INFUSIONS = [
     dilutions:{ small:{drug:4,diluent:60,conc:62.5,vol:64}, medium:{drug:8,diluent:120,conc:62.5,vol:128}, large:{drug:16,diluent:250,conc:60,vol:266} } },
   { id:'vasopressina', name:'VASOPRESSINA', category:'vasoativos', color:'#D946EF', unit:'mU/kg/min', range:[0.2,2], step:0.1, defaultVal:0.5,
     presentation:'20 U/mL',
-    dilutions:{ small:{drug:1,diluent:99,conc:200,vol:100}, medium:{drug:1,diluent:99,conc:200,vol:100}, large:{drug:2,diluent:98,conc:400,vol:100} } },
+    // 2 amp (20 U/mL) + SF 98 mL = 0,4 U/mL em todas as faixas — padrao do
+    // servico, identico ao adulto (confirmado por Gustavo, 22/08/2026)
+    dilutions:{ small:{drug:2,diluent:98,conc:400,vol:100}, medium:{drug:2,diluent:98,conc:400,vol:100}, large:{drug:2,diluent:98,conc:400,vol:100} } },
   { id:'milrinona', name:'MILRINONA', category:'vasoativos', color:'#10B981', unit:'mcg/kg/min', range:[0.25,0.75], step:0.05, defaultVal:0.5,
     presentation:'1 mg/mL',
     dilutions:{ small:{drug:10,diluent:40,conc:200,vol:50}, medium:{drug:20,diluent:80,conc:200,vol:100}, large:{drug:30,diluent:120,conc:200,vol:150} } },
@@ -1202,7 +1204,8 @@ function viewPcr(){
   const j = e => Math.min(Math.round(p*e), 200);
   const defib = p > 0 ? {
     first: j(2), second: j(4),
-    escalada: j(6) + ' / ' + j(8) + ' / ' + j(10),
+    // 4 J/kg ate 10 J/kg; nos maiores os dois extremos batem no teto de 200 J
+    escalada: j(4) === j(10) ? String(j(4)) : j(4) + '-' + j(10),
     cardio: Math.min(Math.round(p*0.5),200) + '-' + Math.min(Math.round(p*1),200),
     cardioMax: Math.min(Math.round(p*2),200),
   } : null;
@@ -1224,7 +1227,7 @@ function viewPcr(){
   html += '<div class="defib-grid">' +
     '<div class="defib shock"><div class="dl">1ª Desfibrilação (2 J/kg)</div><div class="dv">' + (defib ? defib.first : '--') + '</div><div class="du">Joules</div></div>' +
     '<div class="defib shock"><div class="dl">2ª Desfibrilação (4 J/kg)</div><div class="dv">' + (defib ? defib.second : '--') + '</div><div class="du">Joules</div></div>' +
-    '<div class="defib shock"><div class="dl">Subsequentes (6 / 8 / 10 J/kg)</div><div class="dv" style="font-size:1.3rem">' + (defib ? defib.escalada : '--') + '</div><div class="du">Joules · teto 200 J</div></div>' +
+    '<div class="defib shock"><div class="dl">Subsequentes (4-10 J/kg)</div><div class="dv" style="font-size:1.3rem">' + (defib ? defib.escalada : '--') + '</div><div class="du">Joules · 4 J/kg ou mais, sem passar de 10 J/kg nem de 200 J</div></div>' +
     '<div class="defib cardio"><div class="dl">Cardioversão (0,5-1 J/kg)</div><div class="dv">' + (defib ? defib.cardio : '--') + '</div><div class="du">Joules · refratária: 2 J/kg (' + (defib ? defib.cardioMax : '--') + ' J)</div></div>' +
   '</div>';
 
