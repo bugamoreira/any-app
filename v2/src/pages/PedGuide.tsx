@@ -54,6 +54,8 @@ interface BolusDrug {
   prepKey?: string
   /** Ponto da faixa usado no calculo, quando doseBadge exibe um intervalo */
   calcAt?: string
+  /** Medicamento sem indicacao rotineira: so em situacao especifica */
+  naoRotineiro?: boolean
 }
 
 /** Formatador pt-BR usado pelas entradas clinicas */
@@ -150,9 +152,9 @@ function getColorFromWeight(w: number): BroselowEntry {
 
 const PCR_DRUGS: BolusDrug[] = [
   {
-    id: 'epinefrina-iv', name: 'EPINEFRINA IV/IO', presentation: '1 mg/mL (1:1.000)', doseBadge: '0,01 mg/kg', highlight: true,
-    instruction: 'Diluição 1:10.000: 1 mL + 9 mL Água Destilada. Concentração: 0,1 mg/mL. A cada 3-5 min.',
-    calc: (p) => ({ mg: (p * 0.01).toFixed(2), ml: (p * 0.1).toFixed(1), mlLabel: 'da sol. 1:10.000', unit: 'mg' }),
+    id: 'epinefrina-iv', name: 'EPINEFRINA IV/IO', presentation: '0,1 mg/mL — solução final (antiga 1:10.000)', doseBadge: '0,01 mg/kg', highlight: true,
+    instruction: 'Volume: 0,1 mL/kg da solução final. Max: 1 mg. Repetir a cada 3-5 min. NUNCA administrar 1 mg/mL por via IV/IO.',
+    calc: (p) => { const d = Math.min(p * 0.01, 1); return { mg: fN(d,2), ml: fN(d/0.1,1), mlLabel: 'da solução 0,1 mg/mL', unit: 'mg' } },
     prepKey: 'epinefrina',
   },
   {
@@ -161,18 +163,18 @@ const PCR_DRUGS: BolusDrug[] = [
     calc: (p) => { const d = Math.min(p * 5, 300); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' } },
   },
   {
-    id: 'bicarbonato', name: 'BICARBONATO DE SÓDIO 8,4%', presentation: '1 mEq/mL', doseBadge: '1 mEq/kg',
-    instruction: 'PCR prolongada, acidose documentada. Diluir 1:1 com Água Destilada.',
+    id: 'bicarbonato', name: 'BICARBONATO DE SÓDIO 8,4%', presentation: '1 mEq/mL', doseBadge: '1 mEq/kg', naoRotineiro: true,
+    instruction: 'Não usar rotineiramente na PCR. Considerar em hipercalemia, intoxicação por bloqueador de canal de sódio ou indicação específica. Administrar lentamente; não misturar com cálcio.',
     calc: (p) => { const d=Math.min(p,250); return { mg:fN(d,0), ml:fN(d,0), mlLabel:'+ igual vol. AD', unit:'mEq' }; }},
   {
     id: 'atropina', name: 'ATROPINA', presentation: '0,5 mg/mL', doseBadge: '0,02 mg/kg',
     instruction: 'Bradicardia com pulso. Max: 1 mg.',
     calc: (p) => { const d=Math.min(p*0.02,1); return { mg:fN(d,2), ml:fN(d/0.5,2), unit:'mg' }; }},
-  { id: 'calcio', name:'GLUCONATO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'60-100 mg/kg', calcAt:'60 mg/kg (piso da faixa)',
-    instruction:'Hipocalcemia, Hipercalemia. Max: 2000 mg. Infundir lento.',
+  { id: 'calcio', name:'GLUCONATO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'60-100 mg/kg', calcAt:'60 mg/kg (piso da faixa)', naoRotineiro: true,
+    instruction:'Não usar rotineiramente na PCR. Indicações: hipocalcemia, hipercalemia ou intoxicação por bloqueador de canal de cálcio. Max: 2000 mg. Infundir lentamente com ECG.',
     calc:p => { const d=Math.min(p*60,2000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
-  { id: 'cloreto-calcio', name:'CLORETO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'20 mg/kg',
-    instruction:'Diluir em igual volume de AD/SF. Max: 1000 mg. Infundir EV em bolus.',
+  { id: 'cloreto-calcio', name:'CLORETO DE CÁLCIO 10%', presentation:'100 mg/mL', doseBadge:'20 mg/kg', naoRotineiro: true,
+    instruction:'Mesmas indicações específicas do cálcio. Max: 1000 mg. Preferir acesso central ou intraósseo; risco de necrose por extravasamento. Não misturar com bicarbonato.',
     calc:p => { const d=Math.min(p*20,1000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
   { id: 'lidocaina', name:'LIDOCAÍNA 1%', presentation:'10 mg/mL', doseBadge:'1 mg/kg',
     instruction:'FV/TV sem pulso (alternativa). Max: 100 mg. EV bolus rápido.',
@@ -183,23 +185,23 @@ const PCR_DRUGS: BolusDrug[] = [
   { id: 'magnesio-pcr', name:'SULFATO DE MAGNÉSIO 10%', presentation:'100 mg/mL', doseBadge:'50 mg/kg',
     instruction:'Torsades de pointes / hipomagnesemia. Max: 2000 mg. EV bolus na PCR.',
     calc:p => { const d=Math.min(p*50,2000); return { mg:fN(d,0), ml:fN(d/100,1), unit:'mg' }; } },
-  { id: 'glicose-g10', name:'GLICOSE 50% → G10%', presentation:'500 mg/mL', doseBadge:'0,5 g/kg',
-    instruction:'Hipoglicemia. Max: 40 mL de G50%. Diluir e fazer EV em bolus.',
-    calc:p => { const e=p>40?40:p, g=p>37?150:p*4; return { mg:fN(e,0), ml:fN(g,0), mlLabel:'mL de G50% + mL de AD/SF', unit:'mL G50%' }; } },
-  { id: 'glicose-g25', name:'GLICOSE 50% → G25%', presentation:'500 mg/mL', doseBadge:'0,5 g/kg',
-    instruction:'Hipoglicemia (acesso calibroso). Max: 40 mL de G50%. Diluir 1:1 e fazer EV em bolus.',
-    calc:p => { const e=p>40?40:p; return { mg:fN(e,0), ml:fN(e,0), mlLabel:'mL de G50% + mL de AD/SF (1:1)', unit:'mL G50%' }; } }
+  { id: 'glicose-g10', name:'GLICOSE 10%', presentation:'100 mg/mL', doseBadge:'0,5 g/kg',
+    instruction:'Hipoglicemia: 5 mL/kg EV/IO, com reavaliação da glicemia. Evitar G50% sem diluição em crianças. Ajustar repetição à resposta clínica.',
+    calc:p => ({ mg:fN(p*0.5,1), ml:fN(p*5,0), mlLabel:'5 mL/kg EV/IO', unit:'g' }) },
+  { id: 'glicose-g25', name:'GLICOSE 25%', presentation:'250 mg/mL', doseBadge:'0,5 g/kg',
+    instruction:'Alternativa em criança maior com acesso adequado: 2 mL/kg EV/IO. Preferir G10% em lactentes e acessos periféricos pequenos.',
+    calc:p => ({ mg:fN(p*0.5,1), ml:fN(p*2,0), mlLabel:'2 mL/kg EV/IO', unit:'g' }) }
 ]
 
 const IOT_DRUGS: BolusDrug[] = [
   {
     id: 'cetamina', name: 'CETAMINA', presentation: '50 mg/mL', doseBadge: '1-2 mg/kg', calcAt: '2 mg/kg (topo da faixa)',
-    instruction: 'Indução dissociativa. Mantém VA e drive respiratório. Broncodilatador.',
+    instruction: 'Indução dissociativa e broncodilatação. Pode preservar ventilação espontânea sem BNM; após bloqueio neuromuscular, o paciente estará apneico.',
     calc: (p) => { const d=Math.min(p*2,100); return { mg:fN(d,0), ml:fN(d/50,2), unit:'mg' }; }},
   {
-    id: 'midazolam', name: 'MIDAZOLAM', presentation: '5 mg/mL', doseBadge: '0,1-0,4 mg/kg', calcAt: '0,3 mg/kg',
-    instruction: 'Sedação. ISR: 0,3 mg/kg. Max: 5 mg. Pode causar hipotensão.',
-    calc: (p) => { const d = Math.min(p * 0.3, 5); return { mg: d.toFixed(1), ml: (d / 5).toFixed(2), unit: 'mg' } },
+    id: 'midazolam', name: 'MIDAZOLAM', presentation: '5 mg/mL', doseBadge: '0,1-0,3 mg/kg', calcAt: '0,3 mg/kg',
+    instruction: 'Alternativa de indução; início menos previsível em choque. Max: 10 mg. Pode causar hipotensão.',
+    calc: (p) => { const d = Math.min(p * 0.3, 10); return { mg: d.toFixed(1), ml: (d / 5).toFixed(2), unit: 'mg' } },
   },
   {
     id: 'fentanil', name: 'FENTANIL', presentation: '50 mcg/mL', doseBadge: '1-2 mcg/kg', calcAt: '2 mcg/kg (topo da faixa)',
@@ -215,16 +217,16 @@ const IOT_DRUGS: BolusDrug[] = [
     calc: (p) => { const d = Math.min(p * 0.3, 20); return { mg: d.toFixed(1), ml: (d / 2).toFixed(1), unit: 'mg' } },
   },
   {
-    id: 'rocuronio', name: 'ROCURONIO', presentation: '10 mg/mL', doseBadge: '0,9-1,2 mg/kg', calcAt: '1 mg/kg',
-    instruction: 'Bloqueador neuromuscular. ISR: 1 mg/kg. Reversível com Sugammadex.',
-    calc: (p) => { const d=Math.min(p,100); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; }},
+    id: 'rocuronio', name: 'ROCURÔNIO', presentation: '10 mg/mL', doseBadge: '1,2 mg/kg',
+    instruction: 'BNM de escolha quando se deseja início rápido. Max: 100 mg. Paralisia prolongada: garantir sedação pós-intubação. Sugamadex somente conforme disponibilidade e protocolo; não substitui plano de resgate.',
+    calc: (p) => { const d=Math.min(p*1.2,100); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; }},
   {
     id: 'succinil', name: 'SUCCINILCOLINA', presentation: '10 mg/mL', doseBadge: '1-2 mg/kg', calcAt: '1,5 mg/kg',
-    instruction: 'BNM despolarizante. Contraindicado: hipercalemia, queimados. Max: 100 mg. Ampola de 100 mg reconstituída para 10 mL.',
+    instruction: 'Evitar em hipercalemia, queimadura após 24 h, denervação ou doença neuromuscular, rabdomiólise e risco de hipertermia maligna. Max: 100 mg. Ampola de 100 mg reconstituída para 10 mL.',
     calc: (p) => { const d=Math.min(p*1.5,100); return { mg:fN(d,0), ml:fN(d/10,1), unit:'mg' }; }},
   {
-    id: 'cisatracurio', name: 'CISATRACURIO', presentation: '2 mg/mL', doseBadge: '0,1-0,15 mg/kg', calcAt: '0,15 mg/kg (topo da faixa)',
-    instruction: 'BNM não despolarizante. Metabolismo de Hofmann.',
+    id: 'cisatracurio', name: 'CISATRACÚRIO', presentation: '2 mg/mL', doseBadge: '0,1-0,15 mg/kg', calcAt: '0,15 mg/kg (topo da faixa)',
+    instruction: 'Início mais lento; não é primeira escolha para SRI. Reservar para situações selecionadas quando rocurônio e succinilcolina forem inadequados. Metabolismo de Hofmann.',
     calc: (p) => ({ mg: (p * 0.15).toFixed(2), ml: (p * 0.15 / 2).toFixed(2), unit: 'mg' }),
   },
 ]
@@ -232,8 +234,8 @@ const IOT_DRUGS: BolusDrug[] = [
 const EMERGENCY_DRUGS: BolusDrug[] = [
   {
     id: 'epinefrina-im', name: 'EPINEFRINA IM (Anafilaxia)', presentation: '1 mg/mL - SEM DILUIR', doseBadge: '0,01 mg/kg', highlight: true,
-    instruction: 'Via INTRAMUSCULAR - Vasto lateral. Max: 0,3 mg (criança) / 0,5 mg (adolescente). Repetir 5-15 min.',
-    calc: (p) => { const d = Math.min(p * 0.01, p < 30 ? 0.3 : 0.5); return { mg: d.toFixed(2), ml: d.toFixed(2), unit: 'mg' } },
+    instruction: 'Via INTRAMUSCULAR - Vasto lateral da coxa. Max: 0,5 mg. Repetir a cada 5-15 min conforme resposta.',
+    calc: (p) => { const d = Math.min(p * 0.01, 0.5); return { mg: d.toFixed(2), ml: d.toFixed(2), unit: 'mg' } },
   },
   {
     id: 'adenosina', name: 'ADENOSINA', presentation: '3 mg/mL', doseBadge: '0,1 - 0,2 mg/kg',
@@ -244,9 +246,9 @@ const EMERGENCY_DRUGS: BolusDrug[] = [
     },
   },
   {
-    id: 'glicose', name: 'GLICOSE 50%', presentation: '500 mg/mL', doseBadge: '0,5-1 g/kg', calcAt: '0,5 g/kg (piso da faixa)',
-    instruction: 'Hipoglicemia. Diluir em crianças pequenas (G10/G25).',
-    calc: (p) => ({ mg: (p * 0.5).toFixed(1), ml: Math.min(p, 50).toFixed(0), unit: 'g' }),
+    id: 'glicose', name: 'GLICOSE 10%', presentation: '100 mg/mL', doseBadge: '0,5 g/kg',
+    instruction: 'Hipoglicemia: 5 mL/kg EV/IO e reavaliar glicemia. Evitar G50% sem diluição em crianças.',
+    calc: (p) => ({ mg: fN(p*0.5,1), ml: fN(p*5,0), mlLabel: '5 mL/kg EV/IO', unit: 'g' }),
   },
   {
     id: 'naloxona', name: 'NALOXONA', presentation: '0,4 mg/mL', doseBadge: '0,1 mg/kg',
@@ -259,18 +261,18 @@ const EMERGENCY_DRUGS: BolusDrug[] = [
     calc: (p) => { const d = Math.min(p * 15, 1000); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' } },
   },
   {
-    id: 'hidrocortisona', name: 'HIDROCORTISONA', presentation: '100 mg/2mL', doseBadge: '2-4 mg/kg', calcAt: '4 mg/kg (topo da faixa)',
-    instruction: 'Anafilaxia / Choque / Asma. Max: 200 mg. Infundir em bolus.',
+    id: 'hidrocortisona', name: 'HIDROCORTISONA', presentation: '100 mg/2mL', doseBadge: '2-4 mg/kg', calcAt: '4 mg/kg (topo da faixa)', naoRotineiro: true,
+    instruction: 'Não usar rotineiramente na anafilaxia. Considerar em asma associada ou reação refratária, após epinefrina e ressuscitação inicial. Max: 200 mg.',
     calc: (p) => { const d = Math.min(p * 4, 200); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' } },
   },
   {
-    id: 'difenidramina', name: 'DIFENIDRAMINA', presentation: '50 mg/mL', doseBadge: '1-1,25 mg/kg', calcAt: '1,25 mg/kg (topo da faixa)',
-    instruction: 'Anafilaxia (adjuvante). Via: IV lento ou IM. Max: 50 mg.',
+    id: 'difenidramina', name: 'DIFENIDRAMINA', presentation: '50 mg/mL', doseBadge: '1-1,25 mg/kg', calcAt: '1,25 mg/kg (topo da faixa)', naoRotineiro: true,
+    instruction: 'Não usar rotineiramente. Se excepcionalmente indicada para sintomas cutâneos após estabilização, administrar EV lentamente ou IM. Max: 50 mg; pode causar sedação e hipotensão.',
     calc: (p) => { const d = Math.min(p * 1.25, 50); return { mg: d.toFixed(0), ml: (d / 50).toFixed(1), unit: 'mg' } },
   },
-  { id: 'salbutamol-anaf', name:'SALBUTAMOL MDI', presentation:'100 mcg/jato', doseBadge:'100 mcg/2 kg',
-    instruction:'Anafilaxia com broncoespasmo (2ª linha). Max: 10 jatos. Inalar com espaçador.',
-    calc:p => { const j=p>20?10:Math.ceil(p/2); return { mg:fN(j,0), ml:'--', mlLabel:'jatos com espaçador', unit:'jatos' }; } },
+  { id: 'salbutamol-anaf', name:'SALBUTAMOL MDI', presentation:'100 mcg/jato', doseBadge:'4-10 jatos',
+    instruction:'Adjuvante no broncoespasmo após epinefrina; administrar com espaçador e repetir conforme resposta. Não trata choque ou edema de via aérea.',
+    calc:() => ({ mg:'4 - 10', ml:'--', mlLabel:'jatos com espaçador', unit:'jatos' }) },
   { id: 'octreotide-hda', name:'OCTREOTIDE (HDA)', presentation:'0,1 mg/mL', doseBadge:'1-2 mcg/kg',
     instruction:'Hemorragia digestiva alta. Bolus max: 50 mcg. Infusão: 1-2 mcg/kg/h (diluir 100 mcg em 50 mL SF, correr peso/2 a peso mL/h, max 25-50 mcg/h).',
     calc:p => { const d1=Math.min(p,50), d2=Math.min(p*2,50);
@@ -341,17 +343,17 @@ const PAIN_DRUGS: BolusDrug[] = [
 ]
 
 const RESP_DRUGS: BolusDrug[] = [
-  { id: 'salbutamol-resp', name:'SALBUTAMOL MDI', presentation:'100 mcg/jato', doseBadge:'100 mcg/2 kg',
-    instruction:'Crise asmática. Max: 10 jatos/dose. Inalar com espaçador, repetir conforme resposta.',
-    calc:p => { const j=p>20?10:Math.ceil(p/2); return { mg:fN(j,0), ml:'--', mlLabel:'jatos com espaçador', unit:'jatos' }; } },
-  { id: 'ipratropio-mdi', name:'IPRATRÓPIO MDI', presentation:'20 mcg/jato', doseBadge:'40-80 mcg',
-    instruction:'Crise moderada/grave, associado ao beta-agonista. Max: 80 mcg/dose.',
-    calc:() => ({ mg:'2 - 4', ml:'--', mlLabel:'jatos com espaçador, de 20/20 min', unit:'jatos' }) },
-  { id: 'ipratropio-gotas', name:'IPRATRÓPIO GOTAS', presentation:'0,25 mg/mL (1 mL = 20 gotas)', doseBadge:'0,25-0,5 mg',
-    instruction:'Alternativa ao MDI. Max: 0,5 mg/dose.',
-    calc:() => ({ mg:'20 - 40', ml:'--', mlLabel:'gotas em nebulização, de 20/20 min', unit:'gotas' }) },
-  { id: 'prednisolona', name:'PREDNISOLONA', presentation:'3 mg/mL', doseBadge:'2 mg/kg',
-    instruction:'Corticoide VO de escolha. Max: 40 mg, 1x/dia.',
+  { id: 'salbutamol-resp', name:'SALBUTAMOL MDI', presentation:'100 mcg/jato', doseBadge:'4-10 jatos',
+    instruction:'Leve/moderada: 4-6 jatos; grave: 6-10 jatos, sempre com espaçador. Repetir a cada 20-30 min, até 3 ciclos, conforme resposta.',
+    calc:() => ({ mg:'4 - 10', ml:'--', mlLabel:'jatos com espaçador', unit:'jatos' }) },
+  { id: 'ipratropio-mdi', name:'IPRATRÓPIO MDI', presentation:'20 mcg/jato', doseBadge:'80 mcg (4 jatos)',
+    instruction:'Associar ao salbutamol na crise grave; repetir com cada ciclo, até 3 administrações.',
+    calc:() => ({ mg:'4', ml:'--', mlLabel:'jatos com espaçador', unit:'jatos' }) },
+  { id: 'ipratropio-gotas', name:'IPRATRÓPIO — nebulização', presentation:'0,25 mg/mL', doseBadge:'0,25-0,5 mg',
+    instruction:'Alternativa ao MDI. Repetir a cada 20-30 min, até 3 ciclos, na crise grave.',
+    calc:p => { const d = p < 20 ? 0.25 : 0.5; return { mg:fN(d,2), ml:fN(d/0.25,0), mlLabel:(p<20?'menos de 20 kg':'20 kg ou mais') + ' — em nebulização', unit:'mg' }; } },
+  { id: 'prednisolona', name:'PREDNISOLONA', presentation:'3 mg/mL', doseBadge:'1-2 mg/kg', calcAt:'2 mg/kg (topo da faixa)',
+    instruction:'Administrar precocemente na crise moderada/grave. Max: 40 mg/dia, por 3-5 dias; via VO preferencial.',
     calc:p => { const d=Math.min(p*2,40); return { mg:fN(d,0), ml:fN(Math.ceil(d/3),0), mlLabel:'VO 1x/dia', unit:'mg' }; } },
   { id: 'metilprednisolona', name:'METILPREDNISOLONA SUCCINATO', presentation:'--', doseBadge:'1 mg/kg',
     instruction:'Crise grave (EV). Max: 80 mg. Diluir em 20-50 mL de SF e correr EV em 20 min.',
@@ -366,35 +368,42 @@ const RESP_DRUGS: BolusDrug[] = [
 
 const AGE_DRUGS: BolusDrug[] = [
   {
-    id: 'loratadina', name: 'LORATADINA', presentation: '1 mg/mL xarope', doseBadge: 'por idade/peso', needsAge: true,
-    instruction: 'Anafilaxia (adjuvante, 2ª geração). Max: 10 mg VO. Evitar anti-histamínicos de 1ª geração.',
+    id: 'loratadina', name: 'LORATADINA', presentation: '1 mg/mL — xarope', doseBadge: '5 mg ou 10 mg', needsAge: true,
+    instruction: 'Adjuvante apenas para sintomas cutâneos após estabilização. 2-5 anos ou até 30 kg: 5 mg VO; a partir de 6 anos ou acima de 30 kg: 10 mg VO. Evitar anti-histamínicos de 1ª geração.',
     calc: (p, ageY) => {
-      if (ageY === null || ageY === undefined) return { mg:'--', ml:'--', mlLabel:'Informe a idade', unit:'' };
-      if (ageY < 2) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 2 anos', unit:'' };
-      const d = p <= 30 ? 5 : 10;
-      return { mg:fN(d,0), ml:fN(d,0), mlLabel:'VO 1x/dia', unit:'mg' }; }},
+      if (ageY === null || ageY === undefined) return { mg:'--', ml:'--', mlLabel:'Informe a idade', unit:'' }
+      if (ageY < 2) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 2 anos', unit:'' }
+      const d = (ageY < 6 || p <= 30) ? 5 : 10
+      return { mg: fN(d,0), ml: '--', mlLabel: 'VO 1x/dia', unit: 'mg' }
+    },
+  },
   {
-    id: 'cetirizina', name: 'CETIRIZINA', presentation: 'VO', doseBadge: 'por idade', needsAge: true,
-    instruction: 'Anafilaxia (adjuvante, 2ª geração). Max: 10 mg VO.',
+    id: 'cetirizina', name: 'CETIRIZINA', presentation: '1 mg/mL — solução oral', doseBadge: '2,5-10 mg', needsAge: true,
+    instruction: 'Adjuvante apenas para sintomas cutâneos após estabilização. 2-5 anos: 2,5-5 mg VO; a partir de 6 anos: 10 mg VO.',
     calc: (p, ageY, ageM) => {
-      if (ageM === null || ageM === undefined) return { mg:'--', ml:'--', mlLabel:'Informe a idade', unit:'' };
-      if (ageM < 6) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 6 meses', unit:'' };
-      const d = ageM < 24 ? 2.5 : ageM < 72 ? 5 : 10;
-      return { mg:fN(d,1), ml:'--', mlLabel:'VO', unit:'mg' }; }},
+      if (ageM === null || ageM === undefined) return { mg:'--', ml:'--', mlLabel:'Informe a idade', unit:'' }
+      if (ageM < 24) return { mg:'--', ml:'--', mlLabel:'Geralmente não recomendado abaixo de 2 anos', unit:'' }
+      if (ageM < 72) return { mg:'2,5 - 5', ml:'--', mlLabel:'VO 1x/dia (2 a 5 anos)', unit:'mg' }
+      return { mg:'10', ml:'--', mlLabel:'VO 1x/dia (6 anos ou mais)', unit:'mg' }
+    },
+  },
 ]
 
 const TOX_DRUGS: BolusDrug[] = [
-  { id: 'atropina-tox', name:'ATROPINA (Organofosforados)', presentation:'0,5 mg/mL', doseBadge:'0,02 mg/kg',
-    instruction:'Sindrome colinérgica. Max: 2 mg (dose inicial). EV bolus. Dobrar as doses se necessário.',
-    calc:p => { const d=Math.min(p*0.02,2); return { mg:fN(d,2), ml:fN(d/0.5,2), unit:'mg' }; } },
-  { id: 'bicarbonato-tox', name:'BICARBONATO DE SÓDIO 8,4%', presentation:'1 mEq/mL', doseBadge:'1 mL/kg',
-    instruction:'Cardiotoxicidade por bloqueio de canal de sódio (tricíclicos). Max: 250 mL. Sem diluir ou 1:1 em AD/SF. Salicilatos: 150 mL bic + 850 mL SG 5% em taxa de manutenção.',
-    calc:p => { const d=Math.min(p,250); return { mg:fN(d,0), ml:fN(d,0), unit:'mEq' }; } },
-  { id: 'emulsao-lipidica', name:'EMULSÃO LIPÍDICA 20%', presentation:'--', doseBadge:'1,5 mL/kg',
-    instruction:'Intoxicação por anestésico local / lipofílicos com colapso. Max: 100 mL. EV em bolus.',
-    calc:p => { const d=Math.min(p*1.5,100); return { mg:fN(d,1), ml:fN(d,1), unit:'mL' }; } },
-  { id: 'glicose10-tox', name:'GLICOSE 10% (Betabloqueador/BCC)', presentation:'SG 10% 500 mL + NaCl 20% 20 mL', doseBadge:'manutenção',
-    instruction:'Suporte em intoxicação por betabloqueador/BCC junto com insulina. Max: 90 mL/h. Alternativa: SF 400 mL + SG 50% 100 mL.',
+  { id: 'atropina-tox', name:'ATROPINA (organofosforados)', presentation:'0,5 mg/mL', doseBadge:'0,02-0,05 mg/kg',
+    instruction:'Mín.: 0,1 mg. EV em bolus; repetir a cada 3-5 min, dobrando a dose até controle de secreções e ventilação. Não há dose cumulativa máxima na síndrome colinérgica grave.',
+    calc:p => { const d1=Math.max(0.1,p*0.02), d2=Math.max(0.1,p*0.05);
+      return { mg:fN(d1,2)+' - '+fN(d2,2), ml:fN(d1/0.5,2)+' - '+fN(d2/0.5,2), unit:'mg' }; } },
+  { id: 'bicarbonato-tox', name:'BICARBONATO DE SÓDIO 8,4%', presentation:'1 mEq/mL', doseBadge:'1-2 mEq/kg',
+    instruction:'Bloqueador de canal de sódio: bolus, repetir guiado por QRS e pH. Salicilato: solução com 132-150 mEq/L em SG 5%, infundida por peso para diurese 2-3 mL/kg/h; alvo de pH urinário 7,5-8,0 e sérico 7,50-7,55. Max: 250 mEq.',
+    calc:p => { const d1=Math.min(p,250), d2=Math.min(p*2,250);
+      return { mg:fN(d1,0)+' - '+fN(d2,0), ml:fN(d1,0)+' - '+fN(d2,0), unit:'mEq' }; } },
+  { id: 'emulsao-lipidica', name:'EMULSÃO LIPÍDICA 20%', presentation:'Pronta para uso', doseBadge:'1,5 mL/kg',
+    instruction:'Toxicidade sistêmica por anestésico local: bolus em 2-3 min, seguido de infusão de 0,25 mL/kg/min por 30-60 min. Pode repetir o bolus conforme resposta; total sugerido até 12 mL/kg. Para outros lipofílicos, somente sob orientação do CIATox.',
+    calc:p => { const b=Math.min(p*1.5,100), inf=p*0.25*60;
+      return { mg:fN(b,1), ml:fN(inf,0), mlLabel:'bolus mL / infusão mL/h (0,25 mL/kg/min)', unit:'mL' }; } },
+  { id: 'glicose10-tox', name:'GLICOSE — suporte à insulina em alta dose', presentation:'G10% ou concentração ajustada ao acesso', doseBadge:'bolus 0,5-1 g/kg; 0,5 g/kg/h',
+    instruction:'Se glicemia abaixo de 250 mg/dL, administrar bolus antes ou junto da insulina. Titular a infusão para manter 100-200 mg/dL; usar solução mais concentrada em acesso central. Monitorar glicemia a cada 15-30 min.',
     calc:p => {
       const m = p <= 10 ? p*4 : p <= 20 ? 40 + (p-10)*2 : 60 + (p-20);
       return { mg:fN(Math.min(m,90),0), ml:'--', mlLabel:'mL/h EV', unit:'mL/h' }; } },
@@ -407,11 +416,11 @@ const TOX_DRUGS: BolusDrug[] = [
   { id: 'hidroxicobalamina', name:'HIDROXICOBALAMINA', presentation:'5 g/200 mL', doseBadge:'70 mg/kg',
     instruction:'Intoxicação por cianeto (inalação de fumaça). Max: 5 g. EV.',
     calc:p => { const d=Math.min(p*70,5000); return { mg:fN(d,0), ml:fN(d/25,1), unit:'mg' }; } },
-  { id: 'insulina-tox', name:'INSULINA EUGLICÊMICA (Betabloqueador/BCC)', presentation:'100 UI/mL', doseBadge:'1 UI/kg',
-    instruction:'Bolus 1 UI/kg + infusão 1 UI/kg/h (diluir 100 UI em 100 mL SF = 1 UI/mL). Monitorizar glicemia e potássio.',
-    calc:p => ({ mg:fN(p,0), ml:fN(p,0), mlLabel:'bolus UI / infusão mL/h', unit:'UI' }) },
+  { id: 'insulina-tox', name:'INSULINA EM ALTA DOSE (BB/BCC)', presentation:'100 UI/mL', doseBadge:'bolus 1 UI/kg; 0,5-1 UI/kg/h',
+    instruction:'Diluir 100 UI em 100 mL de SF (1 UI/mL). Titular por resposta hemodinâmica, podendo exigir doses maiores sob orientação do CIATox. Associar glicose conforme glicemia. Monitorar glicemia a cada 15-30 min e potássio, magnésio e fósforo.',
+    calc:p => ({ mg:fN(p,0), ml:fN(p*0.5,1)+' - '+fN(p,1), mlLabel:'bolus UI / infusão mL/h', unit:'UI' }) },
   { id: 'naloxona-tox', name:'NALOXONA', presentation:'0,4 mg/mL', doseBadge:'0,1 mg/kg',
-    instruction:'Intoxicação por opioides. Dose inicial: 0,4-2 mg. Via: IV, IO, IM, IN.',
+    instruction:'Apneia ou intoxicação grave: max. 2 mg por dose, repetir conforme resposta. Havendo possibilidade de dependência com ventilação presente, titular doses menores (0,01 mg/kg) ao efeito respiratório. Considerar infusão em opioide de longa duração. Via: IV, IO, IM, IN.',
     calc:p => { const d1=Math.min(p*0.1,0.4), d2=Math.min(p*0.1,2);
       return { mg:fN(d1,2)+' - '+fN(d2,2), ml:fN(d1/0.4,1)+' - '+fN(d2/0.4,1), unit:'mg' }; } },
   { id: 'octreotide-tox', name:'OCTREOTIDE (Sulfonilureias)', presentation:'0,1 mg/mL', doseBadge:'1-2 mcg/kg',
@@ -431,7 +440,7 @@ const TOX_DRUGS: BolusDrug[] = [
     instruction:'Max: 10000 mg. Diluir em SF e infundir nas próximas 16 h.',
     calc:p => { const d=Math.min(p*100,10000); return { mg:fN(d,0), ml:fN(d/100,1), mlLabel:'diluir em '+fN(d/10,0)+' mL de SF', unit:'mg' }; } },
   { id: 'nac-alternativo', name:'N-ACETILCISTEÍNA — Infusão única (alternativo)', presentation:'15 g + SF 350 mL (30 mg/mL)', doseBadge:'15 mg/kg/h',
-    instruction:'Após a dose de ataque da 1ª hora. Max: 1500 mg/h.',
+    instruction:'Após o ataque de 150 mg/kg na primeira hora. Manter somente sob protocolo ou orientação do CIATox, até paracetamol indetectável, melhora de AST/ALT e critérios clínico-laboratoriais de interrupção. Max: 1500 mg/h.',
     calc:p => { const d=Math.min(p*15,1500); return { mg:fN(d,0), ml:fN(d/30,1), mlLabel:'mg/h = mL/h da solução 30 mg/mL', unit:'mg/h' }; } }
 ]
 
@@ -505,9 +514,9 @@ const INFUSION_DATA: Record<string, InfusionDrug> = {
     id: 'nitroprussiato', name: 'NITROPRUSSIATO', category: 'vasoativos', color: '#78716C', unit: 'mcg/kg/min', range: [0.5, 10], step: 0.5, defaultVal: 1,
     presentation: '25 mg/mL', warning: 'Diluir em SG 5%. Proteger da luz.',
     dilutions: {
-      small: { drug: 1, diluent: 40, conc: 600, vol: 41, formula: 0.1 },
-      medium: { drug: 1, diluent: 40, conc: 600, vol: 41, formula: 0.1 },
-      large: { drug: 2, diluent: 80, conc: 600, vol: 82, formula: 0.1 },
+      small: { drug: 1, diluent: 40, conc: 610, vol: 41, formula: 0.1 },
+      medium: { drug: 1, diluent: 40, conc: 610, vol: 41, formula: 0.1 },
+      large: { drug: 2, diluent: 80, conc: 610, vol: 82, formula: 0.1 },
     },
   },
   milrinona: {
@@ -577,7 +586,7 @@ const INFUSION_DATA: Record<string, InfusionDrug> = {
     id: 'propofol_inf', name: 'PROPOFOL 1%', category: 'sedativos', color: '#F59E0B', unit: 'mg/kg/h', range: [1, 4], step: 0.5, defaultVal: 2,
     presentation: '10 mg/mL', warning: 'Não usar em crianças para sedação prolongada',
     dilutions: {
-      small: { drug: 20, diluent: 20, conc: 5, vol: 40, formula: 5 },
+      small: { drug: 20, diluent: 0, conc: 10, vol: 20, formula: 10 },
       medium: { drug: 50, diluent: 0, conc: 10, vol: 50, formula: 10 },
       large: { drug: 50, diluent: 0, conc: 10, vol: 50, formula: 10 },
     },
@@ -787,7 +796,12 @@ function DrugCard({ drug, peso, ageY, highlighted, onPrep }: {
         className={`w-full flex justify-between items-center text-left px-4 py-3 gap-3 border-none cursor-pointer min-h-[44px] ${isHighlight ? 'bg-accent' : 'bg-[#333]'}`}
       >
         <div className="min-w-0">
-          <div className={`font-bold text-[0.95rem] ${isHighlight ? 'text-white' : 'text-text-primary'}`}>{drug.name}</div>
+          <div className={`font-bold text-[0.95rem] ${isHighlight ? 'text-white' : 'text-text-primary'}`}>
+            {drug.name}
+            {drug.naoRotineiro && (
+              <span className="ml-2 align-middle text-[0.5rem] font-bold tracking-wide px-1.5 py-0.5 rounded bg-warning/15 text-warning border border-warning/30 whitespace-nowrap">NÃO ROTINEIRO</span>
+            )}
+          </div>
           <div className={`text-[0.8rem] mt-0.5 ${isHighlight ? 'text-white/80' : 'text-text-muted'}`}>{drug.presentation}</div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -1354,6 +1368,14 @@ export default function PedGuide() {
               )}
             </div>
           </div>
+          {peso !== null && peso > 0 && peso < 3 && (
+            <div className="max-w-[500px] mx-auto mt-2.5 flex items-center gap-2 bg-warning/10 border border-warning/30 rounded-lg px-3 py-2 text-[0.72rem] font-semibold text-warning">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="shrink-0">
+                <path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+              </svg>
+              Neonato — seguir protocolo específico de reanimação neonatal
+            </div>
+          )}
         </div>
       </div>
 
@@ -1643,6 +1665,9 @@ export default function PedGuide() {
             </Collapsible>
 
             <Collapsible title="Toxicologia e antídotos" badge="TOX" badgeColor="#4CAF50">
+              <div className="bg-warning/10 border-l-4 border-warning rounded-lg px-3 py-2.5 mb-3.5 text-[0.78rem] leading-relaxed text-warning font-medium">
+                O contato com o CIATox é obrigatório nas intoxicações graves, nos esquemas de antídotos de alto risco e sempre que houver dúvida sobre agente, dose, formulação, indicação de diálise ou critério de interrupção. As doses abaixo são medidas iniciais.
+              </div>
               {TOX_DRUGS.map(drug => (
                 <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
