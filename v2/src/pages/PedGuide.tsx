@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { Disclaimer } from '../components/layout/Disclaimer'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
@@ -91,13 +92,23 @@ interface InfusionDrug {
 }
 
 interface ScenarioConfig {
+  /** Titulo, descricao e cor do cartao — fonte unica para a lista e para a tela do cenario */
+  title: string
+  desc: string
+  color: string
   highlight: string[]
   sections: string[]
   scrollTo: string | null
   infusionHighlight: string[]
+  /** Blocos de apoio que a tela do cenario mostra antes das drogas */
+  checklist?: boolean
+  fluids?: boolean
 }
 
-type PedView = 'home' | 'pcr' | 'cenarios' | 'calculadoras'
+type PedView = 'home' | 'pcr' | 'cenarios' | 'cenario' | 'calculadoras'
+
+/** De onde veio o peso em uso. Só 'peso' é aferido; a cor Broselow é estimativa. */
+type PesoSource = 'peso' | 'broselow' | null
 
 // ==========================================
 // DADOS BROSELOW
@@ -153,11 +164,6 @@ const PCR_DRUGS: BolusDrug[] = [
     id: 'bicarbonato', name: 'BICARBONATO DE SÓDIO 8,4%', presentation: '1 mEq/mL', doseBadge: '1 mEq/kg',
     instruction: 'PCR prolongada, acidose documentada. Diluir 1:1 com Água Destilada.',
     calc: (p) => { const d=Math.min(p,250); return { mg:fN(d,0), ml:fN(d,0), mlLabel:'+ igual vol. AD', unit:'mEq' }; }},
-  {
-    id: 'cálcio', name: 'GLUCONATO DE CÁLCIO 10%', presentation: '100 mg/mL', doseBadge: '60-100 mg/kg',
-    instruction: 'Hipocalcemia, Hipercalemia. Max: 2000 mg. Infundir lento.',
-    calc: (p) => { const d = Math.min(p * 60, 2000); return { mg: d.toFixed(0), ml: (d / 100).toFixed(1), unit: 'mg' } },
-  },
   {
     id: 'atropina', name: 'ATROPINA', presentation: '0,5 mg/mL', doseBadge: '0,02 mg/kg',
     instruction: 'Bradicardia com pulso. Max: 1 mg.',
@@ -433,6 +439,16 @@ const TOX_DRUGS: BolusDrug[] = [
 // INFUSÕES CONTÍNUAS PEDIÁTRICAS
 // ==========================================
 
+/** Todas as listas de bolus na ordem em que aparecem, para busca por id. */
+const ALL_BOLUS_DRUGS = (): BolusDrug[] => [
+  ...PCR_DRUGS, ...IOT_DRUGS, ...EMERGENCY_DRUGS, ...CONVULSION_DRUGS,
+  ...NEURO_DRUGS, ...PAIN_DRUGS, ...RESP_DRUGS, ...AGE_DRUGS, ...TOX_DRUGS,
+]
+
+function findDrug(id: string): BolusDrug | undefined {
+  return ALL_BOLUS_DRUGS().find(d => d.id === id)
+}
+
 const INFUSION_DATA: Record<string, InfusionDrug> = {
   dobutamina: {
     id: 'dobutamina', name: 'DOBUTAMINA', category: 'vasoativos', color: '#F97316', unit: 'mcg/kg/min', range: [2.5, 20], step: 0.5, defaultVal: 5,
@@ -636,42 +652,51 @@ function calcDoseFromRate(inf: InfusionDrug, mlh: number, peso: number): number 
 
 const SCENARIO_CONFIGS: Record<string, ScenarioConfig> = {
   anafilaxia: {
+    title: 'Anafilaxia', desc: 'Epinefrina IM, corticoide, anti-histamínico', color: '#F44336',
     highlight: ['epinefrina-im', 'hidrocortisona', 'difenidramina'],
     sections: ['emergências'],
     scrollTo: 'epinefrina-im',
     infusionHighlight: [],
   },
   convulsão: {
+    title: 'Status Epilepticus', desc: 'Diazepam, midazolam, fenitoína, fenobarbital', color: '#FFC107',
     highlight: ['diazepam', 'midazolam-conv', 'fenitoina', 'fenobarbital', 'levetiracetam'],
     sections: ['convulsão'],
     scrollTo: 'diazepam',
     infusionHighlight: [],
   },
   isr: {
+    title: 'IOT / ISR', desc: 'Checklist, cetamina, rocurônio, succinilcolina', color: '#2196F3',
+    checklist: true,
     highlight: ['cetamina', 'midazolam', 'fentanil', 'rocuronio'],
     sections: ['iot', 'drogas-iot'],
     scrollTo: 'cetamina',
     infusionHighlight: [],
   },
   choque: {
+    title: 'Choque', desc: 'Fluidos, epinefrina, norepinefrina, dobutamina', color: '#FF5252',
+    fluids: true,
     highlight: [],
     sections: ['fluidos', 'infusoes'],
     scrollTo: null,
     infusionHighlight: ['epinefrina_inf', 'norepinefrina', 'dobutamina'],
   },
   'choque-cardio': {
+    title: 'Choque cardiogênico', desc: 'Dobutamina, milrinona, epinefrina', color: '#8B5CF6',
     highlight: [],
     sections: ['infusoes'],
     scrollTo: null,
     infusionHighlight: ['dobutamina', 'milrinona', 'epinefrina_inf'],
   },
   'pos-pcr': {
+    title: 'Pós-PCR / Arritmia', desc: 'Amiodarona, epinefrina, norepinefrina', color: '#F97316',
     highlight: [],
     sections: ['infusoes'],
     scrollTo: null,
     infusionHighlight: ['amiodarona_inf', 'epinefrina_inf', 'norepinefrina'],
   },
   sedação: {
+    title: 'Sedação pós-IOT', desc: 'Fentanil, midazolam, dexmedetomidina, cetamina', color: '#10B981',
     highlight: [],
     sections: ['infusoes'],
     scrollTo: null,
@@ -748,18 +773,34 @@ function DrugCard({ drug, peso, ageY, highlighted, onPrep }: {
     ? drug.calc(peso, ageY ?? null, ageY != null ? ageY * 12 : null)
     : null
   const isHighlight = drug.highlight || highlighted
+  // A droga destacada por um cenario e a que o medico veio buscar: abre expandida.
+  const [open, setOpen] = useState(isHighlight)
+  useEffect(() => { if (isHighlight) setOpen(true) }, [isHighlight])
 
   return (
     <div className={`rounded-xl border-2 mb-3 overflow-hidden ${isHighlight ? 'border-accent bg-accent/10' : 'border-border-card bg-bg-hover'}`}>
       {/* Header */}
-      <div className={`flex justify-between items-center px-4 py-3 gap-3 flex-wrap ${isHighlight ? 'bg-accent' : 'bg-[#333]'}`}>
-        <div>
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        className={`w-full flex justify-between items-center text-left px-4 py-3 gap-3 border-none cursor-pointer min-h-[44px] ${isHighlight ? 'bg-accent' : 'bg-[#333]'}`}
+      >
+        <div className="min-w-0">
           <div className={`font-bold text-[0.95rem] ${isHighlight ? 'text-white' : 'text-text-primary'}`}>{drug.name}</div>
           <div className={`text-[0.8rem] mt-0.5 ${isHighlight ? 'text-white/80' : 'text-text-muted'}`}>{drug.presentation}</div>
         </div>
-        <div className="font-mono text-[0.75rem] font-semibold px-2.5 py-1.5 bg-bg-elevated text-text-primary rounded-md">{drug.doseBadge}</div>
-      </div>
-      {/* Body */}
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="font-mono text-[0.75rem] font-semibold px-2.5 py-1.5 bg-bg-elevated text-text-primary rounded-md">{drug.doseBadge}</div>
+          <ChevronDown
+            size={16}
+            className={`transition-transform duration-300 ${open ? 'rotate-180' : ''} ${isHighlight ? 'text-white' : 'text-text-muted'}`}
+          />
+        </div>
+      </button>
+      {/* Body — grid 0fr/1fr anima a altura sem precisar medi-la */}
+      <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+        <div className="overflow-hidden min-h-0">
       <div className="p-4">
         <div className="text-[0.8rem] text-text-muted leading-relaxed mb-3">{drug.instruction}</div>
         {result && (
@@ -798,6 +839,8 @@ function DrugCard({ drug, peso, ageY, highlighted, onPrep }: {
           </button>
         )}
       </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -833,16 +876,31 @@ function InfusionCard({ inf, peso, highlighted }: {
 
   const decimals = inf.step < 0.1 ? 2 : inf.step < 1 ? 1 : 0
 
+  // A infusao destacada por um cenario abre expandida.
+  const [open, setOpen] = useState(highlighted)
+  useEffect(() => { if (highlighted) setOpen(true) }, [highlighted])
+
   return (
     <div className={`rounded-xl border-2 mb-3 overflow-hidden transition-all ${highlighted ? 'border-blue-400 shadow-[0_0_0_3px_rgba(66,165,245,0.3)]' : 'border-border-card'}`}>
       {/* Header */}
-      <div className="flex justify-between items-center px-4 py-3 text-white flex-wrap gap-2" style={{ background: inf.color }}>
-        <span className="font-bold text-[0.9rem]">{inf.name}</span>
-        <span className="font-mono text-[0.8rem] bg-white/20 px-2.5 py-1 rounded-md">
-          {inf.range[0]}-{inf.range[1]} {inf.unit}
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        className="w-full flex justify-between items-center text-left px-4 py-3 text-white gap-2 border-none cursor-pointer min-h-[44px]"
+        style={{ background: inf.color }}
+      >
+        <span className="font-bold text-[0.9rem] min-w-0">{inf.name}</span>
+        <span className="flex items-center gap-2 shrink-0">
+          <span className="font-mono text-[0.8rem] bg-white/20 px-2.5 py-1 rounded-md">
+            {inf.range[0]}-{inf.range[1]} {inf.unit}
+          </span>
+          <ChevronDown size={16} className={`transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
         </span>
-      </div>
-      {/* Body */}
+      </button>
+      {/* Body — grid 0fr/1fr anima a altura sem precisar medi-la */}
+      <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+        <div className="overflow-hidden min-h-0">
       <div className="p-3.5 bg-bg-card">
         {/* Preparo */}
         <div className="bg-bg-elevated border border-border-card rounded-lg p-3 mb-3">
@@ -901,6 +959,8 @@ function InfusionCard({ inf, peso, highlighted }: {
           </div>
         </div>
       </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -942,22 +1002,18 @@ function pasMinima(ageY: number): number {
   return ageY > 10 ? 90 : Math.round(70 + 2 * ageY)
 }
 
-/** Peso estimado por comprimento (cm). Faixas do Ped Guide do monolito. */
-const ALTURA_PESO: [number, number, number][] = [
-  [40, 47, 3], [48, 54, 4], [55, 59, 5], [60, 63, 6], [64, 66, 7], [67, 70, 8],
-  [71, 74, 9], [75, 78, 10], [79, 83, 11], [84, 87, 12], [88, 91, 13], [92, 94, 14],
-  [95, 98, 15], [99, 101, 16], [102, 104, 17], [105, 108, 18], [109, 112, 19],
-  [113, 116, 20], [117, 121, 22], [122, 124, 24], [125, 127, 26], [128, 130, 28],
-  [131, 133, 30], [134, 137, 32], [138, 140, 34], [141, 143, 36], [144, 149, 40],
-  [150, 154, 45], [155, 160, 50],
-]
+/** Le um campo cru: devolve o valor so quando esta dentro da faixa, e sinaliza o que ficou fora. */
+function naFaixa(raw: string, min: number, max: number): { valor: number | null; invalido: boolean } {
+  if (raw.trim() === '') return { valor: null, invalido: false }
+  const v = parseFloat(raw.replace(',', '.'))
+  if (!isFinite(v) || v < min || v > max) return { valor: null, invalido: true }
+  return { valor: v, invalido: false }
+}
 
-function pesoPorAltura(cm: number): number | null {
-  if (!isFinite(cm) || cm <= 0) return null
-  for (const [min, max, peso] of ALTURA_PESO) {
-    if (cm >= min && cm <= max) return peso
-  }
-  return cm > 160 ? 60 : null
+/** Cor Broselow pelo comprimento: a fita mede e devolve a cor — mesma tabela, um caminho so. */
+function corPorComprimento(cm: number): BroselowEntry | null {
+  if (!isFinite(cm)) return null
+  return BROSELOW_DATA.find(e => cm >= e.min && cm <= e.max) ?? null
 }
 
 // ==========================================
@@ -967,18 +1023,21 @@ function pesoPorAltura(cm: number): number | null {
 export default function PedGuide() {
   const _pedToast = useToast(); void _pedToast
 
-  // Peso e Broselow
-  const [peso, setPeso] = useState<number | null>(null)
+  // Entradas cruas: guardam o que foi digitado, mesmo fora da faixa, para o
+  // medico continuar vendo o proprio numero enquanto o erro e mostrado.
+  const [pesoRaw, setPesoRaw] = useState('')
+  const [idadeRaw, setIdadeRaw] = useState('')
+  const [alturaRaw, setAlturaRaw] = useState('')
   const [selectedBroselow, setSelectedBroselow] = useState<BroselowEntry | null>(null)
   const [broselowOpen, setBroselowOpen] = useState(false)
-  const [source, setSource] = useState<'peso' | 'broselow' | null>(null)
 
-  // Idade em anos: destrava sinais vitais e doses por faixa etaria
-  const [idade, setIdade] = useState<number | null>(null)
+  const pesoIn = naFaixa(pesoRaw, 0.5, 50)
+  const idadeIn = naFaixa(idadeRaw, 0, 18)
+  const alturaIn = naFaixa(alturaRaw, BROSELOW_DATA[0].min, BROSELOW_DATA[BROSELOW_DATA.length - 1].max)
 
   // Views
   const [view, setView] = useState<PedView>('home')
-  const [scenarioBackLabel, setScenarioBackLabel] = useState<string | null>(null)
+  const [scenarioKey, setScenarioKey] = useState<string | null>(null)
 
   // Scenario highlights
   const [highlightedDrugs, setHighlightedDrugs] = useState<string[]>([])
@@ -991,6 +1050,22 @@ export default function PedGuide() {
   // Infusion search
   const [infusionSearch, setInfusionSearch] = useState('')
 
+  // Idade: campo explicito manda; sem ele, vale a idade da cor Broselow escolhida.
+  const idadeEfetiva = useMemo(() => {
+    if (idadeIn.valor !== null) return idadeIn.valor
+    if (selectedBroselow) return selectedBroselow.idadeMeses / 12
+    return null
+  }, [idadeIn.valor, selectedBroselow])
+
+  // Peso: so o aferido e a cor Broselow entram nos calculos. Idade e
+  // comprimento informam, mas nao definem a dose por conta propria.
+  const { peso, source } = useMemo<{ peso: number | null; source: PesoSource }>(() => {
+    if (pesoIn.valor !== null) return { peso: pesoIn.valor, source: 'peso' }
+    if (selectedBroselow) return { peso: selectedBroselow.peso, source: 'broselow' }
+    return { peso: null, source: null }
+  }, [pesoIn.valor, selectedBroselow])
+
+  const estimado = source !== null && source !== 'peso'
   const p = peso ?? 0
 
   // Broselow bidirecional
@@ -1025,6 +1100,8 @@ export default function PedGuide() {
       first: Math.round(p * 2),
       second: Math.round(p * 4),
       cardio: `${Math.round(p * 0.5)}-${Math.round(p)}`,
+      // PALS 2025: iniciar 0,5-1 J/kg; se ineficaz, subir para 2 J/kg
+      cardioMax: Math.round(p * 2),
     }
   }, [p])
 
@@ -1082,27 +1159,27 @@ export default function PedGuide() {
 
   // Handlers
   function handlePesoChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const v = parseFloat(e.target.value)
-    if (!isNaN(v) && v >= 0.5 && v <= 50) {
-      setPeso(v)
-      setSource('peso')
-      setSelectedBroselow(null)
-    } else if (e.target.value === '') {
-      setPeso(null)
-      setSource(null)
-    }
+    setPesoRaw(e.target.value)
+    if (e.target.value.trim() !== '') setSelectedBroselow(null)
   }
 
   function handleBroselowSelect(entry: BroselowEntry) {
     setSelectedBroselow(entry)
-    setPeso(entry.peso)
-    setSource('broselow')
+    setPesoRaw('')
     setBroselowOpen(false)
+  }
+
+  // Comprimento dentro do alcance da fita: acende a cor correspondente.
+  function handleAlturaChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setAlturaRaw(e.target.value)
+    const cm = parseFloat(e.target.value.replace(',', '.'))
+    const cor = corPorComprimento(cm)
+    if (cor) handleBroselowSelect(cor)
   }
 
   function showView(v: PedView) {
     setView(v)
-    setScenarioBackLabel(null)
+    setScenarioKey(null)
     setHighlightedDrugs([])
     setHighlightedInfusions([])
     setOpenSections([])
@@ -1112,20 +1189,29 @@ export default function PedGuide() {
   function loadScenario(key: string) {
     const cfg = SCENARIO_CONFIGS[key]
     if (!cfg) return
-    setView('calculadoras')
-    setScenarioBackLabel('Voltar aos cenários')
+    setScenarioKey(key)
+    setView('cenario')
     setHighlightedDrugs(cfg.highlight)
     setHighlightedInfusions(cfg.infusionHighlight)
     setOpenSections(cfg.sections)
     window.scrollTo(0, 0)
   }
 
+  /** Do cenario para a lista completa, sem perder o caminho de volta. */
+  function verTodasCalculadoras() {
+    setView('calculadoras')
+    window.scrollTo(0, 0)
+  }
+
   function handleBackFromCalc() {
-    if (scenarioBackLabel) {
-      showView('cenarios')
-    } else {
-      showView('home')
+    // Veio de um cenario: volta para ele, nao para a lista — o medico perderia
+    // o contexto que acabou de escolher.
+    if (scenarioKey) {
+      setView('cenario')
+      window.scrollTo(0, 0)
+      return
     }
+    showView('home')
   }
 
   function handlePrep(key: string) {
@@ -1144,6 +1230,47 @@ export default function PedGuide() {
     return openSections.includes(sectionKey)
   }
 
+  // Blocos usados tanto pela tela de Calculadoras quanto pela tela de cenario
+  function renderChecklist() {
+    return (
+      <div className="bg-bg-hover rounded-xl p-4">
+        {IOT_CHECKLIST_ITEMS.map((item, i) => {
+          let value: string | undefined
+          if (item.valueKey && equipment) {
+            if (item.valueKey === 'lâmina') value = equipment.checkLamina
+            else if (item.valueKey === 'tubo') value = equipment.checkTubo
+            else if (item.valueKey === 'bougie') value = equipment.checkBougie
+            else if (item.valueKey === 'lma') value = equipment.checkLma
+          }
+          return <ChecklistItem key={i} text={item.text} value={value} />
+        })}
+      </div>
+    )
+  }
+
+  function renderFluids() {
+    if (!fluids) return <div className="text-center text-[0.8rem] text-warning py-4">Informe o peso para calcular</div>
+    return (
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="bg-bg-hover rounded-xl p-4 text-center border-2 border-border-card">
+          <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Bolus Cristaloide</div>
+          <div className="font-mono text-2xl font-bold text-text-primary">{fluids.bolus}</div>
+          <div className="text-[0.75rem] text-text-muted mt-1">mL (20 mL/kg)</div>
+        </div>
+        <div className="bg-bg-hover rounded-xl p-4 text-center border-2 border-border-card">
+          <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Manutenção/hora</div>
+          <div className="font-mono text-2xl font-bold text-text-primary">{fluids.manutenção}</div>
+          <div className="text-[0.75rem] text-text-muted mt-1">mL/h (Holliday-Segar)</div>
+        </div>
+        <div className="bg-bg-hover rounded-xl p-4 text-center border-2 border-border-card">
+          <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Volemia Estimada</div>
+          <div className="font-mono text-2xl font-bold text-text-primary">{fluids.volemia}</div>
+          <div className="text-[0.75rem] text-text-muted mt-1">mL (80 mL/kg)</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-bg-primary">
       <Disclaimer />
@@ -1154,24 +1281,35 @@ export default function PedGuide() {
         <div className="max-w-[500px] mx-auto">
           <div className="grid grid-cols-2 gap-3">
             {/* Peso */}
-            <div className={`rounded-xl p-3.5 border-2 transition-all ${source === 'peso' ? 'border-accent bg-accent/15' : 'border-border-card bg-bg-hover'}`}>
-              <div className="flex items-center justify-between mb-2">
+            <div className={`rounded-xl p-3.5 border-2 transition-all ${
+              pesoIn.invalido ? 'border-danger bg-danger/10'
+                : source === 'peso' ? 'border-accent bg-accent/15'
+                : 'border-border-card bg-bg-hover'
+            }`}>
+              <div className="flex items-center justify-between mb-2 gap-1.5">
                 <span className="text-[0.75rem] font-bold uppercase text-text-muted">Peso</span>
                 {source === 'peso' && (
                   <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded bg-accent text-white">FONTE</span>
+                )}
+                {estimado && (
+                  <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded bg-border-card text-text-secondary">ESTIMADO</span>
                 )}
               </div>
               <div className="flex items-center gap-1.5">
                 <input
                   type="number"
                   inputMode="decimal"
-                  value={peso ?? ''}
+                  value={pesoRaw !== '' ? pesoRaw : (estimado && peso !== null ? peso : '')}
                   onChange={handlePesoChange}
                   placeholder="--"
                   min={0.5} max={50} step={0.1}
-                  className="flex-1 font-mono text-[1.4rem] font-bold bg-transparent border-none outline-none text-text-primary w-full"
+                  aria-invalid={pesoIn.invalido}
+                  className={`min-w-0 flex-1 font-mono text-[1.4rem] font-bold bg-transparent border-none outline-none w-full ${pesoIn.invalido ? 'text-danger' : 'text-text-primary'}`}
                 />
                 <span className="text-[0.85rem] font-semibold text-text-muted">kg</span>
+              </div>
+              <div className={`text-[0.65rem] mt-1 ${pesoIn.invalido ? 'text-danger font-bold' : 'text-text-muted'}`}>
+                {estimado && !pesoIn.invalido ? 'estimado pela cor Broselow' : '0,5 a 50 kg'}
               </div>
             </div>
 
@@ -1300,13 +1438,14 @@ export default function PedGuide() {
                 <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">Cardioversão (0,5-1 J/kg)</div>
                 <div className="font-mono text-3xl font-bold">{defib?.cardio ?? '--'}</div>
                 <div className="text-base opacity-80">Joules</div>
+                <div className="text-[0.75rem] opacity-70 mt-1">refratária: 2 J/kg ({defib?.cardioMax ?? '--'} J)</div>
               </div>
             </div>
 
             {/* PCR Drugs */}
             <Collapsible title="Drogas de parada cardiorrespiratória" badge="PCR" badgeColor="#F44336">
               {PCR_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
@@ -1370,18 +1509,10 @@ export default function PedGuide() {
             </button>
             <h2 className="text-xl font-bold text-text-primary mb-4">Cenários</h2>
 
-            {[
-              { key: 'anafilaxia', title: 'Anafilaxia', desc: 'Epinefrina IM, corticoide, anti-histamínico', color: '#F44336' },
-              { key: 'convulsão', title: 'Status Epilepticus', desc: 'Diazepam, midazolam, fenitoína, fenobarbital', color: '#FFC107' },
-              { key: 'isr', title: 'IOT / ISR', desc: 'Checklist, cetamina, rocurônio, succinilcolina', color: '#2196F3' },
-              { key: 'choque', title: 'Choque', desc: 'Fluidos, epinefrina, norepinefrina, dobutamina', color: '#FF5252' },
-              { key: 'choque-cardio', title: 'Choque cardiogênico', desc: 'Dobutamina, milrinona, epinefrina', color: '#8B5CF6' },
-              { key: 'pos-pcr', title: 'Pós-PCR / Arritmia', desc: 'Amiodarona, epinefrina, norepinefrina', color: '#F97316' },
-              { key: 'sedação', title: 'Sedação pós-IOT', desc: 'Fentanil, midazolam, dexmedetomidina, cetamina', color: '#10B981' },
-            ].map(s => (
+            {Object.entries(SCENARIO_CONFIGS).map(([key, s]) => (
               <div
-                key={s.key}
-                onClick={() => loadScenario(s.key)}
+                key={key}
+                onClick={() => loadScenario(key)}
                 className="bg-bg-hover border border-border-card rounded-xl p-4 mb-2.5 cursor-pointer active:border-accent transition-colors border-l-4"
                 style={{ borderLeftColor: s.color }}
               >
@@ -1392,79 +1523,131 @@ export default function PedGuide() {
           </div>
         )}
 
+        {/* TELA DE UM CENARIO — so o que aquele cenario pede */}
+        {view === 'cenario' && scenarioKey && SCENARIO_CONFIGS[scenarioKey] && (() => {
+          const cfg = SCENARIO_CONFIGS[scenarioKey]
+          const drogas = cfg.highlight.map(findDrug).filter((d): d is BolusDrug => !!d)
+          const infusoes = cfg.infusionHighlight
+            .map(id => INFUSION_DATA[id])
+            .filter((i): i is InfusionDrug => !!i)
+          return (
+            <div className="pt-5 animate-[slide-left_0.3s_ease]">
+              <button
+                onClick={() => showView('cenarios')}
+                className="bg-transparent border border-border-card text-text-muted px-4 py-2 rounded-lg text-sm cursor-pointer mb-4 active:bg-bg-hover min-h-[44px]"
+              >
+                ← Voltar aos cenários
+              </button>
+              <h2 className="text-xl font-bold mb-1" style={{ color: cfg.color }}>{cfg.title}</h2>
+              <p className="text-xs text-text-muted mb-5">{cfg.desc}</p>
+
+              {cfg.checklist && (
+                <div className="mb-5">
+                  <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Checklist de intubação</div>
+                  {renderChecklist()}
+                </div>
+              )}
+
+              {cfg.fluids && (
+                <div className="mb-5">
+                  <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Fluidos e volumes</div>
+                  {renderFluids()}
+                </div>
+              )}
+
+              {drogas.length > 0 && (
+                <div className="mb-5">
+                  <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Medicações</div>
+                  {drogas.map(drug => (
+                    <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted onPrep={handlePrep} />
+                  ))}
+                </div>
+              )}
+
+              {infusoes.length > 0 && (
+                <div className="mb-5">
+                  <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Infusões contínuas</div>
+                  <div className="bg-blue-500 text-white px-4 py-2 rounded-2xl text-[0.85rem] text-center mb-3 font-medium">
+                    Faixa: <strong>{getWeightCategoryLabel(weightCat)}</strong>
+                  </div>
+                  {infusoes.map(inf => (
+                    <InfusionCard key={inf.id} inf={inf} peso={p} highlighted />
+                  ))}
+                </div>
+              )}
+
+              <button
+                onClick={verTodasCalculadoras}
+                className="w-full bg-transparent border border-border-card text-text-muted px-4 py-3 rounded-lg text-sm cursor-pointer min-h-[44px] active:bg-bg-hover"
+              >
+                Ver todas as calculadoras
+              </button>
+            </div>
+          )
+        })()}
+
         {/* CALCULADORAS VIEW */}
         {view === 'calculadoras' && (
           <div className="pt-5">
             <button onClick={handleBackFromCalc} className="bg-transparent border border-border-card text-text-muted px-4 py-2 rounded-lg text-sm cursor-pointer mb-4 active:bg-bg-hover min-h-[44px]">
-              ← {scenarioBackLabel || 'Voltar'}
+              ← {scenarioKey ? `Voltar a ${SCENARIO_CONFIGS[scenarioKey]?.title ?? 'cenário'}` : 'Voltar'}
             </button>
             <h2 className="text-xl font-bold text-text-primary mb-4">Calculadoras</h2>
 
             {/* IOT Checklist */}
             <Collapsible title="Checklist de intubação orotraqueal" badge="IOT" badgeColor="#4CAF50" defaultOpen={isSectionOpen('iot')}>
-              <div className="bg-bg-hover rounded-xl p-4">
-                {IOT_CHECKLIST_ITEMS.map((item, i) => {
-                  let value: string | undefined
-                  if (item.valueKey && equipment) {
-                    if (item.valueKey === 'lâmina') value = equipment.checkLamina
-                    else if (item.valueKey === 'tubo') value = equipment.checkTubo
-                    else if (item.valueKey === 'bougie') value = equipment.checkBougie
-                    else if (item.valueKey === 'lma') value = equipment.checkLma
-                  }
-                  return <ChecklistItem key={i} text={item.text} value={value} />
-                })}
-              </div>
+              {renderChecklist()}
             </Collapsible>
 
             {/* IOT Drugs */}
             <Collapsible title="Drogas de intubação (ISR)" badge="ISR" badgeColor="#8B5CF6" defaultOpen={isSectionOpen('drogas-iot')}>
               {IOT_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Emergency Drugs */}
             <Collapsible title="Outras drogas de emergência" badge="SOS" badgeColor="#F44336" defaultOpen={isSectionOpen('emergências')}>
               {EMERGENCY_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Convulsion Drugs */}
             <Collapsible title="Anticonvulsivantes" badge="SE" badgeColor="#FFC107" defaultOpen={isSectionOpen('convulsão')}>
               {CONVULSION_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             {/* Neuro Drugs */}
             <Collapsible title="Neuroproteção e Osmoterapia" badge="HIC" badgeColor="#2196F3" defaultOpen={isSectionOpen('neuro')}>
               {NEURO_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             <Collapsible title="Dor e sedação para procedimentos" badge="DOR" badgeColor="#C15C82">
               {PAIN_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             <Collapsible title="Crise asmática e broncoespasmo" badge="RESP" badgeColor="#2196F3">
               {RESP_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             <Collapsible title="Toxicologia e antídotos" badge="TOX" badgeColor="#4CAF50">
               {TOX_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
             <Collapsible title="Anti-histamínicos por idade" badge="IDADE" badgeColor="#8B5CF6">
               {AGE_DRUGS.map(drug => (
-                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idade} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
+                <DrugCard key={drug.id} drug={drug} peso={p} ageY={idadeEfetiva} highlighted={highlightedDrugs.includes(drug.id)} onPrep={handlePrep} />
               ))}
             </Collapsible>
 
@@ -1478,15 +1661,20 @@ export default function PedGuide() {
                   min={0}
                   max={18}
                   step={0.5}
-                  value={idade ?? ''}
-                  onChange={e => setIdade(e.target.value === '' ? null : parseFloat(e.target.value))}
+                  value={idadeRaw}
+                  onChange={e => setIdadeRaw(e.target.value)}
                   placeholder="--"
-                  className="w-[110px] bg-bg-elevated border-2 border-border-card rounded-lg text-text-primary text-base px-3 py-2.5 min-h-[44px] outline-none focus:border-accent"
+                  aria-invalid={idadeIn.invalido}
+                  className={`w-[110px] bg-bg-elevated border-2 rounded-lg text-base px-3 py-2.5 min-h-[44px] outline-none ${idadeIn.invalido ? 'border-danger text-danger' : 'border-border-card text-text-primary focus:border-accent'}`}
                 />
+                {idadeIn.invalido && <span className="text-[0.75rem] font-bold text-danger">0 a 18 anos</span>}
+                {!idadeIn.invalido && idadeRaw === '' && idadeEfetiva !== null && (
+                  <span className="text-[0.7rem] text-text-muted">estimada pela cor Broselow</span>
+                )}
               </div>
-              <div className={`rounded-lg border-l-4 p-3 mb-3 text-[0.85rem] ${idade !== null ? 'border-accent bg-bg-elevated text-text-primary' : 'border-border-card bg-bg-elevated text-text-muted'}`}>
-                {idade !== null
-                  ? <>PAS mínima estimada: <strong className="font-mono">{pasMinima(idade)} mmHg</strong></>
+              <div className={`rounded-lg border-l-4 p-3 mb-3 text-[0.85rem] ${idadeEfetiva !== null ? 'border-accent bg-bg-elevated text-text-primary' : 'border-border-card bg-bg-elevated text-text-muted'}`}>
+                {idadeEfetiva !== null
+                  ? <>PAS mínima estimada: <strong className="font-mono">{pasMinima(idadeEfetiva)} mmHg</strong></>
                   : 'Informe a idade para estimar a PAS mínima'}
               </div>
               <div className="overflow-x-auto">
@@ -1514,27 +1702,38 @@ export default function PedGuide() {
               <p className="text-[0.75rem] text-text-muted mt-2">PAS mínima = 70 + (2 x idade). A partir de 10 anos, considera-se 90 mmHg como piso.</p>
             </Collapsible>
 
-            <Collapsible title="Estimar peso por comprimento" badge="CM" badgeColor="#2196F3">
-              <div className="flex items-center gap-3 mb-3">
+            <Collapsible title="Cor Broselow pelo comprimento" badge="CM" badgeColor="#2196F3">
+              <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <label htmlFor="ped-altura" className="text-[0.8rem] text-text-muted">Comprimento (cm)</label>
                 <input
                   id="ped-altura"
                   type="number"
                   inputMode="decimal"
-                  min={40}
-                  max={180}
+                  min={BROSELOW_DATA[0].min}
+                  max={BROSELOW_DATA[BROSELOW_DATA.length - 1].max}
                   step={1}
                   placeholder="--"
-                  onChange={e => {
-                    const est = pesoPorAltura(parseFloat(e.target.value))
-                    if (est !== null) { setPeso(est); setSource('peso') }
-                  }}
-                  className="w-[110px] bg-bg-elevated border-2 border-border-card rounded-lg text-text-primary text-base px-3 py-2.5 min-h-[44px] outline-none focus:border-accent"
+                  value={alturaRaw}
+                  onChange={handleAlturaChange}
+                  aria-invalid={alturaIn.invalido}
+                  className={`w-[110px] bg-bg-elevated border-2 rounded-lg text-base px-3 py-2.5 min-h-[44px] outline-none ${alturaIn.invalido ? 'border-danger text-danger' : 'border-border-card text-text-primary focus:border-accent'}`}
                 />
+                {alturaIn.invalido && (
+                  <span className="text-[0.75rem] font-bold text-danger">
+                    {BROSELOW_DATA[0].min} a {BROSELOW_DATA[BROSELOW_DATA.length - 1].max} cm
+                  </span>
+                )}
+                {!alturaIn.invalido && alturaIn.valor !== null && selectedBroselow && (
+                  <span className="flex items-center gap-1.5 text-[0.8rem] text-text-primary">
+                    <span className={`w-4 h-4 rounded ${selectedBroselow.dotClass}`} />
+                    {selectedBroselow.name} ({selectedBroselow.peso} kg)
+                  </span>
+                )}
               </div>
               <p className="text-[0.75rem] text-text-muted">
-                Estimativa por faixa de comprimento; ao digitar, o peso é aplicado aos cálculos.
-                Sempre que houver balança disponível, prefira o peso aferido.
+                O comprimento seleciona a cor Broselow, e o peso vem da cor — o mesmo que
+                a fita faz. Acima de {BROSELOW_DATA[BROSELOW_DATA.length - 1].max} cm a fita
+                não alcança: pese a criança. Sempre que houver balança, prefira o peso aferido.
               </p>
             </Collapsible>
 
@@ -1571,27 +1770,7 @@ export default function PedGuide() {
 
             {/* Fluids */}
             <Collapsible title="Fluidos e Volumes" badge="IV" badgeColor="#4CAF50" defaultOpen={isSectionOpen('fluidos')}>
-              {fluids ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <div className="bg-bg-hover rounded-xl p-4 text-center border-2 border-border-card">
-                    <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Bolus Cristaloide</div>
-                    <div className="font-mono text-2xl font-bold text-text-primary">{fluids.bolus}</div>
-                    <div className="text-[0.75rem] text-text-muted mt-1">mL (20 mL/kg)</div>
-                  </div>
-                  <div className="bg-bg-hover rounded-xl p-4 text-center border-2 border-border-card">
-                    <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Manutenção/hora</div>
-                    <div className="font-mono text-2xl font-bold text-text-primary">{fluids.manutenção}</div>
-                    <div className="text-[0.75rem] text-text-muted mt-1">mL/h (Holliday-Segar)</div>
-                  </div>
-                  <div className="bg-bg-hover rounded-xl p-4 text-center border-2 border-border-card">
-                    <div className="text-[0.75rem] font-bold uppercase text-text-muted mb-2">Volemia Estimada</div>
-                    <div className="font-mono text-2xl font-bold text-text-primary">{fluids.volemia}</div>
-                    <div className="text-[0.75rem] text-text-muted mt-1">mL (80 mL/kg)</div>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center text-[0.8rem] text-warning py-4">Informe o peso para calcular</div>
-              )}
+              {renderFluids()}
             </Collapsible>
 
             {/* Infusions */}
