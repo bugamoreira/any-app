@@ -1,7 +1,7 @@
 // Service worker — HETRIN Ped
 // Cache-first: apos o primeiro acesso, a ferramenta funciona offline.
 // Ao publicar nova versao, incrementar CACHE_NAME para invalidar o cache antigo.
-const CACHE_NAME = 'hetrinped-v1.1.9'
+const CACHE_NAME = 'hetrinped-v1.2.0'
 const ASSETS = [
   './',
   './index.html',
