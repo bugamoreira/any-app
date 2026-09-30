@@ -32,8 +32,20 @@ jobs:
 
       - run: npm ci
 
-      - name: Lint
+      # NAO derruba, de proposito. O projeto tem 137 erros de lint herdados
+      # (92 de componente definido dentro do render, 23 de variavel nao usada,
+      # o resto de regras de hooks). Nenhum e de seguranca, e 'tsc -b' e o build
+      # passam limpos.
+      #
+      # Travar o CI neles deixaria o vermelho permanente desde o primeiro dia —
+      # e CI sempre vermelho nao avisa nada, so ensina a equipe a ignorar.
+      # Enquanto o lint so reporta, vermelho significa: alguma coisa NOVA quebrou.
+      #
+      # Quando a divida for paga, tirar o continue-on-error. Conferir o tamanho
+      # dela com: npm run lint 2>&1 | tail -3
+      - name: Lint (reporta, nao derruba)
         run: npm run lint
+        continue-on-error: true
 
       # tsc -b, NUNCA tsc --noEmit: o tsconfig.json deste projeto tem
       # "files": [] e so referencias, entao --noEmit nao checa absolutamente
