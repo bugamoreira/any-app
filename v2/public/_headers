@@ -3,4 +3,23 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src https://meatbfomblpicftrzcsy.supabase.co https://accounts.google.com https://*.google.com; frame-ancestors 'none'; img-src 'self' data:; media-src data:; font-src 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://meatbfomblpicftrzcsy.supabase.co https://accounts.google.com https://*.google.com https://login.microsoftonline.com; frame-ancestors 'none'; img-src 'self' data:; media-src data:; font-src 'self'
+
+# script-src saiu de "'self' 'unsafe-inline' 'unsafe-eval'" para "'self'" em 29/09/2026.
+# Os dois foram testados antes de remover: no build de producao ha zero ocorrencias
+# de eval( e new Function( nos 27 arquivos do bundle, e o unico <script> do
+# index.html e modulo externo com src, nao inline. Com os dois presentes, a CSP
+# quase nao protegia contra XSS.
+#
+# O 'unsafe-inline' do style-src FICA: React e Tailwind injetam estilo inline de
+# verdade, e tirar quebra a tela.
+#
+# login.microsoftonline.com entrou junto com o Google no connect-src. Nao sei dizer
+# se o fluxo OAuth via Supabase realmente busca esse dominio por XHR — o Google esta
+# ali desde o inicio e o login funciona, sem teste que isole a causa. O que nao pode
+# e a assimetria: se o Google precisa, o Microsoft vai precisar, e a falha so
+# apareceria no dia que o provedor fosse ligado, como um login que nao volta.
+#
+# v2/public/hetrinped/_headers e um arquivo separado, com CSP propria. La o
+# 'unsafe-inline' em script-src e necessario, porque o HETRIN inteiro e um <script>
+# inline num arquivo so. Nao mexer.
