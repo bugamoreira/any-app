@@ -1,0 +1,55 @@
+#!/bin/sh
+# Barra o commit quando aparece segredo no conteudo que esta sendo adicionado.
+#
+# Nao usa husky nem nenhuma dependencia npm. Para ativar, uma vez por clone:
+#
+#     git config core.hooksPath .githooks
+#
+# O que ele NAO tenta ser: um scanner completo. E grep, e mira o erro que
+# realmente importa neste projeto — alguem colar a chave de servico do Supabase
+# no codigo do cliente, onde qualquer usuario a leria. A anon key pode viver no
+# bundle (e publica por design, protegida por RLS); a service_role nao pode
+# chegar nem perto do navegador.
+#
+# Falso positivo legitimo: 'git commit --no-verify'. Use com consciencia.
+
+set -e
+
+# So as linhas ADICIONADAS, dos arquivos que entram no commit.
+#
+# .githooks/ fica de fora: este proprio arquivo contem as palavras que ele
+# procura, entao sem a exclusao ele barra o proprio commit. Descoberto testando,
+# nao pensando. Mesma coisa vale para qualquer documento que ENSINE sobre
+# segredo em vez de conter um — se o playbook ganhar um exemplo aqui, excluir
+# o caminho dele tambem.
+adicionado=$(git diff --cached -U0 --diff-filter=ACM -- . ':(exclude).githooks/' \
+  | grep '^+' | grep -v '^+++' || true)
+
+achados=""
+acusar() {
+  if printf '%s' "$adicionado" | grep -Eqi "$1"; then
+    achados="${achados}  - $2\n"
+  fi
+}
+
+acusar 'service_role'                                   'chave service_role do Supabase'
+acusar 'sb_secret_[A-Za-z0-9_-]{8,}'                    'chave secreta do Supabase (sb_secret_)'
+acusar 'BEGIN [A-Z ]*PRIVATE KEY'                       'chave privada (PEM)'
+acusar 'eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}' 'JWT literal no codigo'
+acusar '(aws_secret_access_key|AKIA[0-9A-Z]{16})'       'credencial da AWS'
+acusar '(senha|password|passwd)[\"'"'"' ]*[:=][\"'"'"' ]*[A-Za-z0-9_@#$%!-]{8,}' 'senha literal'
+
+# .env com valores nunca entra; .env.example, com placeholders, pode.
+if git diff --cached --name-only --diff-filter=ACM | grep -Eq '(^|/)\.env($|\.local$|\.production$)'; then
+  achados="${achados}  - arquivo .env com valores reais\n"
+fi
+
+if [ -n "$achados" ]; then
+  printf '\n\033[41m\033[37m  COMMIT BARRADO — possivel segredo no conteudo adicionado  \033[0m\n\n'
+  printf "$achados"
+  printf '\nConfira com:  git diff --cached\n'
+  printf 'Se for falso positivo:  git commit --no-verify\n\n'
+  exit 1
+fi
+
+exit 0

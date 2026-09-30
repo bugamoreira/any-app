@@ -1,0 +1,72 @@
+name: CI
+
+# Este workflow NAO publica nada. O deploy do any.app.br e manual, por CLI,
+# como o README descreve. Aqui so se verifica.
+
+on:
+  push:
+    branches: [v4]
+  pull_request:
+    branches: [v4]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: v2
+
+jobs:
+  verificar:
+    name: Tipos, lint e build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: v2/package-lock.json
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      # tsc -b, NUNCA tsc --noEmit: o tsconfig.json deste projeto tem
+      # "files": [] e so referencias, entao --noEmit nao checa absolutamente
+      # nada e passa verde com o codigo quebrado.
+      - name: Checagem de tipos
+        run: npx tsc -b
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+  auditoria:
+    name: Dependencias de producao
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: v2/package-lock.json
+
+      - run: npm ci
+
+      # So --omit=dev: o que chega ao navegador do plantonista. Falha de
+      # dependencia de desenvolvimento nao alcanca usuario e nao vale travar
+      # o trabalho por ela — aparece no relatorio abaixo, sem derrubar.
+      - name: Auditoria de producao (derruba em high)
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Relatorio completo (nao derruba)
+        if: always()
+        run: npm audit || true
