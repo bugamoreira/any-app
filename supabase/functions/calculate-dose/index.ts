@@ -60,17 +60,54 @@ function calcVNERi(pad: number, doseNE: number, fc: number): number | null {
   return pad / (doseNE * fc)
 }
 
-Deno.serve(async (req: Request) => {
-  // CORS
-  if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'authorization, content-type, apikey, x-client-info',
-      }
-    })
+// ==========================================
+// ACESSO
+// ==========================================
+
+// So os enderecos que servem o app. Era '*', e so no OPTIONS: as respostas do
+// POST nao traziam cabecalho CORS nenhum, entao o navegador nunca conseguiu ler
+// a resposta e a checagem servidor x navegador do DoseCalculator nunca rodou.
+const ORIGENS = new Set([
+  'https://any.app.br',
+  'https://anyapp.netlify.app',
+  'http://localhost:5173',
+  'http://localhost:5174',
+])
+
+function cabecalhosCors(req: Request): Record<string, string> {
+  const origem = req.headers.get('Origin') ?? ''
+  const h: Record<string, string> = { 'Vary': 'Origin' }
+  if (ORIGENS.has(origem)) {
+    h['Access-Control-Allow-Origin'] = origem
+    h['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+    h['Access-Control-Allow-Headers'] = 'authorization, content-type, apikey, x-client-info'
   }
+  return h
+}
+
+// verify_jwt = true so garante que o token e um JWT valido DESTE projeto — e a
+// chave anon, publica no bundle, e um JWT valido com role 'anon'. A assinatura
+// ja chega conferida pelo gateway; aqui basta ler o papel para exigir um
+// usuario logado de verdade.
+function papelDoToken(req: Request): string | null {
+  const token = (req.headers.get('Authorization') ?? '').replace(/^Bearer\s+/i, '')
+  const partes = token.split('.')
+  if (partes.length !== 3) return null
+  try {
+    const b64 = partes[1].replace(/-/g, '+').replace(/_/g, '/')
+    const payload = JSON.parse(atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4)))
+    return typeof payload.role === 'string' ? payload.role : null
+  } catch {
+    return null
+  }
+}
+
+Deno.serve(async (req: Request) => {
+  const cors = cabecalhosCors(req)
+  const json = (corpo: unknown, status = 200) => Response.json(corpo, { status, headers: cors })
+
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors })
+  if (papelDoToken(req) !== 'authenticated') return json({ error: 'Login necessario' }, 401)
 
   try {
     const body = await req.json()
@@ -79,31 +116,31 @@ Deno.serve(async (req: Request) => {
     if (action === 'dose') {
       const { drugId, dose, weight, concentration } = body
       const drug = DRUGS[drugId]
-      if (!drug) return Response.json({ error: 'Droga desconhecida' }, { status: 400 })
+      if (!drug) return json({ error: 'Droga desconhecida' }, 400)
 
       const conc = concentration || drug.concentration
       const mlh = doseToMlh(dose, weight, conc, drug.factor, drug.usesWeight)
       const status = getStatus(dose, drug.doseMin, drug.doseMax, drug.cautionThreshold, drug.criticalThreshold)
 
-      return Response.json({ mlh, dose, status, drugId })
+      return json({ mlh, dose, status, drugId })
     }
 
     if (action === 'reverse') {
       const { drugId, mlh, weight, concentration } = body
       const drug = DRUGS[drugId]
-      if (!drug) return Response.json({ error: 'Droga desconhecida' }, { status: 400 })
+      if (!drug) return json({ error: 'Droga desconhecida' }, 400)
 
       const conc = concentration || drug.concentration
       const dose = mlhToDose(mlh, weight, conc, drug.factor, drug.usesWeight)
       const status = getStatus(dose, drug.doseMin, drug.doseMax, drug.cautionThreshold, drug.criticalThreshold)
 
-      return Response.json({ dose, mlh, status, drugId })
+      return json({ dose, mlh, status, drugId })
     }
 
     if (action === 'vneri') {
       const { pad, doseNE, fc } = body
       const vneri = calcVNERi(pad, doseNE, fc)
-      if (vneri === null) return Response.json({ error: 'Dados insuficientes' }, { status: 400 })
+      if (vneri === null) return json({ error: 'Dados insuficientes' }, 400)
 
       let zone = 'unknown'
       let mortality = ''
@@ -112,7 +149,7 @@ Deno.serve(async (req: Request) => {
       else if (vneri < 10.8) { zone = 'resposta_adequada'; mortality = '~28%' }
       else { zone = 'tonus_preservado'; mortality = '~39%' }
 
-      return Response.json({ vneri, zone, mortality })
+      return json({ vneri, zone, mortality })
     }
 
     if (action === 'list') {
@@ -122,12 +159,13 @@ Deno.serve(async (req: Request) => {
         doseMax: d.doseMax,
         usesWeight: d.usesWeight,
       }))
-      return Response.json({ drugs: list })
+      return json({ drugs: list })
     }
 
-    return Response.json({ error: 'Action desconhecida' }, { status: 400 })
+    return json({ error: 'Action desconhecida' }, 400)
 
-  } catch (e) {
-    return Response.json({ error: 'Erro interno', details: String(e) }, { status: 500 })
+  } catch {
+    // Sem detalhe na resposta: a mensagem interna nao serve a quem chama.
+    return json({ error: 'Erro interno' }, 500)
   }
 })
