@@ -1113,6 +1113,14 @@ export default function PedGuide() {
     return {
       first: Math.round(p * 2),
       second: Math.round(p * 4),
+      // PALS 2025: apos o 2o choque, 4 J/kg ou mais, sem passar de 10 J/kg nem
+      // da dose adulta bifasica (200 J). A partir de 50 kg os dois extremos
+      // batem no teto e a faixa vira um numero so.
+      subsequentes: (() => {
+        const de = Math.min(Math.round(p * 4), 200)
+        const ate = Math.min(Math.round(p * 10), 200)
+        return de === ate ? String(de) : `${de}-${ate}`
+      })(),
       cardio: `${Math.round(p * 0.5)}-${Math.round(p)}`,
       // PALS 2025: iniciar 0,5-1 J/kg; se ineficaz, subir para 2 J/kg
       cardioMax: Math.round(p * 2),
@@ -1448,7 +1456,7 @@ export default function PedGuide() {
             </div>
 
             {/* Defibrillation */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
               <div className="bg-gradient-to-br from-accent to-red-800 text-white rounded-xl p-5 text-center">
                 <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">1ª Desfibrilação (2 J/kg)</div>
                 <div className="font-mono text-3xl font-bold">{defib?.first ?? '--'}</div>
@@ -1458,6 +1466,12 @@ export default function PedGuide() {
                 <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">2ª Desfibrilação (4 J/kg)</div>
                 <div className="font-mono text-3xl font-bold">{defib?.second ?? '--'}</div>
                 <div className="text-base opacity-80">Joules</div>
+              </div>
+              <div className="bg-gradient-to-br from-accent to-red-800 text-white rounded-xl p-5 text-center">
+                <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">Subsequentes (4-10 J/kg)</div>
+                <div className="font-mono text-3xl font-bold">{defib?.subsequentes ?? '--'}</div>
+                <div className="text-base opacity-80">Joules</div>
+                <div className="text-[0.75rem] opacity-70 mt-1">4 J/kg ou mais, sem passar de 10 J/kg nem de 200 J</div>
               </div>
               <div className="bg-bg-hover text-white rounded-xl p-5 text-center">
                 <div className="text-[0.75rem] font-bold uppercase opacity-80 mb-2">Cardioversão (0,5-1 J/kg)</div>
