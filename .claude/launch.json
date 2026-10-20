@@ -4,55 +4,74 @@
     {
       "name": "any-app",
       "runtimeExecutable": "ruby",
-      "runtimeArgs": ["/tmp/anyapp_preview/server.rb"],
+      "runtimeArgs": [
+        "/tmp/anyapp_preview/server.rb"
+      ],
       "port": 8080
     },
     {
       "name": "sedapath",
       "runtimeExecutable": "ruby",
-      "runtimeArgs": ["/tmp/sedapath_preview/server.rb"],
+      "runtimeArgs": [
+        "/tmp/sedapath_preview/server.rb"
+      ],
       "port": 8081
     },
     {
       "name": "toxpath",
       "runtimeExecutable": "ruby",
-      "runtimeArgs": ["/tmp/toxpath_preview/server.rb"],
+      "runtimeArgs": [
+        "/tmp/toxpath_preview/server.rb"
+      ],
       "port": 8082
     },
     {
       "name": "dengue",
       "runtimeExecutable": "ruby",
-      "runtimeArgs": ["/tmp/dengue_preview/server.rb"],
+      "runtimeArgs": [
+        "/tmp/dengue_preview/server.rb"
+      ],
       "port": 8083
     },
     {
       "name": "infusion",
       "runtimeExecutable": "ruby",
-      "runtimeArgs": ["/tmp/infusion_preview/server.rb"],
+      "runtimeArgs": [
+        "/tmp/infusion_preview/server.rb"
+      ],
       "port": 8084
     },
     {
       "name": "airway",
       "runtimeExecutable": "ruby",
-      "runtimeArgs": ["/tmp/airway_preview/server.rb"],
+      "runtimeArgs": [
+        "/tmp/airway_preview/server.rb"
+      ],
       "port": 8085
     },
     {
       "name": "acls",
       "runtimeExecutable": "ruby",
-      "runtimeArgs": ["/tmp/acls_preview/server.rb"],
+      "runtimeArgs": [
+        "/tmp/acls_preview/server.rb"
+      ],
       "port": 8086
     },
     {
       "name": "hetrinped",
       "runtimeExecutable": "ruby",
-      "runtimeArgs": ["/tmp/hetrinped_preview/server.rb"],
+      "runtimeArgs": [
+        "/tmp/hetrinped_preview/server.rb"
+      ],
       "port": 8090
     },
     {
       "name": "v2",
       "runtimeExecutable": "bash",
-      "runtimeArgs": ["-c", "export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && cd v2 && npm run dev -- --host --port 5173"],
+      "runtimeArgs": [
+        "-c",
+        "export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && cd v2 && npm run dev -- --port 5173"
+      ],
       "port": 5173
     }
   ],
