@@ -89,17 +89,40 @@ function cabecalhosCors(req: Request): Record<string, string> {
 // chave anon, publica no bundle, e um JWT valido com role 'anon'. A assinatura
 // ja chega conferida pelo gateway; aqui basta ler o papel para exigir um
 // usuario logado de verdade.
-function papelDoToken(req: Request): string | null {
+function lerToken(req: Request): { role: string | null; sub: string | null } {
   const token = (req.headers.get('Authorization') ?? '').replace(/^Bearer\s+/i, '')
   const partes = token.split('.')
-  if (partes.length !== 3) return null
+  if (partes.length !== 3) return { role: null, sub: null }
   try {
     const b64 = partes[1].replace(/-/g, '+').replace(/_/g, '/')
     const payload = JSON.parse(atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4)))
-    return typeof payload.role === 'string' ? payload.role : null
+    return {
+      role: typeof payload.role === 'string' ? payload.role : null,
+      sub: typeof payload.sub === 'string' ? payload.sub : null,
+    }
   } catch {
-    return null
+    return { role: null, sub: null }
   }
+}
+
+// Freio contra robo com conta: 60 chamadas por usuario por minuto. O uso real
+// e uma chamada por droga aberta. A contagem vive na memoria da instancia: so
+// vale enquanto ela esta quente, e instancias diferentes contam separado. E
+// freio, nao cerca.
+const LIMITE_POR_MINUTO = 60
+const janelas = new Map<string, { inicio: number; n: number }>()
+
+function excedeuLimite(sub: string, agora = Date.now()): boolean {
+  const j = janelas.get(sub)
+  if (!j || agora - j.inicio >= 60_000) {
+    janelas.set(sub, { inicio: agora, n: 1 })
+    if (janelas.size > 5000) {
+      for (const [k, v] of janelas) if (agora - v.inicio >= 60_000) janelas.delete(k)
+    }
+    return false
+  }
+  j.n += 1
+  return j.n > LIMITE_POR_MINUTO
 }
 
 Deno.serve(async (req: Request) => {
@@ -107,7 +130,9 @@ Deno.serve(async (req: Request) => {
   const json = (corpo: unknown, status = 200) => Response.json(corpo, { status, headers: cors })
 
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors })
-  if (papelDoToken(req) !== 'authenticated') return json({ error: 'Login necessario' }, 401)
+  const { role, sub } = lerToken(req)
+  if (role !== 'authenticated' || !sub) return json({ error: 'Login necessario' }, 401)
+  if (excedeuLimite(sub)) return json({ error: 'Muitas chamadas. Tente de novo em um minuto.' }, 429)
 
   try {
     const body = await req.json()
