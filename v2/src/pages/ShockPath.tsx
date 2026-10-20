@@ -1,4 +1,4 @@
-import { useReducer, useCallback, useMemo, useEffect } from 'react'
+import { useReducer, useCallback, useMemo, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Disclaimer } from '../components/layout/Disclaimer'
 import { Header } from '../components/layout/Header'
@@ -406,6 +406,14 @@ export default function ShockPath() {
     dispatch({ type: 'SET_LACTATO_UNIT', unit: lactateUnit === 'mmol/L' ? 'mmol' : 'mgdl' })
   }, [lactateUnit])
   const { weight, setWeight } = useWeight()
+  // Texto digitado no campo de peso, separado do peso validado. Sem isso o campo
+  // mostrava o peso do contexto, que so aceita 40-200: o "7" de "70" era recusado
+  // e apagado antes do "0" chegar, e o peso nao podia ser digitado.
+  const [pesoTxt, setPesoTxt] = useState(weight != null ? String(weight) : '')
+  const pesoFora = (() => {
+    const n = parseFloat(pesoTxt.replace(',', '.'))
+    return pesoTxt.trim() !== '' && (isNaN(n) || n < 40 || n > 200)
+  })()
   const { addToast } = useToast()
   const navigate = useNavigate()
 
@@ -434,12 +442,12 @@ export default function ShockPath() {
   // ==========================================
 
   const handlePesoChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = parseFloat(e.target.value)
-    if (!isNaN(v) && v >= 40 && v <= 200) {
-      setWeight(v)
-    } else if (e.target.value === '') {
-      setWeight(null)
-    }
+    const txt = e.target.value
+    setPesoTxt(txt)
+    const v = parseFloat(txt.replace(',', '.'))
+    // Fora da faixa, o calculo fica sem peso em vez de manter um valor antigo
+    // diferente do que esta escrito no campo.
+    setWeight(!isNaN(v) && v >= 40 && v <= 200 ? v : null)
   }, [setWeight])
 
   const handleLactatoChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -908,16 +916,16 @@ export default function ShockPath() {
               <input
                 type="number"
                 inputMode="decimal"
-                value={weight ?? ''}
+                value={pesoTxt}
                 onChange={handlePesoChange}
                 placeholder="70"
                 min={40}
                 max={200}
                 className={`w-full bg-bg-elevated border rounded-lg text-text-primary p-3 text-base font-semibold text-center outline-none ${
-                  weight && (weight < 40 || weight > 200) ? 'border-danger' : 'border-border-card focus:border-accent'
+                  pesoFora ? 'border-danger' : 'border-border-card focus:border-accent'
                 }`}
               />
-              {weight !== null && (weight < 40 || weight > 200) && (
+              {pesoFora && (
                 <div className="text-xs text-danger mt-1">Fora do range (40-200 kg)</div>
               )}
             </div>
