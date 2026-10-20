@@ -711,11 +711,13 @@ Boas práticas gerais de engenharia do Gustavo vivem em `~/Library/CloudStorage/
 
 ### 13.4 Segurança da aplicação
 
-- **Edge Functions (Supabase):** Fórmulas de dose executam no servidor. O código das fórmulas nunca chega ao browser.
-- **Ofuscação:** Variáveis renomeadas, strings embaralhadas no build de produção.
-- **CSP:** Content Security Policy via `_headers` no Netlify.
-- **RLS:** Row Level Security ativo no Supabase para todas as tabelas.
-- **Auth:** Google OAuth obrigatório via Supabase Auth. Rotas protegidas com `<ProtectedRoute />`.
+- **Fórmulas:** o cálculo de dose roda **no navegador**, a partir de `v2/src/data/drugConfigs.ts`, e por isso as fórmulas estão no bundle publicado. Não é segredo, e não precisa ser: o conteúdo clínico é público por natureza (FOAMed). Uma versão anterior deste documento dizia que "o código das fórmulas nunca chega ao browser" — a auditoria de 19/10/2026 mostrou que chega.
+- **Edge Function `calculate-dose`:** não protege fórmula nenhuma. É uma **checagem de consistência**: o `DoseCalculator` pede ao servidor o mesmo cálculo e registra `calc_divergencia_servidor_local` no console se os dois discordarem. Exige usuário logado (recusa a chave anon) e só aceita as origens do app. O código vive versionado em `supabase/functions/calculate-dose/` e as 15 drogas de lá precisam bater com `drugConfigs.ts`.
+- **Minificação:** o build de produção renomeia variáveis. As strings ficam em claro — nome de droga, rótulo, texto clínico. Não há ofuscação de string.
+- **CSP e cabeçalhos:** `_headers` no Netlify — CSP com `script-src 'self'`, HSTS, `X-Frame-Options: DENY`, `nosniff` e `Permissions-Policy`. O ACLS depende de `screen-wake-lock`: qualquer endurecimento da política precisa manter `(self)` nele.
+- **RLS:** ligado em todas as tabelas, sem nenhuma policy `using (true)`. Além disso, desde 20/10/2026, `anon` não tem permissão de escrita em tabela nenhuma, e ninguém tem `TRUNCATE` — o banco não depende só do RLS. **Toda tabela nova em `public` nasce com todos os privilégios para `anon` e `authenticated`** (privilégio padrão do Supabase): repita o tratamento de `supabase/migrations/20261020_endurece_tabelas_publicas.sql`.
+- **Auth:** Google OAuth via Supabase Auth. O cadastro é aberto a qualquer conta Google, de propósito. Rotas protegidas com `<ProtectedRoute />` — que só esconde tela; quem protege dado é o RLS.
+- **Prova, não painel:** antes de afirmar que algo está protegido, ataque com a chave anon tirada do bundle publicado. O roteiro está no Engineering Playbook, `19-seguranca/`.
 
 ### 13.5 Regulatório
 
