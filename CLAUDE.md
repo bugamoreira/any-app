@@ -717,7 +717,7 @@ Boas práticas gerais de engenharia do Gustavo vivem em `~/Library/CloudStorage/
 - **CSP e cabeçalhos:** `_headers` no Netlify — CSP com `script-src 'self'`, HSTS, `X-Frame-Options: DENY`, `nosniff` e `Permissions-Policy`. O ACLS depende de `screen-wake-lock`: qualquer endurecimento da política precisa manter `(self)` nele.
 - **RLS:** ligado em todas as tabelas, sem nenhuma policy `using (true)`. Além disso, desde 20/10/2026, `anon` não tem permissão de escrita em tabela nenhuma, e ninguém tem `TRUNCATE` — o banco não depende só do RLS. **Toda tabela nova em `public` nasce com todos os privilégios para `anon` e `authenticated`** (privilégio padrão do Supabase): repita o tratamento de `supabase/migrations/20261020_endurece_tabelas_publicas.sql`.
 - **Auth:** Google OAuth via Supabase Auth. O cadastro é aberto a qualquer conta Google, de propósito. Rotas protegidas com `<ProtectedRoute />` — que só esconde tela; quem protege dado é o RLS.
-- **Prova, não painel:** antes de afirmar que algo está protegido, ataque com a chave anon tirada do bundle publicado. O roteiro está no Engineering Playbook, `19-seguranca/`.
+- **Prova, não painel:** antes de afirmar que algo está protegido, ataque com a chave anon tirada do bundle publicado. O roteiro está no Engineering Playbook, `12-seguranca/`.
 
 ### 13.5 Regulatório
 
